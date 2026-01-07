@@ -1,0 +1,9 @@
+addReviewers: true
+
+addAssignees: author
+
+reviewers:
+  - jaqwe2301
+  - junye0l
+
+numberOfReviewers: 0
