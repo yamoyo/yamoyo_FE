@@ -1,9 +1,9 @@
 ---
 name: "\U0001F41E 버그 리포트 템플릿"
 about: 프로젝트에서 발생하는 버그에 대해 명세합니다.
-title: "[Bug] Issue title"
+title: '[Bug] Issue title'
 labels: "\U0001F41E BugFix"
-assignees: ""
+assignees: ''
 ---
 
 ## 💬 버그 설명
