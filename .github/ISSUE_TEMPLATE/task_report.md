@@ -1,9 +1,9 @@
 ---
-name: "✨ 기능 개발 템플릿"
+name: '✨ 기능 개발 템플릿'
 about: 개발해야 하는 기능을 단위별로 명세합니다.
-title: "[Feature] Issue title"
-labels: "✨ Feature"
-assignees: ""
+title: '[Feature] Issue title'
+labels: '✨ Feature'
+assignees: ''
 ---
 
 ## ✨ 기능 개요

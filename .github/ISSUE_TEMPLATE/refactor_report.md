@@ -1,9 +1,9 @@
 ---
-name: "♻️ 리팩토링 템플릿"
+name: '♻️ 리팩토링 템플릿'
 about: 개선 작업 내용에 대해 명세합니다.
-title: "[Refactor] Issue title"
+title: '[Refactor] Issue title'
 labels: "\U0001F528 Refactor"
-assignees: ""
+assignees: ''
 ---
 
 ## ♻️ 리팩토링 목적
