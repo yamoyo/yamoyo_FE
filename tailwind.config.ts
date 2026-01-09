@@ -3,7 +3,7 @@ import type { Config } from 'tailwindcss';
 import {
   flexCenter,
   flexColCenter,
-} from './src/shared/config/tailwind/plugins';
+} from './src/shared/config/tailwind/plugins.ts';
 
 const config: Config = {
   content: [
