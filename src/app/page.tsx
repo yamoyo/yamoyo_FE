@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
   return (
-    <main className="min-h-dvh flex flex-col items-center justify-center gap-4">
+    <main className="min-h-dvh flex-col-center gap-4">
       <Image
         src="/testImage.png"
         alt="테스트 이미지"
