@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const router = useRouter();
   return (
-    <main className="min-h-dvh flex-col-center gap-4">
+    <main className="min-h-dvh gap-4 flex-col-center">
       <Image
         src="/testImage.png"
         alt="테스트 이미지"
@@ -15,7 +15,7 @@ export default function Home() {
       />
       <h1 className="text-xl font-medium">Test</h1>
       <button
-        className="bg-gray-500 w-[100px] h-[50px] rounded-lg text-white"
+        className="h-[50px] w-[100px] rounded-lg bg-gray-500 text-white"
         onClick={() => {
           router.push('/roulette');
         }}
