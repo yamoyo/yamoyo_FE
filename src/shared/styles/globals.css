@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  height: 100%; /* 앱 레이아웃 기준 높이 확보 (h-full 계열 정상 동작) */
+  width: 100%;  /* 뷰포트 기준 너비 고정 */
+}
+
+body {
+  min-height: 100dvh; /* 모바일 주소창 변화에도 안정적인 실제 화면 높이 */
+  overflow-x: hidden; /* 전체 페이지 가로 스크롤 차단 (캐러셀은 컨테이너에서만 허용) */
+  -webkit-font-smoothing: antialiased; /* macOS/iOS 폰트 렌더링 개선 */
+}
