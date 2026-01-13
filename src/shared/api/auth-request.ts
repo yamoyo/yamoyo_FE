@@ -35,11 +35,7 @@ async function refreshAccessToken(): Promise<boolean> {
       return false;
     }
 
-    const data: {
-      grantType: string;
-      accessToken: string;
-      accessTokenExpiration: number;
-    } = await res.json();
+    const data: TokenResponse = await res.json();
 
     if (!data.accessToken) {
       useTokenStore.getState().clear();
@@ -77,7 +73,7 @@ export async function authRequest<T>(
 
     return fetch(`${API_BASE}${path}`, {
       ...init,
-      credentials: 'include', // 보호 API도 refresh 쿠키를 같이 들고다니게 하고 싶다면 유지
+      credentials: 'include',
       headers: {
         ...(init.headers ?? {}),
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
