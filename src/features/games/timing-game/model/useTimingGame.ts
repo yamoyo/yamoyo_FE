@@ -19,11 +19,9 @@ export function useTimingGame() {
   /**
    * rafIdRef
    *
-   * - requestAnimationFrame이 반환하는 id를 저장하는 ref
-   * - requestAnimationFrame(tick)을 호출하면 브라우저는 id를 줌
-   * - cancelAnimationFrame(id)를 호출하여 "더 이상 그 tick 함수를 실행하지 마"라고 예약을 취소할 수 있다.
-   *
-   * 즉, rafIdRef는 현재 돌고 있는 애니메이션 루프의 핸들(손잡이) 역할을 한다.
+   * - 쉽게 설명하자면 '예약표 번호를 들고 있는 상자' 같은 역할
+   * - requestAnimationFrame이 반환하는 id를 저장
+   * - cancelAnimationFrame(id)를 호출하여 애니메이션이 멈추도록 예약을 취소
    */
   const rafIdRef = useRef<number | null>(null);
 
