@@ -1,13 +1,16 @@
 import { create } from 'zustand';
 
-type TokenState = {
+interface TokenState {
   accessToken: string | null;
-  setAccessToken: (token: string | null) => void;
+  accessTokenExpiration: number | null;
+  setToken: (token: string, expiration: number | null) => void;
   clear: () => void;
-};
+}
 
 export const useTokenStore = create<TokenState>((set) => ({
   accessToken: null,
-  setAccessToken: (token) => set({ accessToken: token }),
-  clear: () => set({ accessToken: null }),
+  accessTokenExpiration: null,
+  setToken: (accessToken, expiration) =>
+    set({ accessToken, accessTokenExpiration: expiration }),
+  clear: () => set({ accessToken: null, accessTokenExpiration: null }),
 }));
