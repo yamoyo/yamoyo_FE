@@ -17,10 +17,18 @@ export default function Home() {
       <button
         className="h-[50px] w-[100px] rounded-lg bg-gray-500 text-white"
         onClick={() => {
-          router.push('/roulette');
+          router.push('/games/roulette');
         }}
       >
         룰렛
+      </button>
+      <button
+        className="h-[50px] w-[100px] rounded-lg bg-gray-500 text-white"
+        onClick={() => {
+          router.push('/games/timing-game');
+        }}
+      >
+        타이밍 게임
       </button>
     </main>
   );
