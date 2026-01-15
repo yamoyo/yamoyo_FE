@@ -57,13 +57,7 @@ export function useTimingGame() {
     startTimeRef.current = null;
   };
 
-  const handleStopOrReset = () => {
-    if (isRunning) {
-      stop();
-    } else {
-      reset();
-    }
-  };
+  const handleStopOrReset = isRunning ? stop : reset;
 
   // 차이 텍스트 계산
   const diffText =
