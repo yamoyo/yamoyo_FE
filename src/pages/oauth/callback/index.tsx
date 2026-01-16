@@ -1,11 +1,9 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 import { requestInitialAccessToken } from '@/shared/api/auth-request';
 
 export default function OAuthCallbackPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -18,7 +16,7 @@ export default function OAuthCallbackPage() {
           return;
         }
 
-        router.replace('/');
+        navigate('/');
       } catch (e) {
         console.error(e);
         setError('로그인 처리 중 오류가 발생했습니다.');
@@ -30,7 +28,7 @@ export default function OAuthCallbackPage() {
     //   ...
     // };
     // run();
-  }, [router]);
+  }, [navigate]);
 
   if (error) {
     return <div>{error}</div>;
