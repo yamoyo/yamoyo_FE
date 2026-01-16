@@ -1,10 +1,8 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import nextVitals from 'eslint-config-next/core-web-vitals';
-import nextTs from 'eslint-config-next/typescript';
+import tseslint from 'typescript-eslint';
 
 const eslintConfig = defineConfig([
-  ...nextVitals,
-  ...nextTs,
+  ...tseslint.configs.recommended,
   {
     rules: {
       // 사용 안 하는 변수는 경고로 ( _ 로 시작하면 무시 )
@@ -27,14 +25,7 @@ const eslintConfig = defineConfig([
       'jsx-quotes': ['error', 'prefer-double'],
     },
   },
-  // Override default ignores of eslint-config-next.
-  globalIgnores([
-    // Default ignores of eslint-config-next:
-    '.next/**',
-    'out/**',
-    'build/**',
-    'next-env.d.ts',
-  ]),
+  globalIgnores(['dist/**', 'node_modules/**']),
 ]);
 
 export default eslintConfig;
