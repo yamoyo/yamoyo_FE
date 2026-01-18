@@ -44,16 +44,16 @@
 
 @font-face {
   font-family: 'Galmuri14';
-  src: url('https://cdn.jsdelivr.net/gh/fonts-archive/Galmuri14/Galmuri14-Regular.woff2') format('woff2');
-  font-weight: 400;
+  src: url('/font/Galmuri14.woff2') format('woff2');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Galmuri11';
-  src: url('https://cdn.jsdelivr.net/gh/fonts-archive/Galmuri11/Galmuri11-Bold.woff2') format('woff2');
-  font-weight: 700;
+  src: url('/font/Galmuri11.woff2') format('woff2');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }

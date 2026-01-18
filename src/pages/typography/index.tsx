@@ -2,7 +2,8 @@ export default function TypographyPage() {
   return (
     <div className="min-h-dvh space-y-5 bg-white pt-5 text-neutral-900">
       <p className="text-title-1 text-red-500">font galmuri</p>
-      <p className="font-galmuri-11 text-title-1">title-1 : 24px 24px 700</p>
+      <p className="font-galmuri-11 text-title-1">여름에</p>
+      <p className="font-galmuri-14 text-body-3">여름에</p>
       <br />
       <p className="text-title-1 text-red-500">font Spoqa</p>
       <p className="text-title-2">title-2 : 22px 24px 700</p>

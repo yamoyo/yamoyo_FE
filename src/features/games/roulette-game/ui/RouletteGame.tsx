@@ -13,7 +13,20 @@ const ARROW_OFFSET_X_PX = 1;
 
 export function RouletteGame() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const names = useMemo(() => ['준열', '민혁', '서영'], []);
+  const names = useMemo(
+    () => [
+      '준열',
+      '민혁',
+      '서영',
+      '재형',
+      '지우',
+      '우인',
+      '상엽',
+      '우진',
+      '종현',
+    ],
+    [],
+  );
   const normalizedNames = useMemo(
     () => (names.length > 0 ? names.slice(0, 20) : ['']),
     [names],
@@ -76,7 +89,7 @@ export function RouletteGame() {
             return (
               <span
                 key={`${name}-${i}`}
-                className="absolute left-1/2 top-1/2 font-semibold text-black transition-transform duration-[1600ms] ease-out"
+                className="absolute left-1/2 top-1/2 font-galmuri-14 text-title-3 text-black transition-transform duration-[1600ms] ease-out"
                 style={{
                   fontSize: `${labelFontSize}px`,
                   transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${labelRadius}px) rotate(${-angle}deg) rotate(${-rotation}deg)`,
