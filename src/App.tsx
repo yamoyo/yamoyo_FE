@@ -3,6 +3,7 @@ import HomePage from './pages/Home';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
 import OAuthCallbackPage from './pages/oauth/callback';
+import TypographyPage from './pages/typography';
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/games/roulette" element={<RoulettePage />} />
         <Route path="/games/timing-game" element={<TimingGame />} />
+        <Route path="/typography" element={<TypographyPage />} />
       </Routes>
     </div>
   );
