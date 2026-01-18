@@ -31,7 +31,9 @@ export function RouletteGame() {
     () => (names.length > 0 ? names.slice(0, 20) : ['']),
     [names],
   );
-  const { rotation, spin } = useRouletteGame(normalizedNames.length);
+  const { rotation, spin, isSpinning } = useRouletteGame(
+    normalizedNames.length,
+  );
   const count = normalizedNames.length;
   const slice = 360 / count;
   const labelRadius = (WHEEL_SIZE_PX / 2) * LABEL_RADIUS_RATIO;
@@ -125,9 +127,10 @@ export function RouletteGame() {
       <button
         type="button"
         onClick={spin}
-        className="mt-6 rounded-full bg-black px-6 py-2 text-sm font-semibold text-white transition hover:bg-neutral-800"
+        disabled={isSpinning}
+        className="mt-6 rounded-full bg-black px-6 py-2 text-sm font-semibold text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        게임시작
+        {isSpinning ? '돌아가는 중...' : '게임시작'}
       </button>
     </div>
   );
