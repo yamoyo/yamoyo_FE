@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouletteGame } from '../model/useRouletteGame';
 
 const WHEEL_SIZE_PX = 456;
@@ -11,26 +11,21 @@ const ARROW_HEIGHT_RATIO = 58 / WHEEL_SIZE_PX;
 const ARROW_OFFSET_Y_RATIO = -34 / WHEEL_SIZE_PX;
 const ARROW_OFFSET_X_PX = 1;
 
+const NAMES = [
+  '준열',
+  '민혁',
+  '서영',
+  '재형',
+  '지우',
+  '우인',
+  '상엽',
+  '우진',
+  '종현',
+];
+
 export function RouletteGame() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const names = useMemo(
-    () => [
-      '준열',
-      '민혁',
-      '서영',
-      '재형',
-      '지우',
-      '우인',
-      '상엽',
-      '우진',
-      '종현',
-    ],
-    [],
-  );
-  const normalizedNames = useMemo(
-    () => (names.length > 0 ? names.slice(0, 20) : ['']),
-    [names],
-  );
+  const normalizedNames = NAMES.slice(0, 12);
   const { rotation, spin, isSpinning } = useRouletteGame(
     normalizedNames.length,
   );
