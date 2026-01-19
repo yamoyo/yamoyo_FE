@@ -1,7 +1,6 @@
 import { YamoyoError } from '../lib/http-error';
 import { ApiResponse } from './types';
-
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+import { HttpMethod } from './types';
 
 interface BaseRequestOptions {
   method: HttpMethod;
