@@ -68,10 +68,10 @@ async function authAwareRequest<T>(
  * - 사용 예시:
  *  ```ts
  * // GET 요청
- * const data = await httpClient.get<MyDataType>('/api/my-endpoint');
+ * const data = await authClient.get<MyDataType>('/api/my-endpoint');
  * // POST 요청
  * const newData = { name: 'example' };
- * const created = await httpClient.post<MyDataType>('/api/my-endpoint', newData);
+ * const created = await authClient.post<MyDataType>('/api/my-endpoint', newData);
  * ```
  *
  * - method 별로 분리한 이유:
