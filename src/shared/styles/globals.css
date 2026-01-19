@@ -2,6 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri14';
+  src: url('/font/Galmuri14.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('/font/Galmuri11.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 html,
 body {
   height: 100%; /* 앱 레이아웃 기준 높이 확보 (h-full 계열 정상 동작) */
@@ -12,4 +68,5 @@ body {
   min-height: 100dvh; /* 모바일 주소창 변화에도 안정적인 실제 화면 높이 */
   overflow-x: hidden; /* 전체 페이지 가로 스크롤 차단 (캐러셀은 컨테이너에서만 허용) */
   -webkit-font-smoothing: antialiased; /* macOS/iOS 폰트 렌더링 개선 */
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
 }

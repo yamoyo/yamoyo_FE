@@ -1,3 +1,1 @@
-export default function RoulettePage() {
-  return <div>roulette</div>;
-}
+export { RouletteGame as default } from '@/features/games/roulette-game/ui/RouletteGame';

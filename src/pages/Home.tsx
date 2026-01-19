@@ -18,6 +18,12 @@ export default function HomePage() {
       >
         타이밍 게임
       </button>
+      <button
+        className="h-[50px] w-[100px] rounded-lg bg-gray-500 text-white"
+        onClick={() => navigate('/typography')}
+      >
+        타이포
+      </button>
     </main>
   );
 }
