@@ -1,6 +1,6 @@
-import HomeHeader from '@/pages/home/ui/homeHeader';
-import HomeCard from '@/pages/home/ui/homeCard';
-import HomeList from '@/pages/home/ui/homeList';
+import HomeHeader from '@/widgets/home/homeHeader';
+import HomeCard from '@/widgets/home/homeCard';
+import HomeList from '@/widgets/home/homeList';
 
 const HomePage = () => {
   return (
