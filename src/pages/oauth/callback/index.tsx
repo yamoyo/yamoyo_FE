@@ -19,7 +19,7 @@ export default function OAuthCallbackPage() {
           return;
         }
 
-        navigate('/');
+        navigate('/home');
       } catch (e) {
         console.error(e);
         setError('로그인 처리 중 오류가 발생했습니다.');

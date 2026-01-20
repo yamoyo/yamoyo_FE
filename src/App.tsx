@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/Home';
+import OnboardingPage from './pages';
+import HomePage from './pages/home';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
 import OAuthCallbackPage from './pages/oauth/callback';
@@ -42,7 +43,8 @@ export default function App() {
         */}
       <AuthGuard>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<OnboardingPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
