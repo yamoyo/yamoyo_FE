@@ -34,8 +34,8 @@ export default defineConfig({
             options: {
               cacheName: 'google-fonts-cache',
               expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
+                maxEntries: 10, // 캐싱할 항목에 대한 최대 갯수
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1년간 캐싱 유지
               },
               cacheableResponse: {
                 statuses: [0, 200],

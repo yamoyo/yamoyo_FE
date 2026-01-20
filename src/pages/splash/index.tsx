@@ -11,7 +11,7 @@ export default function SplashPage() {
           </span>
         </h1>
         <img
-          src="/assets/gif/onbording.gif"
+          src="/assets/gif/onboarding.gif"
           alt="로딩"
           className="h-[220px] w-[300px]"
         />
