@@ -10,7 +10,7 @@ interface HomeListItemProps {
 }
 
 const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
-  const visibleMembers = members.slice(0, 9);
+  const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
     <div className="flex flex-col gap-[9px] rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
@@ -34,9 +34,9 @@ const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
             ))}
           </div>
           {/** TODO(준열): 멤버가 9명을 초과하면 그 이상의 숫자를 나타내는 추가 기능입니다. 확정 X */}
-          {members.length > 9 && (
+          {members.length > 6 && (
             <span className="ml-1 text-[11px] font-medium text-white/70">
-              +{members.length - 9}
+              +{members.length - 6}
             </span>
           )}
         </div>
