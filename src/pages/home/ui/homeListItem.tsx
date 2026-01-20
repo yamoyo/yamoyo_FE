@@ -33,7 +33,7 @@ const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
               </span>
             ))}
           </div>
-          {/** TODO(준열): 멤버가 9명을 초과하면 그 이상의 숫자를 나타내는 추가 기능입니다. 확정 X */}
+          {/** TODO(준열): 멤버가 6명을 초과하면 그 이상의 숫자를 나타내는 추가 기능입니다. */}
           {members.length > 6 && (
             <span className="ml-1 text-[11px] font-medium text-white/70">
               +{members.length - 6}
