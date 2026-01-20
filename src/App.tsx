@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/Home';
+import HomePage from './pages/home/index';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
 import OAuthCallbackPage from './pages/oauth/callback';
@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     // 스플래시 종료 후 메인 앱 렌더링
-    <div className="mx-auto min-h-dvh max-w-[430px] bg-white">
+    <div className="mx-auto min-h-dvh max-w-[390px] bg-[#202540]">
       {/*
           모바일 전용 컨테이너
           - max-w-[430px]: 모바일 최대 폭 제한 ( 아이폰 Pro Max )
