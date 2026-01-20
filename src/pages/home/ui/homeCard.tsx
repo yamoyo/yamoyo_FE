@@ -1,3 +1,8 @@
+/**
+ * 홈 뷰 페이지 팀룸 생성 카드 컴포넌트
+ * @author junyeol
+ */
+
 const HomeCard = () => {
   return (
     <div className="mx-[24px] my-[24px] rounded-xl border border-[#6A7194] bg-[#3D4366] px-[24px] py-[24px]">
@@ -26,6 +31,7 @@ const HomeCard = () => {
           <img src="/assets/home/crown-bottom.png" width={142} height={57} />
         </div>
       </div>
+      {/** TODO(준열) : 추후 팀룸 생성 로직 작업 시 연결 예정 */}
       <button className="mt-[37px] gap-[14px] rounded-xl bg-[#804FFF] px-[20px] py-[13px] text-[15px] font-bold text-white flex-center">
         <img src="/assets/home/users.png" width={30} height={30} alt="" />
         팀룸 생성하기

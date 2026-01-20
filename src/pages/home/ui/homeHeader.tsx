@@ -1,11 +1,54 @@
+import { Link } from 'react-router-dom';
+
+/**
+ * 홈뷰 페이지 헤더 컴포넌트
+ * @author junyeol
+ */
+
 const HomeHeader = () => {
   return (
     <div className="flex items-center justify-between px-[24px] py-[24px] pt-[53px] text-white">
-      <p>로고</p>
+      <Link to="/">
+        <img
+          src="/assets/home/home-logo.png"
+          width={73}
+          height={35}
+          alt="logo"
+        />
+      </Link>
       <div className="flex items-center gap-[17px]">
-        <p>달력</p>
-        <p>알림</p>
-        <p>프로필</p>
+        {/** TODO (준열) : 추후 캘린더 페이지 제작시 연결 */}
+        <Link to="/">
+          <img
+            src="/assets/home/home-cal.png"
+            width={24}
+            height={24}
+            alt="달력"
+          />
+        </Link>
+
+        {/** TODO (준열) : 추후 알림 페이지 제작시 연결 */}
+        <Link to="/">
+          <img
+            src="/assets/home/home-bell.png"
+            width={24}
+            height={24}
+            alt="알림"
+          />
+        </Link>
+
+        {/** TODO (준열) : 추후 마이 페이지 제작시 연결 */}
+        <Link
+          to="/"
+          className="flex h-[30px] w-[30px] items-center justify-center rounded-[11px] bg-[#3D4366]"
+        >
+          <img
+            src="/assets/home/home-example-profile.png"
+            width={18}
+            height={18}
+            alt="마이프로필"
+          />
+        </Link>
       </div>
     </div>
   );
