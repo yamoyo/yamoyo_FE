@@ -8,7 +8,11 @@ const eslintConfig = defineConfig([
       // 사용 안 하는 변수는 경고로 ( _ 로 시작하면 무시 )
       '@typescript-eslint/no-unused-vars': [
         'warn',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
       ],
 
       // any는 warn으로 처리

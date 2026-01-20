@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { requestInitialAccessToken } from '@/shared/api/auth-request';
+import { refreshAccessToken } from '@/shared/api/refresh-token';
 
 export default function OAuthCallbackPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+
+  /** 로그인 시 초기 accessToken 발급 */
+  const requestInitialAccessToken = refreshAccessToken;
 
   useEffect(() => {
     (async () => {
