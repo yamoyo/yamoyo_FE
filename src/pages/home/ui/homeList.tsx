@@ -39,7 +39,6 @@ const teams = [
 const HomeList = () => {
   return (
     <div className="flex flex-col gap-[13px] px-[24px] pt-[30px]">
-      {' '}
       {/** 헤더 + 팀 단일 아이템 스타일 래퍼 */}
       <div className="flex items-end justify-between">
         <span className="text-[16px] font-bold text-[#EEEFF8]">

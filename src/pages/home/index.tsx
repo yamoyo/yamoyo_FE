@@ -4,11 +4,11 @@ import HomeList from '@/pages/home/ui/homeList';
 
 const HomePage = () => {
   return (
-    <div>
+    <main>
       <HomeHeader />
       <HomeCard />
       <HomeList />
-    </div>
+    </main>
   );
 };
 
