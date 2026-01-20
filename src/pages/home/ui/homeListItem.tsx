@@ -17,13 +17,13 @@ const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
       <span className="text-[14px] font-bold text-white">{teamName}</span>
 
       <div className="flex items-center justify-between">
-        {/* 멤버 이미지 */}
+        {/* Avatar stack 방식으로 멤버 프로필 이미지 겹침 UI 제작 */}
         <div className="flex items-center">
           <div className="flex items-center -space-x-2">
             {visibleMembers.map((member) => (
               <span
                 key={member.id}
-                className="w-6rounded-full h-6 border border-[#3D4366] bg-[#2B2F45] flex-center"
+                className="h-6 w-6 rounded-full border border-[#3D4366] bg-[#2B2F45] flex-center"
               >
                 <img
                   src={member.avatar}
