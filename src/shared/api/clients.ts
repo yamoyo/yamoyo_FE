@@ -3,14 +3,13 @@ import { useTokenStore } from '../store/token-store';
 import { baseRequest } from './base';
 import { YamoyoError } from '../lib/http-error';
 import { refreshAccessToken } from './refresh-token';
-import { useNavigate } from 'react-router-dom';
+import { notifyAuthExpired } from '../lib/auth-event-bus';
 
 /** 토큰 부착 + 401 → refresh + 1회 재시도 */
 async function authAwareRequest<T>(
   path: string,
   options: HttpRequestOptions,
 ): Promise<T> {
-  const navigate = useNavigate();
   const { authMode, ...rest } = options;
 
   let retry = false;
@@ -46,8 +45,7 @@ async function authAwareRequest<T>(
       const ok = await refreshAccessToken();
       if (!ok) {
         useTokenStore.getState().clear();
-        alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-        navigate('/login');
+        notifyAuthExpired();
         // throw new YamoyoError({
         //   message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
         //   code: 401,
