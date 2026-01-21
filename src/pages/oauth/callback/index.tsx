@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function OAuthCallbackPage() {
+export function OAuthCallbackPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -10,3 +10,5 @@ export default function OAuthCallbackPage() {
 
   return <div>로그인 처리 중입니다...</div>;
 }
+
+export default OAuthCallbackPage;

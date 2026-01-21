@@ -2,7 +2,7 @@ import HomeHeader from '@/widgets/home/homeHeader';
 import HomeCard from '@/widgets/home/homeCard';
 import HomeList from '@/widgets/home/homeList';
 
-const HomePage = () => {
+export function HomePage() {
   return (
     <>
       <HomeHeader />
@@ -10,6 +10,6 @@ const HomePage = () => {
       <HomeList />
     </>
   );
-};
+}
 
 export default HomePage;

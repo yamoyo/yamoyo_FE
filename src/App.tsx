@@ -10,7 +10,7 @@ import SplashPage from './pages/splash';
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
 
-export default function App() {
+export function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
   // 이미 방문한 적 있으면 스플래시 건너뜀
@@ -62,3 +62,5 @@ export default function App() {
     </main>
   );
 }
+
+export default App;

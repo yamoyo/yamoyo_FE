@@ -3,7 +3,7 @@
  * @author junyeol
  */
 
-const HomeCard = () => {
+export function HomeCard() {
   return (
     <div className="mx-[24px] mb-[45px] mt-[20px] flex w-[341px] flex-col gap-[10px]">
       {/* 텍스트 + 이미지 영역 */}
@@ -43,6 +43,6 @@ const HomeCard = () => {
       </button>
     </div>
   );
-};
+}
 
 export default HomeCard;
