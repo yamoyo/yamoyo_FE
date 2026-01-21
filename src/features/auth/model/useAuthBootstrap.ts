@@ -47,7 +47,6 @@ export function useAuthBootstrap(isGuest: boolean) {
       }
       setAuthReady(true);
     })();
-    return;
   }, [
     isGuest,
     accessToken,
