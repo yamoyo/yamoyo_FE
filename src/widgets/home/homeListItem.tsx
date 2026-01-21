@@ -7,7 +7,7 @@ interface HomeListItemProps {
   teamName: string;
   members: Member[];
   dday: string;
-  bannerImage?: string;
+  bannerImage: string;
 }
 
 const HomeListItem = ({
