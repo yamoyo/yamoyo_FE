@@ -1,5 +1,5 @@
 import LoginButtons from './ui/LoginButtons';
-import OnboardingCarousel from './ui/Onboarding/OnboardingCarousel';
+import OnboardingCarousel from './ui/onboarding/OnboardingCarousel';
 
 export function LoginWidget() {
   return (

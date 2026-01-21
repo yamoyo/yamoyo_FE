@@ -1,5 +1,5 @@
-import { HttpRequestOptions } from './types';
-import { useAuthStore } from '../store/auth-store';
+import { HttpRequestOptions } from '../model/types';
+import { useAuthStore } from '../../../shared/store/auth-store';
 import { baseRequest } from './base';
 import { YamoyoError } from '../lib/http-error';
 import { refreshAccessToken } from './refresh-token';

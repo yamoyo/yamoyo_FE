@@ -14,6 +14,7 @@ export function OnboardingContent({
         alt="onboarding"
         height={246}
         className="mb-[46px] h-[246px] w-auto object-contain"
+        draggable={false}
       />
       <h1 className="text-h1 mb-2 text-[22px] font-bold leading-[36px] text-tx-default">
         {mainText}
