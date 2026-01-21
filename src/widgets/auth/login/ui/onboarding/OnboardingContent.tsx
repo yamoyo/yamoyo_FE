@@ -12,7 +12,6 @@ export function OnboardingContent({
       <img
         src={imgSrc}
         alt="onboarding"
-        height={246}
         className="mb-[46px] h-[246px] w-auto object-contain"
         draggable={false}
       />
