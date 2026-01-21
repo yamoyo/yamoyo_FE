@@ -33,7 +33,7 @@ export default function App() {
 
   return (
     // 스플래시 종료 후 메인 앱 렌더링
-    <div className="mx-auto min-h-dvh max-w-[390px] bg-[#202540]">
+    <main className="mx-auto flex min-h-dvh max-w-[390px] flex-col bg-[#202540]">
       {/*
           모바일 전용 컨테이너
           - max-w-[430px]: 모바일 최대 폭 제한 ( 아이폰 Pro Max )
@@ -49,6 +49,6 @@ export default function App() {
           <Route path="/typography" element={<TypographyPage />} />
         </Routes>
       </AuthGuard>
-    </div>
+    </main>
   );
 }

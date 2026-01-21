@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import HomeListItem from '@/widgets/home/homeListItem';
+import HomeListEmptyItem from '@/widgets/home/homeListEmptyItem';
 
 // 프론트단에서 미리 넣은 사용자 프로필 이미지 12개 불러오는 로직
 const characterAvatars = Array.from(
@@ -38,24 +39,29 @@ const teams = [
 
 const HomeList = () => {
   return (
-    <div className="flex flex-col gap-[13px] px-[24px] pt-[30px]">
+    <div className="flex flex-1 flex-col gap-[13px] rounded-t-[20px] bg-[#282D4D] px-[24px] pb-[30px] pt-[30px]">
       {/** 헤더 + 팀 단일 아이템 스타일 래퍼 */}
-      <div className="flex items-end justify-between">
+      <div
+        className="flex select-none items-end justify-between"
+        draggable="false"
+      >
         <span className="text-[16px] font-bold text-[#EEEFF8]">
           MY 팀룸 목록
         </span>
-        <Link to="/" className="text-[12px] font-normal text-[#D4C6F8]">
+        <Link to="/" className="text-[12px] font-bold text-[#AA89FF]">
           전체보기
         </Link>
       </div>
-      {teams.map((team) => (
+      {teams.map((team, index) => (
         <HomeListItem
           key={team.id}
           teamName={team.name}
           members={team.members}
           dday={team.dday}
+          bannerImage={`/assets/banner/banner-${index + 1}.png`}
         />
       ))}
+      <HomeListEmptyItem />
     </div>
   );
 };
