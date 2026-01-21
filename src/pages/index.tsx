@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-export function OnboardingPage() {
+export function LoginPage() {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-1 flex-col justify-between px-6 pb-[42px]">
-      Onboarding
+      Login Page
       <div className="flex w-full flex-col gap-2">
         <button
           className="h-[55px] w-full gap-2.5 rounded-xl bg-[#FEE500] text-body-1 flex-center"
@@ -30,4 +30,4 @@ export function OnboardingPage() {
   );
 }
 
-export default OnboardingPage;
+export default LoginPage;

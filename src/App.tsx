@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import OnboardingPage from './pages';
+import LoginPage from './pages';
 import HomePage from './pages/home';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
 import OAuthCallbackPage from './pages/oauth/callback';
 import TypographyPage from './pages/typography';
-import AuthGuard from './app/AuthGuard';
 import SplashPage from './pages/splash';
+import AuthGuard from './app/AuthGuard';
+import GuestGuard from './app/GuestGuard';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -41,16 +42,23 @@ export default function App() {
           - mx-auto: 데스크톱에서 가운데 정렬
           - min-h-dvh: 모바일 주소창 변화 대응 (vh 대신 dvh)
         */}
-      <AuthGuard>
-        <Routes>
-          <Route path="/" element={<OnboardingPage />} />
+      <Routes>
+        <Route path="/typography" element={<TypographyPage />} />
+        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+
+        {/* 게스트 전용 (로그인 안 된 사람만) */}
+        <Route element={<GuestGuard />}>
+          <Route path="/" element={<LoginPage />} />
+          {/* <Route path="/signup" element={<SignUpPage />} /> */}
+        </Route>
+
+        {/* 로그인된 유저 전용 */}
+        <Route element={<AuthGuard />}>
           <Route path="/home" element={<HomePage />} />
-          <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
-          <Route path="/typography" element={<TypographyPage />} />
-        </Routes>
-      </AuthGuard>
+        </Route>
+      </Routes>
     </main>
   );
 }

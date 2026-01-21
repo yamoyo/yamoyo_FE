@@ -1,4 +1,4 @@
-import { useTokenStore } from '@/shared/store/token-store';
+import { useAuthStore } from '@/shared/store/auth-store';
 import { TokenResponse } from './types';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -26,23 +26,19 @@ export async function refreshAccessToken(): Promise<boolean> {
 
     if (!res.ok) {
       // ExceptionResponse 컨벤션 미정 → 우선 토큰 초기화만
-      useTokenStore.getState().clear();
+      useAuthStore.getState().clear();
       return false;
     }
 
     const data: TokenResponse = await res.json();
 
     if (!data.accessToken) {
-      useTokenStore.getState().clear();
+      useAuthStore.getState().clear();
       return false;
     }
 
-    const now = Date.now();
-    const expirationAt = data.accessTokenExpiration
-      ? now + data.accessTokenExpiration
-      : null;
-
-    useTokenStore.getState().setToken(data.accessToken, expirationAt ?? null);
+    useAuthStore.getState().setAccessToken(data.accessToken);
+    useAuthStore.getState().setIsAuthenticated(true);
 
     return true;
   })().finally(() => {
