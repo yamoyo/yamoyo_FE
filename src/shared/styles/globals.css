@@ -70,3 +70,8 @@ body {
   -webkit-font-smoothing: antialiased; /* macOS/iOS 폰트 렌더링 개선 */
   font-family: 'Spoqa Han Sans Neo', sans-serif;
 }
+
+.header {
+  /* 상단 안전 영역 고려 (iOS 노치 등) */
+  padding-top: calc(16px + env(safe-area-inset-top));
+}
