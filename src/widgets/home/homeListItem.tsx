@@ -10,12 +10,12 @@ interface HomeListItemProps {
   bannerImage: string;
 }
 
-const HomeListItem = ({
+export function HomeListItem({
   teamName,
   members,
   dday,
   bannerImage,
-}: HomeListItemProps) => {
+}: HomeListItemProps) {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
@@ -62,6 +62,6 @@ const HomeListItem = ({
       <p className="text-[11px] font-medium text-[#A3A8C4]">{dday}</p>
     </div>
   );
-};
+}
 
 export default HomeListItem;

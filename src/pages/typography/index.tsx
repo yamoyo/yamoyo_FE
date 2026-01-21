@@ -1,4 +1,4 @@
-export default function TypographyPage() {
+export function TypographyPage() {
   return (
     <div className="min-h-dvh space-y-5 bg-white pt-5 text-neutral-900">
       <p className="text-title-1 text-red-500">font galmuri</p>
@@ -20,3 +20,5 @@ export default function TypographyPage() {
     </div>
   );
 }
+
+export default TypographyPage;

@@ -1,5 +1,5 @@
 import { HttpRequestOptions } from './types';
-import { useTokenStore } from '../store/token-store';
+import { useAuthStore } from '../store/auth-store';
 import { baseRequest } from './base';
 import { YamoyoError } from '../lib/http-error';
 import { refreshAccessToken } from './refresh-token';
@@ -15,7 +15,7 @@ async function authAwareRequest<T>(
   let retry = false;
 
   const doRequest = async () => {
-    const { accessToken } = useTokenStore.getState();
+    const { accessToken } = useAuthStore.getState();
 
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ async function authAwareRequest<T>(
 
       const ok = await refreshAccessToken();
       if (!ok) {
-        useTokenStore.getState().clear();
+        useAuthStore.getState().clear();
         notifyAuthExpired();
         // throw new YamoyoError({
         //   message: '로그인이 만료되었습니다. 다시 로그인해주세요.',

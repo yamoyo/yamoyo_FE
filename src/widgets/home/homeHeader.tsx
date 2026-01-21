@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  * @author junyeol
  */
 
-const HomeHeader = () => {
+export function HomeHeader() {
   return (
     <div className="flex items-center justify-between px-[24px] py-[24px] pt-[53px] text-white">
       <Link to="/" draggable="false">
@@ -61,6 +61,6 @@ const HomeHeader = () => {
       </div>
     </div>
   );
-};
+}
 
 export default HomeHeader;
