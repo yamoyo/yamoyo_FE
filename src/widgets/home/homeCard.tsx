@@ -9,7 +9,7 @@ const HomeCard = () => {
       {/* 텍스트 + 이미지 영역 */}
       <div className="relative flex w-full items-start">
         {/* 텍스트 영역 */}
-        <div className="flex flex-col gap-[16px]">
+        <div className="flex select-none flex-col gap-[16px]">
           <div className="text-[20px] font-bold leading-tight text-white">
             <p>팀 프로젝트 초기 세팅,</p>
             <p>쉽고 빠르게!</p>
@@ -25,13 +25,20 @@ const HomeCard = () => {
         <img
           src="/assets/home/home-crown.png"
           alt=""
-          className="absolute right-0 h-[160px] w-[170px]"
+          className="absolute right-0 h-[160px] w-[170px] select-none"
+          draggable="false"
         />
       </div>
 
       {/* 버튼 */}
-      <button className="mt-[40px] flex h-[55px] w-[160px] items-center justify-center gap-[14px] rounded-xl bg-[#804FFF] text-[15px] font-bold text-white transition-colors hover:bg-[#6B3FE6]">
-        <img src="/assets/home/users.png" width={30} height={30} alt="" />
+      <button className="mt-[40px] flex h-[55px] w-[160px] select-none items-center justify-center gap-[14px] rounded-xl bg-[#804FFF] text-[15px] font-bold text-white transition-colors hover:bg-[#6B3FE6]">
+        <img
+          src="/assets/home/users.png"
+          width={30}
+          height={30}
+          draggable="false"
+          alt=""
+        />
         팀룸 생성하기
       </button>
     </div>

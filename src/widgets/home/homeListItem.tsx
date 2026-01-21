@@ -19,13 +19,14 @@ const HomeListItem = ({
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
-    <div className="flex items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
+    <div className="flex select-none items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
       {/* 팀 배너 이미지 */}
       {bannerImage && (
         <img
           src={bannerImage}
           alt={`${teamName} 배너`}
-          className="h-[60px] w-[60px] shrink-0 rounded-full object-cover"
+          className="h-[60px] w-[60px] shrink-0 select-none rounded-full object-cover"
+          draggable="false"
         />
       )}
       <div className="flex flex-1 flex-col gap-[9px]">
@@ -43,6 +44,7 @@ const HomeListItem = ({
                   src={member.avatar}
                   alt="사용자 프로필 이미지"
                   className="h-[12px] w-[12px]"
+                  draggable="false"
                 />
               </span>
             ))}
