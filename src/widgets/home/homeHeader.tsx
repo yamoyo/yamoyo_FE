@@ -43,9 +43,8 @@ const HomeHeader = () => {
           />
         </Link>
 
-        {/** TODO (준열) : 추후 마이 페이지 제작시 연결 */}
         <Link
-          to="/"
+          to="/myprofile"
           className="flex h-[30px] w-[30px] items-center justify-center rounded-[11px] bg-[#3D4366]"
           draggable="false"
         >

@@ -7,6 +7,7 @@ import OAuthCallbackPage from './pages/oauth/callback';
 import TypographyPage from './pages/typography';
 import AuthGuard from './app/AuthGuard';
 import SplashPage from './pages/splash';
+import MyProfile from './pages/myprofile';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
           <Route path="/typography" element={<TypographyPage />} />
+          <Route path="/myprofile" element={<MyProfile />} />
         </Routes>
       </AuthGuard>
     </main>
