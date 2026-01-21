@@ -7,16 +7,31 @@ interface HomeListItemProps {
   teamName: string;
   members: Member[];
   dday: string;
+  bannerImage: string;
 }
 
-const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
+const HomeListItem = ({
+  teamName,
+  members,
+  dday,
+  bannerImage,
+}: HomeListItemProps) => {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
-    <div className="flex flex-col gap-[9px] rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
-      <span className="text-[14px] font-bold text-white">{teamName}</span>
+    <div className="flex select-none items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
+      {/* 팀 배너 이미지 */}
+      {bannerImage && (
+        <img
+          src={bannerImage}
+          alt={`${teamName} 배너`}
+          className="h-[60px] w-[60px] shrink-0 select-none rounded-full object-cover"
+          draggable="false"
+        />
+      )}
+      <div className="flex flex-1 flex-col gap-[9px]">
+        <span className="text-[14px] font-bold text-white">{teamName}</span>
 
-      <div className="flex items-center justify-between">
         {/* Avatar stack 방식으로 멤버 프로필 이미지 겹침 UI 제작 */}
         <div className="flex items-center">
           <div className="flex items-center -space-x-2">
@@ -29,6 +44,7 @@ const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
                   src={member.avatar}
                   alt="사용자 프로필 이미지"
                   className="h-[12px] w-[12px]"
+                  draggable="false"
                 />
               </span>
             ))}
@@ -40,10 +56,10 @@ const HomeListItem = ({ teamName, members, dday }: HomeListItemProps) => {
             </span>
           )}
         </div>
-
-        {/* D-day */}
-        <p className="text-[11px] font-medium text-white">{dday}</p>
       </div>
+
+      {/* D-day */}
+      <p className="text-[11px] font-medium text-[#A3A8C4]">{dday}</p>
     </div>
   );
 };
