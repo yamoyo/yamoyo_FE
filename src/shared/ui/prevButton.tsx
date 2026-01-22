@@ -16,7 +16,8 @@
  *   onBack={() => navigate('/step2', { replace: true })}
  * />
  *
- * */
+ *
+ */
 
 import { useNavigate } from 'react-router-dom';
 
