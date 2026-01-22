@@ -1,6 +1,6 @@
 import { YamoyoError } from '../lib/http-error';
-import { ApiResponse } from './types';
-import { HttpMethod } from './types';
+import { ApiResponse } from '../model/types';
+import { HttpMethod } from '../model/types';
 
 interface BaseRequestOptions {
   method: HttpMethod;

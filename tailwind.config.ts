@@ -33,6 +33,44 @@ const config: Config = {
         'body-8': ['13px', { lineHeight: '18px', fontWeight: '700' }],
         'body-9': ['12px', { lineHeight: '16px', fontWeight: '400' }],
       },
+      colors: {
+        /* === Background tokens === */
+        'bg-default': '#202540',
+        'bg-textfiled': '#2F3453',
+        'bg-primary': '#804FFF',
+        'bg-secondary': '#DDDC08',
+        'bg-secondary_2': '#FDDA08',
+        'bg-bt-disabled': '#7D7C81',
+        'bg-card': '#3D4366',
+
+        /* === Text tokens === */
+        'tx-default': '#FFFFFF',
+        'tx-default_2': '#EEEFF8',
+        'tx-default_3': '#D5D6E1',
+        'tx-default_4': '#A3A8C4',
+        'tx-default_5': '#767A90',
+        'tx-default_black': '#171719',
+        'tx-textfiled_disabled': '#666B8C',
+
+        /* === Border / line tokens === */
+        'bd-default': '#3E4463',
+        'bd-textfiled_line': '#4C5377',
+        'bd-card_line': '#6A7194',
+        'textfiled-line_focus': '#AA89FF',
+        'textfiled-line_error': '#EE5353',
+
+        /* === Accent / chart tokens === */
+        'ct-pink': '#EF4B8A',
+        'ct-ch-1': '#00EEFF',
+        'ct-ch-2': '#F776F7',
+        'ct-ch-3': '#5867F3',
+        'ct-ch-4': '#8F88DC',
+        'ct-ch-5': '#F3546F',
+        'ct-ch-6': '#F7EB55',
+        'ct-ch-7': '#FBA000',
+        'ct-ch-9': '#5DFBDB',
+        'ct-ch-10': '#8255F7',
+      },
     },
   },
   plugins: [flexCenter, flexColCenter],

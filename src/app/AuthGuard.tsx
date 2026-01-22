@@ -1,8 +1,8 @@
-import { onAuthExpired } from '@/shared/lib/auth-event-bus';
+import { onAuthExpired } from '@/entities/auth/lib/auth-event-bus';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/shared/store/auth-store';
-import { useAuthBootstrap } from '@/features/auth/model/useAuthBootstrap';
+import { useAuthStore } from '@/entities/auth/model/auth-store';
+import { useAuthBootstrap } from '@/entities/auth/model/useAuthBootstrap';
 
 export function AuthGuard() {
   useAuthBootstrap(false);

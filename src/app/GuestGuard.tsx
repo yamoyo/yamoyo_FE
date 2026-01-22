@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import { useAuthBootstrap } from '@/features/auth/model/useAuthBootstrap';
-import { useAuthStore } from '@/shared/store/auth-store';
+import { useAuthBootstrap } from '@/entities/auth/model/useAuthBootstrap';
+import { useAuthStore } from '@/entities/auth/model/auth-store';
 
 export function GuestGuard() {
   useAuthBootstrap(true);

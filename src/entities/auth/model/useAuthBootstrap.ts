@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/shared/store/auth-store';
-import { refreshAccessToken } from '@/shared/api/refresh-token';
+import { useAuthStore } from '@/entities/auth/model/auth-store';
+import { refreshAccessToken } from '@/entities/auth/api/refresh-token';
 
 export function useAuthBootstrap(isGuest: boolean) {
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ export function useAuthBootstrap(isGuest: boolean) {
       }
       setAuthReady(true);
     })();
-    return;
   }, [
     isGuest,
     accessToken,

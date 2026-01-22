@@ -1,5 +1,5 @@
-import { useAuthStore } from '@/shared/store/auth-store';
-import { TokenResponse } from './types';
+import { useAuthStore } from '../model/auth-store';
+import { TokenResponse } from '../model/types';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
