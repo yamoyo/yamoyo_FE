@@ -71,7 +71,7 @@ export default function UserProfile() {
         <div className="grid grid-cols-3 place-items-center gap-[16px] pb-4">
           {CHARACTER_IMAGES.map((image, index) => (
             <button
-              key={index}
+              key={image}
               onClick={() => handleSelectImage(image)}
               className="relative flex h-[85px] w-[85px] select-none items-center justify-center transition hover:scale-105"
             >
