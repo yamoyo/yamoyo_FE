@@ -1,3 +1,5 @@
+import PrevButton from '@/shared/ui/prevButton';
+
 export default function EditProfile() {
-  return <div>프로필 관리</div>;
+  return <PrevButton title="프로필 관리" />;
 }

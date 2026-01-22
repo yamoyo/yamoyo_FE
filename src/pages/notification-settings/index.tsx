@@ -1,3 +1,5 @@
+import PrevButton from '@/shared/ui/prevButton';
+
 export default function NotificationSettings() {
-  return <div>알림 설정</div>;
+  return <PrevButton title="알림 설정" />;
 }
