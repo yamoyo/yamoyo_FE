@@ -3,8 +3,8 @@
  * @author junyeol
  */
 
-const Profile = () => {
+const ImageSelect = () => {
   return <div></div>;
 };
 
-export default Profile;
+export default ImageSelect;

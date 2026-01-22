@@ -46,7 +46,8 @@ export function App() {
       <Routes>
         <Route path="/typography" element={<TypographyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
-
+        <Route path="/myprofile" element={<MyProfile />} />
+        <Route path="/home" element={<HomePage />} />
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -55,11 +56,9 @@ export function App() {
 
         {/* 로그인된 유저 전용 */}
         <Route element={<AuthGuard />}>
-          <Route path="/home" element={<HomePage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
           <Route path="/typography" element={<TypographyPage />} />
-          <Route path="/myprofile" element={<MyProfile />} />
         </Route>
       </Routes>
     </main>

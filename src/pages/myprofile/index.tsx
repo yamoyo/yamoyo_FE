@@ -1,5 +1,5 @@
-const MyProfile = () => {
-  return <div>마이프로필</div>;
-};
+import MyProfileWidgets from '@/widgets/myprofile/myProfileWidgets';
 
-export default MyProfile;
+export default function MyProfile() {
+  return <MyProfileWidgets />;
+}
