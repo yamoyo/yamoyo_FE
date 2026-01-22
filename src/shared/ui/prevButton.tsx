@@ -15,7 +15,7 @@ export default function PrevButton({ title }: PrevButtonProps) {
     <header className="relative flex h-[83px] select-none items-center px-[31px]">
       <button onClick={() => navigate(-1)}>
         <img
-          src="/assets/icons/arrow-left.png"
+          src="/assets/icons/arrow-left.svg"
           width={10}
           height={18}
           alt="뒤로가기"

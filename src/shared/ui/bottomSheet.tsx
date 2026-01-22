@@ -70,7 +70,7 @@ export default function BottomSheet({
                   aria-lable="모달 닫기"
                 >
                   <img
-                    src="/assets/icons/cancel.png"
+                    src="/assets/icons/cancel.svg"
                     width={15}
                     height={15}
                     alt=""

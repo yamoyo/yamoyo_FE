@@ -25,7 +25,7 @@ export default function UserProfile() {
         <div className="relative select-none">
           <div className="relative flex-center">
             <img
-              src="/assets/icons/char-bg.png"
+              src="/assets/character/char-bg.png"
               width={122}
               height={122}
               alt="프로필 이미지 배경"
@@ -46,7 +46,7 @@ export default function UserProfile() {
             className="absolute bottom-0 right-0 flex h-[32px] w-[32px] items-center justify-center rounded-full bg-[#383842]"
           >
             <img
-              src="/assets/icons/edit.png"
+              src="/assets/icons/edit.svg"
               width={16}
               height={16}
               alt="프로필 이미지 수정"
@@ -76,7 +76,7 @@ export default function UserProfile() {
               className="relative flex h-[85px] w-[85px] select-none items-center justify-center transition hover:scale-105"
             >
               <img
-                src="/assets/icons/char-bg.png"
+                src="/assets/character/char-bg.png"
                 width={85}
                 height={85}
                 alt=""

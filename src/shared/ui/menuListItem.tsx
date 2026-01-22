@@ -19,7 +19,7 @@ export default function MenuListItem({
         <img src={icon} width={24} height={24} alt="" />
         <span className="text-[14px] font-bold text-tx-default">{label}</span>
       </div>
-      <img src="/assets/icons/arrow-right.png" width={8} height={14} alt="" />
+      <img src="/assets/icons/arrow-right.svg" width={8} height={14} alt="" />
     </button>
   );
 }

@@ -11,19 +11,19 @@ import MenuListItem from '@/shared/ui/menuListItem';
 const MENU_ITEMS = [
   {
     id: 'edit-profile',
-    icon: '/assets/icons/profile-edit.png',
+    icon: '/assets/icons/profile-edit.svg',
     label: '프로필 관리',
     path: '/myprofile/edit',
   },
   {
     id: 'completed-tasks',
-    icon: '/assets/icons/finish-team.png',
+    icon: '/assets/icons/finish-team.svg',
     label: '완료 팀플 목록',
     path: '/myprofile/completed-tasks',
   },
   {
     id: 'notification',
-    icon: '/assets/icons/notification.png',
+    icon: '/assets/icons/notification.svg',
     label: '알림 설정',
     path: '/myprofile/notification-settings',
   },
