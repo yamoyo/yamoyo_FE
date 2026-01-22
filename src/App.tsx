@@ -27,7 +27,7 @@ export function App() {
       const timer = setTimeout(() => {
         localStorage.setItem('hasVisited', 'true'); // 방문 여부 상태 변경
         setShowSplash(false); // 스플래시를 숨긴다
-      }, 3000); // 3초 후 스플래시를 종료
+      }, 4000); // 4초 후 스플래시를 종료
       return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
     }
   }, [showSplash]);
