@@ -16,7 +16,7 @@ const TERMS: TermItem[] = [
   },
 ];
 
-export const useTermsAgreement = () => {
+export default function useTermsAgreement() {
   const [agreements, setAgreements] = useState<Record<TermId, boolean>>({
     service: false,
     privacy: false,
@@ -51,4 +51,4 @@ export const useTermsAgreement = () => {
     toggleAll,
     toggleOne,
   };
-};
+}

@@ -11,14 +11,14 @@ type Props = {
   onOpenDetail: (id: TermId) => void;
 };
 
-export const TermsList = ({
+export default function TermsList({
   terms,
   allChecked,
   onToggleAll,
   agreements,
   onToggleOne,
   onOpenDetail,
-}: Props) => {
+}: Props) {
   return (
     <div className="mt-[26px]">
       {/* 전체 동의 */}
@@ -48,4 +48,4 @@ export const TermsList = ({
       ))}
     </div>
   );
-};
+}
