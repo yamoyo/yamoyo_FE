@@ -16,11 +16,13 @@ export default function BottomSheet({
   title,
 }: BottomSheetProps) {
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
+    if (!isOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = originalOverflow;
     };
   }, [isOpen]);
 
@@ -38,6 +40,8 @@ export default function BottomSheet({
           />
 
           <motion.div
+            role="dialog"
+            aria-modal="true"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
@@ -60,12 +64,16 @@ export default function BottomSheet({
                 >
                   {title}
                 </h2>
-                <button onClick={onClose} className="flex-center">
+                <button
+                  onClick={onClose}
+                  className="flex-center"
+                  aria-lable="모달 닫기"
+                >
                   <img
                     src="/assets/icons/cancel.png"
                     width={15}
                     height={15}
-                    alt="닫기"
+                    alt=""
                     draggable="false"
                   />
                 </button>
