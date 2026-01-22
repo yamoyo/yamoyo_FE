@@ -37,7 +37,7 @@ const teams = [
   },
 ];
 
-const HomeList = () => {
+export function HomeList() {
   return (
     <div className="flex flex-1 flex-col gap-[13px] rounded-t-[20px] bg-[#282D4D] px-[24px] pb-[30px] pt-[30px]">
       {/** 헤더 + 팀 단일 아이템 스타일 래퍼 */}
@@ -65,6 +65,6 @@ const HomeList = () => {
       <HomeListEmptyItem />
     </div>
   );
-};
+}
 
 export default HomeList;

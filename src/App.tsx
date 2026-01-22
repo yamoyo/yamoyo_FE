@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/home/index';
+import LoginPage from './pages';
+import HomePage from './pages/home';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
 import OAuthCallbackPage from './pages/oauth/callback';
 import TypographyPage from './pages/typography';
-import AuthGuard from './app/AuthGuard';
 import SplashPage from './pages/splash';
+import AuthGuard from './app/AuthGuard';
+import GuestGuard from './app/GuestGuard';
 import MyProfile from './pages/myprofile';
 
-export default function App() {
+export function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
   // 이미 방문한 적 있으면 스플래시 건너뜀
@@ -41,16 +43,27 @@ export default function App() {
           - mx-auto: 데스크톱에서 가운데 정렬
           - min-h-dvh: 모바일 주소창 변화 대응 (vh 대신 dvh)
         */}
-      <AuthGuard>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+      <Routes>
+        <Route path="/typography" element={<TypographyPage />} />
+        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+
+        {/* 게스트 전용 (로그인 안 된 사람만) */}
+        <Route element={<GuestGuard />}>
+          <Route path="/" element={<LoginPage />} />
+          {/* <Route path="/signup" element={<SignUpPage />} /> */}
+        </Route>
+
+        {/* 로그인된 유저 전용 */}
+        <Route element={<AuthGuard />}>
+          <Route path="/home" element={<HomePage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
           <Route path="/typography" element={<TypographyPage />} />
           <Route path="/myprofile" element={<MyProfile />} />
-        </Routes>
-      </AuthGuard>
+        </Route>
+      </Routes>
     </main>
   );
 }
+
+export default App;
