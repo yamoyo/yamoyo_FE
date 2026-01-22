@@ -35,7 +35,7 @@ export const TermItem = ({ term, checked, onToggle, onOpenDetail }: Props) => {
         aria-label="약관 상세 보기"
       >
         <img
-          src="/assets/arrow/arrow-default-right.svg"
+          src="/assets/arrow/arrow-right.svg"
           alt="arrow right"
           width={6}
           height={11}

@@ -1,4 +1,4 @@
-import MyProfileWidgets from '@/widgets/myprofile/myProfileWidgets';
+import MyProfileWidgets from '@/widgets/myprofile/MyProfileWidgets';
 
 export default function MyProfile() {
   return <MyProfileWidgets />;

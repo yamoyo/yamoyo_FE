@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTermsAgreement } from './model/useTermsAgreement';
 import { TermsList } from './ui/TermsList';
-import { BottomButton } from '@/shared/ui/buttons/BottomButton';
+import { BottomButton } from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 
 export function TermsAgreementWidget() {

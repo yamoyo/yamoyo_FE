@@ -12,7 +12,7 @@ interface Props {
   className?: string; // 추가 스타일
 }
 
-export function BottomButton({
+export default function BottomButton({
   onClick,
   text,
   disabled,
@@ -37,5 +37,3 @@ export function BottomButton({
     </button>
   );
 }
-
-export default BottomButton;

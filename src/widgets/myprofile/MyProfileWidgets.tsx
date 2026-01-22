@@ -4,9 +4,9 @@
  * @author junyeol
  * */
 import { useNavigate } from 'react-router-dom';
-import PrevButton from '@/shared/ui/prevButton';
-import UserProfile from '@/shared/ui/userProfile';
-import MenuListItem from '@/shared/ui/menuListItem';
+import TopBar from '@/shared/ui/header/TopBar';
+import UserProfile from '@/shared/ui/UserProfile';
+import MenuListItem from '@/shared/ui/MenuListItem';
 
 const MENU_ITEMS = [
   {
@@ -34,7 +34,7 @@ export default function MyProfileWidgets() {
 
   return (
     <>
-      <PrevButton title="마이페이지" />
+      <TopBar title="마이페이지" onBack={() => navigate(-1)} />
       <UserProfile />
       <div className="flex flex-col gap-[15px] pl-[22px] pr-[18px] pt-[93px]">
         {MENU_ITEMS.map((item) => (
