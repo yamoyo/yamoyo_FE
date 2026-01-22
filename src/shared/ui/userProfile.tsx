@@ -36,13 +36,14 @@ export default function UserProfile() {
   return (
     <>
       <div className="flex flex-col items-center pt-[38px]">
-        <div className="relative">
+        <div className="relative select-none">
           <div className="relative flex-center">
             <img
               src="/assets/icons/char-bg.png"
               width={122}
               height={122}
               alt="프로필 이미지 배경"
+              draggable="false"
             />
             <img
               src={selectedImage}
@@ -50,6 +51,7 @@ export default function UserProfile() {
               height={50}
               alt="프로필 이미지"
               className="absolute"
+              draggable="false"
             />
           </div>
 
@@ -67,7 +69,10 @@ export default function UserProfile() {
           </button>
         </div>
 
-        <span className="mt-[10px] text-[16px] font-medium text-tx-default">
+        <span
+          className="mt-[10px] select-none text-[16px] font-medium text-tx-default"
+          draggable="false"
+        >
           박서영
         </span>
       </div>
@@ -82,7 +87,7 @@ export default function UserProfile() {
             <button
               key={index}
               onClick={() => handleSelectImage(image)}
-              className="relative flex h-[85px] w-[85px] items-center justify-center transition hover:scale-105"
+              className="relative flex h-[85px] w-[85px] select-none items-center justify-center transition hover:scale-105"
             >
               <img
                 src="/assets/icons/char-bg.png"
@@ -90,6 +95,7 @@ export default function UserProfile() {
                 height={85}
                 alt=""
                 className="absolute"
+                draggable="false"
               />
               <img
                 src={image}
@@ -97,6 +103,7 @@ export default function UserProfile() {
                 height={43}
                 alt={`캐릭터 ${index + 1}`}
                 className="relative"
+                draggable="false"
               />
             </button>
           ))}

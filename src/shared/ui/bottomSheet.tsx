@@ -53,8 +53,11 @@ export default function BottomSheet({
             </div>
 
             {title && (
-              <div className="relative flex items-center justify-end px-6 py-4">
-                <h2 className="absolute left-1/2 -translate-x-1/2 text-[16px] font-bold text-tx-default">
+              <div className="relative flex select-none items-center justify-end px-6 py-4">
+                <h2
+                  className="absolute left-1/2 -translate-x-1/2 text-[16px] font-bold text-tx-default"
+                  draggable="false"
+                >
                   {title}
                 </h2>
                 <button onClick={onClose} className="flex-center">
@@ -63,6 +66,7 @@ export default function BottomSheet({
                     width={15}
                     height={15}
                     alt="닫기"
+                    draggable="false"
                   />
                 </button>
               </div>
