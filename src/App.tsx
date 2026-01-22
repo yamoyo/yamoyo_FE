@@ -10,6 +10,9 @@ import SplashPage from './pages/splash';
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
 import MyProfile from './pages/myprofile';
+import EditProfile from './pages/edit-profile';
+import CompletedTasks from './pages/completed-tasks';
+import NotificationSettings from './pages/notification-settings';
 
 export function App() {
   // 스플래시 표시 여부 상태
@@ -48,6 +51,12 @@ export function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/EditProfile" element={<EditProfile />} />
+        <Route path="/CompletedTasks" element={<CompletedTasks />} />
+        <Route
+          path="/NotificationSettings"
+          element={<NotificationSettings />}
+        />
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />

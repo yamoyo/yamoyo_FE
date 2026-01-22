@@ -35,7 +35,6 @@ export default function UserProfile() {
         </button>
       </div>
 
-      {/* 사용자 이름 */}
       <span className="mt-[10px] text-[16px] font-medium text-tx-default">
         박서영
       </span>
