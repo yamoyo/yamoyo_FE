@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import AuthGuard from './app/AuthGuard';
+import GuestGuard from './app/GuestGuard';
+
+import SplashPage from './pages/splash';
+import OAuthCallbackPage from './pages/oauth/callback';
+import TypographyPage from './pages/typography';
+
 import LoginPage from './pages';
+
 import HomePage from './pages/home';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
-import OAuthCallbackPage from './pages/oauth/callback';
-import TypographyPage from './pages/typography';
-import SplashPage from './pages/splash';
-import AuthGuard from './app/AuthGuard';
-import GuestGuard from './app/GuestGuard';
+
+import OnboardPage from './pages/onboarding';
+import TermsPage from './pages/onboarding/term';
 
 export function App() {
   // 스플래시 표시 여부 상태
@@ -54,6 +60,9 @@ export function App() {
 
         {/* 로그인된 유저 전용 */}
         <Route element={<AuthGuard />}>
+          <Route path="/onboarding" element={<OnboardPage />} />
+          <Route path="/onboarding/terms" element={<TermsPage />} />
+
           <Route path="/home" element={<HomePage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />

@@ -70,6 +70,9 @@ const config: Config = {
         'ct-ch-7': '#FBA000',
         'ct-ch-9': '#5DFBDB',
         'ct-ch-10': '#8255F7',
+
+        /* etc */
+        'bt-disabled': '#4C4A52',
       },
     },
   },
