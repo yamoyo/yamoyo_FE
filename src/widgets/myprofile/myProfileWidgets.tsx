@@ -6,7 +6,6 @@
 import { useNavigate } from 'react-router-dom';
 import PrevButton from '@/shared/ui/prevButton';
 import UserProfile from '@/shared/ui/userProfile';
-import ImageSelect from '@/shared/ui/imageSelect';
 import MenuListItem from '@/shared/ui/menuListItem';
 
 const MENU_ITEMS = [
@@ -37,7 +36,6 @@ export default function MyProfileWidgets() {
     <>
       <PrevButton title="마이페이지" />
       <UserProfile />
-      <ImageSelect />
       <div className="flex flex-col gap-[15px] pl-[22px] pr-[18px] pt-[93px]">
         {MENU_ITEMS.map((item) => (
           <MenuListItem
