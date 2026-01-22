@@ -69,6 +69,7 @@ export function App() {
             element={<NotificationSettings />}
           />
         </Route>
+
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
