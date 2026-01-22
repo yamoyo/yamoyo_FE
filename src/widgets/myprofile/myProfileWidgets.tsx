@@ -13,19 +13,19 @@ const MENU_ITEMS = [
     id: 'edit-profile',
     icon: '/assets/icons/profile-edit.png',
     label: '프로필 관리',
-    path: '/EditProfile',
+    path: '/myprofile/edit',
   },
   {
     id: 'completed-tasks',
     icon: '/assets/icons/finish-team.png',
     label: '완료 팀플 목록',
-    path: '/CompletedTasks',
+    path: '/myprofile/completed-tasks',
   },
   {
     id: 'notification',
     icon: '/assets/icons/notification.png',
     label: '알림 설정',
-    path: '/NotificationSettings',
+    path: '/myprofile/notification-settings',
   },
 ] as const;
 

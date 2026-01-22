@@ -51,10 +51,10 @@ export function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/EditProfile" element={<EditProfile />} />
-        <Route path="/CompletedTasks" element={<CompletedTasks />} />
+        <Route path="/myprofile/edit" element={<EditProfile />} />
+        <Route path="/myprofile/completed-tasks" element={<CompletedTasks />} />
         <Route
-          path="/NotificationSettings"
+          path="/myprofile/notification-settings"
           element={<NotificationSettings />}
         />
         {/* 게스트 전용 (로그인 안 된 사람만) */}
