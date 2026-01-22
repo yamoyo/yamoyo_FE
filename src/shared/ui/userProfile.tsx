@@ -4,7 +4,7 @@
  * @author junyeol
  */
 import { useState } from 'react';
-import BottomSheet from '@/shared/ui/BottomSheet';
+import BottomSheet from '@/shared/ui/bottomSheet';
 
 const CHARACTER_IMAGES = [
   '/assets/character/char-1.png',
