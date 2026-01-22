@@ -10,11 +10,14 @@ import TypographyPage from './pages/typography';
 import LoginPage from './pages';
 
 import HomePage from './pages/home';
-import RoulettePage from './pages/games/roulette';
-import TimingGame from './pages/games/timing-game';
-
 import OnboardPage from './pages/onboarding';
 import TermsPage from './pages/onboarding/term';
+import MyProfile from './pages/myprofile';
+import EditProfile from './pages/edit-profile';
+import CompletedTasks from './pages/completed-tasks';
+import NotificationSettings from './pages/notification-settings';
+import RoulettePage from './pages/games/roulette';
+import TimingGame from './pages/games/timing-game';
 
 export function App() {
   // 스플래시 표시 여부 상태
@@ -29,7 +32,7 @@ export function App() {
       const timer = setTimeout(() => {
         localStorage.setItem('hasVisited', 'true'); // 방문 여부 상태 변경
         setShowSplash(false); // 스플래시를 숨긴다
-      }, 3000); // 3초 후 스플래시를 종료
+      }, 4000); // 4초 후 스플래시를 종료
       return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
     }
   }, [showSplash]);
@@ -51,7 +54,14 @@ export function App() {
       <Routes>
         <Route path="/typography" element={<TypographyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
-
+        <Route path="/myprofile" element={<MyProfile />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/myprofile/edit" element={<EditProfile />} />
+        <Route path="/myprofile/completed-tasks" element={<CompletedTasks />} />
+        <Route
+          path="/myprofile/notification-settings"
+          element={<NotificationSettings />}
+        />
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -62,8 +72,6 @@ export function App() {
         <Route element={<AuthGuard />}>
           <Route path="/onboarding" element={<OnboardPage />} />
           <Route path="/onboarding/terms" element={<TermsPage />} />
-
-          <Route path="/home" element={<HomePage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
         </Route>
