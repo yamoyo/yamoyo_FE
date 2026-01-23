@@ -27,11 +27,13 @@ const config: Config = {
         'body-2': ['16px', { lineHeight: '18px', fontWeight: '600' }],
         'body-3': ['16px', { lineHeight: '24px', fontWeight: '400' }],
         'body-4': ['14px', { lineHeight: '18px', fontWeight: '700' }],
+        'body-4.1': ['14px', { lineHeight: '21px', fontWeight: '500' }],
         'body-5': ['14px', { lineHeight: '18px', fontWeight: '600' }],
         'body-6': ['14px', { lineHeight: '18px', fontWeight: '500' }],
         'body-7': ['13px', { lineHeight: '18px', fontWeight: '600' }],
         'body-8': ['13px', { lineHeight: '18px', fontWeight: '700' }],
         'body-9': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'caption-1': ['12px', { lineHeight: '18px', fontWeight: '400' }],
       },
       colors: {
         /* === Background tokens === */
