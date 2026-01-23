@@ -1,6 +1,6 @@
-import HomeHeader from '@/widgets/home/homeHeader';
-import HomeCard from '@/widgets/home/homeCard';
-import HomeList from '@/widgets/home/homeList';
+import HomeHeader from '@/widgets/home/HomeHeader';
+import HomeCard from '@/widgets/home/HomeCard';
+import HomeList from '@/widgets/home/HomeList';
 
 export function HomePage() {
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import HomeListItem from '@/widgets/home/homeListItem';
-import HomeListEmptyItem from '@/widgets/home/homeListEmptyItem';
+import HomeListItem from '@/widgets/home/HomeListItem';
+import HomeListEmptyItem from '@/widgets/home/HomeListEmptyItem';
 
 // 프론트단에서 미리 넣은 사용자 프로필 이미지 12개 불러오는 로직
 const characterAvatars = Array.from(

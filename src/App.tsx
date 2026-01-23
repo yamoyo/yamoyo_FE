@@ -1,18 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages';
-import HomePage from './pages/home';
-import RoulettePage from './pages/games/roulette';
-import TimingGame from './pages/games/timing-game';
-import OAuthCallbackPage from './pages/oauth/callback';
-import TypographyPage from './pages/typography';
-import SplashPage from './pages/splash';
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
+
+import SplashPage from './pages/splash';
+import OAuthCallbackPage from './pages/oauth/callback';
+import TypographyPage from './pages/typography';
+
+import LoginPage from './pages';
+
+import HomePage from './pages/home';
+import OnboardPage from './pages/onboarding';
+import TermsPage from './pages/onboarding/term';
 import MyProfile from './pages/myprofile';
-import EditProfile from './pages/edit-profile';
-import CompletedTasks from './pages/completed-tasks';
-import NotificationSettings from './pages/notification-settings';
+import EditProfile from './pages/myprofile/edit-profile';
+import CompletedTasks from './pages/myprofile/completed-tasks';
+import NotificationSettings from './pages/myprofile/notification-settings';
+import RoulettePage from './pages/games/roulette';
+import TimingGame from './pages/games/timing-game';
+import ProfileNameStepPage from './pages/onboarding/profile/name';
+import ProfileMajorStepPage from './pages/onboarding/profile/major';
+import ProfilePersonaStepPage from './pages/onboarding/profile/persona';
+import { ProfileOnboardingLayout } from './widgets/auth/profile-onboarding/layout';
 
 export function App() {
   // 스플래시 표시 여부 상태
@@ -49,14 +58,18 @@ export function App() {
       <Routes>
         <Route path="/typography" element={<TypographyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
-        <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/myprofile/edit" element={<EditProfile />} />
-        <Route path="/myprofile/completed-tasks" element={<CompletedTasks />} />
-        <Route
-          path="/myprofile/notification-settings"
-          element={<NotificationSettings />}
-        />
+
+        <Route path="/myprofile">
+          <Route index element={<MyProfile />} />
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="completed-tasks" element={<CompletedTasks />} />
+          <Route
+            path="notification-settings"
+            element={<NotificationSettings />}
+          />
+        </Route>
+
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -65,9 +78,19 @@ export function App() {
 
         {/* 로그인된 유저 전용 */}
         <Route element={<AuthGuard />}>
+          <Route path="/onboarding" element={<OnboardPage />} />
+          <Route path="/onboarding/terms" element={<TermsPage />} />
           <Route path="/games/roulette" element={<RoulettePage />} />
           <Route path="/games/timing-game" element={<TimingGame />} />
-          <Route path="/typography" element={<TypographyPage />} />
+
+          <Route
+            path="/onboarding/profile"
+            element={<ProfileOnboardingLayout />}
+          >
+            <Route path="name" element={<ProfileNameStepPage />} />
+            <Route path="major" element={<ProfileMajorStepPage />} />
+            <Route path="persona" element={<ProfilePersonaStepPage />} />
+          </Route>
         </Route>
       </Routes>
     </main>

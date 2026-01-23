@@ -4,7 +4,7 @@ export function LoginButtons() {
   return (
     <div className="flex w-full flex-col gap-2">
       <button
-        className="h-[55px] w-full gap-2.5 rounded-xl bg-[#FEE500] text-body-1 flex-center"
+        className="h-[55px] w-full gap-2.5 rounded-xl bg-[#FEE500] text-body-1 text-[#241D00] flex-center"
         onClick={() =>
           (window.location.href = `${BASE_URL}/oauth2/authorization/kakao`)
         }

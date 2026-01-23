@@ -4,8 +4,8 @@
  * @author junyeol
  */
 import { useState } from 'react';
-import BottomSheet from '@/shared/ui/bottomSheet';
-import { CHARACTER_IMAGES } from '@/shared/constants/charImages';
+import BottomSheet from '@/shared/ui/BottomSheet';
+import { CHARACTER_IMAGES } from '@/shared/constants/char-images';
 
 export default function UserProfile() {
   const [isModalOpen, setIsModalOpen] = useState(false);
