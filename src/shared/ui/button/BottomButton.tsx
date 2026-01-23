@@ -1,39 +1,41 @@
 import { cn } from '@/shared/config/tailwind/cn';
 
-interface Props {
+type Props = {
   onClick: () => void;
   text: string;
-  disabled?: boolean; // 비활성화 여부
-  loading?: {
-    isLoading?: boolean;
-    text: string;
-  };
-  type?: 'button' | 'submit';
-  className?: string; // 추가 스타일
-}
+  disabled?: boolean;
+  isLoading?: boolean;
+  loadingText?: string;
+  type?: 'button' | 'submit' | 'reset';
+  className?: string;
+};
 
 export default function BottomButton({
   onClick,
   text,
   disabled,
-  loading,
+  isLoading = false,
+  loadingText,
   type = 'button',
   className,
 }: Props) {
+  const isDisabled = disabled || isLoading;
+  const label = isLoading ? (loadingText ?? text) : text;
+
   return (
     <button
       type={type}
-      disabled={disabled}
+      disabled={isDisabled}
       onClick={onClick}
       className={cn(
         'h-[55px] rounded-xl text-body-1 transition',
-        disabled
+        isDisabled
           ? 'bg-bt-disabled text-bg-bt-disabled'
           : 'bg-bg-primary text-tx-default',
         className,
       )}
     >
-      {loading?.isLoading ? loading.text : text}
+      {label}
     </button>
   );
 }

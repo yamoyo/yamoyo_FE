@@ -43,7 +43,8 @@ export default function TermsAgreementWidget() {
         <BottomButton
           disabled={!allChecked || isSubmitting}
           onClick={handleSubmit}
-          loading={{ isLoading: isSubmitting, text: '처리 중...' }}
+          isLoading={isSubmitting}
+          loadingText="처리중..."
           text="가입하기"
         />
       </div>
