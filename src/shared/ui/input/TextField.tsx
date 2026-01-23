@@ -57,7 +57,7 @@ export default function TextField({
           >
             <img
               src="/assets/icons/x-circle.svg"
-              alt="clear"
+              alt="입력 내용 지우기"
               width={20}
               height={20}
             />
