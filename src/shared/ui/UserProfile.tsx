@@ -5,23 +5,37 @@
  */
 import { useState } from 'react';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import { CHARACTER_IMAGES } from '@/shared/constants/char-images';
+import {
+  CHARACTER_IMAGE_ID,
+  CharacterImageId,
+} from '@/shared/constants/char-images';
+import { cn } from '../config/tailwind/cn';
 
-export default function UserProfile() {
+interface props {
+  name: string;
+  characterId: CharacterImageId;
+  onChangeCharacterId: (id: CharacterImageId) => void;
+  className?: string;
+}
+
+export default function UserProfile({
+  name,
+  characterId,
+  onChangeCharacterId,
+  className,
+}: props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(
-    '/assets/character/char-9.png',
-  );
+  const selectedImage = `/assets/character/char-${characterId}.png`;
 
-  const handleSelectImage = (imageUrl: string) => {
-    setSelectedImage(imageUrl);
+  const handleSelectImage = (id: CharacterImageId) => {
+    onChangeCharacterId(id);
     setIsModalOpen(false);
     // TODO: API 호출로 프로필 이미지 업데이트
   };
 
   return (
     <>
-      <div className="flex flex-col items-center pt-[38px]">
+      <div className={cn('flex flex-col items-center', className)}>
         <div className="relative select-none">
           <div className="relative flex-center">
             <img
@@ -59,7 +73,7 @@ export default function UserProfile() {
           className="mt-[10px] select-none text-[16px] font-medium text-tx-default"
           draggable="false"
         >
-          박서영
+          {name}
         </span>
       </div>
 
@@ -69,10 +83,10 @@ export default function UserProfile() {
         title="프로필 이미지"
       >
         <div className="grid grid-cols-3 place-items-center gap-[16px] pb-4">
-          {CHARACTER_IMAGES.map((image, index) => (
+          {CHARACTER_IMAGE_ID.map((imageId, index) => (
             <button
-              key={image}
-              onClick={() => handleSelectImage(image)}
+              key={imageId}
+              onClick={() => handleSelectImage(imageId)}
               className="relative flex h-[85px] w-[85px] select-none items-center justify-center transition hover:scale-105"
             >
               <img
@@ -84,7 +98,7 @@ export default function UserProfile() {
                 draggable="false"
               />
               <img
-                src={image}
+                src={`/assets/character/char-${imageId}.png`}
                 width={49}
                 height={43}
                 alt={`캐릭터 ${index + 1}`}

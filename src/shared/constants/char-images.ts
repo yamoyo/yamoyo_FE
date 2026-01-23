@@ -1,14 +1,5 @@
-export const CHARACTER_IMAGES = [
-  '/assets/character/char-1.png',
-  '/assets/character/char-2.png',
-  '/assets/character/char-3.png',
-  '/assets/character/char-4.png',
-  '/assets/character/char-5.png',
-  '/assets/character/char-6.png',
-  '/assets/character/char-7.png',
-  '/assets/character/char-8.png',
-  '/assets/character/char-9.png',
-  '/assets/character/char-10.png',
-  '/assets/character/char-11.png',
-  '/assets/character/char-12.png',
+export const CHARACTER_IMAGE_ID = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
 ] as const;
+
+export type CharacterImageId = (typeof CHARACTER_IMAGE_ID)[number];

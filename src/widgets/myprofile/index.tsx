@@ -3,10 +3,12 @@
  * 위 세 페이지로 이동할 수 있는 내부 공통 컴포넌트
  * @author junyeol
  * */
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import UserProfile from '@/shared/ui/UserProfile';
 import MenuListItem from '@/shared/ui/MenuListItem';
+import { CharacterImageId } from '@/shared/constants/char-images';
 
 const MENU_ITEMS = [
   {
@@ -31,11 +33,17 @@ const MENU_ITEMS = [
 
 export default function MyProfileWidgets() {
   const navigate = useNavigate();
+  const [characterId, setCharacterId] = useState<CharacterImageId>(9);
 
   return (
     <>
-      <TopBar title="마이페이지" onBack={() => navigate(-1)} />
-      <UserProfile />
+      <TopBar title="마이페이지" />
+      <UserProfile
+        name="박서영"
+        characterId={characterId}
+        onChangeCharacterId={setCharacterId}
+        className="pt-[38px]"
+      />
       <div className="flex flex-col gap-[15px] pl-[22px] pr-[18px] pt-[93px]">
         {MENU_ITEMS.map((item) => (
           <MenuListItem

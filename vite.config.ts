@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import { VitePWA } from 'vite-plugin-pwa';
+import svgr from 'vite-plugin-svgr';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -11,6 +12,7 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [
     react(),
+    svgr(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['font/*.woff2', 'assets/**/*'],
@@ -49,6 +51,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@public': path.resolve(__dirname, 'public'),
     },
   },
 });
