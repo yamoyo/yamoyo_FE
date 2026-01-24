@@ -46,7 +46,7 @@ export function EditProfile() {
       <div className="space-y-[50px] px-6 pt-[18px]">
         <UserProfile characterId={9} name="박서영" />
         <div className="space-y-5">
-          <h1 className="text-title-1 text-tx-default">기본 정보</h1>
+          <p className="text-title-1 text-tx-default">기본 정보</p>
           <div className="space-y-[22px]">
             {basicInfoItems.map((item) => (
               <BasicInfoItem
@@ -59,7 +59,7 @@ export function EditProfile() {
           </div>
         </div>
         <div>
-          <h1 className="mb-5 text-title-1 text-tx-default">설정</h1>
+          <p className="mb-5 text-title-1 text-tx-default">설정</p>
           <div className="space-y-[3px]">
             {settingsItems.map((item) => (
               <button
