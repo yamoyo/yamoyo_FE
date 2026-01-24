@@ -10,17 +10,14 @@ export const basicInfoItems = [
 
 export const settingsItems: {
   label: string;
-  modalOptions: Omit<
-    ChoiceModalOptions,
-    'onClickLeftBtn' | 'onClickRightBtn' | 'onClose'
-  >;
+  modalOptions: Omit<ChoiceModalOptions, 'onClickLeftBtn' | 'onClickRightBtn'>;
 }[] = [
   {
     label: '로그아웃',
     modalOptions: {
       title: '로그아웃 전에 확인해주세요.',
       description:
-        '다음 로그인 시, 가입했던 소설 계정으로\n야모요에 로그인하실 수 있습니다.',
+        '다음 로그인 시, 가입했던 소셜 계정으로\n야모요에 로그인하실 수 있습니다.',
       leftLabel: '취소',
       rightLabel: '로그아웃',
       rightBtnClassName: 'bg-bg-primary',

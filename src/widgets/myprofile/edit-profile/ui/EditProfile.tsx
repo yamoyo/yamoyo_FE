@@ -19,7 +19,7 @@ const dummyData: Record<(typeof basicInfoItems)[number]['key'], string> = {
 export function EditProfile() {
   const openModal = useModalStore((s) => s.openChoiceModal);
   const closeModal = useModalStore((s) => s.closeModal);
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   const handleSettingClick = (item: (typeof settingsItems)[number]) => {
     const baseOptions = item.modalOptions;
@@ -30,13 +30,12 @@ export function EditProfile() {
       } else {
         // 회원탈퇴 로직
       }
-      navigator('/');
+      navigate('/');
       closeModal();
     };
 
     openModal({
       ...baseOptions,
-      onClickLeftBtn: closeModal,
       onClickRightBtn,
     });
   };
