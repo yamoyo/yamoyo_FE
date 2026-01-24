@@ -23,6 +23,7 @@ import MajorStep from './widgets/auth/profile-onboarding/ui/Major';
 import PersonaStep from './widgets/auth/profile-onboarding/ui/Persona';
 import ProfileOnboardingLayout from './widgets/auth/profile-onboarding/layout';
 import BottomPadding24 from './shared/ui/layout/BottomPadding24';
+import ModalRoot from './shared/ui/modal/ModalRoot';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -56,6 +57,9 @@ export default function App() {
           - mx-auto: 데스크톱에서 가운데 정렬
           - min-h-dvh: 모바일 주소창 변화 대응 (vh 대신 dvh)
         */}
+
+      <ModalRoot />
+
       <Routes>
         <Route path="/typography" element={<TypographyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />

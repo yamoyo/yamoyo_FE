@@ -1,11 +1,22 @@
 import { ReactNode, useEffect } from 'react';
+import { useModalStore } from './model/choice-modal-store';
 
-interface ModalDimProps {
+interface Props {
   children: ReactNode;
-  onClickOutside?: () => void; // 딤 영역 클릭 시 닫기
+  isActiveCloseModal?: boolean;
 }
 
-export default function ModalDim({ children, onClickOutside }: ModalDimProps) {
+/** 모달 배경 딤 컴포넌트
+ *
+ * - isActiveCloseModal: 딤 영역 클릭 시 모달 닫기가 활성화 되는지 여부
+ *
+ */
+export default function ModalDim({
+  children,
+  isActiveCloseModal = true,
+}: Props) {
+  const onCloseModal = useModalStore((s) => s.closeModal);
+
   useEffect(() => {
     if (typeof document === 'undefined') return;
 
@@ -21,7 +32,7 @@ export default function ModalDim({ children, onClickOutside }: ModalDimProps) {
   return (
     <div
       className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/25"
-      onClick={onClickOutside}
+      onClick={isActiveCloseModal ? onCloseModal : undefined}
     >
       {/* 모달 클릭 시 onClickOutside 작동 방지 */}
       <div onClick={(e) => e.stopPropagation()}>{children}</div>
