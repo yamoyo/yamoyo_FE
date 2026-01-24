@@ -1,5 +1,3 @@
-import type { ComponentPropsWithoutRef } from 'react';
-
 type ModalDensity = 'comfortable' | 'compact';
 
 export interface ChoiceModalOptions {
