@@ -14,7 +14,7 @@ import { cn } from '../config/tailwind/cn';
 interface props {
   name: string;
   characterId: CharacterImageId;
-  onChangeCharacterId: (id: CharacterImageId) => void;
+  onChangeCharacterId?: (id: CharacterImageId) => void;
   className?: string;
 }
 
@@ -28,6 +28,7 @@ export default function UserProfile({
   const selectedImage = `/assets/character/char-${characterId}.png`;
 
   const handleSelectImage = (id: CharacterImageId) => {
+    if (!onChangeCharacterId) return;
     onChangeCharacterId(id);
     setIsModalOpen(false);
     // TODO: API 호출로 프로필 이미지 업데이트

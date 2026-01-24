@@ -42,9 +42,9 @@ export default function MyProfileWidgets() {
         name="박서영"
         characterId={characterId}
         onChangeCharacterId={setCharacterId}
-        className="pt-[38px]"
+        className="pt-[18px]"
       />
-      <div className="flex flex-col gap-[15px] pl-[22px] pr-[18px] pt-[93px]">
+      <div className="flex flex-col gap-[15px] px-6 pt-[50px]">
         {MENU_ITEMS.map((item) => (
           <MenuListItem
             key={item.id}

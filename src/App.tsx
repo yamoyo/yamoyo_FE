@@ -22,6 +22,7 @@ import NameStep from './widgets/auth/profile-onboarding/ui/Name';
 import MajorStep from './widgets/auth/profile-onboarding/ui/Major';
 import PersonaStep from './widgets/auth/profile-onboarding/ui/Persona';
 import ProfileOnboardingLayout from './widgets/auth/profile-onboarding/layout';
+import BottomPadding24 from './shared/ui/layout/BottomPadding24';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -60,7 +61,7 @@ export default function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
 
-        <Route path="/myprofile">
+        <Route path="/myprofile" element={<BottomPadding24 />}>
           <Route index element={<MyProfile />} />
           <Route path="edit" element={<EditProfile />} />
           <Route path="completed-tasks" element={<CompletedTasks />} />
