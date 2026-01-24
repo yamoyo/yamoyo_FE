@@ -9,7 +9,7 @@ export default function MajorStep() {
     <>
       {/* 상단 타이틀 영역 */}
       <div className="mb-4 space-y-[5px]">
-        <h1 className="text-title-3 text-tx-default_2">
+        <h1 className="text-title-2 text-tx-default_2">
           당신의 전공분야는 무엇인가요?
         </h1>
         <p className="text-caption-1 text-tx-default_4">

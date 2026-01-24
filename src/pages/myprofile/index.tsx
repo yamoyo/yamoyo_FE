@@ -1,5 +1,1 @@
-import MyProfileWidgets from '@/widgets/myprofile';
-
-export default function MyProfile() {
-  return <MyProfileWidgets />;
-}
+export { MyProfile as default } from '@/widgets/myprofile/MyProfile';
