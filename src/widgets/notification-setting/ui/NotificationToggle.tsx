@@ -13,7 +13,7 @@ const NOTIFICATION_ITEMS = [
   },
 ] as const;
 
-export default function NotificationSettings() {
+export default function NotificationToggle() {
   const [notifications, setNotifications] = useState(
     NOTIFICATION_ITEMS.reduce(
       (acc, item) => ({
