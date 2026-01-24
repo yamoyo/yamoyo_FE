@@ -37,13 +37,13 @@ export default function TopBar({
   const handleBack = onBack ?? (() => navigate(-1));
 
   return (
-    <header className="relative h-[83px] select-none flex-center">
+    <header className="relative h-[60px] select-none flex-center">
       {showBackButton && (
         <button
           onClick={handleBack}
           aria-label="뒤로가기"
           type="button"
-          className="absolute left-[30px] top-1/2 translate-y-[-50%]"
+          className="absolute left-[30px] top-1/2"
         >
           <img
             src="/assets/icons/arrow-left.svg"

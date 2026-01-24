@@ -18,12 +18,13 @@ import CompletedTasks from './pages/myprofile/completed-tasks';
 import NotificationSettings from './pages/myprofile/notification-settings';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
-import ProfileNameStepPage from './pages/onboarding/profile/name';
-import ProfileMajorStepPage from './pages/onboarding/profile/major';
-import ProfilePersonaStepPage from './pages/onboarding/profile/persona';
-import { ProfileOnboardingLayout } from './widgets/auth/profile-onboarding/layout';
+import NameStep from './widgets/auth/profile-onboarding/ui/Name';
+import MajorStep from './widgets/auth/profile-onboarding/ui/Major';
+import PersonaStep from './widgets/auth/profile-onboarding/ui/Persona';
+import ProfileOnboardingLayout from './widgets/auth/profile-onboarding/layout';
+import BottomPadding24 from './shared/ui/layout/BottomPadding24';
 
-export function App() {
+export default function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
   // 이미 방문한 적 있으면 스플래시 건너뜀
@@ -60,7 +61,7 @@ export function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
 
-        <Route path="/myprofile">
+        <Route path="/myprofile" element={<BottomPadding24 />}>
           <Route index element={<MyProfile />} />
           <Route path="edit" element={<EditProfile />} />
           <Route path="completed-tasks" element={<CompletedTasks />} />
@@ -70,6 +71,17 @@ export function App() {
           />
         </Route>
 
+        <Route path="/onboarding" element={<OnboardPage />} />
+        <Route path="/onboarding/terms" element={<TermsPage />} />
+        <Route path="/games/roulette" element={<RoulettePage />} />
+        <Route path="/games/timing-game" element={<TimingGame />} />
+
+        <Route path="/onboarding/profile" element={<ProfileOnboardingLayout />}>
+          <Route path="name" element={<NameStep />} />
+          <Route path="major" element={<MajorStep />} />
+          <Route path="persona" element={<PersonaStep />} />
+        </Route>
+
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -77,24 +89,8 @@ export function App() {
         </Route>
 
         {/* 로그인된 유저 전용 */}
-        <Route element={<AuthGuard />}>
-          <Route path="/onboarding" element={<OnboardPage />} />
-          <Route path="/onboarding/terms" element={<TermsPage />} />
-          <Route path="/games/roulette" element={<RoulettePage />} />
-          <Route path="/games/timing-game" element={<TimingGame />} />
-
-          <Route
-            path="/onboarding/profile"
-            element={<ProfileOnboardingLayout />}
-          >
-            <Route path="name" element={<ProfileNameStepPage />} />
-            <Route path="major" element={<ProfileMajorStepPage />} />
-            <Route path="persona" element={<ProfilePersonaStepPage />} />
-          </Route>
-        </Route>
+        <Route element={<AuthGuard />}></Route>
       </Routes>
     </main>
   );
 }
-
-export default App;
