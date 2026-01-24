@@ -31,7 +31,7 @@ const MENU_ITEMS = [
   },
 ] as const;
 
-export default function MyProfileWidgets() {
+export function MyProfile() {
   const navigate = useNavigate();
   const [characterId, setCharacterId] = useState<CharacterImageId>(9);
 
