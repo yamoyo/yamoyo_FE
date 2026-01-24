@@ -22,9 +22,7 @@ export default function ChoiceModal({
   const verticalPaddingClass = density === 'comfortable' ? 'py-[30px]' : 'py-5';
 
   const closeModal = useModalStore((s) => s.closeModal);
-  const handleOnClickLeftBtn = () => {
-    return onClickLeftBtn ? onClickLeftBtn() : closeModal();
-  };
+  const handleOnClickLeftBtn = onClickLeftBtn ? onClickLeftBtn : closeModal;
 
   return (
     <ModalDim>
