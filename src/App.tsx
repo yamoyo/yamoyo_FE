@@ -5,8 +5,6 @@ import GuestGuard from './app/GuestGuard';
 
 import SplashPage from './pages/splash';
 import OAuthCallbackPage from './pages/oauth/callback';
-import TypographyPage from './pages/typography';
-
 import LoginPage from './pages';
 
 import HomePage from './pages/home';
@@ -61,7 +59,6 @@ export default function App() {
       <ModalRoot />
 
       <Routes>
-        <Route path="/typography" element={<TypographyPage />} />
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
 
