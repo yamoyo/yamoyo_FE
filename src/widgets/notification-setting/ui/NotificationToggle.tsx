@@ -46,6 +46,8 @@ export default function NotificationToggle() {
 
           <div className="flex h-full items-end">
             <button
+              role="switch"
+              aria-checked={notifications[item.id]}
               onClick={() => handleToggle(item.id)}
               className={`relative flex h-[31px] w-[51px] flex-shrink-0 items-center rounded-full transition-colors duration-200 ease-in-out ${notifications[item.id] ? 'bg-bg-primary' : 'bg-[#78788029]'} `}
             >
