@@ -62,7 +62,7 @@ export default function Calendar({
                 const daySchedules = schedulesByDate[dateString] || [];
 
                 return (
-                  <div key={dayIndex} className="flex flex-1 flex-col gap-1">
+                  <div key={dayIndex} className="flex flex-1 flex-col">
                     <button
                       onClick={() => onDateSelect?.(date)}
                       className={cn(
@@ -73,7 +73,7 @@ export default function Calendar({
                           'text-white': isCurrentMonth,
                           'bg-bg-primary text-white hover:bg-bg-primary/80':
                             isToday,
-                          'bg-purple-100 text-[#804FFF] hover:bg-purple-100/80':
+                          'bg-white/20 text-white hover:bg-white/30':
                             isSelected && !isToday,
                           'hover:bg-white/10': !isToday && !isSelected,
                         },
@@ -82,7 +82,7 @@ export default function Calendar({
                       {date.getDate()}
                     </button>
 
-                    <div className="flex h-4 w-9 items-center justify-center gap-1 self-center">
+                    <div className="flex h-3 w-9 items-center justify-center gap-0.5 self-center">
                       {daySchedules.slice(0, 2).map((schedule) => (
                         <div
                           key={schedule.id}

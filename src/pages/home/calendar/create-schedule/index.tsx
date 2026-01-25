@@ -3,6 +3,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
+import {
+  addMonths,
+  buildTimeOptions,
+  buildWeeklySchedules,
+  formatDateLabel,
+  parseDateString,
+} from '@/entities/calendar/lib/recurrence';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
   ColorPicker,
@@ -64,11 +71,19 @@ export default function CreateSchedulePage() {
   const timeOptions = buildTimeOptions(8, 24);
 
   const onSubmit = (data: CreateScheduleFormData) => {
-    const newSchedule = {
-      ...data,
-      id: crypto.randomUUID(),
-    };
-    addSchedule(newSchedule);
+    if (data.type === 'weekly') {
+      const startDate = parseDateString(data.date);
+      if (!startDate) return;
+      const endDate = addMonths(startDate, 3);
+      const weeklySchedules = buildWeeklySchedules(data, startDate, endDate);
+      weeklySchedules.forEach(addSchedule);
+    } else {
+      const newSchedule = {
+        ...data,
+        id: crypto.randomUUID(),
+      };
+      addSchedule(newSchedule);
+    }
     navigate(-1);
   };
 
@@ -105,32 +120,6 @@ export default function CreateSchedulePage() {
     setCalendarCurrentDate(selected);
     setIsCalendarOpen(false);
   };
-
-  function parseDateString(value?: string) {
-    if (!value) return undefined;
-    const [year, month, day] = value.split('-').map(Number);
-    return new Date(year, month - 1, day);
-  }
-
-  function formatDateLabel(date: Date) {
-    const dayNames = ['일', '월', '화', '수', '목', '금', '토'] as const;
-    return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(
-      2,
-      '0',
-    )}월 ${String(date.getDate()).padStart(2, '0')}일 (${dayNames[date.getDay()]})`;
-  }
-
-  function buildTimeOptions(startHour: number, endHour: number) {
-    const totalHours = endHour - startHour;
-    return Array.from({ length: totalHours }, (_, index) => {
-      const start = startHour + index;
-      const end = start + 1;
-      return `${String(start).padStart(2, '0')}:00-${String(end).padStart(
-        2,
-        '0',
-      )}:00`;
-    });
-  }
 
   return (
     <div className="flex min-h-screen flex-col bg-bg-default">
