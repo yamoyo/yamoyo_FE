@@ -7,12 +7,12 @@ import { Link } from 'react-router-dom';
 
 export function HomeHeader() {
   return (
-    <header className="flex items-center justify-between px-[24px] py-[24px] text-white">
+    <header className="flex items-center justify-between px-[24px] text-white">
       <Link to="/" draggable="false">
         <img
           src="/assets/home/home-logo.png"
-          width={73}
-          height={35}
+          width={72}
+          height={36}
           alt="logo"
           className="select-none"
           draggable="false"
@@ -20,7 +20,7 @@ export function HomeHeader() {
       </Link>
       <div className="flex items-center gap-[17px]">
         {/** TODO (준열) : 추후 캘린더 페이지 제작시 연결 */}
-        <Link to="/" draggable="false">
+        <Link to="/calendar" draggable="false">
           <img
             src="/assets/home/home-cal.png"
             width={24}

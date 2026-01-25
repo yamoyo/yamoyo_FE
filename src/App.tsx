@@ -22,6 +22,7 @@ import PersonaStep from './widgets/auth/profile-onboarding/ui/Persona';
 import ProfileOnboardingLayout from './widgets/auth/profile-onboarding/layout';
 import BottomPadding24 from './shared/ui/layout/BottomPadding24';
 import ModalRoot from './shared/ui/modal/ModalRoot';
+import Calendar from './pages/home/calendar';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -61,6 +62,7 @@ export default function App() {
       <Routes>
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="calendar" element={<Calendar />} />
 
         <Route path="/myprofile" element={<BottomPadding24 />}>
           <Route index element={<MyProfile />} />
