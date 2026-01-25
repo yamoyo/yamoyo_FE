@@ -50,55 +50,50 @@ export default function Calendar({
             key={weekIndex}
             className="flex w-full items-center justify-between"
           >
-            {dates
-              .slice(weekIndex * 7, weekIndex * 7 + 7)
-              .map((date, dayIndex) => {
-                const isSelected =
-                  selectedDate && isSameDay(date, selectedDate);
-                const isToday = isSameDay(date, new Date());
-                const isCurrentMonth =
-                  date.getMonth() === currentDate.getMonth();
-                const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-                const daySchedules = schedulesByDate[dateString] || [];
+            {dates.slice(weekIndex * 7, weekIndex * 7 + 7).map((date) => {
+              const isSelected = selectedDate && isSameDay(date, selectedDate);
+              const isToday = isSameDay(date, new Date());
+              const isCurrentMonth = date.getMonth() === currentDate.getMonth();
+              const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+              const daySchedules = schedulesByDate[dateString] || [];
 
-                return (
-                  <div key={dayIndex} className="flex flex-1 flex-col">
-                    <button
-                      onClick={() => onDateSelect?.(date)}
-                      className={cn(
-                        'h-9 w-9 shrink-0 self-center rounded-xl text-body-4.1 flex-center',
-                        'transition-colors duration-200',
-                        {
-                          'text-gray-600': !isCurrentMonth,
-                          'text-white': isCurrentMonth,
-                          'bg-bg-primary text-white hover:bg-bg-primary/80':
-                            isToday,
-                          'bg-white/20 text-white hover:bg-white/30':
-                            isSelected && !isToday,
-                          'hover:bg-white/10': !isToday && !isSelected,
-                        },
-                      )}
-                    >
-                      {date.getDate()}
-                    </button>
+              return (
+                <div key={dateString} className="flex flex-1 flex-col">
+                  <button
+                    onClick={() => onDateSelect?.(date)}
+                    className={cn(
+                      'h-9 w-9 shrink-0 self-center rounded-xl text-body-4.1 flex-center',
+                      'transition-colors duration-200',
+                      {
+                        'text-gray-600': !isCurrentMonth,
+                        'text-white': isCurrentMonth,
+                        'bg-bg-primary text-white hover:bg-bg-primary/80':
+                          isToday,
+                        'bg-white/20 text-white hover:bg-white/30':
+                          isSelected && !isToday,
+                        'hover:bg-white/10': !isToday && !isSelected,
+                      },
+                    )}
+                  >
+                    {date.getDate()}
+                  </button>
 
-                    <div className="flex h-3 w-9 items-center justify-center gap-0.5 self-center">
-                      {daySchedules.slice(0, 2).map((schedule) => (
-                        <div
-                          key={schedule.id}
-                          className="h-2 w-2 rounded-full"
-                          style={{
-                            backgroundColor:
-                              SCHEDULE_COLORS.find(
-                                (c) => c.id === schedule.color,
-                              )?.hex || schedule.color,
-                          }}
-                        />
-                      ))}
-                    </div>
+                  <div className="flex h-3 w-9 items-center justify-center gap-0.5 self-center">
+                    {daySchedules.slice(0, 2).map((schedule) => (
+                      <div
+                        key={schedule.id}
+                        className="h-2 w-2 rounded-full"
+                        style={{
+                          backgroundColor:
+                            SCHEDULE_COLORS.find((c) => c.id === schedule.color)
+                              ?.hex || schedule.color,
+                        }}
+                      />
+                    ))}
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </div>
         ))}
       </div>
