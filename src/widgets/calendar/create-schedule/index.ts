@@ -6,4 +6,5 @@ export { default as DateSection } from './DateSection';
 export { default as TimeSection } from './TimeSection';
 export { default as LocationSection } from './LocationSection';
 export { default as ParticipantsSection } from './ParticipantsSection';
+export { default as ParticipantSelectSheet } from './ParticipantSelectSheet';
 export { default as SubmitButton } from './SubmitButton';

@@ -26,7 +26,7 @@ export default function TitleSection({
         <button
           type="button"
           onClick={onToggleColorPicker}
-          className="h-5 w-5 shrink-0 rounded-full ring-2 ring-white ring-offset-2 ring-offset-[#202540]"
+          className="h-5 w-5 shrink-0 rounded-full"
           style={{
             backgroundColor:
               SCHEDULE_COLORS.find((c) => c.id === selectedColor)?.hex ||

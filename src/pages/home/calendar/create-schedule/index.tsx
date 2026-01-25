@@ -10,6 +10,7 @@ import {
   formatDateLabel,
   parseDateString,
 } from '@/entities/calendar/lib/recurrence';
+import { getMockTeamMembers } from '@/shared/constants/mock-team-members';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
   ColorPicker,
@@ -18,6 +19,7 @@ import {
   FrequencySection,
   LocationSection,
   ParticipantsSection,
+  ParticipantSelectSheet,
   SubmitButton,
   TimeSection,
   TitleSection,
@@ -40,6 +42,7 @@ export default function CreateSchedulePage() {
   const addSchedule = useScheduleStore((state) => state.addSchedule);
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isParticipantSheetOpen, setIsParticipantSheetOpen] = useState(false);
   const [calendarCurrentDate, setCalendarCurrentDate] =
     useState(initialCalendarDate);
 
@@ -63,7 +66,15 @@ export default function CreateSchedulePage() {
   const scheduleType = watch('type');
   const titleLength = watch('title')?.length || 0;
   const descLength = watch('description')?.length || 0;
+  const participants = watch('participants') ?? [];
   const selectedDateValue = watch('date');
+  const selectedParticipantIds = participants
+    .map((id) => Number(id))
+    .filter((id) => !Number.isNaN(id));
+  const teamMembers = getMockTeamMembers(teamId);
+  const selectedMembers = selectedParticipantIds
+    .map((id) => teamMembers.find((member) => member.id === id))
+    .filter((member): member is NonNullable<typeof member> => Boolean(member));
   const selectedDate = parseDateString(selectedDateValue);
   const dateLabel = selectedDate
     ? formatDateLabel(selectedDate)
@@ -122,10 +133,13 @@ export default function CreateSchedulePage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-bg-default">
+    <div className="flex h-dvh flex-col overflow-hidden bg-bg-default">
       <TopBar title="미팅 일정" onBack={handleCancel} />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6"
+      >
         <TitleSection
           selectedColor={selectedColor}
           titleLength={titleLength}
@@ -170,10 +184,36 @@ export default function CreateSchedulePage() {
 
         <LocationSection register={register} />
 
-        <ParticipantsSection />
+        <ParticipantsSection
+          selectedMembers={selectedMembers}
+          onOpenSheet={() => setIsParticipantSheetOpen(true)}
+          onRemove={(id) =>
+            setValue(
+              'participants',
+              selectedParticipantIds
+                .filter((item) => item !== id)
+                .map((item) => String(item)),
+              { shouldValidate: true },
+            )
+          }
+        />
 
         <SubmitButton />
       </form>
+
+      <ParticipantSelectSheet
+        isOpen={isParticipantSheetOpen}
+        onClose={() => setIsParticipantSheetOpen(false)}
+        members={teamMembers}
+        selectedIds={selectedParticipantIds}
+        onConfirm={(ids) =>
+          setValue(
+            'participants',
+            ids.map((id) => String(id)),
+            { shouldValidate: true },
+          )
+        }
+      />
     </div>
   );
 }
