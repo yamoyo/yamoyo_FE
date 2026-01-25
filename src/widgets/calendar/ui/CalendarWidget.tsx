@@ -1,26 +1,44 @@
 import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
 import Calendar from '@/shared/ui/Calendar';
 import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
+import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
+import { useTeamStore } from '@/entities/team/model/team-store';
 
 export default function CalendarWidget() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const schedules = useScheduleStore((state) => state.schedules);
+  const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
+  const teamSchedules =
+    selectedTeamId === null
+      ? schedules
+      : schedules.filter((schedule) => schedule.teamId === selectedTeamId);
 
   const handlePrevMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1));
+    setSelectedDate(undefined);
   };
 
   const handleNextMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1));
+    setSelectedDate(undefined);
   };
 
   const handleToday = () => {
-    setCurrentDate(new Date());
+    const today = new Date();
+    setCurrentDate(today);
+    setSelectedDate(today);
   };
 
   const handleAddEvent = () => {
-    // TODO: 일정 추가 모달 열기
+    const teamId = searchParams.get('teamId') || '';
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    navigate(`/calendar/create-schedule?teamId=${teamId}&date=${today}`);
   };
 
   return (
@@ -36,12 +54,14 @@ export default function CalendarWidget() {
         <Calendar
           currentDate={currentDate}
           selectedDate={selectedDate}
+          schedules={teamSchedules}
           onDateSelect={setSelectedDate}
         />
       </div>
 
       <CalendarEventList
         currentDate={currentDate}
+        selectedDate={selectedDate}
         onAddEvent={handleAddEvent}
       />
     </div>
