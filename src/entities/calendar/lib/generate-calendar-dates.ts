@@ -18,7 +18,7 @@ export const generateCalendarDates = (date: Date): Date[] => {
   const dates: Date[] = [];
   const current = new Date(startDate);
 
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 42; i++) {
     dates.push(new Date(current));
     current.setDate(current.getDate() + 1);
   }
