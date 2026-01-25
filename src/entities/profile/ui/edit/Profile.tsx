@@ -1,14 +1,13 @@
 import TopBar from '@/shared/ui/header/TopBar';
-import UserProfile from '@/shared/ui/UserProfile';
-import {
-  basicInfoItems,
-  settingsItems,
-} from '@/widgets/myprofile/model/edit-profile-items';
-import BasicInfoItem from '@/widgets/myprofile/ui/BasicInfoItem';
+import UserProfile from '@/entities/profile/ui/UserProfile';
+import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
+import { BASIC_INFO_ITEMS } from '../../model/options/profile-items';
+import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
 import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
 import { useNavigate } from 'react-router-dom';
+import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
 
-const dummyData: Record<(typeof basicInfoItems)[number]['key'], string> = {
+const dummyData: Record<(typeof BASIC_INFO_ITEMS)[number]['key'], string> = {
   name: '박서영',
   email: 'seoyoung.park@example.com',
   major: '컴퓨터공학',
@@ -16,12 +15,14 @@ const dummyData: Record<(typeof basicInfoItems)[number]['key'], string> = {
   joinDate: '2022-01-15',
 };
 
-export function EditProfile() {
+export function Profile() {
   const openModal = useModalStore((s) => s.openChoiceModal);
   const closeModal = useModalStore((s) => s.closeModal);
   const navigate = useNavigate();
 
-  const handleSettingClick = (item: (typeof settingsItems)[number]) => {
+  const handleSettingClick = (
+    item: (typeof SETTINGS_MODAL_OPTIONS)[number],
+  ) => {
     const baseOptions = item.modalOptions;
     const onClickRightBtn = () => {
       // 여기에 로그아웃 또는 회원탈퇴 로직 추가
@@ -41,14 +42,14 @@ export function EditProfile() {
   };
 
   return (
-    <>
+    <BottomPadding24>
       <TopBar title="프로필 관리" />
       <div className="space-y-[50px] px-6 pt-[18px]">
         <UserProfile characterId={9} name="박서영" />
         <div className="space-y-5">
           <p className="text-title-1 text-tx-default">기본 정보</p>
           <div className="space-y-[22px]">
-            {basicInfoItems.map((item) => (
+            {BASIC_INFO_ITEMS.map((item) => (
               <BasicInfoItem
                 key={item.key}
                 label={item.label}
@@ -61,7 +62,7 @@ export function EditProfile() {
         <div>
           <p className="mb-5 text-title-1 text-tx-default">설정</p>
           <div className="space-y-[3px]">
-            {settingsItems.map((item) => (
+            {SETTINGS_MODAL_OPTIONS.map((item) => (
               <button
                 key={item.label}
                 className="w-full pb-2 pt-3 text-left text-body-3 text-tx-default"
@@ -73,6 +74,6 @@ export function EditProfile() {
           </div>
         </div>
       </div>
-    </>
+    </BottomPadding24>
   );
 }

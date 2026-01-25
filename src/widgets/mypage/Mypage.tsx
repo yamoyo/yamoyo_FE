@@ -6,37 +6,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
-import UserProfile from '@/shared/ui/UserProfile';
+import UserProfile from '@/entities/profile/ui/UserProfile';
 import MenuListItem from '@/shared/ui/MenuListItem';
 import { CharacterImageId } from '@/shared/constants/char-images';
+import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
 
 const MENU_ITEMS = [
   {
-    id: 'edit-profile',
+    id: 'profile',
     icon: '/assets/icons/profile-edit.svg',
     label: '프로필 관리',
-    path: '/myprofile/edit',
+    path: '/mypage/profile',
   },
   {
     id: 'completed-tasks',
     icon: '/assets/icons/finish-team.svg',
     label: '완료 팀플 목록',
-    path: '/myprofile/completed-tasks',
+    path: '/mypage/completed-tasks',
   },
   {
     id: 'notification',
     icon: '/assets/icons/notification.svg',
     label: '알림 설정',
-    path: '/myprofile/notification-settings',
+    path: '/mypage/notification-settings',
   },
 ] as const;
 
-export function MyProfile() {
+export default function Mypage() {
   const navigate = useNavigate();
   const [characterId, setCharacterId] = useState<CharacterImageId>(9);
 
   return (
-    <>
+    <BottomPadding24>
       <TopBar title="마이페이지" />
       <UserProfile
         name="박서영"
@@ -54,6 +55,6 @@ export function MyProfile() {
           />
         ))}
       </div>
-    </>
+    </BottomPadding24>
   );
 }

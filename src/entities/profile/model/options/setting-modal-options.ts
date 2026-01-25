@@ -1,14 +1,6 @@
 import { ChoiceModalOptions } from 'src/shared/ui/modal/model/types';
 
-export const basicInfoItems = [
-  { label: '이름', key: 'name', editable: true },
-  { label: '이메일', key: 'email', editable: false },
-  { label: '전공', key: 'major', editable: true },
-  { label: 'MBTI', key: 'mbti', editable: true },
-  { label: '가입일자', key: 'joinDate', editable: false },
-];
-
-export const settingsItems: {
+export const SETTINGS_MODAL_OPTIONS: {
   label: string;
   modalOptions: Omit<ChoiceModalOptions, 'onClickLeftBtn' | 'onClickRightBtn'>;
 }[] = [

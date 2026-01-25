@@ -7,7 +7,6 @@ import Major6Icon from '@/shared/assets/icons/major/major-6.svg?react';
 import Major7Icon from '@/shared/assets/icons/major/major-7.svg?react';
 import Major8Icon from '@/shared/assets/icons/major/major-8.svg?react';
 import Major9Icon from '@/shared/assets/icons/major/major-9.svg?react';
-import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
 
 export const MAJOR = [
   { id: 1, label: '컴퓨터/IT', Icon: Major1Icon },
@@ -21,28 +20,10 @@ export const MAJOR = [
   { id: 9, label: '기타/비전공', Icon: Major9Icon },
 ] as const;
 
-type majorType = (typeof MAJOR)[number]['id'];
-
-interface Persona {
-  characterId: (typeof CHARACTER_IMAGE_ID)[number];
-  mbti: string;
-}
-
-export interface ProfileOnboardingForm {
-  name: string;
-  major: majorType | null;
-  persona: Persona;
-}
-
-export interface ProfileOnboardingContext {
-  form: ProfileOnboardingForm;
-
-  /** Partial<T>: T의 모든 속성을 선택적(optional)으로 만듬
-   *
-   * - 매번 새 필드를 전부 넣지 않고, 일부 속성만 업데이트할 때 유용
-   * - 예: `updateForm({ name: '민혁' });`
-   *
-   */
-  updateForm: (patch: Partial<ProfileOnboardingForm>) => void;
-  currentStep: number;
-}
+export const BASIC_INFO_ITEMS = [
+  { label: '이름', key: 'name', editable: true },
+  { label: '이메일', key: 'email', editable: false },
+  { label: '전공', key: 'major', editable: true },
+  { label: 'MBTI', key: 'mbti', editable: true },
+  { label: '가입일자', key: 'joinDate', editable: false },
+] as const;

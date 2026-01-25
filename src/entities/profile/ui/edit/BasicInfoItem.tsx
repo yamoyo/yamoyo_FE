@@ -17,7 +17,7 @@ export default function BasicInfoItem({ label, value, editRoute }: Prop) {
       {editRoute && (
         <button
           className="h-[26px] w-[41px] rounded-xl bg-tx-default_5 text-body-6 text-tx-default flex-center"
-          onClick={() => navigate('/myprofile/edit/' + editRoute)}
+          onClick={() => navigate('/mypage/profile/' + editRoute)}
         >
           수정
         </button>

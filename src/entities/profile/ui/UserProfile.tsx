@@ -9,7 +9,7 @@ import {
   CHARACTER_IMAGE_ID,
   CharacterImageId,
 } from '@/shared/constants/char-images';
-import { cn } from '../config/tailwind/cn';
+import { cn } from '../../../shared/config/tailwind/cn';
 
 interface props {
   name: string;

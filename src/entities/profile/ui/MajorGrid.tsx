@@ -1,10 +1,14 @@
-import { MAJOR } from '../model/types';
+import { MAJOR } from '../model/options/profile-items';
+import { majorType } from '../model/types/types';
 import { cn } from '@/shared/config/tailwind/cn';
-import { ProfileOnboardingContext } from '../model/types';
-import { useOutletContext } from 'react-router-dom';
 
-export default function MajorStep() {
-  const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();
+interface Props {
+  major: majorType | null;
+  setMajor: (major: majorType) => void;
+}
+
+/** 전공 선택 그리드 컴포넌트 */
+export default function MajorGrid({ major, setMajor }: Props) {
   return (
     <>
       {/* 상단 타이틀 영역 */}
@@ -21,13 +25,13 @@ export default function MajorStep() {
       <div className="grid grid-cols-3 gap-3">
         {MAJOR.map((item) => {
           const { Icon } = item;
-          const isSelected = form.major === item.id;
+          const isSelected = major === item.id;
 
           return (
             <button
               key={item.id}
               type="button"
-              onClick={() => updateForm({ major: item.id })}
+              onClick={() => setMajor(item.id)}
               aria-pressed={isSelected}
               className={cn(
                 'h-[100px] flex-col gap-[15px] rounded-lg bg-bg-card transition flex-center',

@@ -3,7 +3,7 @@ import TopBar from '@/shared/ui/header/TopBar';
 import StepProgressBar from '@/shared/ui/StepProgressBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import { useState } from 'react';
-import { ProfileOnboardingForm } from './model/types';
+import { ProfileOnboardingForm } from '../../model/types/types';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
 
 const paths = [

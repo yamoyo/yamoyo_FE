@@ -1,13 +1,13 @@
 import { useOutletContext } from 'react-router-dom';
-import { ProfileOnboardingContext } from '../model/types';
+import { ProfileOnboardingContext } from '../../model/types/types';
 import TextField from '@/shared/ui/input/TextField';
-import UserProfile from '@/shared/ui/UserProfile';
+import UserProfile from '@/entities/profile/ui/UserProfile';
+import { validateProfileItem } from '../../model/hook/useEditProfile';
 
 export default function PersonaStep() {
   const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();
   const selectedMBTI = form.persona.mbti;
-  const errorMessage =
-    selectedMBTI.length > 8 ? '올바른 MBTI를 입력해 주세요.' : '';
+  const errorMessage = validateProfileItem('MBTI', selectedMBTI);
 
   return (
     <div className="space-y-[22px]">
