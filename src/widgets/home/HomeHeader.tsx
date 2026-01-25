@@ -44,7 +44,7 @@ export function HomeHeader() {
         </Link>
 
         <Link
-          to="/myprofile"
+          to="/mypage"
           className="flex h-[30px] w-[30px] items-center justify-center rounded-[11px] bg-[#3D4366]"
           draggable="false"
         >

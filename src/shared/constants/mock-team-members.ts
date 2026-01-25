@@ -51,6 +51,6 @@ const MAX_MOCK_MEMBERS = Math.max(
   memberAvatars.length,
 );
 
-export function getMockTeamMembers(teamId: number) {
+export function getMockTeamMembers(_teamId: number) {
   return createMembers(MAX_MOCK_MEMBERS);
 }
