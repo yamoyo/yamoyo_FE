@@ -11,7 +11,11 @@ export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   }
 
   if (type === 'MBTI') {
-    if (value.length > 8) {
+    // 최대 8자 이내이며, 영문자와 한글만 허용
+    if (
+      value.length > 8 ||
+      (value.length > 0 && !/^[A-Za-z가-힣]+$/.test(value))
+    ) {
       return '올바른 MBTI를 입력해 주세요.';
     }
   }
