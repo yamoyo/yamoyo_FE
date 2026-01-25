@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import CalendarHeader from './CalendarHeader';
+import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
+import Calendar from '@/shared/ui/Calendar';
 
 export default function CalendarWidget() {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const handlePrevMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1));
@@ -25,7 +27,11 @@ export default function CalendarWidget() {
         onToday={handleToday}
       />
 
-      {/* 나중에 CalendarGrid 추가 */}
+      <Calendar
+        currentDate={currentDate}
+        selectedDate={selectedDate}
+        onDateSelect={setSelectedDate}
+      />
     </div>
   );
 }

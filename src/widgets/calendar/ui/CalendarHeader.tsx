@@ -43,7 +43,7 @@ export default function CalendarHeader({
 
       <button
         onClick={onToday}
-        className="rounded-2xl bg-bd-textfiled_line px-[14px] py-[5px] text-body-4 text-tx-default_3"
+        className="rounded-2xl bg-bd-textfiled_line px-[12px] py-[4px] text-body-4 text-tx-default_3"
       >
         오늘
       </button>
