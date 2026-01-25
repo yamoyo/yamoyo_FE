@@ -10,6 +10,7 @@ export default function EditMajor() {
     <>
       <TopBar title="전공" />
       <EditProfileLayout
+        disabled={!major}
         onClickBtn={handleSaveMajor}
         isLoading={false} // TODO: 로딩 상태 관리
       >

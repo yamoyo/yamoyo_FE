@@ -10,6 +10,7 @@ export default function EditName() {
     <>
       <TopBar title="이름" />
       <EditProfileLayout
+        disabled={!name.trim()}
         showBackCharacter
         onClickBtn={handleSaveName}
         isLoading={false} // TODO: 로딩 상태 관리

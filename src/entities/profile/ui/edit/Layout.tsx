@@ -5,6 +5,7 @@ interface Props {
   isLoading: boolean;
   showBackCharacter?: boolean;
   onClickBtn: () => void;
+  disabled: boolean;
 }
 
 export default function EditProfileLayout({
@@ -12,6 +13,7 @@ export default function EditProfileLayout({
   showBackCharacter = false,
   onClickBtn,
   isLoading,
+  disabled,
 }: Props) {
   return (
     <div className="relative flex flex-grow flex-col justify-between overflow-hidden px-6 pb-[60px] pt-[30px]">
@@ -22,6 +24,7 @@ export default function EditProfileLayout({
         loadingText="처리중..."
         isLoading={isLoading}
         className="z-10"
+        disabled={disabled}
       />
       {showBackCharacter && (
         <img

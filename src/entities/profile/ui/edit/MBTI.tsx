@@ -10,6 +10,7 @@ export default function EditMBTI() {
     <>
       <TopBar title="MBTI" />
       <EditProfileLayout
+        disabled={!MBTI.trim()}
         showBackCharacter
         onClickBtn={handleSaveMBTI}
         isLoading={false} // TODO: 로딩 상태 관리
