@@ -3,9 +3,11 @@ import CalendarWidget from '@/widgets/calendar/ui/CalendarWidget';
 
 export default function Calendar() {
   return (
-    <div>
+    <div className="flex h-screen flex-col">
       <MainHeader />
-      <CalendarWidget />
+      <div className="flex-1 overflow-hidden">
+        <CalendarWidget />
+      </div>
     </div>
   );
 }

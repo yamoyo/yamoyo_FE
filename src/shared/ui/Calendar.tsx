@@ -8,7 +8,7 @@ interface CalendarProps {
   onDateSelect?: (date: Date) => void;
 }
 
-const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
+const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
 export default function Calendar({
   currentDate,

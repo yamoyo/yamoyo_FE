@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
 import Calendar from '@/shared/ui/Calendar';
+import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
 
 export default function CalendarWidget() {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -18,19 +19,30 @@ export default function CalendarWidget() {
     setCurrentDate(new Date());
   };
 
-  return (
-    <div className="mt-[25px] overflow-hidden">
-      <CalendarHeader
-        currentDate={currentDate}
-        onPrevMonth={handlePrevMonth}
-        onNextMonth={handleNextMonth}
-        onToday={handleToday}
-      />
+  const handleAddEvent = () => {
+    // TODO: 일정 추가 모달 열기
+  };
 
-      <Calendar
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex-shrink-0">
+        <CalendarHeader
+          currentDate={currentDate}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
+          onToday={handleToday}
+        />
+
+        <Calendar
+          currentDate={currentDate}
+          selectedDate={selectedDate}
+          onDateSelect={setSelectedDate}
+        />
+      </div>
+
+      <CalendarEventList
         currentDate={currentDate}
-        selectedDate={selectedDate}
-        onDateSelect={setSelectedDate}
+        onAddEvent={handleAddEvent}
       />
     </div>
   );

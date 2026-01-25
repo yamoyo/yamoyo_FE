@@ -1,3 +1,5 @@
+import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
+
 interface CalendarHeaderProps {
   currentDate: Date;
   onPrevMonth: () => void;
@@ -11,11 +13,8 @@ export default function CalendarHeader({
   onNextMonth,
   onToday,
 }: CalendarHeaderProps) {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;
-
   return (
-    <div className="flex items-center justify-between px-5">
+    <div className="flex items-center justify-between px-5 pt-6">
       <div className="flex items-center gap-2">
         <button onClick={onPrevMonth} className="select-none p-1">
           <img
@@ -26,8 +25,8 @@ export default function CalendarHeader({
           />
         </button>
 
-        <span className="min-w-[101px] text-center font-galmuri-11 text-title-2 text-white">
-          {year}년 {month}월
+        <span className="min-w-[101px] text-center text-title-2 text-white">
+          {formatYearMonth(currentDate)}
         </span>
 
         <button onClick={onNextMonth} className="select-none p-1">
