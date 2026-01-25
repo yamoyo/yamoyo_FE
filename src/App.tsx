@@ -10,18 +10,20 @@ import LoginPage from './pages';
 import HomePage from './pages/home';
 import OnboardPage from './pages/onboarding';
 import TermsPage from './pages/onboarding/term';
-import MyProfile from './pages/myprofile';
-import EditProfile from './pages/myprofile/edit-profile';
-import CompletedTasks from './pages/myprofile/completed-tasks';
-import NotificationSettings from './pages/myprofile/notification-settings';
+import Mypage from './widgets/mypage/Mypage';
+import Profile from './pages/mypage/profile';
+import CompletedTasks from './pages/mypage/completed-tasks';
+import NotificationSettings from './pages/mypage/notification-settings';
 import RoulettePage from './pages/games/roulette';
 import TimingGame from './pages/games/timing-game';
-import NameStep from './widgets/auth/profile-onboarding/ui/Name';
-import MajorStep from './widgets/auth/profile-onboarding/ui/Major';
-import PersonaStep from './widgets/auth/profile-onboarding/ui/Persona';
-import ProfileOnboardingLayout from './widgets/auth/profile-onboarding/layout';
-import BottomPadding24 from './shared/ui/layout/BottomPadding24';
+import NameStep from './entities/profile/ui/onboarding/Name';
+import MajorStep from './entities/profile/ui/onboarding/Major';
+import PersonaStep from './entities/profile/ui/onboarding/Persona';
+import ProfileOnboardingLayout from './entities/profile/ui/onboarding/Layout';
 import ModalRoot from './shared/ui/modal/ModalRoot';
+import EditName from './entities/profile/ui/edit/Name';
+import EditMajor from './entities/profile/ui/edit/Major';
+import EditMBTI from './entities/profile/ui/edit/MBTI';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -62,9 +64,14 @@ export default function App() {
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
 
-        <Route path="/myprofile" element={<BottomPadding24 />}>
-          <Route index element={<MyProfile />} />
-          <Route path="edit" element={<EditProfile />} />
+        <Route path="/mypage">
+          <Route index element={<Mypage />} />
+          <Route path="profile">
+            <Route index element={<Profile />} />
+            <Route path="name" element={<EditName />} />
+            <Route path="major" element={<EditMajor />} />
+            <Route path="mbti" element={<EditMBTI />} />
+          </Route>
           <Route path="completed-tasks" element={<CompletedTasks />} />
           <Route
             path="notification-settings"
