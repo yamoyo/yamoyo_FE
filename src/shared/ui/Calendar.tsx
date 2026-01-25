@@ -54,14 +54,15 @@ export default function Calendar({
                     className={cn(
                       'h-9 w-9 shrink-0 rounded-xl text-body-4.1 flex-center',
                       'transition-colors duration-200',
-                      !isCurrentMonth && 'text-gray-600',
-                      isCurrentMonth && 'text-white',
-                      isToday &&
-                        'bg-bg-primary text-white hover:bg-bg-primary/80',
-                      isSelected &&
-                        !isToday &&
-                        'bg-purple-100 text-[#804FFF] hover:bg-purple-100/80',
-                      !isToday && !isSelected && 'hover:bg-white/10',
+                      {
+                        'text-gray-600': !isCurrentMonth,
+                        'text-white': isCurrentMonth,
+                        'bg-bg-primary text-white hover:bg-bg-primary/80':
+                          isToday,
+                        'bg-purple-100 text-[#804FFF] hover:bg-purple-100/80':
+                          isSelected && !isToday,
+                        'hover:bg-white/10': !isToday && !isSelected,
+                      },
                     )}
                   >
                     {date.getDate()}
