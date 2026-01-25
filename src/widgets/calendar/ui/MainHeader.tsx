@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import TeamRoomSelectSheet from '@/widgets/calendar/ui/TeamRoomSelectSheet';
 import { MOCK_TEAM_ROOMS } from '@/shared/constants/mock-team-rooms';
+import { useTeamStore } from '@/entities/team/model/team-store';
 
 export default function MainHeader() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const teamIdFromUrl = searchParams.get('teamId');
-  const selectedTeamRoomId = teamIdFromUrl ? Number(teamIdFromUrl) : undefined;
+  const { selectedTeamId, setSelectedTeamId } = useTeamStore();
+
+  useEffect(() => {
+    const teamIdFromUrl = searchParams.get('teamId');
+    if (teamIdFromUrl) {
+      setSelectedTeamId(Number(teamIdFromUrl));
+    } else if (MOCK_TEAM_ROOMS.length > 0) {
+      const firstTeamId = MOCK_TEAM_ROOMS[0].id;
+      setSearchParams({ teamId: String(firstTeamId) });
+      setSelectedTeamId(firstTeamId);
+    }
+  }, [searchParams, setSearchParams, setSelectedTeamId]);
 
   const handleSelectTeamRoom = (id: number) => {
     setSearchParams({ teamId: String(id) });
+    setSelectedTeamId(id);
   };
 
   return (
@@ -46,7 +58,7 @@ export default function MainHeader() {
         isOpen={isSheetOpen}
         onClose={() => setIsSheetOpen(false)}
         teamRooms={MOCK_TEAM_ROOMS}
-        selectedId={selectedTeamRoomId}
+        selectedId={selectedTeamId ?? undefined}
         onSelect={handleSelectTeamRoom}
       />
     </>
