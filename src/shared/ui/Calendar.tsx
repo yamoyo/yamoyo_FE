@@ -31,7 +31,7 @@ export default function Calendar({
 
   return (
     <div className="px-5 py-4">
-      <div className="mb-2 flex items-center gap-5">
+      <div className="mb-2 flex items-center justify-between">
         {weekDays.map((day) => (
           <div
             key={day}
