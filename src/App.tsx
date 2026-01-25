@@ -20,7 +20,6 @@ import NameStep from './entities/profile/ui/onboarding/Name';
 import MajorStep from './entities/profile/ui/onboarding/Major';
 import PersonaStep from './entities/profile/ui/onboarding/Persona';
 import ProfileOnboardingLayout from './entities/profile/ui/onboarding/Layout';
-import BottomPadding24 from './shared/ui/layout/BottomPadding24';
 import ModalRoot from './shared/ui/modal/ModalRoot';
 import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
