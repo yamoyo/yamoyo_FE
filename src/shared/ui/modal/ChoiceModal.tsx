@@ -5,7 +5,7 @@ import { useModalStore } from './model/choice-modal-store';
 
 /** 두 가지 선택지 중 하나를 고르는 모달
  *
- * - density: 모달 내 상하 패딩 크기 설정 (comfortable: 24px, compact: 16px)
+ * - density: 모달 내 상하 패딩 크기 설정 (comfortable: 30px, compact: 22px)
  * - Figma에서 똑같은 디자인의 모달이지만 상하 패딩에 따라 두 가지 컴포넌트로 나누어져 있어, density를 통해 패딩을 조절할 수 있게 함
  *
  */
@@ -19,10 +19,20 @@ export default function ChoiceModal({
   density = 'compact',
   rightBtnClassName,
 }: ChoiceModalOptions) {
-  const verticalPaddingClass = density === 'comfortable' ? 'py-[30px]' : 'py-5';
+  const verticalPaddingClass =
+    density === 'comfortable' ? 'py-[30px]' : 'py-[22px]';
 
   const closeModal = useModalStore((s) => s.closeModal);
-  const handleOnClickLeftBtn = onClickLeftBtn ? onClickLeftBtn : closeModal;
+
+  const handleOnClickLeftBtn = () => {
+    if (onClickLeftBtn) onClickLeftBtn();
+    closeModal();
+  };
+
+  const handleOnClickRightBtn = () => {
+    onClickRightBtn();
+    closeModal();
+  };
 
   return (
     <ModalDim>
@@ -49,7 +59,7 @@ export default function ChoiceModal({
           </button>
           <button
             type="button"
-            onClick={onClickRightBtn}
+            onClick={handleOnClickRightBtn}
             className={cn(
               'h-[55px] flex-1 rounded-lg bg-textfiled-line_error text-body-2 text-tx-default',
               rightBtnClassName,
