@@ -42,17 +42,13 @@ export default function ParticipantSelectSheet({
   };
 
   return (
-    <BottomSheet
-      isOpen={isOpen}
-      onClose={onClose}
-      title={`팀원 멤버 ${members.length}`}
-    >
+    <BottomSheet isOpen={isOpen} onClose={onClose} title="팀원 멤버">
       <p className="mb-4 text-center text-body-6 text-tx-default">
         프로필을 선택하면 일정 참가자로 추가할 수 있습니다.
       </p>
 
       <div className="mb-1 text-body-5 text-tx-default">
-        멤버 ({members.length})
+        멤버 {members.length}
       </div>
 
       <ul className="flex max-h-[360px] flex-col gap-3 overflow-y-auto pr-1">
