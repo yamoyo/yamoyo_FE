@@ -1,5 +1,6 @@
 import { generateCalendarDates } from '@/entities/calendar/lib/generate-calendar-dates';
 import { isSameDay } from '@/entities/calendar/lib/is-same-day';
+import { cn } from '../config/tailwind/cn';
 
 interface CalendarProps {
   currentDate: Date;
@@ -50,7 +51,18 @@ export default function Calendar({
                   <button
                     key={dayIndex}
                     onClick={() => onDateSelect?.(date)}
-                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-body-4.1 transition-colors duration-200 ${!isCurrentMonth && 'text-gray-600'} ${isCurrentMonth && 'text-white'} ${isToday && 'bg-bg-primary text-white hover:bg-bg-primary/80'} ${isSelected && !isToday && 'bg-purple-100 text-[#804FFF] hover:bg-purple-100/80'} ${!isToday && !isSelected && 'hover:bg-white/10'} `}
+                    className={cn(
+                      'h-9 w-9 shrink-0 rounded-xl text-body-4.1 flex-center',
+                      'transition-colors duration-200',
+                      !isCurrentMonth && 'text-gray-600',
+                      isCurrentMonth && 'text-white',
+                      isToday &&
+                        'bg-bg-primary text-white hover:bg-bg-primary/80',
+                      isSelected &&
+                        !isToday &&
+                        'bg-purple-100 text-[#804FFF] hover:bg-purple-100/80',
+                      !isToday && !isSelected && 'hover:bg-white/10',
+                    )}
                   >
                     {date.getDate()}
                   </button>
