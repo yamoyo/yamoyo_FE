@@ -11,6 +11,7 @@ export default function TeamNameField({
   required = true,
   maxLength = 20,
   value,
+  placeholder = '예시 : 스위프 웹 12기',
   ...textFieldProps
 }: TeamNameFieldProps) {
   return (
@@ -20,7 +21,12 @@ export default function TeamNameField({
         {required && <span className="text-bg-secondary_2">*</span>}
       </div>
       <div className="relative">
-        <TextField value={value} maxLength={maxLength} {...textFieldProps} />
+        <TextField
+          value={value}
+          maxLength={maxLength}
+          placeholder={placeholder}
+          {...textFieldProps}
+        />
         <span className="absolute bottom-[14px] right-[16px] text-caption-1 text-tx-default_4">
           {value.length}/{maxLength}
         </span>
