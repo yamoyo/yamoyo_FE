@@ -11,14 +11,16 @@ export default function FrequencySection({
 }: FrequencySectionProps) {
   return (
     <div>
-      <label className="mb-2 block text-sm text-white">미팅 빈도</label>
+      <label className="mb-2 block text-body-4.1 text-tx-default_3">
+        미팅 빈도
+      </label>
       <div className="flex gap-2">
         <button
           type="button"
           onClick={() => onSelectType('none')}
-          className={`flex-1 rounded-lg py-3 font-medium transition-colors ${
+          className={`flex-1 rounded-lg py-3 text-body-4 transition-colors ${
             scheduleType === 'none'
-              ? 'bg-yellow-400 text-black'
+              ? 'bg-bg-secondary_2 text-black'
               : 'bg-bg-textfiled text-white'
           }`}
         >
@@ -27,9 +29,9 @@ export default function FrequencySection({
         <button
           type="button"
           onClick={() => onSelectType('weekly')}
-          className={`flex-1 rounded-lg py-3 font-medium transition-colors ${
+          className={`flex-1 rounded-lg py-3 text-body-4 transition-colors ${
             scheduleType === 'weekly'
-              ? 'bg-yellow-400 text-black'
+              ? 'bg-bg-secondary_2 text-black'
               : 'bg-bg-textfiled text-white'
           }`}
         >

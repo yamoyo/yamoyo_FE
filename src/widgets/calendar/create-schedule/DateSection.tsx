@@ -32,7 +32,9 @@ export default function DateSection({
 }: DateSectionProps) {
   return (
     <div>
-      <label className="mb-2 block text-sm text-white">미팅 날짜</label>
+      <label className="mb-2 block text-body-4.1 text-tx-default_3">
+        미팅 날짜
+      </label>
       <button
         type="button"
         onClick={onToggleCalendar}

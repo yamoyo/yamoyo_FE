@@ -12,7 +12,9 @@ export default function TimeSection({
 }: TimeSectionProps) {
   return (
     <div>
-      <label className="mb-2 block text-sm text-white">미팅 시간</label>
+      <label className="mb-2 block text-body-4.1 text-tx-default_3">
+        미팅 시간
+      </label>
       <div className="relative">
         <select
           {...register('time')}
