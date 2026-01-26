@@ -1,11 +1,16 @@
+import { useState } from 'react';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
+import TextField from '@/shared/ui/input/TextField';
 import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
 
 export default function TeamRoomCreatePage() {
+  const [teamName, setTeamName] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID;
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? '';
@@ -44,6 +49,24 @@ export default function TeamRoomCreatePage() {
             />
           </button>
         </div>
+      </section>
+
+      <section className="px-6 pt-6">
+        <div className="flex gap-1 text-body-4.1">
+          <span className="mb-2 text-tx-default_3">팀 이름</span>
+          <span className="text-bg-secondary_2">*</span>
+        </div>
+        <TextField
+          value={teamName}
+          onChange={setTeamName}
+          placeholder="예시 : 스위프 웹 12기"
+          maxLength={20}
+          errorMessage={
+            isSubmitted && teamName.length === 0
+              ? '팀 이름을 입력해주세요'
+              : undefined
+          }
+        />
       </section>
 
       {/* <div className="px-6 pb-6">
