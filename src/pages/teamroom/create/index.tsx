@@ -28,7 +28,7 @@ export default function TeamRoomCreatePage() {
 
   const deadlineLabel = deadlineDate
     ? formatMonthDayLabel(deadlineDate)
-    : '날짜를 선택해주세요';
+    : '날짜를 선택해주세요'; // 날짜 선택 여부에 따른 표출 텍스트 판단
 
   const handleOpenDeadlineCalendar = () => {
     openCalendarModal({
@@ -36,6 +36,8 @@ export default function TeamRoomCreatePage() {
       onSelectDate: setDeadlineDate,
     });
   };
+
+  const isCreateEnabled = teamName.trim().length > 0 && Boolean(deadlineDate); // 만들기 버튼 활성화 여부 판단
 
   return (
     <div className="flex flex-col">
@@ -140,7 +142,13 @@ export default function TeamRoomCreatePage() {
       </section>
 
       <div className="px-6 pb-[16px] pt-[43px]">
-        <BottomButton text={'만들기'} onClick={() => {}} disabled={true} />
+        <BottomButton
+          text={'만들기'}
+          onClick={() => {
+            setIsSubmitted(true);
+          }}
+          disabled={!isCreateEnabled}
+        />
       </div>
     </div>
   );
