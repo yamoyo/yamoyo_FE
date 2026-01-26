@@ -14,6 +14,7 @@ export default function TeamRoomCreatePage() {
   const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [deadlineDate, setDeadlineDate] = useState<Date>();
+  const [description, setDescription] = useState('');
 
   const isDeadlineSelected = Boolean(deadlineDate);
   const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID;
@@ -66,23 +67,28 @@ export default function TeamRoomCreatePage() {
         </div>
       </section>
 
-      <section className="space-y-6 px-6 pt-9">
+      <section className="flex flex-col gap-9 px-6 pt-9">
         <div className="flex flex-col gap-2">
           <div className="flex gap-1 text-body-4.1">
             <span className="text-tx-default_3">팀 이름</span>
             <span className="text-bg-secondary_2">*</span>
           </div>
-          <TextField
-            value={teamName}
-            onChange={setTeamName}
-            placeholder="예시 : 스위프 웹 12기"
-            maxLength={20}
-            errorMessage={
-              isSubmitted && teamName.length === 0
-                ? '팀 이름을 입력해주세요'
-                : undefined
-            }
-          />
+          <div className="relative">
+            <TextField
+              value={teamName}
+              onChange={setTeamName}
+              placeholder="예시 : 스위프 웹 12기"
+              maxLength={20}
+              errorMessage={
+                isSubmitted && teamName.length === 0
+                  ? '팀 이름을 입력해주세요'
+                  : undefined
+              }
+            />
+            <span className="absolute bottom-[14px] right-[16px] text-caption-1 text-tx-default_4">
+              {teamName.length}/20
+            </span>
+          </div>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -113,11 +119,29 @@ export default function TeamRoomCreatePage() {
             />
           </button>
         </div>
+
+        <div className="flex flex-col gap-2">
+          <span className="text-body-4.1 text-tx-default_3">
+            한 줄 소개를 해주세요.
+          </span>
+          <div className="relative">
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="팀에 대해서 간단히 소개해주세요."
+              maxLength={50}
+              className="h-[90px] w-full resize-none rounded-xl border border-bd-default bg-bg-textfiled px-[15px] py-3 pr-16 text-body-4.1 text-tx-default outline-none transition placeholder:text-tx-textfiled_disabled focus:border-textfiled-line_focus"
+            />
+            <span className="absolute bottom-[16px] right-[16px] text-caption-1 text-tx-default_4">
+              {description.length}/50
+            </span>
+          </div>
+        </div>
       </section>
 
-      {/* <div className="px-6 pb-6">
-        <BottomButton text={'만들기'} onClick={() => {}} disabled={false} />
-      </div> */}
+      <div className="px-6 pb-[16px] pt-[43px]">
+        <BottomButton text={'만들기'} onClick={() => {}} disabled={true} />
+      </div>
     </div>
   );
 }
