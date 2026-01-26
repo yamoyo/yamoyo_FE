@@ -12,44 +12,46 @@ export default function ParticipantsSection({
   onRemove,
 }: ParticipantsSectionProps) {
   return (
-    <div>
-      <label className="mb-2 flex items-center justify-between text-sm text-white">
+    <div className="flex flex-col items-start gap-2 self-stretch">
+      <label className="flex items-center justify-between self-stretch text-[12px] font-medium text-white">
         <span>참석자</span>
         <button
           type="button"
           onClick={onOpenSheet}
-          className="text-xs text-purple-400"
+          className="text-body-6 text-textfiled-line_focus"
         >
           추가하기
         </button>
       </label>
-      <div className="h-24 overflow-y-auto rounded-lg bg-bg-textfiled px-4 pr-3">
+      <div className="h-36 overflow-y-auto">
         {selectedMembers.length > 0 && (
-          <div className="grid h-full grid-cols-3 content-center gap-2">
+          <div className="grid grid-cols-3 gap-[10px]">
             {selectedMembers.map((member) => (
               <div
                 key={member.id}
-                className="flex items-center gap-1 rounded-full border border-[#4C5377] bg-transparent px-2 py-1"
+                className="flex flex-1 items-center gap-[10px] self-stretch rounded-[52px] border border-bd-textfiled_line px-[11px] py-[6px]"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2F3453]">
-                  <img
-                    src={member.avatar}
-                    alt={member.name}
-                    className="h-4 w-4 object-contain"
-                    draggable="false"
-                  />
+                <div className="flex items-center gap-1">
+                  <div className="flex size-[25px] items-center justify-center rounded-full bg-bg-textfiled">
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      className="size-4 object-contain"
+                      draggable="false"
+                    />
+                  </div>
+                  <span className="min-w-0 truncate text-[12px] font-medium text-white">
+                    {member.name}
+                  </span>
                 </div>
-                <span className="min-w-0 flex-1 truncate text-[10px] font-medium text-white">
-                  {member.name}
-                </span>
                 <button
                   type="button"
                   onClick={() => onRemove(member.id)}
-                  className="flex h-4 w-4 items-center justify-center"
+                  className="h-4 w-4 flex-center"
                   aria-label={`${member.name} 제거`}
                 >
                   <img
-                    src="/assets/icons/x-circle.svg"
+                    src="/assets/icons/cancel.svg"
                     alt=""
                     className="h-3 w-3"
                     aria-hidden="true"
