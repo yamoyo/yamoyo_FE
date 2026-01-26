@@ -1,21 +1,8 @@
-interface Member {
-  id: number;
-  avatar: string;
-}
+import { Team } from '../team/model/types';
 
-interface HomeListItemProps {
-  teamName: string;
-  members: Member[];
-  dday: string;
-  bannerImage: string;
-}
+type Props = Team & { bannerImage: string };
 
-export function HomeListItem({
-  teamName,
-  members,
-  dday,
-  bannerImage,
-}: HomeListItemProps) {
+export function HomeListItem({ name, members, dday, bannerImage }: Props) {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
@@ -24,13 +11,13 @@ export function HomeListItem({
       {bannerImage && (
         <img
           src={bannerImage}
-          alt={`${teamName} 배너`}
+          alt={`${name} 배너`}
           className="h-[60px] w-[60px] shrink-0 select-none rounded-full object-cover"
           draggable="false"
         />
       )}
       <div className="flex flex-1 flex-col gap-[9px]">
-        <span className="text-[14px] font-bold text-white">{teamName}</span>
+        <span className="text-[14px] font-bold text-white">{name}</span>
 
         {/* Avatar stack 방식으로 멤버 프로필 이미지 겹침 UI 제작 */}
         <div className="flex items-center">

@@ -25,6 +25,7 @@ import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
 import NotificationPage from './pages/notification';
+import MyTeamsPage from './pages/my-teams';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -81,6 +82,7 @@ export default function App() {
         </Route>
 
         <Route path="notification" element={<NotificationPage />} />
+        <Route path="/my-teams" element={<MyTeamsPage />} />
 
         <Route path="/onboarding" element={<OnboardPage />} />
         <Route path="/onboarding/terms" element={<TermsPage />} />
