@@ -27,7 +27,7 @@ import EditMBTI from './entities/profile/ui/edit/MBTI';
 import NotificationPage from './pages/notification';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
-import MyTeamsPage from './pages/teamroom';
+import MyTeamRoomPage from './pages/teamroom';
 import TeamRoomCreatePage from './pages/teamroom/create';
 
 export default function App() {
@@ -76,7 +76,7 @@ export default function App() {
         </Route>
 
         <Route path="/teamroom">
-          <Route index element={<MyTeamsPage />} />
+          <Route index element={<MyTeamRoomPage />} />
           <Route path="create" element={<TeamRoomCreatePage />} />
         </Route>
 
