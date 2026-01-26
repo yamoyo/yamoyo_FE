@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import { TeamRoom } from '@/shared/constants/mock-team-rooms';
+import { TeamRoom } from '@/widgets/team/model/types';
 
 interface TeamRoomSelectSheetProps {
   isOpen: boolean;

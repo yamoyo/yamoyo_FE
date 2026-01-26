@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
  * @author junyeol
  */
 
-export function HomeHeader() {
+export default function HomeHeader() {
   return (
     <header className="flex items-center justify-between px-[24px] text-white">
       <Link to="/" draggable="false">
@@ -30,8 +30,7 @@ export function HomeHeader() {
           />
         </Link>
 
-        {/** TODO (준열) : 추후 알림 페이지 제작시 연결 */}
-        <Link to="/" draggable="false">
+        <Link to="/notification" draggable="false">
           <img
             src="/assets/home/home-bell.png"
             width={24}
@@ -60,5 +59,3 @@ export function HomeHeader() {
     </header>
   );
 }
-
-export default HomeHeader;
