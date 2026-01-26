@@ -30,7 +30,7 @@ export function HomeCard() {
 
       <Link
         to="/teamroom/create"
-        className="mt-[40px] flex h-[55px] w-[160px] select-none items-center justify-center gap-[14px] rounded-xl bg-[#804FFF] text-[15px] font-bold text-white transition-colors hover:bg-[#6B3FE6]"
+        className="mt-[40px] h-[55px] w-[160px] select-none gap-[14px] rounded-xl bg-bg-primary text-body-1 text-white transition-colors flex-center hover:bg-[#6B3FE6]"
         draggable="false"
       >
         <img
