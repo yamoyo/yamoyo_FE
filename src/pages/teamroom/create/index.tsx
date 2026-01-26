@@ -1,28 +1,43 @@
 import { useState } from 'react';
+import { cn } from '@/shared/config/tailwind/cn';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TextField from '@/shared/ui/input/TextField';
+import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
 import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
+import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
 
 export default function TeamRoomCreatePage() {
   const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [deadlineDate, setDeadlineDate] = useState<Date>();
 
+  const isDeadlineSelected = Boolean(deadlineDate);
   const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID;
+
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? '';
+
   const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID;
 
-  // 이미지 미리보기 화면 + 이미지 선택하는 페이지로 이동하는 버튼 + 이미지 없을 때 경우 미리보기 화면
-  // 팀 이름 ( 일단 20자 제한 ) + 인풋 필드 + 플레이스 홀더 (예시 : 스위프 웹 12기)
-  // 마감일 + 캘린더 모달로 나오게하는 UI 컴포넌트 사용
-  // 한 줄 소개를 해주세요. + 인풋 필드 ( 50 자 제한 )
+  const openCalendarModal = useModalStore((state) => state.openCalendarModal);
+
+  const deadlineLabel = deadlineDate
+    ? formatMonthDayLabel(deadlineDate)
+    : '날짜를 선택해주세요';
+
+  const handleOpenDeadlineCalendar = () => {
+    openCalendarModal({
+      selectedDate: deadlineDate,
+      onSelectDate: setDeadlineDate,
+    });
+  };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-bg-default">
+    <div className="flex flex-col">
       <header>
         <TopBar title={'팀룸 설정'} backIcon="arrow" />
       </header>
@@ -51,22 +66,53 @@ export default function TeamRoomCreatePage() {
         </div>
       </section>
 
-      <section className="px-6 pt-6">
-        <div className="flex gap-1 text-body-4.1">
-          <span className="mb-2 text-tx-default_3">팀 이름</span>
-          <span className="text-bg-secondary_2">*</span>
+      <section className="space-y-6 px-6 pt-9">
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-1 text-body-4.1">
+            <span className="text-tx-default_3">팀 이름</span>
+            <span className="text-bg-secondary_2">*</span>
+          </div>
+          <TextField
+            value={teamName}
+            onChange={setTeamName}
+            placeholder="예시 : 스위프 웹 12기"
+            maxLength={20}
+            errorMessage={
+              isSubmitted && teamName.length === 0
+                ? '팀 이름을 입력해주세요'
+                : undefined
+            }
+          />
         </div>
-        <TextField
-          value={teamName}
-          onChange={setTeamName}
-          placeholder="예시 : 스위프 웹 12기"
-          maxLength={20}
-          errorMessage={
-            isSubmitted && teamName.length === 0
-              ? '팀 이름을 입력해주세요'
-              : undefined
-          }
-        />
+
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-1 text-body-4.1">
+            <span className="text-tx-default_3">마감일</span>
+            <span className="text-bg-secondary_2">*</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleOpenDeadlineCalendar}
+            className="flex h-12 w-full items-center justify-between rounded-xl border border-bd-default bg-bg-textfiled px-[15px] text-left text-body-4.1 text-tx-default"
+          >
+            <span
+              className={cn(
+                'text-body-4.1',
+                isDeadlineSelected
+                  ? 'text-tx-default'
+                  : 'text-tx-textfiled_disabled',
+              )}
+            >
+              {deadlineLabel}
+            </span>
+            <img
+              src="/assets/icons/calendar.svg"
+              alt=""
+              className="h-4 w-4"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
       </section>
 
       {/* <div className="px-6 pb-6">
