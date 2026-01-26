@@ -1,10 +1,14 @@
 import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
+import { cn } from '@/shared/config/tailwind/cn';
 
 interface CalendarHeaderProps {
   currentDate: Date;
   onPrevMonth: () => void;
   onNextMonth: () => void;
   onToday: () => void;
+  className?: string;
+  labelClassName?: string;
+  todayButtonClassName?: string;
 }
 
 export default function CalendarHeader({
@@ -12,9 +16,14 @@ export default function CalendarHeader({
   onPrevMonth,
   onNextMonth,
   onToday,
+  className,
+  labelClassName,
+  todayButtonClassName,
 }: CalendarHeaderProps) {
   return (
-    <div className="flex items-center justify-between px-5 pt-6">
+    <div
+      className={cn('flex items-center justify-between px-5 pt-6', className)}
+    >
       <div className="flex items-center gap-2">
         <button type="button" onClick={onPrevMonth} className="select-none p-1">
           <img
@@ -25,7 +34,12 @@ export default function CalendarHeader({
           />
         </button>
 
-        <span className="min-w-[101px] text-center text-title-2 text-white">
+        <span
+          className={cn(
+            'min-w-[101px] text-center text-title-2 text-white',
+            labelClassName,
+          )}
+        >
           {formatYearMonth(currentDate)}
         </span>
 
@@ -43,7 +57,10 @@ export default function CalendarHeader({
       <button
         type="button"
         onClick={onToday}
-        className="rounded-2xl bg-bd-textfiled_line px-[12px] py-[4px] text-body-4 text-tx-default_3"
+        className={cn(
+          'rounded-2xl bg-bd-textfiled_line px-[12px] py-[4px] text-body-4 text-tx-default_3',
+          todayButtonClassName,
+        )}
       >
         오늘
       </button>

@@ -8,6 +8,7 @@ interface CalendarProps {
   selectedDate?: Date;
   schedules?: Schedule[];
   onDateSelect?: (date: Date) => void;
+  containerClassName?: string;
 }
 
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
@@ -17,6 +18,7 @@ export default function Calendar({
   selectedDate,
   schedules = [],
   onDateSelect,
+  containerClassName,
 }: CalendarProps) {
   const dates = generateCalendarDates(currentDate);
 
@@ -30,7 +32,7 @@ export default function Calendar({
   );
 
   return (
-    <div className="px-5 py-4">
+    <div className={cn('px-5 pt-4', containerClassName)}>
       <div className="mb-2 flex items-center justify-between">
         {weekDays.map((day) => (
           <div

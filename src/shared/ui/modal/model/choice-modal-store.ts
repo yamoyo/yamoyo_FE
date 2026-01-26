@@ -12,5 +12,13 @@ export const useModalStore = create<ModalStore>((set) => ({
       },
     }),
 
+  openCalendarModal: (options) =>
+    set({
+      modal: {
+        type: 'calendar',
+        options,
+      },
+    }),
+
   closeModal: () => set({ modal: null }),
 }));

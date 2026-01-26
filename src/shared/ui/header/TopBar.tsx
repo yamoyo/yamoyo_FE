@@ -4,6 +4,8 @@ interface Props {
   title: string;
   /** 기본값: true — 뒤로가기 버튼 노출 여부 */
   showBackButton?: boolean;
+  /** 기본값: 'arrow' — 뒤로가기 아이콘 타입 */
+  backIcon?: 'arrow' | 'cancel';
   /** 커스텀 뒤로가기 로직. 없으면 navigate(-1) */
   onBack?: () => void;
 }
@@ -13,6 +15,7 @@ interface Props {
  *
  * @param {string} title - 표시할 페이지 제목
  * @param {boolean} [showBackButton=true] - 뒤로가기 버튼 노출 여부
+ * @param {'arrow' | 'cancel'} [backIcon='arrow'] - 뒤로가기 아이콘 타입
  * @param {() => void} [onBack] - 뒤로가기 동작. 미제공 시 navigate(-1)
  *
  * @example
@@ -30,6 +33,7 @@ interface Props {
 export default function TopBar({
   title,
   showBackButton = true,
+  backIcon = 'arrow',
   onBack,
 }: Props) {
   const navigate = useNavigate();
@@ -41,15 +45,19 @@ export default function TopBar({
       {showBackButton && (
         <button
           onClick={handleBack}
-          aria-label="뒤로가기"
+          aria-label={backIcon === 'cancel' ? '닫기' : '뒤로가기'}
           type="button"
           className="absolute left-[30px] top-1/2"
         >
           <img
-            src="/assets/icons/arrow-left.svg"
-            width={10}
+            src={
+              backIcon === 'cancel'
+                ? '/assets/icons/cancel.svg'
+                : '/assets/icons/arrow-left.svg'
+            }
+            width={backIcon === 'cancel' ? 18 : 10}
             height={18}
-            alt="back"
+            alt={backIcon === 'cancel' ? 'cancel' : 'back'}
             draggable="false"
           />
         </button>

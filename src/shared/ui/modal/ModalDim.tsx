@@ -31,7 +31,7 @@ export default function ModalDim({
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/25"
+      className="fixed inset-0 z-[1000] bg-black/80 flex-center"
       onClick={isActiveCloseModal ? onCloseModal : undefined}
     >
       {/* 모달 클릭 시 onClickOutside 작동 방지 */}

@@ -11,16 +11,13 @@ import {
   TimeSection,
   TitleSection,
 } from '@/widgets/calendar/create-schedule';
-import {
-  useCalendarState,
-  useScheduleForm,
-} from '@/widgets/calendar/create-schedule/hooks';
+import { useScheduleForm } from '@/widgets/calendar/create-schedule/hooks';
+import { formatDateString } from '@/entities/calendar/lib/recurrence';
 
 export default function CreateSchedulePage() {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [isParticipantSheetOpen, setIsParticipantSheetOpen] = useState(false);
   const {
-    date,
     register,
     handleSubmit,
     setValue,
@@ -41,15 +38,9 @@ export default function CreateSchedulePage() {
     setParticipants,
   } = useScheduleForm();
 
-  const {
-    isCalendarOpen,
-    setIsCalendarOpen,
-    calendarCurrentDate,
-    handlePrevMonth,
-    handleNextMonth,
-    handleToday,
-    handleDateSelect,
-  } = useCalendarState(date, setValue);
+  const handleDateSelect = (selected: Date) => {
+    setValue('date', formatDateString(selected), { shouldValidate: true });
+  };
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-bg-default">
@@ -81,16 +72,11 @@ export default function CreateSchedulePage() {
         />
 
         <DateSection
+          title="미팅 날짜"
           dateLabel={dateLabel}
-          isCalendarOpen={isCalendarOpen}
           register={register}
           error={errors.date}
-          calendarCurrentDate={calendarCurrentDate}
           selectedDate={selectedDate}
-          onToggleCalendar={() => setIsCalendarOpen((prev) => !prev)}
-          onPrevMonth={handlePrevMonth}
-          onNextMonth={handleNextMonth}
-          onToday={handleToday}
           onDateSelect={handleDateSelect}
         />
 
