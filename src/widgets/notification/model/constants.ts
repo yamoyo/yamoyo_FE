@@ -52,13 +52,6 @@ export const NOTIFICATION_DUMMY_DATA = [
   },
   {
     id: 8,
-    title: '회의 시간 변경 안내',
-    description:
-      '회의 일정이 변경되었습니다. 캘린더를 확인하여 스케줄을 조정해주세요.',
-    isRead: false,
-  },
-  {
-    id: 9,
     title: '팀룸 아카이빙 안내',
     description:
       '야모요 팀의 프로젝트가 종료되어 아카이빙되었습니다. 그동안의 기록을 추억해보세요.',
