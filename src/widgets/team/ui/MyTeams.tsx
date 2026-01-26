@@ -86,13 +86,23 @@ export default function MyTeams() {
     return <div className="p-4">로딩 중...</div>;
   }
 
-  const renderPanel = (teams: TeamRoom[]) => (
-    <TeamListPanel
-      teams={teams}
-      sortType={sortType}
-      onChangeSortType={setSortType}
-    />
-  );
+  const renderPanel = (teams: TeamRoom[]) => {
+    if (teams.length === 0) {
+      return (
+        <div className="flex justify-center pt-10 text-body-3.9 text-tx-default_4">
+          프로젝트가 없습니다.
+        </div>
+      );
+    }
+
+    return (
+      <TeamListPanel
+        teams={teams}
+        sortType={sortType}
+        onChangeSortType={setSortType}
+      />
+    );
+  };
 
   const tabs: TabsConfig[] = [
     { id: 'all', label: '전체', teams: sortedAll },
