@@ -21,12 +21,13 @@ export default function TeamRoomCreatePage() {
   const [description, setDescription] = useState('');
 
   const isDeadlineSelected = Boolean(deadlineDate);
-  const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID;
+
+  const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID; // 임시로 썸네일로 보여줄 이미지 ID 값 지정
 
   const previewImage =
-    TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? '';
+    TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? ''; // 해당 ID 값에 맞는 이미지 경로로 설정
 
-  const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID;
+  const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID; // 이미지 종류 판단하여 이미지 선택 아이콘 변경
 
   const openCalendarModal = useModalStore((state) => state.openCalendarModal);
 
