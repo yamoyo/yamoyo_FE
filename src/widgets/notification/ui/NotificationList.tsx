@@ -1,6 +1,5 @@
 import { NOTIFICATION_DUMMY_DATA } from '../model/constants';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotificationItem from './NotificationItem';
 import { Notification } from '../model/types';
 import { cn } from '@/shared/config/tailwind/cn';

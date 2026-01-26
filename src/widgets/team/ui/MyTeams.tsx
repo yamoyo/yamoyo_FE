@@ -89,9 +89,9 @@ export default function MyTeams() {
   const renderPanel = (teams: TeamRoom[]) => {
     if (teams.length === 0) {
       return (
-        <div className="flex justify-center pt-10 text-body-3.9 text-tx-default_4">
+        <p className="flex justify-center pt-10 text-body-3.9 text-tx-default_4">
           프로젝트가 없습니다.
-        </div>
+        </p>
       );
     }
 

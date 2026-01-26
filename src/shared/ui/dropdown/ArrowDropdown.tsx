@@ -39,7 +39,7 @@ export default function ArrowDropdown<T extends string | number>({
         onClick={() => setIsOpen((prev) => !prev)}
         className="flex items-center gap-2"
       >
-        <span className="text-[15px] leading-[150%] tracking-[-0.41px] text-white">
+        <span className="text-body-3.9 text-white">
           {selectedOption?.label}
         </span>
         <img
@@ -63,7 +63,7 @@ export default function ArrowDropdown<T extends string | number>({
                 type="button"
                 onMouseDown={() => handleSelect(opt.value)}
                 className={cn(
-                  'w-full px-3 py-[6px] text-left text-[15px] leading-[150%] tracking-[-0.41px] text-white transition-colors hover:bg-slate-700',
+                  'w-full px-3 py-[6px] text-left text-body-3.9 text-white transition-colors hover:bg-slate-700',
                   opt.value === value && 'bg-slate-700',
                 )}
               >
