@@ -96,7 +96,7 @@ export default function App() {
         </Route>
 
         <Route path="notification" element={<NotificationPage />} />
-        <Route path="/teamroom" element={<MyTeamsPage />} />
+        <Route path="/teamroom" element={<MyTeamRoomPage />} />
 
         <Route path="/onboarding" element={<OnboardPage />} />
         <Route path="/onboarding/terms" element={<TermsPage />} />

@@ -6,7 +6,7 @@ export default function NotificationPage() {
   const navigate = useNavigate();
   return (
     <div className="flex flex-1 flex-col">
-      <TopBar title="알림" onBack={() => navigate('/ho')} />
+      <TopBar title="알림" onBack={() => navigate('/home')} />
       <NotificationList />
     </div>
   );
