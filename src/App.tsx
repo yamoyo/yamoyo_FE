@@ -24,6 +24,8 @@ import ModalRoot from './shared/ui/modal/ModalRoot';
 import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
+import Calendar from './pages/home/calendar';
+import CreateSchedulePage from './pages/home/calendar/create-schedule';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -63,6 +65,11 @@ export default function App() {
       <Routes>
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="calendar" element={<Calendar />} />
+        <Route
+          path="calendar/create-schedule"
+          element={<CreateSchedulePage />}
+        />
 
         <Route path="/mypage">
           <Route index element={<Mypage />} />

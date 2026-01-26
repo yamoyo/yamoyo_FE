@@ -6,7 +6,8 @@ interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode;
+  titleClassName?: string;
 }
 
 export default function BottomSheet({
@@ -14,6 +15,7 @@ export default function BottomSheet({
   onClose,
   children,
   title,
+  titleClassName,
 }: BottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return;
@@ -50,14 +52,16 @@ export default function BottomSheet({
               damping: 40,
               stiffness: 300,
             }}
-            className="relative w-full max-w-[390px] rounded-t-[20px] bg-[#3B405D]"
+            className="relative w-full max-w-[390px] rounded-t-[20px] bg-[#292E46]"
           >
             <div className="flex justify-center pb-2 pt-1">
               <div className="h-1 w-12" />
             </div>
 
             {title && (
-              <div className="relative flex select-none items-center justify-end px-6 py-4">
+              <div
+                className={`relative flex select-none items-center justify-end px-6 py-4 ${titleClassName ?? ''}`}
+              >
                 <h2
                   className="absolute left-1/2 -translate-x-1/2 text-[16px] font-bold text-tx-default"
                   draggable="false"
