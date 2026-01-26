@@ -78,7 +78,7 @@ export default function Calendar({
                     {date.getDate()}
                   </button>
 
-                  <div className="flex h-3 w-9 items-center justify-center gap-0.5 self-center">
+                  <div className="h-3 w-9 gap-0.5 self-center flex-center">
                     {daySchedules.slice(0, 2).map((schedule) => (
                       <div
                         key={schedule.id}
