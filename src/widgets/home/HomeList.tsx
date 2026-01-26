@@ -12,7 +12,7 @@ export default function HomeList() {
           MY 팀룸 목록
         </span>
         <Link
-          to="/my-teams"
+          to="/teamroom"
           className="text-[12px] font-bold text-[#AA89FF]"
           draggable="false"
         >
