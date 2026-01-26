@@ -1,3 +1,9 @@
+import TopBar from '@/shared/ui/header/TopBar';
+
 export default function TeamRoomCreatePage() {
-  return <div>팀룸 생성 페이지</div>;
+  return (
+    <header>
+      <TopBar title={'팀룸 설정'} backIcon="cancel" />
+    </header>
+  );
 }
