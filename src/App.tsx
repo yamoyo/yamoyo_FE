@@ -24,6 +24,7 @@ import ModalRoot from './shared/ui/modal/ModalRoot';
 import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
+import NotificationPage from './pages/notification';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -78,6 +79,8 @@ export default function App() {
             element={<NotificationSettings />}
           />
         </Route>
+
+        <Route path="notification" element={<NotificationPage />} />
 
         <Route path="/onboarding" element={<OnboardPage />} />
         <Route path="/onboarding/terms" element={<TermsPage />} />
