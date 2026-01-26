@@ -26,6 +26,8 @@ import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
+import TeamRoomMainPage from './pages/teamroom';
+import TeamRoomCreatePage from './pages/teamroom/create';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -70,6 +72,11 @@ export default function App() {
         <Route path="/calendar">
           <Route index element={<Calendar />} />
           <Route path="create-schedule" element={<CreateSchedulePage />} />
+        </Route>
+
+        <Route path="/teamroom">
+          <Route index element={<TeamRoomMainPage />} />
+          <Route path="create" element={<TeamRoomCreatePage />} />
         </Route>
 
         <Route path="/mypage">
