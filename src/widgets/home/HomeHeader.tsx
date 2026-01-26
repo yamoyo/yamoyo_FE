@@ -19,7 +19,6 @@ export default function HomeHeader() {
         />
       </Link>
       <div className="flex items-center gap-[17px]">
-        {/** TODO (준열) : 추후 캘린더 페이지 제작시 연결 */}
         <Link to="/calendar" draggable="false">
           <img
             src="/assets/home/home-cal.png"

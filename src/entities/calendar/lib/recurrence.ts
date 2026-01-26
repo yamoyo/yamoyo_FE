@@ -16,6 +16,13 @@ export function formatDateLabel(date: Date) {
   )}월 ${String(date.getDate()).padStart(2, '0')}일 (${dayNames[date.getDay()]})`;
 }
 
+export function formatMonthDayLabel(date: Date) {
+  // UI용 날짜 라벨 포맷 (MM월 DD일)
+  return `${String(date.getMonth() + 1).padStart(2)}월 ${String(
+    date.getDate(),
+  ).padStart(2, '0')}일`;
+}
+
 export function buildTimeOptions(startHour: number, endHour: number) {
   // 시간 범위 옵션 생성 (예: 08:00-09:00)
   const totalHours = endHour - startHour;

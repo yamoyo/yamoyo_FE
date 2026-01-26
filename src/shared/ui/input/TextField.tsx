@@ -1,7 +1,7 @@
 import { ChangeEvent, InputHTMLAttributes } from 'react';
 import { cn } from '@/shared/config/tailwind/cn';
 
-type TextFieldProps = {
+export type TextFieldProps = {
   value: string;
   onChange: (value: string) => void;
   errorMessage?: string; // 하단에 표시

@@ -42,7 +42,7 @@ export default function CalendarEventList({
   };
 
   return (
-    <div className="mt-4 flex flex-1 flex-col overflow-hidden rounded-2xl bg-bg-textfiled">
+    <div className="mt-8 flex flex-1 flex-col overflow-hidden rounded-2xl bg-bg-textfiled">
       <div className="flex flex-shrink-0 items-center justify-start gap-2 p-6 pb-4">
         <h3 className="text-body-1 text-white">
           {formatDisplayDate(selectedDate)}

@@ -25,9 +25,11 @@ import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
 import NotificationPage from './pages/notification';
-import MyTeamsPage from './pages/teemroom';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
+import MyTeamsPage from './pages/teamroom';
+import TeamRoomCreatePage from './pages/teamroom/create';
+
 export default function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
@@ -65,12 +67,19 @@ export default function App() {
 
       <Routes>
         <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
+
         <Route path="/home" element={<HomePage />} />
-        <Route path="calendar" element={<Calendar />} />
-        <Route
-          path="calendar/create-schedule"
-          element={<CreateSchedulePage />}
-        />
+
+        <Route path="/calendar">
+          <Route index element={<Calendar />} />
+          <Route path="create-schedule" element={<CreateSchedulePage />} />
+        </Route>
+
+        <Route path="/teamroom">
+          <Route index element={<MyTeamsPage />} />
+          <Route path="create" element={<TeamRoomCreatePage />} />
+        </Route>
+
         <Route path="/mypage">
           <Route index element={<Mypage />} />
           <Route path="profile">
