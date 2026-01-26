@@ -52,7 +52,7 @@ export default function BottomSheet({
               damping: 40,
               stiffness: 300,
             }}
-            className="relative w-full max-w-[390px] rounded-t-[20px] bg-[#3B405D]"
+            className="relative w-full max-w-[390px] rounded-t-[20px] bg-[#292E46]"
           >
             <div className="flex justify-center pb-2 pt-1">
               <div className="h-1 w-12" />

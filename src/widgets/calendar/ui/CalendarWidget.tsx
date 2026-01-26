@@ -11,12 +11,11 @@ export default function CalendarWidget() {
   const [searchParams] = useSearchParams();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const schedules = useScheduleStore((state) => state.schedules);
+
   const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
-  const teamSchedules =
-    selectedTeamId === null
-      ? schedules
-      : schedules.filter((schedule) => schedule.teamId === selectedTeamId);
+  const teamSchedules = useScheduleStore((state) =>
+    state.getSchedulesByTeam(selectedTeamId),
+  );
 
   const handlePrevMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1));

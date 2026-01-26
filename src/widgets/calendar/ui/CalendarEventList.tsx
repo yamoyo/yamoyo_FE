@@ -14,12 +14,10 @@ export default function CalendarEventList({
   selectedDate,
   onAddEvent,
 }: CalendarEventListProps) {
-  const schedules = useScheduleStore((state) => state.schedules);
   const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
-  const teamSchedules =
-    selectedTeamId === null
-      ? schedules
-      : schedules.filter((schedule) => schedule.teamId === selectedTeamId);
+  const teamSchedules = useScheduleStore((state) =>
+    state.getSchedulesByTeam(selectedTeamId),
+  );
 
   const filteredSchedules = teamSchedules.filter((schedule) => {
     if (selectedDate) {

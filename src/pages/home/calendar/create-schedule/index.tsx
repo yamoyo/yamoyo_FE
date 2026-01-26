@@ -58,7 +58,7 @@ export default function CreateSchedulePage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="min-h-0 flex-1 space-y-4 overflow-y-auto p-6"
+        className="min-h-0 flex-1 space-y-10 overflow-y-auto p-6"
       >
         <TitleSection
           selectedColor={selectedColor}

@@ -8,6 +8,7 @@ interface ScheduleState {
   updateSchedule: (id: string, schedule: Partial<Schedule>) => void;
   getSchedulesByDate: (date: string) => Schedule[];
   getSchedulesByTeamId: (teamId: number) => Schedule[];
+  getSchedulesByTeam: (teamId: number | null) => Schedule[];
 }
 
 export const useScheduleStore = create<ScheduleState>((set, get) => ({
@@ -36,5 +37,12 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
 
   getSchedulesByTeamId: (teamId) => {
     return get().schedules.filter((s) => s.teamId === teamId);
+  },
+
+  getSchedulesByTeam: (teamId: number | null) => {
+    const schedules = get().schedules;
+    return teamId === null
+      ? schedules
+      : schedules.filter((s) => s.teamId === teamId);
   },
 }));

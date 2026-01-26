@@ -62,14 +62,14 @@ export default function Calendar({
                   <button
                     onClick={() => onDateSelect?.(date)}
                     className={cn(
-                      'h-9 w-9 shrink-0 self-center rounded-xl text-body-4.1 flex-center',
+                      'h-9 w-9 shrink-0 self-center rounded-xl text-tx-default_5 flex-center',
                       'transition-colors duration-200',
                       {
                         'text-gray-600': !isCurrentMonth,
                         'text-white': isCurrentMonth,
                         'bg-bg-primary text-white hover:bg-bg-primary/80':
                           isToday,
-                        'bg-white/20 text-white hover:bg-white/30':
+                        'border-[1.5px] border-textfiled-line_focus text-white':
                           isSelected && !isToday,
                         'hover:bg-white/10': !isToday && !isSelected,
                       },
