@@ -1,4 +1,4 @@
-import { Team } from './types';
+import { TeamRoom } from './types';
 
 // 프론트단에서 미리 넣은 사용자 프로필 이미지 12개 불러오는 로직
 const characterAvatars = Array.from(
@@ -14,7 +14,7 @@ const createMembers = (count: number) =>
   }));
 
 /** 홈 - 팀룸 목록 */
-export const TEAMS: Team[] = [
+export const MOCK_TEAM_ROOMS: TeamRoom[] = [
   {
     id: 1,
     name: '미디어 문화와 디자인 A조',

@@ -1,6 +1,6 @@
-import { Team } from '../team/model/types';
+import { TeamRoom } from '../team/model/types';
 
-type Props = Team & { bannerImage: string };
+type Props = TeamRoom & { bannerImage: string };
 
 export function HomeListItem({ name, members, dday, bannerImage }: Props) {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름

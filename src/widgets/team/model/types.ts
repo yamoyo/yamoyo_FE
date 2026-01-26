@@ -3,7 +3,7 @@ interface Member {
   avatar: string;
 }
 
-export interface Team {
+export interface TeamRoom {
   id: number;
   name: string;
   members: Member[];

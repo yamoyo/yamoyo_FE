@@ -1,4 +1,4 @@
-import { Team } from '../model/types';
+import { TeamRoom } from '../model/types';
 
 export type SortType = 'latest' | 'deadline';
 
@@ -8,7 +8,7 @@ const parseDday = (dday: string): number => {
   return sign * number;
 };
 
-export function sortTeams(teams: Team[], sortType: SortType): Team[] {
+export function sortTeams(teams: TeamRoom[], sortType: SortType): TeamRoom[] {
   if (sortType === 'latest') {
     // 최신순 (날짜 내림차순)
     return [...teams].sort(

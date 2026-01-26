@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import PageTabs, { TabsConfig } from '@/shared/ui/tab/PageTabs';
 import HomeListItem from '@/widgets/home/HomeListItem';
 
-import { TEAMS } from '../model/constants';
-import { Team } from '../model/types';
+import { MOCK_TEAM_ROOMS } from '../model/constants';
+import { TeamRoom } from '../model/types';
 import { sortTeams, SortType } from '../utils/sortTeams';
 import ArrowDropdown, {
   ArrowDropdownOption,
@@ -15,7 +15,7 @@ const SORT_OPTIONS: ArrowDropdownOption<SortType>[] = [
 ];
 
 type TeamListPanelProps = {
-  teams: Team[];
+  teams: TeamRoom[];
   sortType: SortType;
   onChangeSortType: (value: SortType) => void;
 };
@@ -45,7 +45,7 @@ function TeamListPanel({
 }
 
 export default function MyTeams() {
-  const [allTeams, setAllTeams] = useState<Team[]>([]);
+  const [allTeams, setAllTeams] = useState<TeamRoom[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +54,7 @@ export default function MyTeams() {
   useEffect(() => {
     // TODO: API 연동 및 로딩 처리
     setLoading(true);
-    setAllTeams(TEAMS);
+    setAllTeams(MOCK_TEAM_ROOMS);
     setLoading(false);
   }, []);
 
@@ -86,7 +86,7 @@ export default function MyTeams() {
     return <div className="p-4">로딩 중...</div>;
   }
 
-  const renderPanel = (teams: Team[]) => (
+  const renderPanel = (teams: TeamRoom[]) => (
     <TeamListPanel
       teams={teams}
       sortType={sortType}
