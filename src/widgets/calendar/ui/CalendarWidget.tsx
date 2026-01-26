@@ -13,9 +13,10 @@ export default function CalendarWidget() {
   const [selectedDate, setSelectedDate] = useState<Date>();
 
   const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
-  const teamSchedules = useScheduleStore((state) =>
-    state.getSchedulesByTeam(selectedTeamId),
+  const getSchedulesByTeam = useScheduleStore(
+    (state) => state.getSchedulesByTeam,
   );
+  const teamSchedules = getSchedulesByTeam(selectedTeamId);
 
   const handlePrevMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1));
