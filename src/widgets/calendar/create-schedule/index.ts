@@ -1,5 +1,4 @@
 export { default as TitleSection } from './TitleSection';
-export { default as ColorPicker } from './ColorPicker';
 export { default as FrequencySection } from './FrequencySection';
 export { default as DescriptionSection } from './DescriptionSection';
 export { default as DateSection } from './DateSection';

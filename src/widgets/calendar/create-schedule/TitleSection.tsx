@@ -7,7 +7,9 @@ import {
 interface TitleSectionProps {
   selectedColor: string;
   titleLength: number;
+  isColorPickerOpen: boolean;
   onToggleColorPicker: () => void;
+  onSelectColor: (colorId: string) => void;
   register: UseFormRegister<CreateScheduleFormData>;
   error?: FieldError;
 }
@@ -15,7 +17,9 @@ interface TitleSectionProps {
 export default function TitleSection({
   selectedColor,
   titleLength,
+  isColorPickerOpen,
   onToggleColorPicker,
+  onSelectColor,
   register,
   error,
 }: TitleSectionProps) {
@@ -54,6 +58,38 @@ export default function TitleSection({
           </span>
         </div>
       </div>
+      {isColorPickerOpen && (
+        <div className="mt-3 flex items-center gap-[10px]">
+          <button
+            type="button"
+            onClick={onToggleColorPicker}
+            className="h-6 w-6 shrink-0"
+            aria-label="색상 선택 닫기"
+          >
+            <img
+              src="/assets/icons/color-select.svg"
+              alt=""
+              className="h-6 w-6"
+            />
+          </button>
+          <div className="flex gap-[9px]">
+            {SCHEDULE_COLORS.map((color) => (
+              <button
+                key={color.id}
+                type="button"
+                onClick={() => onSelectColor(color.id)}
+                className={`h-9 w-9 rounded-full transition-all ${
+                  selectedColor === color.id
+                    ? 'scale-110 ring-2 ring-white ring-offset-2 ring-offset-[#202540]'
+                    : ''
+                }`}
+                style={{ backgroundColor: color.hex }}
+                aria-label={`${color.name} 색상`}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {error && <p className="mt-1 text-xs text-red-400">{error.message}</p>}
     </div>
   );

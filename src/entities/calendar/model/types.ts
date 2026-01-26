@@ -12,12 +12,12 @@ export interface Schedule {
 }
 
 export const SCHEDULE_COLORS = [
-  { id: 'gray', hex: '#6B7280', name: '회색' },
-  { id: 'yellow', hex: '#FCD34D', name: '노랑' },
   { id: 'purple', hex: '#A78BFA', name: '보라' },
+  { id: 'yellow', hex: '#FCD34D', name: '노랑' },
+  { id: 'palePink', hex: '#F776F7', name: '연분홍' },
   { id: 'blue', hex: '#60A5FA', name: '파랑' },
-  { id: 'green', hex: '#34D399', name: '초록' },
-  { id: 'pink', hex: '#F472B6', name: '분홍' },
+  { id: 'mint', hex: '#5DFBDB', name: '민트' },
+  { id: 'pink', hex: '#EF4B8A', name: '분홍' },
   { id: 'orange', hex: '#FB923C', name: '주황' },
 ] as const;
 

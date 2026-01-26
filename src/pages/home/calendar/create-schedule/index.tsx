@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
-  ColorPicker,
   DateSection,
   DescriptionSection,
   FrequencySection,
@@ -63,17 +62,12 @@ export default function CreateSchedulePage() {
         <TitleSection
           selectedColor={selectedColor}
           titleLength={titleLength}
+          isColorPickerOpen={isColorPickerOpen}
           onToggleColorPicker={() => setIsColorPickerOpen((prev) => !prev)}
+          onSelectColor={(colorId) => setValue('color', colorId)}
           register={register}
           error={errors.title}
         />
-
-        {isColorPickerOpen && (
-          <ColorPicker
-            selectedColor={selectedColor}
-            onSelectColor={(colorId) => setValue('color', colorId)}
-          />
-        )}
 
         <FrequencySection
           scheduleType={scheduleType}
