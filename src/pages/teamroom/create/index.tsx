@@ -46,9 +46,7 @@ export default function TeamRoomCreatePage() {
 
   return (
     <div className="flex flex-col">
-      <header>
-        <TopBar title={'팀룸 설정'} backIcon="arrow" />
-      </header>
+      <TopBar title={'팀룸 설정'} backIcon="arrow" />
 
       <BannerSection
         imageSrc={previewImage}
@@ -61,7 +59,7 @@ export default function TeamRoomCreatePage() {
           value={teamName}
           onChange={setTeamName}
           errorMessage={
-            isSubmitted && teamName.length === 0
+            isSubmitted && teamName.trim().length === 0
               ? '팀 이름을 입력해주세요'
               : undefined
           }
