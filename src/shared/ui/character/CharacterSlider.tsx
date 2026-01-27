@@ -30,6 +30,20 @@ export function CharacterSlider({ characters }: Props) {
     scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
   };
 
+  const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (!scrollRef.current) return;
+
+    isDragging.current = true;
+    startX.current = e.touches[0].clientX;
+    scrollStartLeft.current = scrollRef.current.scrollLeft;
+  };
+
+  const handleTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    const diff = e.touches[0].clientX - startX.current;
+    scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
+  };
+
   const stopDragging = () => {
     isDragging.current = false;
   };
@@ -44,6 +58,9 @@ export function CharacterSlider({ characters }: Props) {
         onMouseMove={handleMouseMove}
         onMouseUp={stopDragging}
         onMouseLeave={stopDragging}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={stopDragging}
       >
         {characters.map((character) => (
           <div
