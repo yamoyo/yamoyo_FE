@@ -1,6 +1,6 @@
 import CalendarModal from './CalendarModal';
 import ChoiceModal from './ChoiceModal';
-import { useModalStore } from './model/choice-modal-store';
+import { useModalStore } from './model/modal-store';
 
 export default function ModalRoot() {
   const modal = useModalStore((s) => s.modal);

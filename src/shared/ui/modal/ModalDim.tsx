@@ -1,5 +1,5 @@
 import { ReactNode, useEffect } from 'react';
-import { useModalStore } from './model/choice-modal-store';
+import { useModalStore } from './model/modal-store';
 
 interface Props {
   children: ReactNode;

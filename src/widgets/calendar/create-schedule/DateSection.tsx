@@ -1,6 +1,6 @@
 import { FieldError, UseFormRegister } from 'react-hook-form';
 import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 interface DateSectionProps {
   title: string;

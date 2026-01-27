@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Calendar from '@/shared/ui/Calendar';
 import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
 import ModalDim from '@/shared/ui/modal/ModalDim';
-import { useModalStore } from './model/choice-modal-store';
+import { useModalStore } from './model/modal-store';
 import { CalendarModalOptions } from './model/types';
 
 export default function CalendarModal({

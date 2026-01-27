@@ -3,7 +3,7 @@ import UserProfile from '@/entities/profile/ui/UserProfile';
 import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
 import { BASIC_INFO_ITEMS } from '../../model/options/profile-items';
 import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
-import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { useNavigate } from 'react-router-dom';
 import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
 

@@ -20,5 +20,13 @@ export const useModalStore = create<ModalStore>((set) => ({
       },
     }),
 
+  openCharacterModal: (options) =>
+    set({
+      modal: {
+        type: 'character',
+        options,
+      },
+    }),
+
   closeModal: () => set({ modal: null }),
 }));

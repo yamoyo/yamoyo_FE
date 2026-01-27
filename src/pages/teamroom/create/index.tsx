@@ -6,7 +6,7 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
-import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
   DeadlineField,
