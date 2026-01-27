@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
@@ -15,6 +16,7 @@ import {
 } from '@/widgets/teamroom/create';
 
 export default function TeamRoomCreatePage() {
+  const navigate = useNavigate();
   const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [deadlineDate, setDeadlineDate] = useState<Date>();
@@ -22,7 +24,9 @@ export default function TeamRoomCreatePage() {
 
   const isDeadlineSelected = Boolean(deadlineDate);
 
-  const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID; // 임시로 썸네일로 보여줄 이미지 ID 값 지정
+  const location = useLocation();
+  const bannerId = (location.state as { bannerId?: string })?.bannerId;
+  const selectedImageId = bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
 
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? ''; // 해당 ID 값에 맞는 이미지 경로로 설정
@@ -46,12 +50,16 @@ export default function TeamRoomCreatePage() {
 
   return (
     <div className="flex flex-col">
-      <TopBar title={'팀룸 설정'} backIcon="arrow" />
+      <TopBar
+        title={'팀룸 설정'}
+        backIcon="arrow"
+        onBack={() => navigate('/home')}
+      />
 
       <BannerSection
         imageSrc={previewImage}
         isDefaultImage={isDefaultImage}
-        onEdit={() => {}}
+        onEdit={() => navigate('/teamroom/create/banner')}
       />
 
       <section className="flex flex-col gap-9 px-6 pt-9">
