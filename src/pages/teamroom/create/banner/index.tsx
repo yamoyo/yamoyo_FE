@@ -20,7 +20,7 @@ export default function BannerPage() {
     <div className="flex flex-col">
       <TopBar title={'팀룸 설정'} backIcon="arrow" />
 
-      <section className="grid grid-cols-3 gap-[3px] px-1 pt-2">
+      <section className="grid grid-cols-3 gap-[3px] pt-2">
         {BANNER_IMAGES.map((image) => (
           <button
             key={image.id}
