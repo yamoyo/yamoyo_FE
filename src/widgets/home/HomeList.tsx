@@ -19,12 +19,8 @@ export default function HomeList() {
           전체보기
         </Link>
       </div>
-      {MOCK_TEAM_ROOMS.map((team, index) => (
-        <HomeListItem
-          key={team.id}
-          {...team}
-          bannerImage={`/assets/banner/banner-${index + 1}.png`}
-        />
+      {MOCK_TEAM_ROOMS.map((team) => (
+        <HomeListItem key={team.id} {...team} />
       ))}
       <HomeListEmptyItem />
     </div>
