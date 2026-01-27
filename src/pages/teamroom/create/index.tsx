@@ -12,7 +12,7 @@ import {
   DeadlineField,
   DescriptionField,
   TeamNameField,
-} from '@/widgets/teamroom/create';
+} from '@/widgets/teamroom/ui/create';
 
 export default function TeamRoomCreatePage() {
   const [teamName, setTeamName] = useState('');

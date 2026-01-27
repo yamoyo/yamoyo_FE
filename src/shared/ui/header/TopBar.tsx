@@ -62,7 +62,7 @@ export default function TopBar({
           />
         </button>
       )}
-      <span className="text-body-1 text-tx-default_3">{title}</span>
+      <span className="text-body-1 text-white">{title}</span>
     </header>
   );
 }
