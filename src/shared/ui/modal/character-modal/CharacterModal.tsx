@@ -32,7 +32,7 @@ export default function CharacterModal(props: CharacterModalOptions) {
   const paddingBottom = buttonText ? 20 : 26;
 
   return (
-    <ModalDim>
+    <ModalDim isActiveCloseModal={false}>
       <div
         className="relative w-[342px] select-none rounded-xl bg-tx-default flex-col-center"
         style={{
@@ -43,12 +43,12 @@ export default function CharacterModal(props: CharacterModalOptions) {
       >
         <CharacterModalMainVisual {...character} />
 
-        <div className="mt-2 px-4 text-center">
+        <div className="mt-2 w-full px-4 text-center">
           <p className="mb-1 text-body-1 text-tx-default_black">{title}</p>
           <p className="text-body-6 text-tx-default_black">{subTitle}</p>
           {buttonText && (
             <button
-              className="h-[52px] w-full rounded-lg bg-bg-primary text-body-1 text-tx-default"
+              className="mt-4 h-[52px] w-full rounded-lg bg-bg-primary text-body-1 text-tx-default"
               onClick={onClick}
             >
               {buttonText}
