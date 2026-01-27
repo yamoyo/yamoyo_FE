@@ -12,23 +12,10 @@ import { CharacterModalOptions } from './model/types';
 export default function CharacterModal(props: CharacterModalOptions) {
   const { title, subTitle, buttonText, onClick, ...character } = props;
 
-  const handlePaddingTop = () => {
-    if (character.type === 'CROWN') {
-      if (buttonText) {
-        return 44;
-      } else {
-        return 53;
-      }
-    } else {
-      if (buttonText) {
-        return 28;
-      } else {
-        return 44;
-      }
-    }
-  };
+  const hasButton = Boolean(buttonText);
 
-  const paddingTop = handlePaddingTop();
+  const paddingTop =
+    character.type === 'CROWN' ? (hasButton ? 44 : 53) : hasButton ? 28 : 44;
   const paddingBottom = buttonText ? 20 : 26;
 
   return (
