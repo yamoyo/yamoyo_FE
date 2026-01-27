@@ -29,6 +29,7 @@ import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
 import MyTeamRoomPage from './pages/teamroom';
 import TeamRoomCreatePage from './pages/teamroom/create';
+import TeamLeaderSelectPage from './pages/teamroom/[id]/leader';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -78,6 +79,7 @@ export default function App() {
         <Route path="/teamroom">
           <Route index element={<MyTeamRoomPage />} />
           <Route path="create" element={<TeamRoomCreatePage />} />
+          <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
         </Route>
 
         <Route path="/mypage">
