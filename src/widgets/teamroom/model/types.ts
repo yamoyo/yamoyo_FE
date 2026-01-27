@@ -1,4 +1,4 @@
-interface Member {
+export interface Member {
   id: number;
   avatar: string;
 }
@@ -10,4 +10,5 @@ export interface TeamRoom {
   createdAt: string;
   isProgress: boolean;
   dday: string;
+  imgId: number;
 }

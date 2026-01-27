@@ -1,21 +1,24 @@
-import { TeamRoom } from '../team/model/types';
+import { Member } from '../teamroom/model/types';
 
-type Props = TeamRoom & { bannerImage: string };
+interface Props {
+  members: Member[];
+  name: string;
+  imgId: number;
+  dday: string;
+}
 
-export function HomeListItem({ name, members, dday, bannerImage }: Props) {
+export function HomeListItem({ members, name, imgId, dday }: Props) {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
     <div className="flex select-none items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
       {/* 팀 배너 이미지 */}
-      {bannerImage && (
-        <img
-          src={bannerImage}
-          alt={`${name} 배너`}
-          className="h-[60px] w-[60px] shrink-0 select-none rounded-full object-cover"
-          draggable="false"
-        />
-      )}
+      <img
+        src={`/assets/banner/banner-${imgId}.png`}
+        alt={`${name} 배너`}
+        className="h-[60px] w-[60px] shrink-0 select-none rounded-full object-cover"
+        draggable="false"
+      />
       <div className="flex flex-1 flex-col gap-[9px]">
         <span className="text-[14px] font-bold text-white">{name}</span>
 

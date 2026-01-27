@@ -58,6 +58,48 @@
   font-display: swap;
 }
 
+@layer components {
+  .title-g {
+    @apply font-galmuri-14 text-[24px] font-bold leading-[32px];
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #354c5a;
+  }
+  .title-g2 {
+    @apply font-galmuri-11 text-[55px] font-bold leading-normal tracking-[.5156rem];
+  }
+  .title-g3 {
+    @apply font-galmuri-11 text-[17px] font-bold leading-normal;
+  }
+  .body-g1 {
+    @apply font-galmuri-14 text-[23px] leading-[32px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor; /* 텍스트 색과 동일하게 */
+  }
+  .body-g2 {
+    @apply font-galmuri-14 text-[19px] font-normal leading-normal;
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g2-5 {
+    @apply font-galmuri-14 text-[18px] font-normal leading-[27px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g3 {
+    @apply font-galmuri-14 text-[16px] font-normal leading-[22px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g4 {
+    @apply font-galmuri-14 text-[13px] font-normal leading-[18px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g5 {
+    @apply font-galmuri-14 text-[10px] font-normal leading-[18px];
+  }
+}
+
 html,
 body {
   height: 100%; /* 앱 레이아웃 기준 높이 확보 (h-full 계열 정상 동작) */

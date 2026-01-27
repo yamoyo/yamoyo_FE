@@ -1,5 +1,5 @@
 import TopBar from '@/shared/ui/header/TopBar';
-import MyTeams from '@/widgets/team/ui/MyTeams';
+import MyTeams from '@/widgets/teamroom';
 import { useNavigate } from 'react-router-dom';
 
 export default function MyTeamRoomPage() {

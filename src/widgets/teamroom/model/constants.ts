@@ -13,7 +13,7 @@ const createMembers = (count: number) =>
     avatar,
   }));
 
-/** 홈 - 팀룸 목록 */
+/** 팀룸 목록 */
 export const MOCK_TEAM_ROOMS: TeamRoom[] = [
   {
     id: 1,
@@ -22,6 +22,7 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     createdAt: '2026-02-06',
     isProgress: true,
     dday: 'D-2',
+    imgId: 1,
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     createdAt: '2026-02-07',
     isProgress: true,
     dday: 'D-5',
+    imgId: 2,
   },
   {
     id: 3,
@@ -38,6 +40,7 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     createdAt: '2026-02-08',
     isProgress: false,
     dday: 'D-7',
+    imgId: 3,
   },
   {
     id: 4,
@@ -46,6 +49,7 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     createdAt: '2026-02-09',
     isProgress: true,
     dday: 'D-1',
+    imgId: 4,
   },
   {
     id: 5,
@@ -54,5 +58,6 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     createdAt: '2026-02-10',
     isProgress: false,
     dday: 'D-3',
+    imgId: 5,
   },
 ];

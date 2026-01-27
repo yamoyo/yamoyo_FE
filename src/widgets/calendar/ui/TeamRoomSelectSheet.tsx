@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import { TeamRoom } from '@/widgets/team/model/types';
+import { TeamRoom } from '@/widgets/teamroom/model/types';
 
 interface TeamRoomSelectSheetProps {
   isOpen: boolean;
@@ -47,7 +47,7 @@ export default function TeamRoomSelectSheet({
             className="flex items-center gap-4 rounded-xl bg-bg-textfiled pr-4"
           >
             <img
-              src={room.image}
+              src={`/assets/banner/banner-${room.imgId}.png`}
               alt={room.name}
               className="h-12 w-12 rounded-[10px] object-cover"
             />

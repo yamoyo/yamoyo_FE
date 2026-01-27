@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import HomeListItem from '@/widgets/home/HomeListItem';
 import HomeListEmptyItem from '@/widgets/home/HomeListEmptyItem';
-import { MOCK_TEAM_ROOMS } from '../team/model/constants';
+import { MOCK_TEAM_ROOMS } from '../teamroom/model/constants';
 
 export default function HomeList() {
   return (
@@ -19,12 +19,8 @@ export default function HomeList() {
           전체보기
         </Link>
       </div>
-      {MOCK_TEAM_ROOMS.map((team, index) => (
-        <HomeListItem
-          key={team.id}
-          {...team}
-          bannerImage={`/assets/banner/banner-${index + 1}.png`}
-        />
+      {MOCK_TEAM_ROOMS.map((team) => (
+        <HomeListItem key={team.id} {...team} />
       ))}
       <HomeListEmptyItem />
     </div>
