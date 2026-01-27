@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import PageTabs, { TabsConfig } from '@/shared/ui/tab/PageTabs';
 import HomeListItem from '@/widgets/home/HomeListItem';
 
-import { MOCK_TEAM_ROOMS } from '../model/constants';
-import { TeamRoom } from '../model/types';
-import { sortTeams, SortType } from '../utils/sortTeams';
+import { MOCK_TEAM_ROOMS } from './model/constants';
+import { TeamRoom } from './model/types';
+import { sortTeams, SortType } from './utils/sortTeams';
 import ArrowDropdown, {
   ArrowDropdownOption,
 } from '@/shared/ui/dropdown/ArrowDropdown';
@@ -33,12 +33,8 @@ function TeamListPanel({
         onChange={onChangeSortType}
       />
 
-      {teams.map((team, index) => (
-        <HomeListItem
-          key={team.id}
-          {...team}
-          bannerImage={`/assets/banner/banner-${index + 1}.png`}
-        />
+      {teams.map((team) => (
+        <HomeListItem key={team.id} {...team} />
       ))}
     </div>
   );

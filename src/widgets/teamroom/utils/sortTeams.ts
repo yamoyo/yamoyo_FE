@@ -1,4 +1,4 @@
-import { TeamRoom } from '../model/types';
+import { TeamRoom } from '../../teamroom/model/types';
 
 export type SortType = 'latest' | 'deadline';
 
