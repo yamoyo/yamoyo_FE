@@ -1,6 +1,6 @@
 import TopBar from '@/shared/ui/header/TopBar';
 import SectionDividerTitle from '@/shared/ui/SectionDividerTitle';
-import { CharacterSlider } from '../../../../shared/ui/character/CharacterSlider';
+import { CharacterSlider } from '@/shared/ui/character/CharacterSlider';
 import { VoteCharacter } from '../model/type';
 import CharacterCard from '@/shared/ui/character/CharacterCard';
 import { useEffect } from 'react';
