@@ -35,6 +35,7 @@ const config: Config = {
         'body-9': ['11px', { lineHeight: '16px', fontWeight: '400' }],
         'caption-1': ['12px', { lineHeight: '16px', fontWeight: '400' }],
         'caption-2': ['10px', { lineHeight: '12px', fontWeight: '400' }],
+        'caption-2-2': ['10px', { lineHeight: '12px', fontWeight: '700' }],
       },
       colors: {
         /* === Background tokens === */

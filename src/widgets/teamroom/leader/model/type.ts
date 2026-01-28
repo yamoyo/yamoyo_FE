@@ -7,3 +7,9 @@ export type Phase =
   | 'GAME_PLAYING'
   | 'GAME_RESULT'
   | null;
+
+export interface VoteCharacter {
+  id: number;
+  name: string;
+  imgId: number;
+}

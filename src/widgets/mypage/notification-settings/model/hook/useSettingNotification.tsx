@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NOTIFICATION_ITEMS } from '../constant/notification-items';
-import { useModalStore } from '@/shared/ui/modal/model/choice-modal-store';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 export const useSettingNotification = () => {
   const openModal = useModalStore((s) => s.openChoiceModal);

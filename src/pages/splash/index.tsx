@@ -1,4 +1,4 @@
-export function SplashPage() {
+export default function SplashPage() {
   return (
     <div className="min-h-dvh bg-neutral-100">
       <div className="mx-auto flex min-h-dvh max-w-[390px] bg-bg-default flex-col-center">
@@ -19,5 +19,3 @@ export function SplashPage() {
     </div>
   );
 }
-
-export default SplashPage;

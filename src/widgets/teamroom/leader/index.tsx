@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Phase } from './model/type';
 import LeaderApplication from './ui/LeaderApplication';
+import LeaderApplicationWait from './ui/LeaderApplicationWait';
 
 export function SelectLeader() {
   const [phase, setPhase] = useState<Phase>(null);
@@ -17,7 +18,7 @@ export function SelectLeader() {
   }
 
   if (phase === 'LEADER_APPLICATION_WAIT') {
-    return <p>팀장 지원 결과를 기다리는 중...</p>;
+    return <LeaderApplicationWait />;
   }
 
   // TODO: 로딩 스피너 컴포넌트로 교체 필요

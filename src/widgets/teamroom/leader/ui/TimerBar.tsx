@@ -4,8 +4,8 @@ type TimerBarProps = {
   startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
 };
 
-/** 타이머 전체 진행 시간 (5000ms = 5초) */
-const TOTAL_MS = 5000;
+/** 타이머 전체 진행 시간 (10000ms = 10초) */
+const TOTAL_MS = 10000;
 
 export function TimerBar({ startedAt }: TimerBarProps) {
   /** 서버에서 받은 startedAt(문자열)을 ms 단위 숫자로 변경 */
@@ -20,7 +20,7 @@ export function TimerBar({ startedAt }: TimerBarProps) {
   const elapsedMs = Math.max(0, now - startedAtMs);
 
   /** 경과 시간 상한선(clamp)
-   *    - TOTAL_MS(5초)를 넘어서도 애니메이션을 계속 진행시키지 않기 위해 최대값을 TOTAL_MS로 고정
+   *    - TOTAL_MS(10초)를 넘어서도 애니메이션을 계속 진행시키지 않기 위해 최대값을 TOTAL_MS로 고정
    *    - 시작 시간이 오래 전이어도 이미 끝난 상태로만 보여주기 위함
    */
   const clampedElapsedMs = Math.min(elapsedMs, TOTAL_MS);
@@ -42,7 +42,7 @@ export function TimerBar({ startedAt }: TimerBarProps) {
           /**
            * animationDuration
            * - bar-bg-to-error 애니메이션이 진행되는 전체 시간
-           * - TOTAL_MS(5000ms)를 초 단위로 변환
+           * - TOTAL_MS(10000ms)를 초 단위로 변환
            */
           animationDuration: `${TOTAL_MS / 1000}s`,
           /**
