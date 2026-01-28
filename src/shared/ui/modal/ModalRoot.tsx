@@ -1,6 +1,7 @@
 import CalendarModal from './CalendarModal';
 import CharacterModal from './character-modal/CharacterModal';
 import ChoiceModal from './ChoiceModal';
+import TeamRoomCreatedModal from './TeamRoomCreatedModal';
 import { useModalStore } from './model/modal-store';
 
 export default function ModalRoot() {
@@ -14,9 +15,8 @@ export default function ModalRoot() {
       return <CalendarModal {...modal.options} />;
     case 'character':
       return <CharacterModal {...modal.options} />;
-    // 다른 모달 추가하려면 아래와 같이 추가
-    // case 'info':
-    //   return <InfoModal {...modal.options} />;
+    case 'teamroom-created':
+      return <TeamRoomCreatedModal {...modal.options} />;
     default:
       return null;
   }

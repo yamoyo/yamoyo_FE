@@ -28,5 +28,13 @@ export const useModalStore = create<ModalStore>((set) => ({
       },
     }),
 
+  openTeamRoomCreatedModal: (options) =>
+    set({
+      modal: {
+        type: 'teamroom-created',
+        options,
+      },
+    }),
+
   closeModal: () => set({ modal: null }),
 }));

@@ -32,6 +32,8 @@ import TeamRoomCreatePage from './pages/teamroom/create';
 import TeamLeaderSelectPage from './pages/teamroom/[id]/leader';
 import BannerPage from './pages/teamroom/create/banner';
 
+import TeamRoomMainPage from './pages/teamroom/[id]';
+
 export default function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
@@ -79,6 +81,7 @@ export default function App() {
 
         <Route path="/teamroom">
           <Route index element={<MyTeamRoomPage />} />
+          <Route path=":id/main" element={<TeamRoomMainPage />} />
           <Route path="create" element={<TeamRoomCreatePage />} />
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />

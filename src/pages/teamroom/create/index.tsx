@@ -34,6 +34,9 @@ export default function TeamRoomCreatePage() {
   const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID; // 이미지 종류 판단하여 이미지 선택 아이콘 변경
 
   const openCalendarModal = useModalStore((state) => state.openCalendarModal);
+  const openTeamRoomCreatedModal = useModalStore(
+    (state) => state.openTeamRoomCreatedModal,
+  );
 
   const deadlineLabel = deadlineDate
     ? formatMonthDayLabel(deadlineDate)
@@ -87,6 +90,12 @@ export default function TeamRoomCreatePage() {
           text={'만들기'}
           onClick={() => {
             setIsSubmitted(true);
+            if (isCreateEnabled) {
+              openTeamRoomCreatedModal({
+                teamRoomId: 'mock-id-123', // 나중에 API 응답값으로 교체
+                inviteLink: 'http://localhost:5173/teamroom/mock-id-123/main', // 나중에 API 응답값으로 교체
+              });
+            }
           }}
           disabled={!isCreateEnabled}
         />
