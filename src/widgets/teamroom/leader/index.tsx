@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Phase } from './model/type';
-import LeaderApplication from './ui/leader-applicaiton/LeaderApplication';
-import LeaderApplicationWait from './ui/leader-applicaiton/LeaderApplicationWait';
+import LeaderApplication from './ui/leader-application/LeaderApplication';
+import LeaderApplicationWait from './ui/leader-application/LeaderApplicationWait';
 import SelectGame from './ui/game/SelectGame';
 import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
 import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
