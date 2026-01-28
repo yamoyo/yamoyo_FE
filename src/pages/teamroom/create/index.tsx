@@ -7,6 +7,7 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
+import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
@@ -88,12 +89,18 @@ export default function TeamRoomCreatePage() {
       <div className="px-6 pb-[16px] pt-[43px]">
         <BottomButton
           text={'만들기'}
-          onClick={() => {
+          onClick={async () => {
             setIsSubmitted(true);
             if (isCreateEnabled) {
+              const res = await createTeamRoom({
+                name: teamName.trim(),
+                description,
+                bannerId: selectedImageId,
+                deadlineDate: deadlineDate!.toISOString(),
+              });
               openTeamRoomCreatedModal({
-                teamRoomId: 'mock-id-123', // 나중에 API 응답값으로 교체
-                inviteLink: 'http://localhost:5173/teamroom/mock-id-123/main', // 나중에 API 응답값으로 교체
+                teamRoomId: res.teamRoomId,
+                inviteLink: res.inviteLink,
               });
             }
           }}
