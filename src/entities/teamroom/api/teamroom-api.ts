@@ -10,7 +10,7 @@ let mockTeamRoom: TeamRoom | null = null;
 /** 본인 (팀 생성자) mock 데이터 */
 const mockCreator = {
   id: 1,
-  name: '나',
+  name: '박서영',
   role: '방장', // 팀장 선출 후 선정된 인원의 role을 '팀장'으로 변경
   avatar: '/assets/character/char-1.png',
 };

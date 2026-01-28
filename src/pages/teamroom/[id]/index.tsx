@@ -63,24 +63,79 @@ export default function TeamRoomMainPage() {
           )}
         </div>
       </div>
-      <section className="mx-6 mt-4">
-        <div className="flex items-center justify-between">
+      <section className="mx-6 my-4">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-body-1 text-tx-default">팀원</span>
-            <span className="size-6 gap-[10px] rounded-lg border border-bg-card bg-bg-textfiled p-[10px] text-body-1 text-bg-secondary_2 flex-col-center">
+            <span className="size-6 gap-[10px] rounded-lg border border-bg-card bg-bg-textfiled text-body-1 text-bg-secondary_2 flex-col-center">
               {teamRoom?.members.length ?? 1}
             </span>
           </div>
-          <button type="button" className="px-[14px] py-[6px] flex-center">
-            <img
-              src="/assets/icons/arrow-left.svg"
-              width={10}
-              height={18}
-              alt="펼치기/접기"
-              className="-rotate-90"
-            />
-          </button>
+          <div className="flex items-center gap-2">
+            <button type="button" className="px-[14px] py-[6px] flex-center">
+              <img
+                src="/assets/icons/arrow-left.svg"
+                width={10}
+                height={18}
+                alt="펼치기/접기"
+                className="-rotate-90"
+              />
+            </button>
+          </div>
         </div>
+        <ul className="flex flex-wrap gap-x-4 gap-y-3">
+          {teamRoom?.members.map((member) => {
+            const isLeader =
+              member.role === 'leader' ||
+              member.role === '방장' ||
+              member.role === '팀장';
+
+            return (
+              <li key={member.id} className="flex flex-col items-center gap-2">
+                <div className="relative h-16 w-16 flex-center">
+                  <img
+                    src="/assets/character/char-bg.png"
+                    width={64}
+                    height={64}
+                    alt="프로필 이미지 배경"
+                    draggable={false}
+                  />
+                  <img
+                    src={member.avatar}
+                    width={36}
+                    height={26}
+                    alt={member.name}
+                    className="absolute"
+                    draggable={false}
+                  />
+                  {isLeader && (
+                    <img
+                      src="/assets/icons/leader.svg"
+                      alt="leader"
+                      width={16}
+                      height={16}
+                      className="absolute bottom-2 right-2"
+                    />
+                  )}
+                </div>
+                <span className="text-body-6 text-tx-default_3">
+                  {member.name}
+                </span>
+              </li>
+            );
+          })}
+          <li className="flex flex-col items-center gap-2">
+            <button type="button" className="h-16 w-16 select-none flex-center">
+              <img
+                src="/assets/icons/plus.svg"
+                width={64}
+                height={64}
+                alt="멤버 추가"
+                draggable="false"
+              />
+            </button>
+          </li>
+        </ul>
       </section>
     </>
   );
