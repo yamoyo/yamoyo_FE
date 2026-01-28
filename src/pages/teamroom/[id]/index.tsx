@@ -38,16 +38,18 @@ export default function TeamRoomMainPage() {
             title=""
             onBack={() => navigate('/home', { replace: true })}
             rightContent={
-              <button onClick={() => {}}>
-                <div className="flex items-center gap-5">
+              <div className="flex items-center">
+                <button type="button" className="h-10 w-10 flex-center">
                   <img
                     src="/assets/icons/notification.svg"
                     width={20}
                     height={20}
                   />
+                </button>
+                <button type="button" className="h-10 w-10 flex-center">
                   <img src="/assets/icons/setting.svg" width={24} height={24} />
-                </div>
-              </button>
+                </button>
+              </div>
             }
           />
         </div>
@@ -61,6 +63,25 @@ export default function TeamRoomMainPage() {
           )}
         </div>
       </div>
+      <section className="mx-6 mt-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-body-1 text-tx-default">팀원</span>
+            <span className="size-6 gap-[10px] rounded-lg border border-bg-card bg-bg-textfiled p-[10px] text-body-1 text-bg-secondary_2 flex-col-center">
+              {teamRoom?.members.length ?? 1}
+            </span>
+          </div>
+          <button type="button" className="px-[14px] py-[6px] flex-center">
+            <img
+              src="/assets/icons/arrow-left.svg"
+              width={10}
+              height={18}
+              alt="펼치기/접기"
+              className="-rotate-90"
+            />
+          </button>
+        </div>
+      </section>
     </>
   );
 }

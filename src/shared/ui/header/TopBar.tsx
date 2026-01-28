@@ -51,7 +51,7 @@ export default function TopBar({
           onClick={handleBack}
           aria-label={backIcon === 'cancel' ? '닫기' : '뒤로가기'}
           type="button"
-          className="absolute left-[30px] top-1/2"
+          className="absolute left-[30px] top-1/2 h-10 w-10 -translate-y-1/2 flex-center"
         >
           <img
             src={
@@ -67,8 +67,11 @@ export default function TopBar({
         </button>
       )}
       <span className="text-body-1 text-white">{title}</span>
+
       {rightContent && (
-        <div className="absolute right-[30px] top-1/2">{rightContent}</div>
+        <div className="absolute right-[22px] top-1/2 -translate-y-1/2">
+          {rightContent}
+        </div>
       )}
     </header>
   );

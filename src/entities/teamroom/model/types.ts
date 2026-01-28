@@ -1,9 +1,17 @@
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  avatar: string;
+}
+
 export interface TeamRoom {
   id: string;
   name: string;
   description: string;
   bannerId: string;
-  deadlineDate: string; // ISO string
+  deadlineDate: string;
+  members: TeamMember[];
 }
 
 export interface CreateTeamRoomRequest {
