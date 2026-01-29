@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoom } from '@/entities/teamroom/model/types';
@@ -15,34 +15,29 @@ export default function TeamRoomMainPage() {
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
+  const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
-  const appliedEditDataRef = useRef(false);
 
   useEffect(() => {
     if (!id) return;
-
-    const editData = useTeamRoomEditStore.getState().editData;
-
+    let isMounted = true;
     getTeamRoom(id).then((data) => {
-      if (!data) return;
-
-      // 수정된 데이터가 있으면 반영
-      if (editData && !appliedEditDataRef.current) {
-        setTeamRoom({
-          ...data,
-          name: editData.name,
-          description: editData.description,
-          bannerId: editData.bannerId,
-          deadlineDate: editData.deadlineDate,
-        });
-        appliedEditDataRef.current = true;
-        // 데이터 적용 후 전역 상태 초기화
-        clearEditData();
-      } else {
+      if (isMounted && data) {
         setTeamRoom(data);
       }
     });
-  }, [id, clearEditData]);
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+
+  useEffect(() => {
+    if (editData) {
+      setTeamRoom((prev) => (prev ? { ...prev, ...editData } : null));
+      clearEditData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editData]);
 
   return (
     <>

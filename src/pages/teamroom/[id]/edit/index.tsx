@@ -21,51 +21,42 @@ export default function TeamRoomEditPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [deadlineDate, setDeadlineDate] = useState<Date>();
-  const [description, setDescription] = useState('');
-  const [selectedImageId, setSelectedImageId] = useState<string>(
-    DEFAULT_TEAMROOM_IMAGE_ID,
+  const [isLoading, setIsLoading] = useState(
+    () => !useTeamRoomEditStore.getState().editData,
   );
-  const [isLoading, setIsLoading] = useState(true);
 
+  const editData = useTeamRoomEditStore((state) => state.editData);
   const setEditData = useTeamRoomEditStore((state) => state.setEditData);
+  const updateEditData = useTeamRoomEditStore((state) => state.updateEditData);
 
+  const teamName = editData?.name ?? '';
+  const description = editData?.description ?? '';
+  const selectedImageId = editData?.bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
+  const deadlineDate = editData?.deadlineDate
+    ? new Date(editData.deadlineDate)
+    : undefined;
   const isDeadlineSelected = Boolean(deadlineDate);
 
   // 기존 팀룸 데이터 불러오기 (최초 1회만)
   useEffect(() => {
     if (!id) return;
+    if (editData) {
+      setIsLoading(false);
+      return;
+    }
 
     getTeamRoom(id).then((teamRoom) => {
       if (!teamRoom) return;
-
-      // 전역 상태에 수정 데이터가 있으면 우선 사용
-      const currentEditData = useTeamRoomEditStore.getState().editData;
-      const name = currentEditData?.name ?? teamRoom.name;
-      const desc = currentEditData?.description ?? teamRoom.description;
-      const deadline = currentEditData?.deadlineDate ?? teamRoom.deadlineDate;
-      const banner = currentEditData?.bannerId ?? teamRoom.bannerId;
-
-      setTeamName(name);
-      setDescription(desc);
-      setDeadlineDate(new Date(deadline));
-      setSelectedImageId(banner);
-
-      // 전역 상태 초기화 (처음 진입 시)
-      if (!currentEditData) {
-        setEditData({
-          name,
-          description: desc,
-          deadlineDate: deadline,
-          bannerId: banner,
-        });
-      }
-
+      setEditData({
+        name: teamRoom.name,
+        description: teamRoom.description,
+        deadlineDate: teamRoom.deadlineDate,
+        bannerId: teamRoom.bannerId,
+      });
       setIsLoading(false);
     });
-  }, [id, setEditData]);
+  }, [id, editData, setEditData]);
 
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? '';
@@ -81,7 +72,8 @@ export default function TeamRoomEditPage() {
   const handleOpenDeadlineCalendar = () => {
     openCalendarModal({
       selectedDate: deadlineDate,
-      onSelectDate: setDeadlineDate,
+      onSelectDate: (date) =>
+        updateEditData({ deadlineDate: date.toISOString() }),
     });
   };
 
@@ -133,7 +125,7 @@ export default function TeamRoomEditPage() {
       <section className="flex flex-col gap-9 px-6 pt-9">
         <TeamNameField
           value={teamName}
-          onChange={setTeamName}
+          onChange={(value) => updateEditData({ name: value })}
           errorMessage={
             isSubmitted && teamName.trim().length === 0
               ? '팀 이름을 입력해주세요'
@@ -147,7 +139,10 @@ export default function TeamRoomEditPage() {
           onOpen={handleOpenDeadlineCalendar}
         />
 
-        <DescriptionField value={description} onChange={setDescription} />
+        <DescriptionField
+          value={description}
+          onChange={(value) => updateEditData({ description: value })}
+        />
       </section>
 
       <div className="px-6 pb-[16px] pt-[43px]">
