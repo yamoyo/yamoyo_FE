@@ -110,7 +110,7 @@ export function TimingGame() {
   return (
     <div
       style={{
-        backgroundImage: 'url(/assets/background/bg-timing-game.png)',
+        backgroundImage: 'url(/assets/game/timing/bg-timing-game.png)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: '110% auto',
         backgroundPosition: 'center',
@@ -143,7 +143,6 @@ export function TimingGame() {
             </p>
           </div>
 
-          {/* 목표 시간 / 현재 시간 */}
           <div className="mb-6 text-center font-galmuri-11 text-[17px] font-bold text-tx-default">
             목표 시간: <span className="text-[#FDDA08]">{'[7.777초]'}</span>
           </div>
