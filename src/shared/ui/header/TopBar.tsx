@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   title?: string;
@@ -11,6 +12,8 @@ interface Props {
   onBack?: () => void;
   /** 오른쪽 아이콘들이 있는 헤더를 위한 옵션 */
   rightContent?: ReactNode;
+  /** 게임 폰트를 적용할 때 사용 */
+  gameFont?: boolean;
 }
 
 /**
@@ -20,6 +23,7 @@ interface Props {
  * @param {boolean} [showBackButton=true] - 뒤로가기 버튼 노출 여부
  * @param {'arrow' | 'cancel'} [backIcon='arrow'] - 뒤로가기 아이콘 타입
  * @param {() => void} [onBack] - 뒤로가기 동작. 미제공 시 navigate(-1)
+ * @param {boolean} [gameFont] - 게임 전용 폰트 적용 여부
  *
  * @example
  * // 기본 사용
@@ -39,6 +43,7 @@ export default function TopBar({
   backIcon = 'arrow',
   onBack,
   rightContent,
+  gameFont,
 }: Props) {
   const navigate = useNavigate();
 
@@ -66,7 +71,14 @@ export default function TopBar({
           />
         </button>
       )}
-      <span className="text-body-1 text-white">{title}</span>
+      <span
+        className={cn('text-body-1 text-white', {
+          'title-g3': gameFont,
+        })}
+        style={gameFont ? { filter: 'drop-shadow(2px 2px 0 #000)' } : undefined}
+      >
+        {title}
+      </span>
 
       {rightContent && (
         <div className="absolute right-[22px] top-1/2 -translate-y-1/2">
