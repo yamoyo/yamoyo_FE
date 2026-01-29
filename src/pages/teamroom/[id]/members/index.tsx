@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamMember } from '@/entities/teamroom/model/types';
-import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import MemberListItem from '@/widgets/teamroom/members/ui/MemberListItem';
 
 export default function TeamRoomMembersPage() {
@@ -20,9 +19,6 @@ export default function TeamRoomMembersPage() {
       if (data) setMembers(data.members);
     });
   }, [id]);
-
-  const leader = members.find((member) => isLeader(member.role));
-  const isCurrentUserLeader = leader?.id === currentUserId;
 
   const handleSettingClick = (member: TeamMember) => {
     navigate(`/teamroom/${id}/members/${member.id}`);
@@ -41,7 +37,6 @@ export default function TeamRoomMembersPage() {
               key={member.id}
               member={member}
               currentUserId={currentUserId}
-              isCurrentUserLeader={isCurrentUserLeader}
               onSettingClick={handleSettingClick}
             />
           ))}

@@ -5,14 +5,12 @@ import SettingIcon from '@/shared/assets/icons/setting.svg?react';
 interface MemberListItemProps {
   member: TeamMember;
   currentUserId?: number;
-  isCurrentUserLeader?: boolean;
   onSettingClick?: (member: TeamMember) => void;
 }
 
 export default function MemberListItem({
   member,
   currentUserId,
-  isCurrentUserLeader = false,
   onSettingClick,
 }: MemberListItemProps) {
   const isCurrentUser = member.id === currentUserId;
@@ -54,8 +52,8 @@ export default function MemberListItem({
         </div>
       </div>
 
-      {/* 설정 버튼 - 현재 유저가 팀장이고, 자기 자신이 아닐 때만 표시 */}
-      {isCurrentUserLeader && !isCurrentUser && (
+      {/* 설정 버튼 - 자기 자신이 아닐 때만 표시 */}
+      {!isCurrentUser && (
         <button
           type="button"
           className="p-[10px] text-tx-default_4"

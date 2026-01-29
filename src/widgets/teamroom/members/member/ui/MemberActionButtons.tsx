@@ -1,14 +1,18 @@
 import BottomButton from '@/shared/ui/button/BottomButton';
 
 interface MemberActionButtonsProps {
+  isLeader: boolean;
   onDelegateLeader: () => void;
   onExpelMember: () => void;
 }
 
 export default function MemberActionButtons({
+  isLeader,
   onDelegateLeader,
   onExpelMember,
 }: MemberActionButtonsProps) {
+  if (!isLeader) return null;
+
   return (
     <section className="flex select-none gap-3 px-6" draggable="false">
       <BottomButton
