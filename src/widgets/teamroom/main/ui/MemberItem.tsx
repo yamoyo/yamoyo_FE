@@ -11,7 +11,7 @@ export default function MemberItem({ member }: MemberItemProps) {
     member.role === '팀장';
 
   return (
-    <li className="flex flex-col items-center gap-2">
+    <li className="flex shrink-0 flex-col items-center gap-2">
       <div className="relative h-16 w-16 flex-center">
         <img
           src="/assets/character/char-bg.png"

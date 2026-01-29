@@ -40,11 +40,11 @@ export default function MemberListSection({
         </div>
       </div>
       {isOpen && (
-        <ul className="flex flex-wrap gap-x-4 gap-y-3">
+        <ul className="scrollbar-hide -mx-6 flex gap-2 overflow-x-auto px-6">
           {members.map((member) => (
             <MemberItem key={member.id} member={member} />
           ))}
-          <li className="flex flex-col items-center gap-2">
+          <li className="flex shrink-0 flex-col items-center gap-2">
             <button
               type="button"
               onClick={onAddMember}

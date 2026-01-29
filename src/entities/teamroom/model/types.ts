@@ -3,6 +3,10 @@ export interface TeamMember {
   name: string;
   role: string;
   avatar: string;
+  email: string;
+  major: string;
+  mbti: string;
+  joinedAt: string;
 }
 
 export interface TeamRoom {
