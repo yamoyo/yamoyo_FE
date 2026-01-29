@@ -52,6 +52,24 @@ export default function TeamRoomCreatePage() {
 
   const isCreateEnabled = teamName.trim().length > 0 && Boolean(deadlineDate); // 만들기 버튼 활성화 여부 판단
 
+  const handleCreateTeamRoom = async () => {
+    setIsSubmitted(true);
+    if (!isCreateEnabled) {
+      return;
+    }
+
+    const res = await createTeamRoom({
+      name: teamName.trim(),
+      description,
+      bannerId: selectedImageId,
+      deadlineDate: deadlineDate!.toISOString(),
+    });
+    openTeamRoomCreatedModal({
+      teamRoomId: res.teamRoomId,
+      inviteLink: res.inviteLink,
+    });
+  };
+
   return (
     <div className="flex flex-col">
       <TopBar
@@ -89,21 +107,7 @@ export default function TeamRoomCreatePage() {
       <div className="px-6 pb-[16px] pt-[43px]">
         <BottomButton
           text={'만들기'}
-          onClick={async () => {
-            setIsSubmitted(true);
-            if (isCreateEnabled) {
-              const res = await createTeamRoom({
-                name: teamName.trim(),
-                description,
-                bannerId: selectedImageId,
-                deadlineDate: deadlineDate!.toISOString(),
-              });
-              openTeamRoomCreatedModal({
-                teamRoomId: res.teamRoomId,
-                inviteLink: res.inviteLink,
-              });
-            }
-          }}
+          onClick={handleCreateTeamRoom}
           disabled={!isCreateEnabled}
         />
       </div>

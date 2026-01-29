@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  title: string;
+  title?: string;
   /** 기본값: true — 뒤로가기 버튼 노출 여부 */
   showBackButton?: boolean;
   /** 기본값: 'arrow' — 뒤로가기 아이콘 타입 */

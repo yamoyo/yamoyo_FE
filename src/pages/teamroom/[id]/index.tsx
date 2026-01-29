@@ -37,7 +37,6 @@ export default function TeamRoomMainPage() {
         />
         <div className="absolute inset-x-0 top-0">
           <TopBar
-            title=""
             onBack={() => navigate('/home', { replace: true })}
             rightContent={
               <div className="flex items-center">
