@@ -1,6 +1,6 @@
 import '@/shared/styles/timer.css';
 import { cn } from '@/shared/config/tailwind/cn';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 interface Props {
   startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
