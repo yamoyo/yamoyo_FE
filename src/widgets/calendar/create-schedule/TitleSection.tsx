@@ -51,7 +51,7 @@ export default function TitleSection({
             })}
             placeholder="미팅 제목을 입력하세요"
             maxLength={20}
-            className="w-full rounded-lg bg-bg-textfiled px-4 py-3 pr-14 text-body-5 text-tx-textfiled_disabled outline-none"
+            className="w-full rounded-lg bg-bg-textfiled px-4 py-3 pr-14 text-body-5 text-tx-default outline-none placeholder:text-tx-textfiled_disabled"
           />
           <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[12px] font-medium text-tx-default_4">
             {titleLength}/20

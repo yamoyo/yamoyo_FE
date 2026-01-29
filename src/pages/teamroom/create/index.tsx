@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
@@ -6,6 +7,7 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
+import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
@@ -15,6 +17,7 @@ import {
 } from '@/widgets/teamroom/create';
 
 export default function TeamRoomCreatePage() {
+  const navigate = useNavigate();
   const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [deadlineDate, setDeadlineDate] = useState<Date>();
@@ -22,7 +25,9 @@ export default function TeamRoomCreatePage() {
 
   const isDeadlineSelected = Boolean(deadlineDate);
 
-  const selectedImageId = DEFAULT_TEAMROOM_IMAGE_ID; // 임시로 썸네일로 보여줄 이미지 ID 값 지정
+  const location = useLocation();
+  const bannerId = (location.state as { bannerId?: string })?.bannerId;
+  const selectedImageId = bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
 
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? ''; // 해당 ID 값에 맞는 이미지 경로로 설정
@@ -30,6 +35,9 @@ export default function TeamRoomCreatePage() {
   const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID; // 이미지 종류 판단하여 이미지 선택 아이콘 변경
 
   const openCalendarModal = useModalStore((state) => state.openCalendarModal);
+  const openTeamRoomCreatedModal = useModalStore(
+    (state) => state.openTeamRoomCreatedModal,
+  );
 
   const deadlineLabel = deadlineDate
     ? formatMonthDayLabel(deadlineDate)
@@ -44,14 +52,36 @@ export default function TeamRoomCreatePage() {
 
   const isCreateEnabled = teamName.trim().length > 0 && Boolean(deadlineDate); // 만들기 버튼 활성화 여부 판단
 
+  const handleCreateTeamRoom = async () => {
+    setIsSubmitted(true);
+    if (!isCreateEnabled) {
+      return;
+    }
+
+    const res = await createTeamRoom({
+      name: teamName.trim(),
+      description,
+      bannerId: selectedImageId,
+      deadlineDate: deadlineDate!.toISOString(),
+    });
+    openTeamRoomCreatedModal({
+      teamRoomId: res.teamRoomId,
+      inviteLink: res.inviteLink,
+    });
+  };
+
   return (
     <div className="flex flex-col">
-      <TopBar title={'팀룸 설정'} backIcon="arrow" />
+      <TopBar
+        title={'팀룸 설정'}
+        backIcon="arrow"
+        onBack={() => navigate('/home')}
+      />
 
       <BannerSection
         imageSrc={previewImage}
         isDefaultImage={isDefaultImage}
-        onEdit={() => {}}
+        onEdit={() => navigate('/teamroom/create/banner')}
       />
 
       <section className="flex flex-col gap-9 px-6 pt-9">
@@ -77,9 +107,7 @@ export default function TeamRoomCreatePage() {
       <div className="px-6 pb-[16px] pt-[43px]">
         <BottomButton
           text={'만들기'}
-          onClick={() => {
-            setIsSubmitted(true);
-          }}
+          onClick={handleCreateTeamRoom}
           disabled={!isCreateEnabled}
         />
       </div>

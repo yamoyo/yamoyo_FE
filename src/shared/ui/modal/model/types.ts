@@ -19,13 +19,17 @@ export interface CalendarModalOptions {
   onSelectDate: (date: Date) => void;
 }
 
+export interface TeamRoomCreatedModalOptions {
+  teamRoomId: string;
+  inviteLink: string;
+}
+
 /** 현재 활성화된 모달의 상태를 나타내는 타입 */
 export type ActiveModal =
   | { type: 'choice'; options: ChoiceModalOptions }
   | { type: 'calendar'; options: CalendarModalOptions }
   | { type: 'character'; options: CharacterModalOptions }
-  // 다른 모달 추가하려면 아래와 같이 추가
-  // | { type: 'info', options: InfoModalOptions }
+  | { type: 'teamroom-created'; options: TeamRoomCreatedModalOptions }
   | null;
 
 export interface ModalStore {
@@ -33,5 +37,6 @@ export interface ModalStore {
   openChoiceModal: (options: ChoiceModalOptions) => void;
   openCalendarModal: (options: CalendarModalOptions) => void;
   openCharacterModal: (options: CharacterModalOptions) => void;
+  openTeamRoomCreatedModal: (options: TeamRoomCreatedModalOptions) => void;
   closeModal: () => void;
 }

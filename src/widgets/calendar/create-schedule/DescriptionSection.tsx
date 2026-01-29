@@ -28,7 +28,7 @@ export default function DescriptionSection({
           placeholder="미팅 내용이 있다면 입력하세요"
           rows={3}
           maxLength={50}
-          className="w-full resize-none rounded-lg bg-bg-textfiled px-4 py-3 pb-8 text-body-5 text-tx-textfiled_disabled outline-none"
+          className="w-full resize-none rounded-lg bg-bg-textfiled px-4 py-3 pb-8 text-body-5 text-tx-default outline-none placeholder:text-tx-textfiled_disabled"
         />
         <span className="pointer-events-none absolute bottom-4 right-4 text-[12px] font-medium text-tx-default_4">
           {descLength}/50

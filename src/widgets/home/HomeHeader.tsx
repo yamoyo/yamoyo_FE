@@ -32,7 +32,7 @@ export default function HomeHeader() {
 
         <Link to="/notification" draggable="false">
           <img
-            src="/assets/home/home-bell.png"
+            src="/assets/icons/notification.svg"
             width={24}
             height={24}
             alt="알림"

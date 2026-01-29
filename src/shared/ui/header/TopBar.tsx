@@ -1,13 +1,16 @@
+import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-  title: string;
+  title?: string;
   /** 기본값: true — 뒤로가기 버튼 노출 여부 */
   showBackButton?: boolean;
   /** 기본값: 'arrow' — 뒤로가기 아이콘 타입 */
   backIcon?: 'arrow' | 'cancel';
   /** 커스텀 뒤로가기 로직. 없으면 navigate(-1) */
   onBack?: () => void;
+  /** 오른쪽 아이콘들이 있는 헤더를 위한 옵션 */
+  rightContent?: ReactNode;
 }
 
 /**
@@ -35,6 +38,7 @@ export default function TopBar({
   showBackButton = true,
   backIcon = 'arrow',
   onBack,
+  rightContent,
 }: Props) {
   const navigate = useNavigate();
 
@@ -47,7 +51,7 @@ export default function TopBar({
           onClick={handleBack}
           aria-label={backIcon === 'cancel' ? '닫기' : '뒤로가기'}
           type="button"
-          className="absolute left-[30px] top-1/2"
+          className="absolute left-[30px] top-1/2 h-10 w-10 -translate-y-1/2 flex-center"
         >
           <img
             src={
@@ -63,6 +67,12 @@ export default function TopBar({
         </button>
       )}
       <span className="text-body-1 text-white">{title}</span>
+
+      {rightContent && (
+        <div className="absolute right-[22px] top-1/2 -translate-y-1/2">
+          {rightContent}
+        </div>
+      )}
     </header>
   );
 }

@@ -14,7 +14,7 @@ export default function LocationSection({ register }: LocationSectionProps) {
       <input
         {...register('location')}
         placeholder="장소 혹은 플랫폼을 입력해주세요"
-        className="w-full rounded-lg bg-bg-textfiled px-4 py-3 text-body-5 text-tx-textfiled_disabled outline-none"
+        className="w-full rounded-lg bg-bg-textfiled px-4 py-3 text-body-5 text-tx-default outline-none placeholder:text-tx-textfiled_disabled"
       />
     </div>
   );
