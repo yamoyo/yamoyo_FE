@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import BottomSheet from '@/shared/ui/BottomSheet';
 import type { TeamRoom } from '@/entities/teamroom/model/types';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface TeamRoomOptionsBottomSheetProps {
@@ -16,6 +19,9 @@ export default function TeamRoomOptionsBottomSheet({
   teamRoom,
   currentUserId,
 }: TeamRoomOptionsBottomSheetProps) {
+  const navigate = useNavigate();
+  const openChoiceModal = useModalStore((state) => state.openChoiceModal);
+
   const bannerSrc =
     TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerId)?.src ?? '';
 
@@ -27,6 +33,36 @@ export default function TeamRoomOptionsBottomSheet({
   );
 
   const isLeader = leader?.id === currentUserId;
+
+  const handleLeaveTeamRoom = () => {
+    onClose();
+    openChoiceModal({
+      title: '팀룸을 나가시겠습니까?',
+      description: '다시 팀룸을 들어오려면 링크를\n새로 받아야합니다.',
+      leftLabel: '취소',
+      rightLabel: '나가기',
+      onClickRightBtn: () => {
+        // TODO: 팀룸 나가기 API 호출
+        navigate('/home', { replace: true });
+      },
+    });
+  };
+
+  const setEditData = useTeamRoomEditStore((state) => state.setEditData);
+
+  const handleEditTeamRoom = () => {
+    onClose();
+    // 현재 teamRoom 데이터를 전역 상태에 저장
+    if (teamRoom) {
+      setEditData({
+        bannerId: teamRoom.bannerId,
+        name: teamRoom.name,
+        description: teamRoom.description,
+        deadlineDate: teamRoom.deadlineDate,
+      });
+    }
+    navigate(`/teamroom/${teamRoom?.id}/edit`);
+  };
 
   return (
     <BottomSheet
@@ -89,7 +125,11 @@ export default function TeamRoomOptionsBottomSheet({
             </p>
           </button>
 
-          <button type="button" className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={handleEditTeamRoom}
+            className="flex items-center gap-4"
+          >
             <img
               src="/assets/icons/teamroom-edit.svg"
               width={20}
@@ -99,7 +139,11 @@ export default function TeamRoomOptionsBottomSheet({
             <p className="text-body-4.1 text-tx-default">편집</p>
           </button>
 
-          <button type="button" className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={handleLeaveTeamRoom}
+            className="flex items-center gap-4"
+          >
             <img
               src="/assets/icons/teamroom-out.svg"
               width={20}
@@ -109,7 +153,7 @@ export default function TeamRoomOptionsBottomSheet({
             <p className="text-body-4.1 text-tx-default">팀룸 나가기</p>
           </button>
 
-          {/** TODO(준열) : 로그인 유저의 권한에 따른 팀룸 삭제 활성화 여부 구현 해야함 */}
+          {/** TODO(준열) : 로그인 유저의 권한에 따른 팀룸 삭제 활성화 여부 구현 해야함 + 모달 연결*/}
           <button
             type="button"
             disabled={!isLeader}

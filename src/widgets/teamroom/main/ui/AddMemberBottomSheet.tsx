@@ -1,6 +1,6 @@
 import BottomSheet from '@/shared/ui/BottomSheet';
-import LinkCopyIcon from '@public/assets/icons/link-copy.svg?react';
-import KaKaoLinkIcon from '@public/assets/login/kakao.svg?react';
+import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
+import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
 
 interface AddMemberBottomSheetProps {
   isOpen: boolean;
