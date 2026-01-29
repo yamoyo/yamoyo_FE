@@ -1,6 +1,7 @@
 import ModalDim from '../ModalDim';
 import CharacterModalMainVisual from './MainVisual';
 import { CharacterModalOptions } from './model/types';
+import { useModalStore } from '../model/modal-store';
 
 /** 가운데 캐릭터가 있는 모달
  *
@@ -11,12 +12,19 @@ import { CharacterModalOptions } from './model/types';
  */
 export default function CharacterModal(props: CharacterModalOptions) {
   const { title, subTitle, buttonText, onClick, ...character } = props;
+  const { closeModal } = useModalStore();
 
   const hasButton = Boolean(buttonText);
 
   const paddingTop =
     character.type === 'CROWN' ? (hasButton ? 44 : 53) : hasButton ? 28 : 44;
   const paddingBottom = buttonText ? 20 : 26;
+
+  const handleOnClick = () => {
+    if (!onClick) return;
+    onClick();
+    closeModal();
+  };
 
   return (
     <ModalDim isActiveCloseModal={false}>
@@ -36,7 +44,7 @@ export default function CharacterModal(props: CharacterModalOptions) {
           {buttonText && (
             <button
               className="mt-4 h-[52px] w-full rounded-lg bg-bg-primary text-body-1 text-tx-default"
-              onClick={onClick}
+              onClick={handleOnClick}
             >
               {buttonText}
             </button>
