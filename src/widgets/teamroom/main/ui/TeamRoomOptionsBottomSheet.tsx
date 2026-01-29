@@ -113,7 +113,14 @@ export default function TeamRoomOptionsBottomSheet({
           </div>
         </div>
         <div className="flex flex-col items-start gap-6">
-          <button type="button" className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate(`/teamroom/${teamRoom?.id}/members`);
+            }}
+            className="flex items-center gap-4"
+          >
             <img
               src="/assets/home/users.png"
               width={20}
