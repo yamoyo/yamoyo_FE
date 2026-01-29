@@ -1,6 +1,6 @@
 import '@/shared/styles/timer.css';
 import { cn } from '@/shared/config/tailwind/cn';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface Props {
   startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
@@ -18,28 +18,20 @@ export function TimerBar({
   /**
    * elapsedSec
    *
-   * - 이 컴포넌트가 처음 렌더될 때, 얼마나 시간이 지났는지만 기록
+   * - 컴포넌트가 처음 렌더될 때, 얼마나 시간이 지났는지만 기록
    * - 이후에 모달이 뜨거나 다른 state가 바뀌어도 다시 계산되지 않도록 startedAt와 totalMs가 바뀔 때만 갱신
    */
-  const [elapsedSec, setElapsedSec] = useState(0);
-
-  useEffect(() => {
-    /** 서버에서 받은 startedAt(문자열)을 ms 단위 숫자로 변경 */
+  const elapsedSec = useMemo(() => {
     const startedAtMs = new Date(startedAt).getTime();
     const now = Date.now();
 
-    /** 실제로 경과(elapsed)한 시간
-     *
-     *  - 음수면 0으로 처리: 아직 시작 전이므로 경과 시간이 없는 상태로 간주
-     */
+    // 아직 시작 전이면 0초로 간주
     const elapsedMs = Math.max(0, now - startedAtMs);
-    /** 경과 시간 상한선(clamp)
-     *    - TOTAL_MS(10초)를 넘어서도 애니메이션을 계속 진행시키지 않기 위해 최대값을 TOTAL_MS로 고정
-     *    - 시작 시간이 오래 전이어도 이미 끝난 상태로만 보여주기 위함
-     */
+
+    // 이미 끝난 타이머라면 totalMs까지만 보여주기
     const clampedElapsedMs = Math.min(elapsedMs, totalMs);
 
-    setElapsedSec(clampedElapsedMs / 1000); // 경과 시간, ms -> sec 변환
+    return clampedElapsedMs / 1000; // ms -> sec
   }, [startedAt, totalMs]);
 
   return (
