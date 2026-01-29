@@ -1,21 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
-import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
+import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 
 const BANNER_IMAGES = TEAMROOM_IMAGES.filter(
   (image) => image.id !== 'banner-empty',
 );
 
-export default function BannerPage() {
+export default function TeamRoomEditBannerPage() {
   const navigate = useNavigate();
-  const updateCreateData = useTeamRoomCreateStore(
-    (state) => state.updateCreateData,
-  );
+  const { id } = useParams<{ id: string }>();
+  const updateEditData = useTeamRoomEditStore((state) => state.updateEditData);
 
   const handleSelect = (imageId: string) => {
-    updateCreateData({ bannerId: imageId });
-    navigate('/teamroom/create', { replace: true });
+    updateEditData({ bannerId: imageId });
+    navigate(`/teamroom/${id}/edit`, { replace: true });
   };
 
   return (

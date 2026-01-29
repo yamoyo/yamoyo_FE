@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
@@ -8,6 +8,7 @@ import {
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
 import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
+import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
@@ -18,16 +19,37 @@ import {
 
 export default function TeamRoomCreatePage() {
   const navigate = useNavigate();
-  const [teamName, setTeamName] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [deadlineDate, setDeadlineDate] = useState<Date>();
-  const [description, setDescription] = useState('');
 
+  const createData = useTeamRoomCreateStore((state) => state.createData);
+
+  const setCreateData = useTeamRoomCreateStore((state) => state.setCreateData);
+
+  const updateCreateData = useTeamRoomCreateStore(
+    (state) => state.updateCreateData,
+  );
+
+  const clearCreateData = useTeamRoomCreateStore(
+    (state) => state.clearCreateData,
+  );
+
+  useEffect(() => {
+    if (createData) return;
+    setCreateData({
+      name: '',
+      description: '',
+      bannerId: DEFAULT_TEAMROOM_IMAGE_ID,
+      deadlineDate: '',
+    });
+  }, [createData, setCreateData]);
+
+  const teamName = createData?.name ?? '';
+  const description = createData?.description ?? '';
+  const selectedImageId = createData?.bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
+  const deadlineDate = createData?.deadlineDate
+    ? new Date(createData.deadlineDate)
+    : undefined;
   const isDeadlineSelected = Boolean(deadlineDate);
-
-  const location = useLocation();
-  const bannerId = (location.state as { bannerId?: string })?.bannerId;
-  const selectedImageId = bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
 
   const previewImage =
     TEAMROOM_IMAGES.find((image) => image.id === selectedImageId)?.src ?? ''; // 해당 ID 값에 맞는 이미지 경로로 설정
@@ -35,6 +57,7 @@ export default function TeamRoomCreatePage() {
   const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID; // 이미지 종류 판단하여 이미지 선택 아이콘 변경
 
   const openCalendarModal = useModalStore((state) => state.openCalendarModal);
+
   const openTeamRoomCreatedModal = useModalStore(
     (state) => state.openTeamRoomCreatedModal,
   );
@@ -46,7 +69,8 @@ export default function TeamRoomCreatePage() {
   const handleOpenDeadlineCalendar = () => {
     openCalendarModal({
       selectedDate: deadlineDate,
-      onSelectDate: setDeadlineDate,
+      onSelectDate: (date) =>
+        updateCreateData({ deadlineDate: date.toISOString() }),
     });
   };
 
@@ -68,6 +92,7 @@ export default function TeamRoomCreatePage() {
       teamRoomId: res.teamRoomId,
       inviteLink: res.inviteLink,
     });
+    clearCreateData();
   };
 
   return (
@@ -87,7 +112,7 @@ export default function TeamRoomCreatePage() {
       <section className="flex flex-col gap-9 px-6 pt-9">
         <TeamNameField
           value={teamName}
-          onChange={setTeamName}
+          onChange={(value) => updateCreateData({ name: value })}
           errorMessage={
             isSubmitted && teamName.trim().length === 0
               ? '팀 이름을 입력해주세요'
@@ -101,7 +126,10 @@ export default function TeamRoomCreatePage() {
           onOpen={handleOpenDeadlineCalendar}
         />
 
-        <DescriptionField value={description} onChange={setDescription} />
+        <DescriptionField
+          value={description}
+          onChange={(value) => updateCreateData({ description: value })}
+        />
       </section>
 
       <div className="px-6 pb-[16px] pt-[43px]">
