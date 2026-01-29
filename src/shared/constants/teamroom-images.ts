@@ -20,7 +20,6 @@ export const TEAMROOM_IMAGES: TeamRoomImage[] = [
   { id: 'banner-14', src: '/assets/banner/banner-14.png' },
   { id: 'banner-15', src: '/assets/banner/banner-15.png' },
   { id: 'banner-16', src: '/assets/banner/banner-16.png' },
-  { id: 'banner-17', src: '/assets/banner/banner-17.png' },
   { id: 'banner-empty', src: '/assets/banner/banner-empty.png' },
 ];
 

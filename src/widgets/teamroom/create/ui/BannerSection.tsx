@@ -15,7 +15,7 @@ export default function BannerSection({
         <img
           src={imageSrc}
           alt="팀룸 배너 미리보기"
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover [image-rendering:pixelated]"
           draggable="false"
         />
         <button
