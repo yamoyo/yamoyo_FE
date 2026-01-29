@@ -22,7 +22,8 @@ export default function TeamRoomBanner({
       <img
         src={bannerSrc}
         alt="팀룸 배너"
-        className="h-full w-full object-cover [image-rendering:pixelated]"
+        className="h-full w-full select-none object-cover [image-rendering:pixelated]"
+        draggable="false"
       />
       <div
         className="pointer-events-none absolute inset-0"
@@ -41,6 +42,8 @@ export default function TeamRoomBanner({
                   src="/assets/icons/notification.svg"
                   width={20}
                   height={20}
+                  className="select-none"
+                  draggable="false"
                 />
               </button>
               <button
@@ -48,7 +51,13 @@ export default function TeamRoomBanner({
                 onClick={onSettingsClick}
                 className="h-10 w-10 flex-center"
               >
-                <img src="/assets/icons/setting.svg" width={24} height={24} />
+                <img
+                  src="/assets/icons/setting.svg"
+                  width={24}
+                  height={24}
+                  className="select-none"
+                  draggable="false"
+                />
               </button>
             </div>
           }
