@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
 
 const BANNER_IMAGES = TEAMROOM_IMAGES.filter(
   (image) => image.id !== 'banner-empty',
@@ -8,12 +9,13 @@ const BANNER_IMAGES = TEAMROOM_IMAGES.filter(
 
 export default function BannerPage() {
   const navigate = useNavigate();
+  const updateCreateData = useTeamRoomCreateStore(
+    (state) => state.updateCreateData,
+  );
 
   const handleSelect = (imageId: string) => {
-    navigate('/teamroom/create', {
-      replace: true,
-      state: { bannerId: imageId },
-    });
+    updateCreateData({ bannerId: imageId });
+    navigate('/teamroom/create', { replace: true });
   };
 
   return (
