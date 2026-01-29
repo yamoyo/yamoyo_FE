@@ -1,50 +1,62 @@
 import '@/shared/styles/timer.css';
+import { cn } from '@/shared/config/tailwind/cn';
+import { useEffect, useMemo, useState } from 'react';
 
-type TimerBarProps = {
+interface Props {
   startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
-};
+  totalMs?: number; // 타이머 전체 진행 시간 (기본값: 10000ms = 10초)
+  hideClock?: boolean;
+  containerClassName?: string;
+}
 
-/** 타이머 전체 진행 시간 (10000ms = 10초) */
-const TOTAL_MS = 10000;
-
-export function TimerBar({ startedAt }: TimerBarProps) {
-  /** 서버에서 받은 startedAt(문자열)을 ms 단위 숫자로 변경 */
-  const startedAtMs = new Date(startedAt).getTime();
-
-  const now = Date.now();
-
-  /** 실제로 경과(elapsed)한 시간
+export function TimerBar({
+  startedAt,
+  totalMs = 10000,
+  hideClock = false,
+  containerClassName,
+}: Props) {
+  /**
+   * elapsedSec
    *
-   *  - 음수면 0으로 처리: 아직 시작 전이므로 경과 시간이 없는 상태로 간주
+   * - 컴포넌트가 처음 렌더될 때, 얼마나 시간이 지났는지만 기록
+   * - 이후에 모달이 뜨거나 다른 state가 바뀌어도 다시 계산되지 않도록 startedAt와 totalMs가 바뀔 때만 갱신
    */
-  const elapsedMs = Math.max(0, now - startedAtMs);
+  const elapsedSec = useMemo(() => {
+    const startedAtMs = new Date(startedAt).getTime();
+    const now = Date.now();
 
-  /** 경과 시간 상한선(clamp)
-   *    - TOTAL_MS(10초)를 넘어서도 애니메이션을 계속 진행시키지 않기 위해 최대값을 TOTAL_MS로 고정
-   *    - 시작 시간이 오래 전이어도 이미 끝난 상태로만 보여주기 위함
-   */
-  const clampedElapsedMs = Math.min(elapsedMs, TOTAL_MS);
+    // 아직 시작 전이면 0초로 간주
+    const elapsedMs = Math.max(0, now - startedAtMs);
 
-  /** 경과 시간, ms -> sec 변환
-   *    - CSS animationDelay에서 사용할 값이기 때문에 초 단위로 변환
-   */
-  const elapsedSec = clampedElapsedMs / 1000;
+    // 이미 끝난 타이머라면 totalMs까지만 보여주기
+    const clampedElapsedMs = Math.min(elapsedMs, totalMs);
+
+    return clampedElapsedMs / 1000; // ms -> sec
+  }, [startedAt, totalMs]);
 
   return (
-    <div className="flex h-6 items-center overflow-x-hidden">
+    <div
+      className={cn(
+        'flex h-6 items-center overflow-x-hidden',
+        containerClassName,
+      )}
+    >
       {/* 
         타이머 전체 바(흰색 → 에러 컬러로 변하는 부분)
         - timer-bg-animate: 배경색을 시간에 따라 변경하는 CSS 애니메이션
-      */}
+        */}
       <div
-        className="timer-bg-animate relative h-[9px] w-full rounded-r-full bg-white"
+        className={cn(
+          'relative h-[9px] w-full rounded-r-full bg-white',
+          !hideClock ? 'timer-bg-animate bg-white' : 'bg-bg-card',
+        )}
         style={{
           /**
            * animationDuration
            * - bar-bg-to-error 애니메이션이 진행되는 전체 시간
            * - TOTAL_MS(10000ms)를 초 단위로 변환
            */
-          animationDuration: `${TOTAL_MS / 1000}s`,
+          animationDuration: `${totalMs / 1000}s`,
           /**
            * animationDelay (음수 값)
            * - 이미 시간이 얼마나 지났는지에 맞춰 애니메이션을 중간 지점에서 시작하기 위함
@@ -63,20 +75,22 @@ export function TimerBar({ startedAt }: TimerBarProps) {
           className="animate-fill-from-right absolute inset-y-0 right-0 bg-bg-card"
           style={{
             /** 스타일 설명은 위 요소 참고 */
-            animationDuration: `${TOTAL_MS / 1000}s`,
+            animationDuration: `${totalMs / 1000}s`,
             animationDelay: `${-elapsedSec}s`,
           }}
         >
-          <img
-            className="absolute left-0 top-1/2 -translate-x-[calc(50%-4px)] -translate-y-1/2"
-            style={{
-              boxShadow: '-4px 0px 8px 0px #20254080',
-            }}
-            src="/assets/icons/clock.svg"
-            alt="Clock Icon"
-            height={24}
-            width={24}
-          />
+          {!hideClock && (
+            <img
+              className="absolute left-0 top-1/2 -translate-x-[calc(50%-4px)] -translate-y-1/2"
+              style={{
+                boxShadow: '-4px 0px 8px 0px #20254080',
+              }}
+              src="/assets/icons/clock.svg"
+              alt="Clock Icon"
+              height={24}
+              width={24}
+            />
+          )}
         </div>
       </div>
     </div>

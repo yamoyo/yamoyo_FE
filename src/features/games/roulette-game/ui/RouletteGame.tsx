@@ -99,13 +99,13 @@ export function RouletteGame() {
           })}
         </div>
         <img
-          src="/assets/roulette/roulette-border.svg"
+          src="/assets/game/roulette/roulette-border.svg"
           alt="룰렛 테두리"
           draggable={false}
           className="pointer-events-none absolute left-1/2 top-1/2 h-[calc(100%+3px)] w-[calc(100%+3px)] -translate-x-1/2 -translate-y-1/2 select-none"
         />
         <img
-          src="/assets/roulette/roulette-arrow.svg"
+          src="/assets/game/roulette/roulette-arrow.svg"
           alt="룰렛 화살표"
           draggable={false}
           className="pointer-events-none absolute select-none"
