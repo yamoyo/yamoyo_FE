@@ -8,6 +8,7 @@ interface BottomSheetProps {
   children: React.ReactNode;
   title?: React.ReactNode;
   titleClassName?: string;
+  contentClassName?: string;
 }
 
 export default function BottomSheet({
@@ -16,6 +17,7 @@ export default function BottomSheet({
   children,
   title,
   titleClassName,
+  contentClassName,
 }: BottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return;
@@ -52,7 +54,7 @@ export default function BottomSheet({
               damping: 40,
               stiffness: 300,
             }}
-            className="relative w-full max-w-[390px] rounded-t-[20px] bg-[#292E46]"
+            className="relative w-full max-w-[390px] rounded-t-[20px] bg-bg-textfiled"
           >
             <div className="flex justify-center pb-2 pt-1">
               <div className="h-1 w-12" />
@@ -84,7 +86,7 @@ export default function BottomSheet({
               </div>
             )}
 
-            <div className="px-6 py-4">{children}</div>
+            <div className={contentClassName ?? 'px-6 py-4'}>{children}</div>
           </motion.div>
         </div>
       )}

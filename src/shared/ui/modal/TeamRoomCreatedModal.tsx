@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import ModalDim from '@/shared/ui/modal/ModalDim';
 import { TeamRoomCreatedModalOptions } from './model/types';
 import { useModalStore } from './model/modal-store';
+import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
 
 export default function TeamRoomCreatedModal({
   teamRoomId,
@@ -57,11 +58,7 @@ export default function TeamRoomCreatedModal({
             onClick={handleCopyLink}
             className="h-[55px] flex-1 select-none gap-[10px] rounded-lg bg-tx-default_3 text-body-2 text-tx-default_5 flex-center"
           >
-            <img
-              src="/assets/icons/link-copy.svg"
-              alt="링크 복사"
-              draggable="false"
-            />
+            <LinkCopyIcon className="h-5 w-5 text-tx-default_5" />
             <span>링크 복사</span>
           </button>
           <button

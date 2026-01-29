@@ -1,4 +1,4 @@
-import Character from '@/shared/assets/icons/character/main-char.svg?react';
+import Character from '@/shared/assets/character/main-char.svg?react';
 import { CHARACTER_COLORS } from '../model/constants';
 import { cn } from '@/shared/config/tailwind/cn';
 

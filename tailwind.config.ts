@@ -22,6 +22,7 @@ const config: Config = {
       fontSize: {
         'title-1': ['22px', { lineHeight: '36px', fontWeight: '700' }],
         'title-2': ['20px', { lineHeight: '32px', fontWeight: '700' }],
+        'title-3': ['18px', { lineHeight: '28px', fontWeight: '700' }],
         'body-1': ['16px', { lineHeight: '24px', fontWeight: '700' }],
         'body-2': ['16px', { lineHeight: '24px', fontWeight: '500' }],
         'body-3': ['16px', { lineHeight: '24px', fontWeight: '400' }],
