@@ -4,6 +4,7 @@ import TopBar from '@/shared/ui/header/TopBar';
 import { useTimingGame } from '../model/useTimingGame';
 import { TimerBar } from '@/widgets/teamroom/leader/ui/TimerBar';
 import { useEffect, useRef, useState } from 'react';
+import GameStartButton from '../../ui/GameStartButton';
 
 export function TimingGame() {
   const { elapsed, isRunning, difference, diffText, onClickButton } =
@@ -96,10 +97,6 @@ export function TimingGame() {
     };
   }, [isRunning]);
 
-  const buttonBackgroundImage = `/assets/game/button-background-${
-    difference !== null ? 'gray' : isRunning ? 'yellow' : 'white'
-  }.png`;
-
   const handleOnClick = () => {
     if (showTimeoutModal) {
       setShowTimeoutModal(false);
@@ -117,7 +114,7 @@ export function TimingGame() {
       }}
       className="flex flex-1 flex-col"
     >
-      <TopBar title="타이밍 맞추기" showBackButton={false} />
+      <TopBar title="타이밍 맞추기" showBackButton={false} gameFont />
       <TimerBar
         totalMs={15000}
         startedAt={startedAt}
@@ -167,28 +164,14 @@ export function TimingGame() {
         </div>
 
         <div className="relative">
-          <button
-            type="button"
+          <GameStartButton
             onClick={handleOnClick}
-            className="h-[70px] w-[170px]"
-            style={{
-              backgroundImage: `url(${buttonBackgroundImage})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-              backgroundSize: 'contain', // or 'cover'
-              filter: 'drop-shadow(2px 2px 0 #000)',
-            }}
-          >
-            <p
-              className="body-g1 text-center text-tx-default_black"
-              style={{
-                WebkitTextStrokeWidth: '0.5px',
-                WebkitTextStrokeColor: '#171719',
-              }}
-            >
-              {isRunning || difference !== null ? '정지' : '게임시작'}
-            </p>
-          </button>
+            color={isRunning || difference !== null ? 'gray' : 'white'}
+            text={isRunning || difference !== null ? '정지' : '게임시작'}
+            disabled={isRunning || difference !== null}
+          />
+
+          {/** 타임아웃 경고 모달 */}
           {showTimeoutModal && (
             <div className="absolute left-1/2 top-[-60px] flex h-12 w-[342px] -translate-x-1/2 select-none items-center gap-2.5 rounded-xl bg-[#191C2D] pl-[13px] text-body-6 text-white">
               <img
