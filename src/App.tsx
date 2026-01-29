@@ -81,7 +81,7 @@ export default function App() {
 
         <Route path="/teamroom">
           <Route index element={<MyTeamRoomPage />} />
-          <Route path=":id/main" element={<TeamRoomMainPage />} />
+          <Route path=":id" element={<TeamRoomMainPage />} />
           <Route path="create" element={<TeamRoomCreatePage />} />
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />

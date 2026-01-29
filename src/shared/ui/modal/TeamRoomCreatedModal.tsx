@@ -16,7 +16,7 @@ export default function TeamRoomCreatedModal({
 
   const handleGoToTeamRoom = () => {
     closeModal();
-    navigate(`/teamroom/${teamRoomId}/main`);
+    navigate(`/teamroom/${teamRoomId}`);
   };
 
   return (
