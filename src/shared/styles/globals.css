@@ -133,3 +133,26 @@ header {
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari */
 }
+
+@layer utilities {
+  .outside-stroke {
+    --stroke: #000;
+    --w: 2px;
+    text-shadow:
+      calc(-1 * var(--w)) 0 0 var(--stroke),
+      var(--w) 0 0 var(--stroke),
+      0 calc(-1 * var(--w)) 0 var(--stroke),
+      0 var(--w) 0 var(--stroke),
+      calc(-1 * var(--w)) calc(-1 * var(--w)) 0 var(--stroke),
+      var(--w) calc(-1 * var(--w)) 0 var(--stroke),
+      calc(-1 * var(--w)) var(--w) 0 var(--stroke),
+      var(--w) var(--w) 0 var(--stroke);
+  }
+}
+/* outside-stroke 예시 */
+/* <span
+  className="outside-stroke"
+  style={{ ['--stroke' as string]: 'rgb(59 130 246)' }}
+>
+  TEXT
+</span> */
