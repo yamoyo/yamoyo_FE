@@ -68,9 +68,8 @@
 
 @layer components {
   .title-g {
-    @apply font-galmuri-14 text-[24px] font-bold leading-[32px];
+    @apply font-galmuri-11 text-[24px] font-bold leading-[32px];
     -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: #354c5a;
   }
   .title-g2 {
     @apply font-galmuri-11 text-[55px] font-bold leading-normal tracking-[.5156rem];
