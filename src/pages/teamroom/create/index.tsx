@@ -7,6 +7,7 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
+import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
@@ -34,6 +35,9 @@ export default function TeamRoomCreatePage() {
   const isDefaultImage = selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID; // 이미지 종류 판단하여 이미지 선택 아이콘 변경
 
   const openCalendarModal = useModalStore((state) => state.openCalendarModal);
+  const openTeamRoomCreatedModal = useModalStore(
+    (state) => state.openTeamRoomCreatedModal,
+  );
 
   const deadlineLabel = deadlineDate
     ? formatMonthDayLabel(deadlineDate)
@@ -47,6 +51,24 @@ export default function TeamRoomCreatePage() {
   };
 
   const isCreateEnabled = teamName.trim().length > 0 && Boolean(deadlineDate); // 만들기 버튼 활성화 여부 판단
+
+  const handleCreateTeamRoom = async () => {
+    setIsSubmitted(true);
+    if (!isCreateEnabled) {
+      return;
+    }
+
+    const res = await createTeamRoom({
+      name: teamName.trim(),
+      description,
+      bannerId: selectedImageId,
+      deadlineDate: deadlineDate!.toISOString(),
+    });
+    openTeamRoomCreatedModal({
+      teamRoomId: res.teamRoomId,
+      inviteLink: res.inviteLink,
+    });
+  };
 
   return (
     <div className="flex flex-col">
@@ -85,9 +107,7 @@ export default function TeamRoomCreatePage() {
       <div className="px-6 pb-[16px] pt-[43px]">
         <BottomButton
           text={'만들기'}
-          onClick={() => {
-            setIsSubmitted(true);
-          }}
+          onClick={handleCreateTeamRoom}
           disabled={!isCreateEnabled}
         />
       </div>
