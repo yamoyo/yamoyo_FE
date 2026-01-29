@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import { VoteCharacter } from '@/widgets/teamroom/leader/model/type';
+import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 
 interface Props {
   characters: VoteCharacter[];
@@ -10,57 +10,14 @@ interface Props {
  * 팀장 투표 현황 화면에서 사용
  */
 export function CharacterSlider({ characters }: Props) {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollStartLeft = useRef(0);
-
-  const handleMouseDown: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!scrollRef.current) return;
-
-    isDragging.current = true;
-    startX.current = e.clientX;
-    scrollStartLeft.current = scrollRef.current.scrollLeft;
-  };
-
-  const handleMouseMove: React.MouseEventHandler<HTMLDivElement> = (e) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    const diff = e.clientX - startX.current;
-    scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
-  };
-
-  const handleTouchStart: React.TouchEventHandler<HTMLDivElement> = (e) => {
-    if (!scrollRef.current) return;
-
-    isDragging.current = true;
-    startX.current = e.touches[0].clientX;
-    scrollStartLeft.current = scrollRef.current.scrollLeft;
-  };
-
-  const handleTouchMove: React.TouchEventHandler<HTMLDivElement> = (e) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    const diff = e.touches[0].clientX - startX.current;
-    scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
-  };
-
-  const stopDragging = () => {
-    isDragging.current = false;
-  };
+  const { bind } = useHorizontalDragScroll();
 
   return (
     <div className="w-full select-none">
       {/* 슬라이더 영역 */}
       <div
-        ref={scrollRef}
+        {...bind}
         className="no-scrollbar flex w-full cursor-grab gap-2 overflow-x-auto py-4 pl-[34px] pr-7 active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={stopDragging}
-        onMouseLeave={stopDragging}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={stopDragging}
       >
         {characters.map((character) => (
           <div
