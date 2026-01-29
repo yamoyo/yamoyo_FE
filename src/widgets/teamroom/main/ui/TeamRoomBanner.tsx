@@ -5,9 +5,13 @@ import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 
 interface TeamRoomBannerProps {
   teamRoom: TeamRoom | null;
+  onSettingsClick?: () => void;
 }
 
-export default function TeamRoomBanner({ teamRoom }: TeamRoomBannerProps) {
+export default function TeamRoomBanner({
+  teamRoom,
+  onSettingsClick,
+}: TeamRoomBannerProps) {
   const navigate = useNavigate();
 
   const bannerSrc =
@@ -39,7 +43,11 @@ export default function TeamRoomBanner({ teamRoom }: TeamRoomBannerProps) {
                   height={20}
                 />
               </button>
-              <button type="button" className="h-10 w-10 flex-center">
+              <button
+                type="button"
+                onClick={onSettingsClick}
+                className="h-10 w-10 flex-center"
+              >
                 <img src="/assets/icons/setting.svg" width={24} height={24} />
               </button>
             </div>
