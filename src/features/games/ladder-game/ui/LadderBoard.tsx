@@ -31,6 +31,7 @@ const ROW_GAP_PX = 36;
 // 캐릭터 아이콘 이동 거리 (게임 시작 후 이동)
 const DOWN_PX = ROW_GAP_PX;
 const SIDE_PX = 72;
+const FINAL_DOWN_PX = 56;
 
 // 캐릭터 아이콘 이동 타이밍 (게임 시작 후 이동)
 const DOWN_MS = 520;
@@ -69,12 +70,7 @@ export default function LadderBoard({
   const [columnToRowsMap, setColumnToRowsMap] = useState<ColumnToRowsMap>(
     new Map(),
   );
-  const [posById, setPosById] = useState<PosAxisById>(
-    () =>
-      Object.fromEntries(
-        DUMMY_LADDER.participants.map((u) => [u.userId, { x: 0, y: 0 }]),
-      ) as PosAxisById,
-  );
+  const [posById, setPosById] = useState<PosAxisById | null>(null);
 
   // 타이머 ID 저장용 ref
   const timeoutsRef = useRef<number[]>([]);
@@ -95,6 +91,12 @@ export default function LadderBoard({
     });
 
     setColumnToRowsMap(createColumnToRowsMap(filteredLadderLines));
+    setPosById(() =>
+      DUMMY_LADDER.participants.reduce<PosAxisById>((acc, u) => {
+        acc[u.userId] = { x: 0, y: 0 };
+        return acc;
+      }, {}),
+    );
   }, []);
 
   // 예약된 타이머 정리
@@ -170,9 +172,10 @@ export default function LadderBoard({
         prevCol = step.col;
       });
 
+      // 마지막으로 아래 박스로 이동할 수 있도록 처리
       timeoutsRef.current.push(
         window.setTimeout(() => {
-          currentY += 56;
+          currentY += FINAL_DOWN_PX;
           setPosById((prev) => ({
             ...prev,
             [userId]: { x: currentX, y: currentY },
@@ -192,11 +195,11 @@ export default function LadderBoard({
     setGameStarted(true);
     clearAllTimeouts();
 
-    setPosById(
-      () =>
-        Object.fromEntries(
-          data.participants.map((u) => [u.userId, { x: 0, y: 0 }]),
-        ) as PosAxisById,
+    setPosById(() =>
+      data.participants.reduce<PosAxisById>((acc, u) => {
+        acc[u.userId] = { x: 0, y: 0 };
+        return acc;
+      }, {}),
     );
 
     let maxEnd = 0;
@@ -206,9 +209,14 @@ export default function LadderBoard({
       maxEnd = Math.max(maxEnd, endAt);
     });
 
-    const winnerCharacterId =
-      data.participants.find((u) => u.userId === data.winnerId)?.characterId ??
-      1;
+    const winnerCharacterId = data.participants.find(
+      (u) => u.userId === data.winnerId,
+    )?.characterId;
+
+    if (!winnerCharacterId) {
+      alert('예기치 못한 오류가 발생하였습니다. 다시 시도해 주세요.');
+      return;
+    }
 
     const modalAt = maxEnd + 200;
 
@@ -233,6 +241,11 @@ export default function LadderBoard({
     navigate,
   ]);
 
+  if (!data) {
+    // TODO: 로딩 처리
+    return <p>데이터를 불러오고 있습니다.</p>;
+  }
+
   return (
     <div
       className={cn(
@@ -251,7 +264,10 @@ export default function LadderBoard({
           <div className="relative z-10">
             <div className="flex gap-2">
               {data?.participants.map((user, i) => (
-                <div key={i} className="relative flex flex-col items-center">
+                <div
+                  key={user.userId}
+                  className="relative flex flex-col items-center"
+                >
                   <div className="gap-1 flex-col-center">
                     <p
                       className={cn(
@@ -280,7 +296,7 @@ export default function LadderBoard({
                         }}
                       />
 
-                      {gameStarted && (
+                      {gameStarted && posById && (
                         <div
                           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                           style={{
@@ -349,7 +365,7 @@ export default function LadderBoard({
 
       <GameStartButton
         onClick={handleGameStart}
-        color="white"
+        color={gameStarted ? 'gray' : 'white'}
         text="게임시작"
         disabled={gameStarted}
       />

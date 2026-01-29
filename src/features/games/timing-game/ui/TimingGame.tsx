@@ -166,9 +166,11 @@ export function TimingGame() {
         <div className="relative">
           <GameStartButton
             onClick={handleOnClick}
-            color={isRunning || difference !== null ? 'gray' : 'white'}
+            color={
+              isRunning ? 'yellow' : difference !== null ? 'gray' : 'white'
+            }
             text={isRunning || difference !== null ? '정지' : '게임시작'}
-            disabled={isRunning || difference !== null}
+            disabled={difference !== null}
           />
 
           {/** 타임아웃 경고 모달 */}
