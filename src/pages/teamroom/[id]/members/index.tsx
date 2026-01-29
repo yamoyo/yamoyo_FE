@@ -1,13 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamMember } from '@/entities/teamroom/model/types';
+import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import MemberListItem from '@/widgets/teamroom/members/ui/MemberListItem';
 
 export default function TeamRoomMembersPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [members, setMembers] = useState<TeamMember[]>([]);
+
+  // TODO: 실제 로그인 유저 ID로 교체
+  const currentUserId = 1;
 
   useEffect(() => {
     if (!id) return;
@@ -16,8 +21,11 @@ export default function TeamRoomMembersPage() {
     });
   }, [id]);
 
-  const handleSettingClick = (_member: TeamMember) => {
-    // TODO: 멤버 설정 페이지로 이동
+  const leader = members.find((member) => isLeader(member.role));
+  const isCurrentUserLeader = leader?.id === currentUserId;
+
+  const handleSettingClick = (member: TeamMember) => {
+    navigate(`/teamroom/${id}/members/${member.id}`);
   };
 
   return (
@@ -32,6 +40,8 @@ export default function TeamRoomMembersPage() {
             <MemberListItem
               key={member.id}
               member={member}
+              currentUserId={currentUserId}
+              isCurrentUserLeader={isCurrentUserLeader}
               onSettingClick={handleSettingClick}
             />
           ))}

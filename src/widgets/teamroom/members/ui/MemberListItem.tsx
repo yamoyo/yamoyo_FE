@@ -4,13 +4,18 @@ import SettingIcon from '@/shared/assets/icons/setting.svg?react';
 
 interface MemberListItemProps {
   member: TeamMember;
+  currentUserId?: number;
+  isCurrentUserLeader?: boolean;
   onSettingClick?: (member: TeamMember) => void;
 }
 
 export default function MemberListItem({
   member,
+  currentUserId,
+  isCurrentUserLeader = false,
   onSettingClick,
 }: MemberListItemProps) {
+  const isCurrentUser = member.id === currentUserId;
   return (
     <li className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -49,15 +54,17 @@ export default function MemberListItem({
         </div>
       </div>
 
-      {/* 설정 버튼 */}
-      <button
-        type="button"
-        className="p-[10px] text-tx-default_4"
-        aria-label="멤버 설정"
-        onClick={() => onSettingClick?.(member)}
-      >
-        <SettingIcon width={20} height={20} />
-      </button>
+      {/* 설정 버튼 - 현재 유저가 팀장이고, 자기 자신이 아닐 때만 표시 */}
+      {isCurrentUserLeader && !isCurrentUser && (
+        <button
+          type="button"
+          className="p-[10px] text-tx-default_4"
+          aria-label="멤버 설정"
+          onClick={() => onSettingClick?.(member)}
+        >
+          <SettingIcon width={20} height={20} />
+        </button>
+      )}
     </li>
   );
 }
