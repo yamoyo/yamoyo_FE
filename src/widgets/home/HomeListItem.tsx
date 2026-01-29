@@ -4,10 +4,10 @@ interface Props {
   members: Member[];
   name: string;
   imgId: number;
-  dday: string;
+  dday?: string;
 }
 
-export function HomeListItem({ members, name, imgId, dday }: Props) {
+export default function HomeListItem({ members, name, imgId, dday }: Props) {
   const visibleMembers = members.slice(0, 6); // 멤버를 6명 단위로 자름
 
   return (
@@ -49,9 +49,7 @@ export function HomeListItem({ members, name, imgId, dday }: Props) {
       </div>
 
       {/* D-day */}
-      <p className="text-[11px] font-medium text-[#A3A8C4]">{dday}</p>
+      {dday && <p className="text-[11px] font-medium text-[#A3A8C4]">{dday}</p>}
     </div>
   );
 }
-
-export default HomeListItem;

@@ -45,19 +45,7 @@ export function useTimingGame() {
     setDifference(elapsed - TARGET_SECONDS);
   };
 
-  /**
-   * 스톱워치(게임) 초기화
-   *
-   * - 원래는 없는 기능일 것 같지만, 편의를 위해 만듦
-   */
-  const reset = () => {
-    setIsRunning(false);
-    setElapsed(0);
-    setDifference(null);
-    startTimeRef.current = null;
-  };
-
-  const handleStopOrReset = isRunning ? stop : reset;
+  const onClickButton = isRunning ? stop : start;
 
   // 차이 텍스트 계산
   const diffText =
@@ -69,7 +57,7 @@ export function useTimingGame() {
 
           const isLate = difference > 0;
           const dir = isLate ? '늦었어요' : '빨랐어요';
-          return `아쉽다😂 ${abs}초 만큼 ${dir}.`;
+          return `아쉽다! ${abs}초 만큼 ${dir}.`;
         })();
 
   /**
@@ -145,14 +133,10 @@ export function useTimingGame() {
   }, [isRunning]);
 
   return {
-    TARGET_SECONDS,
     elapsed,
     isRunning,
     difference,
     diffText,
-    start,
-    stop,
-    reset,
-    handleStopOrReset,
+    onClickButton,
   };
 }

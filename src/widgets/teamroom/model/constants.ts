@@ -61,3 +61,44 @@ export const MOCK_TEAM_ROOMS: TeamRoom[] = [
     imgId: 5,
   },
 ];
+
+export const MOCK_COMPLETED_TEAM_ROOMS: Omit<
+  TeamRoom,
+  'isProgress' | 'dday'
+>[] = [
+  {
+    id: 1,
+    name: '미디어 문화와 디자인 A조',
+    members: createMembers(12),
+    createdAt: '2026-02-06',
+    imgId: 1,
+  },
+  {
+    id: 2,
+    name: '콘텐츠 마케팅 2분반',
+    members: createMembers(7),
+    createdAt: '2026-02-07',
+    imgId: 2,
+  },
+  {
+    id: 3,
+    name: '광고 PR 3조',
+    members: createMembers(5),
+    createdAt: '2026-02-08',
+    imgId: 3,
+  },
+  {
+    id: 4,
+    name: 'UX기획 1팀',
+    members: createMembers(8),
+    createdAt: '2026-02-09',
+    imgId: 4,
+  },
+  {
+    id: 5,
+    name: 'AI 콘텐츠 4조',
+    members: createMembers(6),
+    createdAt: '2026-02-10',
+    imgId: 5,
+  },
+];

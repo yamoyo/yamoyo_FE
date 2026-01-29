@@ -1,7 +1,7 @@
 import TopBar from '@/shared/ui/header/TopBar';
 import SectionDividerTitle from '@/shared/ui/SectionDividerTitle';
 import { CharacterSlider } from '@/shared/ui/character/CharacterSlider';
-import { VoteCharacter } from '../model/type';
+import { VoteCharacter } from '../../model/type';
 import CharacterCard from '@/shared/ui/character/CharacterCard';
 import { useEffect } from 'react';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -23,7 +23,11 @@ const DUMMY_UNVOTED: VoteCharacter[] = [
   { id: 11, name: '김효태', imgId: 11 },
 ];
 
-export default function LeaderApplicationWait() {
+export default function LeaderApplicationWait({
+  onNext,
+}: {
+  onNext: () => void;
+}) {
   const { openCharacterModal, closeModal } = useModalStore();
 
   useEffect(() => {
@@ -42,17 +46,18 @@ export default function LeaderApplicationWait() {
     //   characterId: 4,
     // });
     // 3. 2명 이상 지원
-    // openCharacterModal({
-    //   title: '용기있는 지원자가 2명 이상입니다.',
-    //   subTitle: '야모요의 힘을 빌려 팀장을 선정합니다.',
-    //   type: 'PINK_CHARACTER',
-    // });
+    openCharacterModal({
+      title: '용기있는 지원자가 2명 이상입니다.',
+      subTitle: '야모요의 힘을 빌려 팀장을 선정합니다.',
+      type: 'PINK_CHARACTER',
+    });
     // 이후 5초 뒤에 모달 닫기
-    // const timer = setTimeout(() => {
-    //   closeModal();
-    // }, 5000);
-    // return () => clearTimeout(timer);
-  }, [openCharacterModal, closeModal]);
+    const timer = setTimeout(() => {
+      closeModal();
+      onNext();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [openCharacterModal, closeModal, onNext]);
 
   return (
     <>

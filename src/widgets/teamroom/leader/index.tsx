@@ -1,15 +1,28 @@
 import { useEffect, useState } from 'react';
 import { Phase } from './model/type';
-import LeaderApplication from './ui/LeaderApplication';
-import LeaderApplicationWait from './ui/LeaderApplicationWait';
+import LeaderApplication from './ui/leader-application/LeaderApplication';
+import LeaderApplicationWait from './ui/leader-application/LeaderApplicationWait';
+import SelectGame from './ui/game/SelectGame';
+import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
+import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
 
 export function SelectLeader() {
-  const [phase, setPhase] = useState<Phase>(null);
+  const [phase, setPhase] = useState<Phase | null>(null);
+  const [userRole, setUserRole] = useState<'ROOM_MANAGER' | 'ROOM_MEMBER'>(
+    'ROOM_MEMBER',
+  );
 
   useEffect(() => {
-    // TODO: 서버에서 현재 phase 정보를 받아오는 로직 추가 필요
-    setPhase('LEADER_APPLICATION');
+    // TODO: 서버에서 현재 phase, role 정보를 받아오는 로직
+    setPhase('TIMING_GAME');
+    // setPhase('LEADER_APPLICATION');
+    setUserRole('ROOM_MANAGER');
   }, []);
+
+  if (!phase) {
+    // TODO: 로딩 스피너로 교체
+    return <p>데이터를 불러오고 있습니다...</p>;
+  }
 
   if (phase === 'LEADER_APPLICATION') {
     return (
@@ -18,9 +31,23 @@ export function SelectLeader() {
   }
 
   if (phase === 'LEADER_APPLICATION_WAIT') {
-    return <LeaderApplicationWait />;
+    return <LeaderApplicationWait onNext={() => setPhase('SELECT_GAME')} />;
   }
 
-  // TODO: 로딩 스피너 컴포넌트로 교체 필요
-  return <p>데이터를 불러오고 있습니다...</p>;
+  if (phase === 'SELECT_GAME') {
+    return userRole === 'ROOM_MANAGER' ? (
+      <SelectGame />
+    ) : (
+      <PixelStatusMessage
+        message="방장이 게임을 선택하고 있어요."
+        className="flex-1 translate-y-[-5vh]"
+      />
+    );
+  }
+
+  if (phase === 'TIMING_GAME') {
+    return <TimingGame />;
+  }
+
+  return null;
 }

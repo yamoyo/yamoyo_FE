@@ -10,7 +10,7 @@ import LoginPage from './pages';
 import HomePage from './pages/home';
 import OnboardPage from './pages/onboarding';
 import TermsPage from './pages/onboarding/term';
-import Mypage from './widgets/mypage/Mypage';
+import Mypage from './widgets/mypage';
 import Profile from './pages/mypage/profile';
 import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
