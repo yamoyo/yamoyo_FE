@@ -1,8 +1,4 @@
-interface Participant {
-  userId: number;
-  characterId: number;
-  name: string;
-}
+import { Participant } from '../../ladder-game/model/types';
 
 export interface RouletteGameResponse {
   winnerId: number;
