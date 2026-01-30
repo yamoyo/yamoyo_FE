@@ -58,8 +58,6 @@ export function RouletteGame() {
     navigate,
   ]);
 
-  const names = participants.map((p) => p.name);
-
   return (
     <div
       className="flex min-h-dvh flex-col overflow-hidden"
@@ -79,7 +77,7 @@ export function RouletteGame() {
       </h1>
 
       <div className="flex flex-grow flex-col items-center pb-[75px]">
-        <RouletteBoard names={names} rotation={rotation} />
+        <RouletteBoard participants={participants} rotation={rotation} />
 
         <GameStartButton
           onClick={spin}

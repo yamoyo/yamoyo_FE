@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { Participant } from '../../ladder-game/model/types';
+
 import {
   SPIN_DURATION_MS,
   WHEEL_SIZE_PX,
@@ -13,15 +15,18 @@ import {
 } from '../model/constants';
 
 interface RouletteBoardProps {
-  names: string[];
+  participants: Participant[];
   rotation: number;
 }
 
-export default function RouletteBoard({ names, rotation }: RouletteBoardProps) {
+export default function RouletteBoard({
+  participants,
+  rotation,
+}: RouletteBoardProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const normalizedNames = names.slice(0, 12);
-  const count = normalizedNames.length;
+  const normalizedParticipants = participants.slice(0, 12);
+  const count = normalizedParticipants.length;
   const slice = 360 / count;
   const labelRadius = (WHEEL_SIZE_PX / 2) * LABEL_RADIUS_RATIO;
 
@@ -57,7 +62,7 @@ export default function RouletteBoard({ names, rotation }: RouletteBoardProps) {
       ctx.lineWidth = 2;
       ctx.stroke();
     }
-  }, [count, normalizedNames]);
+  }, [count]);
 
   return (
     <div className="relative mb-[41px] mt-[64px] size-[459px] shrink-0">
@@ -80,11 +85,11 @@ export default function RouletteBoard({ names, rotation }: RouletteBoardProps) {
           className="rounded-full"
           style={{ width: `${WHEEL_SIZE_PX}px`, height: `${WHEEL_SIZE_PX}px` }}
         />
-        {normalizedNames.map((name, i) => {
+        {normalizedParticipants.map((participant, i) => {
           const angle = i * slice + slice / 2;
           return (
             <span
-              key={`${name}-${i}`}
+              key={participant.userId}
               className="body-g2 absolute left-1/2 top-1/2 text-black ease-out"
               style={{
                 transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-${labelRadius}px) rotate(${-angle}deg) rotate(${-rotation}deg)`,
@@ -93,7 +98,7 @@ export default function RouletteBoard({ names, rotation }: RouletteBoardProps) {
                 transitionDuration: `${SPIN_DURATION_MS}ms`,
               }}
             >
-              {name}
+              {participant.name}
             </span>
           );
         })}
