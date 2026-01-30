@@ -6,9 +6,3 @@ export type Phase =
   | 'ROULETTE_GAME' // 룰렛 돌리기
   | 'TIMING_GAME' // 타이밍 게임
   | null;
-
-export interface VoteCharacter {
-  id: number;
-  name: string;
-  imgId: number;
-}
