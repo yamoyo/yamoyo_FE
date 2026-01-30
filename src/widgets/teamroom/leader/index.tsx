@@ -5,6 +5,7 @@ import LeaderApplicationWait from './ui/leader-application/LeaderApplicationWait
 import SelectGame from './ui/game/SelectGame';
 import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
 import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
+import LadderGame from '@/features/games/ladder-game/ui/LadderGame';
 
 export function SelectLeader() {
   const [phase, setPhase] = useState<Phase | null>(null);
@@ -14,7 +15,7 @@ export function SelectLeader() {
 
   useEffect(() => {
     // TODO: 서버에서 현재 phase, role 정보를 받아오는 로직
-    setPhase('TIMING_GAME');
+    setPhase('ROULETTE_GAME');
     // setPhase('LEADER_APPLICATION');
     setUserRole('ROOM_MANAGER');
   }, []);
@@ -43,6 +44,10 @@ export function SelectLeader() {
         className="flex-1 translate-y-[-5vh]"
       />
     );
+  }
+
+  if (phase === 'LADDER_GAME') {
+    return <LadderGame />;
   }
 
   if (phase === 'TIMING_GAME') {
