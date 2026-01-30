@@ -72,9 +72,10 @@ export default function TopBar({
         </button>
       )}
       <span
-        className={cn('text-body-1 text-white', {
-          'title-g3': gameFont,
-        })}
+        className={cn(
+          'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-body-1 text-white',
+          { 'title-g3': gameFont },
+        )}
         style={gameFont ? { filter: 'drop-shadow(2px 2px 0 #000)' } : undefined}
       >
         {title}

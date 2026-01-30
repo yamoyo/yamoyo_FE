@@ -1,12 +1,12 @@
-import Major1Icon from '@/shared/assets/icons/major/major-1.svg?react';
-import Major2Icon from '@/shared/assets/icons/major/major-2.svg?react';
-import Major3Icon from '@/shared/assets/icons/major/major-3.svg?react';
-import Major4Icon from '@/shared/assets/icons/major/major-4.svg?react';
-import Major5Icon from '@/shared/assets/icons/major/major-5.svg?react';
-import Major6Icon from '@/shared/assets/icons/major/major-6.svg?react';
-import Major7Icon from '@/shared/assets/icons/major/major-7.svg?react';
-import Major8Icon from '@/shared/assets/icons/major/major-8.svg?react';
-import Major9Icon from '@/shared/assets/icons/major/major-9.svg?react';
+import Major1Icon from '@/shared/assets/major/major-1.svg?react';
+import Major2Icon from '@/shared/assets/major/major-2.svg?react';
+import Major3Icon from '@/shared/assets/major/major-3.svg?react';
+import Major4Icon from '@/shared/assets/major/major-4.svg?react';
+import Major5Icon from '@/shared/assets/major/major-5.svg?react';
+import Major6Icon from '@/shared/assets/major/major-6.svg?react';
+import Major7Icon from '@/shared/assets/major/major-7.svg?react';
+import Major8Icon from '@/shared/assets/major/major-8.svg?react';
+import Major9Icon from '@/shared/assets/major/major-9.svg?react';
 
 export const MAJOR = [
   { id: 1, label: '컴퓨터/IT', Icon: Major1Icon },
