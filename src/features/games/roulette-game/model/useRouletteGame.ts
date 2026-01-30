@@ -1,30 +1,39 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { RouletteGameResponse } from './types';
+import { BASE_TURNS, SPIN_DURATION_MS } from './constants';
 
-const BASE_TURNS = 5;
-const SPIN_DURATION_MS = 1600;
-
-export function useRouletteGame(count: number) {
-  const safeCount = Math.max(1, Math.min(20, count));
+export function useRouletteGame(data: RouletteGameResponse | null) {
   const [rotation, setRotation] = useState(0);
-  const [resultIndex, setResultIndex] = useState<number | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [gameStarted, setGameStarted] = useState(false);
 
-  const spin = () => {
-    if (isSpinning) return;
+  const participants = useMemo(
+    () => data?.participants ?? [],
+    [data?.participants],
+  );
+  const count = participants.length;
+
+  const spin = useCallback(() => {
+    if (isSpinning || !data || gameStarted) return;
 
     setIsSpinning(true);
-    const targetIndex = Math.floor(Math.random() * safeCount);
-    const slice = 360 / safeCount;
-    const desiredAngle = (360 - (targetIndex + 0.5) * slice) % 360;
+    setGameStarted(true);
+
+    // winnerId로 당첨 인덱스 계산
+    const winnerIndex = participants.findIndex(
+      (p) => p.userId === data.winnerId,
+    );
+    if (winnerIndex === -1) return;
+
+    const slice = 360 / count;
+    const desiredAngle = (360 - (winnerIndex + 0.5) * slice) % 360;
 
     setRotation((prev) => {
       const current = ((prev % 360) + 360) % 360;
       const delta = (desiredAngle - current + 360) % 360;
       return prev + BASE_TURNS * 360 + delta;
     });
-
-    setResultIndex(targetIndex);
-  };
+  }, [isSpinning, data, gameStarted, participants, count]);
 
   useEffect(() => {
     if (!isSpinning) return;
@@ -38,8 +47,9 @@ export function useRouletteGame(count: number) {
 
   return {
     rotation,
-    resultIndex,
     spin,
     isSpinning,
+    gameStarted,
+    participants,
   };
 }
