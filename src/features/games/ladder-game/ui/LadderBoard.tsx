@@ -24,20 +24,38 @@ interface Props {
 const VERTICAL_SRC = '/assets/game/ladder/ladder-line-long.svg';
 const HORIZONTAL_SRC = '/assets/game/ladder/ladder-line-short.svg';
 
-// 사다리 레이아웃 상수
-const TOP_PADDING_PX = 64;
-const ROW_GAP_PX = 36;
+// --- 사다리 레이아웃 상수 --- //
+const LAYOUT = {
+  /** 사다리 상단에 여백 (가로줄이 여백 아래부터 시작하게 두기 위함) */
+  TOP_PADDING_PX: 64,
+  /** 사다리 각 행(가로줄) 간의 간격 */
+  ROW_GAP_PX: 36,
+} as const;
 
-// 캐릭터 아이콘 이동 거리 (게임 시작 후 이동)
-const DOWN_PX = ROW_GAP_PX;
-const SIDE_PX = 72;
-const FINAL_DOWN_PX = 56;
+// --- 캐릭터 아이콘 이동 거리 (게임 시작 후 이동) --- //
+const MOVE = {
+  /** 한 행 아래로 내려갈 때 이동 거리 (사다리 각 행 간격과 동일) */
+  DOWN_PX: LAYOUT.ROW_GAP_PX,
+  /** 가로줄을 타고 이동할 때 좌우 이동 거리 */
+  SIDE_PX: 72,
+  /** 마지막 박스까지 내려가는 추가 이동 거리 */
+  FINAL_DOWN_PX: 56,
+} as const;
 
-// 캐릭터 아이콘 이동 타이밍 (게임 시작 후 이동)
-const DOWN_MS = 520;
-const SIDE_MS = 420;
-const TURN_GAP_MS = 50;
-const START_STAGGER_MS = 40;
+// --- 캐릭터 아이콘 이동 타이밍 (게임 시작 후 이동) --- //
+const TIMING = {
+  /** 아래로 내려가는 데 걸리는 애니메이션 시간 */
+  DOWN_MS: 520,
+  /** 좌우 이동 간에 걸리는 애니메이션 시간 */
+  SIDE_MS: 420,
+  /** 아래->좌우 전환 시 대기 시간 */
+  TURN_GAP_MS: 50,
+  /** 각 캐릭터 간 시작 지연 시간
+   *
+   * - 동시에 출발하지 않고 설정한 시간만큼 늦게 출발함
+   */
+  START_STAGGER_MS: 40,
+} as const;
 
 // 내 유저 아이디 (TODO 추후 서버 연동 시 교체)
 const MY_USER_ID = 3;
@@ -77,7 +95,7 @@ export default function LadderBoard({
 
   // 사다리 행 개수에 따른 레일 높이 계산
   const ROWS = data?.gameData.ladderLines.length ?? 0;
-  const RAIL_HEIGHT_PX = TOP_PADDING_PX + (ROWS - 1) * ROW_GAP_PX;
+  const RAIL_HEIGHT_PX = LAYOUT.TOP_PADDING_PX + (ROWS - 1) * LAYOUT.ROW_GAP_PX;
 
   useEffect(() => {
     // TODO: 서버에서 사다리 게임 데이터 받아오는 로직
@@ -143,22 +161,22 @@ export default function LadderBoard({
       steps.forEach((step) => {
         timeoutsRef.current.push(
           window.setTimeout(() => {
-            currentY += DOWN_PX;
+            currentY += MOVE.DOWN_PX;
             setPosById((prev) => ({
               ...prev,
               [userId]: { x: currentX, y: currentY },
             }));
           }, t),
         );
-        t += DOWN_MS;
+        t += TIMING.DOWN_MS;
 
         if (step.col !== prevCol) {
           const direction = step.col > prevCol ? 1 : -1;
-          t += TURN_GAP_MS;
+          t += TIMING.TURN_GAP_MS;
 
           timeoutsRef.current.push(
             window.setTimeout(() => {
-              currentX += direction * SIDE_PX;
+              currentX += direction * MOVE.SIDE_PX;
               setPosById((prev) => ({
                 ...prev,
                 [userId]: { x: currentX, y: currentY },
@@ -166,7 +184,7 @@ export default function LadderBoard({
             }, t),
           );
 
-          t += SIDE_MS;
+          t += TIMING.SIDE_MS;
         }
 
         prevCol = step.col;
@@ -175,7 +193,7 @@ export default function LadderBoard({
       // 마지막으로 아래 박스로 이동할 수 있도록 처리
       timeoutsRef.current.push(
         window.setTimeout(() => {
-          currentY += FINAL_DOWN_PX;
+          currentY += MOVE.FINAL_DOWN_PX;
           setPosById((prev) => ({
             ...prev,
             [userId]: { x: currentX, y: currentY },
@@ -183,7 +201,7 @@ export default function LadderBoard({
         }, t),
       );
 
-      return t + DOWN_MS;
+      return t + TIMING.DOWN_MS;
     },
     [data, getPath],
   );
@@ -205,7 +223,7 @@ export default function LadderBoard({
     let maxEnd = 0;
 
     data.participants.forEach((u, idx) => {
-      const endAt = scheduleMove(u.userId, idx, idx * START_STAGGER_MS);
+      const endAt = scheduleMove(u.userId, idx, idx * TIMING.START_STAGGER_MS);
       maxEnd = Math.max(maxEnd, endAt);
     });
 
@@ -301,7 +319,7 @@ export default function LadderBoard({
                           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                           style={{
                             transform: `translateY(${posById[user.userId]?.y ?? 0}px) translate(-50%, -50%)`,
-                            transition: `transform ${DOWN_MS}ms linear`,
+                            transition: `transform ${TIMING.DOWN_MS}ms linear`,
                             pointerEvents: 'none',
                             zIndex: 20,
                           }}
@@ -309,7 +327,7 @@ export default function LadderBoard({
                           <div
                             style={{
                               transform: `translateX(${posById[user.userId]?.x ?? 0}px)`,
-                              transition: `transform ${SIDE_MS}ms linear`,
+                              transition: `transform ${TIMING.SIDE_MS}ms linear`,
                             }}
                           >
                             <img
@@ -347,7 +365,8 @@ export default function LadderBoard({
                       className="pointer-events-none absolute left-[calc(50%)] z-10 min-w-[74px] select-none"
                       draggable={false}
                       style={{
-                        top: (y + 1) * ROW_GAP_PX + TOP_PADDING_PX,
+                        top:
+                          (y + 1) * LAYOUT.ROW_GAP_PX + LAYOUT.TOP_PADDING_PX,
                         pointerEvents: 'none',
                       }}
                     />
