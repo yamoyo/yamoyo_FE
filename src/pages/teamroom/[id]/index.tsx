@@ -8,8 +8,10 @@ import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
 import LeaderGameCard from '@/widgets/teamroom/main/ui/LeaderGameCard';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
+import { useNavigate } from 'react-router-dom';
 
 export default function TeamRoomMainPage() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [teamRoom, setTeamRoom] = useState<TeamRoom | null>(null);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
@@ -17,6 +19,12 @@ export default function TeamRoomMainPage() {
 
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
+
+  /** 팀장 정하기 게임 시작 */
+  const onStartLeaderGame = () => {
+    // TODO: API 연동 후 팀장 정하기 게임 화면으로 이동
+    navigate('leader');
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -36,8 +44,7 @@ export default function TeamRoomMainPage() {
       setTeamRoom((prev) => (prev ? { ...prev, ...editData } : null));
       clearEditData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editData]);
+  }, [editData, clearEditData]);
 
   return (
     <>
@@ -49,7 +56,7 @@ export default function TeamRoomMainPage() {
         members={teamRoom?.members ?? []}
         onAddMember={() => setIsAddMemberOpen(true)}
       />
-      <LeaderGameCard onStart={() => {}} />
+      <LeaderGameCard onStart={onStartLeaderGame} />
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
