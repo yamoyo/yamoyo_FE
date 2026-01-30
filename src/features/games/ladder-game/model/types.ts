@@ -9,7 +9,7 @@ type ColIndex = number;
 type RowIndex = number;
 export type ColumnToRowsMap = Map<ColIndex, RowIndex[]>;
 
-interface Participant {
+export interface Participant {
   userId: number;
   characterId: number;
   name: string;
