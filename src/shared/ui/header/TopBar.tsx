@@ -66,7 +66,9 @@ export default function TopBar({
           />
         </button>
       )}
-      <span className="text-body-1 text-white">{title}</span>
+      <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-body-1 text-white">
+        {title}
+      </span>
 
       {rightContent && (
         <div className="absolute right-[22px] top-1/2 -translate-y-1/2">

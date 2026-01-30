@@ -1,17 +1,15 @@
 import type { TeamMember } from '@/entities/teamroom/model/types';
+import { isLeader } from '@/entities/teamroom/lib/is-leader';
 
 interface MemberItemProps {
   member: TeamMember;
 }
 
 export default function MemberItem({ member }: MemberItemProps) {
-  const isLeader =
-    member.role === 'leader' ||
-    member.role === '방장' ||
-    member.role === '팀장';
+  const isMemberLeader = isLeader(member.role);
 
   return (
-    <li className="flex flex-col items-center gap-2">
+    <li className="flex shrink-0 flex-col items-center gap-2">
       <div className="relative h-16 w-16 flex-center">
         <img
           src="/assets/character/char-bg.png"
@@ -28,7 +26,7 @@ export default function MemberItem({ member }: MemberItemProps) {
           className="absolute"
           draggable={false}
         />
-        {isLeader && (
+        {isMemberLeader && (
           <img
             src="/assets/icons/leader.svg"
             alt="leader"

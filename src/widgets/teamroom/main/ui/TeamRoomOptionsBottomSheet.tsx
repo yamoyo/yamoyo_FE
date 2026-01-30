@@ -5,6 +5,7 @@ import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { cn } from '@/shared/config/tailwind/cn';
+import { isLeader as checkIsLeader } from '@/entities/teamroom/lib/is-leader';
 
 interface TeamRoomOptionsBottomSheetProps {
   isOpen: boolean;
@@ -25,12 +26,7 @@ export default function TeamRoomOptionsBottomSheet({
   const bannerSrc =
     TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerId)?.src ?? '';
 
-  const leader = teamRoom?.members.find(
-    (member) =>
-      member.role === 'leader' ||
-      member.role === '방장' ||
-      member.role === '팀장',
-  );
+  const leader = teamRoom?.members.find((member) => checkIsLeader(member.role));
 
   const isLeader = leader?.id === currentUserId;
 
@@ -113,7 +109,14 @@ export default function TeamRoomOptionsBottomSheet({
           </div>
         </div>
         <div className="flex flex-col items-start gap-6">
-          <button type="button" className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              navigate(`/teamroom/${teamRoom?.id}/members`);
+            }}
+            className="flex items-center gap-4"
+          >
             <img
               src="/assets/home/users.png"
               width={20}
