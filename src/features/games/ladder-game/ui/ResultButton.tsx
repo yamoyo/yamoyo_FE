@@ -6,33 +6,29 @@ interface Props {
 
 export default function ResultButton({ type }: Props) {
   const isLeader = type === 'LEADER';
+  const backgroundImage = isLeader
+    ? '/assets/game/ladder/button-bg-yellow-square.svg'
+    : '/assets/game/ladder/button-bg-white.png';
+  const sizeClasses = isLeader ? 'h-[72px] min-w-[72px]' : 'h-10 w-[56px]';
+  const textClasses = isLeader
+    ? 'body-g2 text-te-default_black whitespace-pre-line'
+    : 'body-g4 text-te-default_black';
+  const label = isLeader ? '팀장\n당첨' : '통과';
 
   return (
     <div className="flex min-w-[64px] justify-center overflow-x-visible">
       <div
         style={{
-          backgroundImage: `url(${
-            isLeader
-              ? '/assets/game/ladder/button-bg-yellow-square.svg'
-              : '/assets/game/ladder/button-bg-white.png'
-          })`,
+          backgroundImage: `url(${backgroundImage})`,
           WebkitTextStrokeColor: '#171719',
           WebkitTextStrokeWidth: '0.7px',
         }}
         className={cn(
-          'flex items-center justify-center bg-contain bg-center bg-no-repeat',
-          isLeader
-            ? 'body-g2 text-te-default_black h-[72px] min-w-[72px]'
-            : 'body-g4 text-te-default_black h-10 w-[56px]',
+          'bg-contain bg-center bg-no-repeat flex-center',
+          sizeClasses,
         )}
       >
-        {isLeader ? (
-          <span className="whitespace-pre-line text-center">
-            팀장{'\n'}당첨
-          </span>
-        ) : (
-          <span className="text-center leading-[1]">통과</span>
-        )}
+        <span className={cn(textClasses, 'text-center')}>{label}</span>
       </div>
     </div>
   );

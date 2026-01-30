@@ -37,7 +37,7 @@ export interface ModalStore {
   openChoiceModal: (options: ChoiceModalOptions) => void;
   openCalendarModal: (options: CalendarModalOptions) => void;
   /**
-   * 캐릭터 모달가 있는 모달을 띄우는 함수
+   * 캐릭터가 있는 모달을 띄우는 함수
    *
    * options 구성:
    * - title: string (필수) 모달 제목

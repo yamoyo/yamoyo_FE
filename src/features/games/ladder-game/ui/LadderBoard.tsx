@@ -283,7 +283,7 @@ export default function LadderBoard({
                       className="relative h-[64px] w-[64px] flex-center"
                       style={{
                         backgroundImage:
-                          'url(/assets/game/ladder/character-bg.svg',
+                          'url(/assets/game/ladder/character-bg.svg)',
                       }}
                     >
                       <img
