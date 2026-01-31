@@ -5,10 +5,9 @@ import type { TeamRoom } from '@/entities/teamroom/model/types';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
-import LeaderGameCard from '@/widgets/teamroom/main/ui/LeaderGameCard';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
-import { useNavigate } from 'react-router-dom';
+import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 
 export default function TeamRoomMainPage() {
   const navigate = useNavigate();

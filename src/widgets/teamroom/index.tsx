@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import PageTabs, { TabsConfig } from '@/shared/ui/tab/PageTabs';
+import { TabsConfig } from '@/shared/ui/tab/model/types';
 import HomeListItem from '@/widgets/home/HomeListItem';
 
 import { MOCK_TEAM_ROOMS } from './model/constants';
@@ -8,6 +8,8 @@ import { sortTeams, SortType } from './utils/sortTeams';
 import ArrowDropdown, {
   ArrowDropdownOption,
 } from '@/shared/ui/dropdown/ArrowDropdown';
+import SwipeTabs from '@/shared/ui/tab/ui/SwipeTabs';
+import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnderlineTabHeader';
 
 const SORT_OPTIONS: ArrowDropdownOption<SortType>[] = [
   { label: '최신순', value: 'latest' },
@@ -110,5 +112,10 @@ export default function MyTeams() {
     render: () => renderPanel(teams),
   }));
 
-  return <PageTabs tabs={tabs} />;
+  return (
+    <SwipeTabs
+      tabs={tabs}
+      Header={(p) => <FullWidthUnderlineTabHeader {...p} />}
+    />
+  );
 }
