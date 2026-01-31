@@ -102,7 +102,7 @@ export default function TimePickPage() {
                 text={isEditMode ? '설정 완료' : '시간 설정'}
                 onClick={() => setIsEditMode((prev) => !prev)}
                 className={cn(
-                  'h-[40px] w-[88px] rounded-lg text-body-4',
+                  'h-[40px] w-[88px] rounded-lg text-body-4 transition-colors duration-200',
                   isEditMode
                     ? 'bg-tx-default_3 text-bg-default'
                     : 'bg-bg-primary text-tx-default',
@@ -176,7 +176,7 @@ export default function TimePickPage() {
                         ? 'bg-bg-secondary_2'
                         : isEditMode
                           ? 'bg-tx-default_3'
-                          : 'bg-tx-default_5',
+                          : 'cursor-not-allowed bg-tx-default_5',
                     )}
                   />
                 ))}
