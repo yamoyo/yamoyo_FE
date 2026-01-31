@@ -38,6 +38,8 @@ import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 
+import TimePickPage from './pages/timepick';
+
 export default function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
@@ -125,6 +127,8 @@ export default function App() {
           <Route path="major" element={<MajorStep />} />
           <Route path="persona" element={<PersonaStep />} />
         </Route>
+
+        <Route path="timepick" element={<TimePickPage />} />
 
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
