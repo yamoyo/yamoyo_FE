@@ -29,3 +29,9 @@ export interface CreateTeamRoomResponse {
   teamRoomId: string;
   inviteLink: string;
 }
+
+export interface DashboardStatus {
+  meeting: boolean;
+  tool: boolean;
+  rule: boolean;
+}

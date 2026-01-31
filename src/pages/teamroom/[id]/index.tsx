@@ -5,9 +5,9 @@ import type { TeamRoom } from '@/entities/teamroom/model/types';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
-import LeaderGameCard from '@/widgets/teamroom/main/ui/LeaderGameCard';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
+import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 
 export default function TeamRoomMainPage() {
   const { id } = useParams<{ id: string }>();
@@ -36,8 +36,7 @@ export default function TeamRoomMainPage() {
       setTeamRoom((prev) => (prev ? { ...prev, ...editData } : null));
       clearEditData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editData]);
+  }, [editData, clearEditData]);
 
   return (
     <>
@@ -49,7 +48,7 @@ export default function TeamRoomMainPage() {
         members={teamRoom?.members ?? []}
         onAddMember={() => setIsAddMemberOpen(true)}
       />
-      <LeaderGameCard onStart={() => {}} />
+      <TeamRoomContents />
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}

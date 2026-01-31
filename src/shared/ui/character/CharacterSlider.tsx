@@ -1,4 +1,4 @@
-import { VoteCharacter } from '@/widgets/teamroom/leader/model/type';
+import { VoteCharacter } from '@/widgets/vote/model/types';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
  * 팀장 투표 현황 화면에서 사용
  */
 export function CharacterSlider({ characters }: Props) {
-  const { bind } = useHorizontalDragScroll();
+  const { bind } = useHorizontalDragScroll<HTMLDivElement>();
 
   return (
     <div className="w-full select-none">

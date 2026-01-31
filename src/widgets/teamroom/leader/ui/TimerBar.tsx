@@ -3,18 +3,49 @@ import { cn } from '@/shared/config/tailwind/cn';
 import { useMemo } from 'react';
 
 interface Props {
+  color?: 'white' | 'yellow';
   startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
   totalMs?: number; // 타이머 전체 진행 시간 (기본값: 10000ms = 10초)
-  hideClock?: boolean;
+  hideIcon?: boolean;
   containerClassName?: string;
 }
+
+const ICON = {
+  white: {
+    src: '/assets/icons/clock.svg',
+    alt: 'Clock Icon White',
+    shadow: '#20254080',
+  },
+  yellow: {
+    src: '/assets/character/char-dashboard-timer.png',
+    alt: 'timer character',
+    shadow: 'rgba(83, 74, 24, 0.25)',
+  },
+};
 
 export function TimerBar({
   startedAt,
   totalMs = 10000,
-  hideClock = false,
+  hideIcon = false,
   containerClassName,
+  color = 'white',
 }: Props) {
+  const bgBaseClass = 'relative h-[9px] w-full rounded-r-full bg-white';
+
+  const bgClass =
+    color === 'white'
+      ? hideIcon
+        ? 'bg-bg-card'
+        : 'timer-bg-animate-white'
+      : hideIcon
+        ? 'bg-bg-secondary_2 rounded-full'
+        : 'timer-bg-animate-yellow rounded-full';
+
+  /* 타이머 전체 바(흰색 or 노란색 → 에러 컬러로 변하는 부분)
+   * - timer-bg-animate: 배경색을 시간에 따라 변경하는 CSS 애니메이션
+   */
+  const timerBgClass = `${bgClass} ${bgBaseClass}`;
+
   /**
    * elapsedSec
    *
@@ -41,20 +72,13 @@ export function TimerBar({
         containerClassName,
       )}
     >
-      {/* 
-        타이머 전체 바(흰색 → 에러 컬러로 변하는 부분)
-        - timer-bg-animate: 배경색을 시간에 따라 변경하는 CSS 애니메이션
-        */}
       <div
-        className={cn(
-          'relative h-[9px] w-full rounded-r-full bg-white',
-          !hideClock ? 'timer-bg-animate bg-white' : 'bg-bg-card',
-        )}
+        className={timerBgClass}
         style={{
           /**
            * animationDuration
            * - bar-bg-to-error 애니메이션이 진행되는 전체 시간
-           * - TOTAL_MS(10000ms)를 초 단위로 변환
+           * - TOTAL_MS를 초 단위로 변환
            */
           animationDuration: `${totalMs / 1000}s`,
           /**
@@ -72,23 +96,24 @@ export function TimerBar({
           - inset-y-0: absolute 요소가 위에서 0, 아래에서 0으로 붙어서 부모 요소의 높이를 그대로 따라감
         */}
         <div
-          className="animate-fill-from-right absolute inset-y-0 right-0 bg-bg-card"
+          className={cn(
+            'animate-fill-from-right absolute inset-y-0 right-0',
+            color === 'white' ? 'bg-bg-card' : 'bg-tx-default_5',
+          )}
           style={{
             /** 스타일 설명은 위 요소 참고 */
             animationDuration: `${totalMs / 1000}s`,
             animationDelay: `${-elapsedSec}s`,
           }}
         >
-          {!hideClock && (
+          {!hideIcon && (
             <img
-              className="absolute left-0 top-1/2 -translate-x-[calc(50%-4px)] -translate-y-1/2"
+              className="absolute left-0 top-1/2 h-6 -translate-x-[calc(50%-4px)] -translate-y-1/2"
               style={{
-                boxShadow: '-4px 0px 8px 0px #20254080',
+                boxShadow: `-4px 0px 8px 0px ${ICON[color].shadow}`,
               }}
-              src="/assets/icons/clock.svg"
-              alt="Clock Icon"
-              height={24}
-              width={24}
+              src={ICON[color].src}
+              alt={ICON[color].alt}
             />
           )}
         </div>

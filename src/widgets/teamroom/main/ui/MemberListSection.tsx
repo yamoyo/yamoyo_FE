@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { TeamMember } from '@/entities/teamroom/model/types';
 import MemberItem from './MemberItem';
+import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 
 interface MemberListSectionProps {
   members: TeamMember[];
@@ -11,6 +12,7 @@ export default function MemberListSection({
   members,
   onAddMember,
 }: MemberListSectionProps) {
+  const { bind } = useHorizontalDragScroll<HTMLUListElement>();
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -40,7 +42,10 @@ export default function MemberListSection({
         </div>
       </div>
       {isOpen && (
-        <ul className="scrollbar-hide -mx-6 flex gap-2 overflow-x-auto px-6">
+        <ul
+          {...bind}
+          className="no-scrollbar -mx-6 flex gap-2 overflow-x-auto px-6"
+        >
           {members.map((member) => (
             <MemberItem key={member.id} member={member} />
           ))}

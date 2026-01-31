@@ -119,7 +119,7 @@ export function TimingGame() {
         totalMs={15000}
         startedAt={startedAt}
         containerClassName="mt-0.5"
-        hideClock={isRunning}
+        hideIcon={isRunning}
       />
 
       <div className="mt-7 flex flex-grow flex-col items-center justify-between pb-[60px]">
