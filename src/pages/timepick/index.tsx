@@ -1,9 +1,24 @@
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
 
+const DAYS = ['일', '월', '화', '수', '금', '토', '일'] as const;
+// 단순한 시간 배열
+
+const TIMES = Array.from({ length: 33 }, (_, i) => {
+  const hour = Math.floor(i / 2) + 8;
+  const minute = i % 2 === 0 ? '00' : '30';
+  return `${hour.toString().padStart(2, '0')}:${minute}`;
+}); // 30분 단위로 시간을 배열로 만든다.
+
 export default function TimePickPage() {
   return (
-    <>
+    <div
+      style={{
+        backgroundImage: 'url(/assets/timepick/timepick-bg.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <TopBar
         title="시간 설정"
         backIcon="arrow"
@@ -49,7 +64,7 @@ export default function TimePickPage() {
 
             <button
               type="button"
-              className="flex h-[40px] w-[110px] items-center justify-center gap-1 rounded-lg bg-[#4C5377]"
+              className="h-[40px] w-[110px] gap-1 rounded-lg bg-bd-textfiled_line flex-center"
             >
               <img
                 src="/assets/icons/everytime.svg"
@@ -59,11 +74,51 @@ export default function TimePickPage() {
               <span className="text-body-4 text-tx-default">불러오기</span>
             </button>
           </div>
-          {/* 일 월 화 수 목 금 토*/}
-          {/* 08:00 ~ 24:00 까지 30분 단위로*/}
-          {/* 각 요일 별로 32개씩 버튼을 표시하고 시간 설정 버튼 상태에 따라 toggle 상태 가능하게 끔.*/}
         </div>
       </div>
-    </>
+
+      {/* 시간표 그리드 - 별도 섹션으로 분리 */}
+      <div className="mt-4 flex justify-center px-5">
+        {/* 시간 라벨 컬럼 */}
+        <div className="mr-[6px] mt-[18px] flex flex-col gap-[2px]">
+          {TIMES.map((time, i) => (
+            <span
+              key={time}
+              className="body-g11-2 flex h-[30px] items-center justify-end text-tx-default_3"
+            >
+              {i % 2 === 0 ? time : ''}
+            </span>
+          ))}
+        </div>
+
+        {/* 요일 + 버튼 그리드 */}
+        <div className="flex gap-[2px]">
+          {DAYS.map((day, dayIndex) => (
+            <div key={dayIndex} className="flex flex-col items-center">
+              <span className="body-g11 mb-[10px] text-tx-default_3">
+                {day}
+              </span>
+              <div className="flex flex-col gap-[2px]">
+                {TIMES.map((time) => (
+                  <button
+                    key={time}
+                    type="button"
+                    className="h-[30px] w-[42px] rounded bg-[#767A90]"
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-[48px] mt-[80px] px-6">
+        <BottomButton
+          text="선호 시간대 설정"
+          onClick={() => {}}
+          className="h-auto gap-[10px] self-stretch px-[80px] py-4 flex-center"
+        />
+      </div>
+    </div>
   );
 }
