@@ -18,7 +18,7 @@ export default function TimePickControls({
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-1">
         <BottomButton
-          text={isEditMode ? '설정 완료' : '시간 설정'}
+          text={isEditMode ? '설정 해제' : '시간 설정'}
           onClick={onToggleEditMode}
           className={cn(
             'h-[40px] w-[88px] rounded-lg text-body-4 transition-colors duration-200',
