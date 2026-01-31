@@ -35,7 +35,7 @@ export default function TimePickPage() {
         }
       />
 
-      <div className="mt-5 flex flex-col items-start gap-[30px] px-6">
+      <div className="mt-5 flex flex-col items-start gap-[30px] px-5">
         <p className="w-[264px] text-title-2 text-tx-default">
           팀원들이 가장
           <span className="text-bg-secondary_2"> 많이 겹치는 시간</span>
@@ -103,7 +103,7 @@ export default function TimePickPage() {
                   <button
                     key={time}
                     type="button"
-                    className="h-[30px] w-[42px] rounded bg-[#767A90]"
+                    className="h-[30px] w-[42px] rounded bg-tx-default_5"
                   />
                 ))}
               </div>
@@ -112,7 +112,7 @@ export default function TimePickPage() {
         </div>
       </div>
 
-      <div className="mb-[48px] mt-[80px] px-6">
+      <div className="mb-[48px] mt-[80px] px-5">
         <BottomButton
           text="선호 시간대 설정"
           onClick={() => {}}
