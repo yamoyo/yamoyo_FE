@@ -1,60 +1,29 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
-import { cn } from '@/shared/config/tailwind/cn';
-
-const DAYS = ['일', '월', '화', '수', '금', '토', '일'] as const;
-
-const TIME_SLOTS = Array.from({ length: 32 }, (_, i) => {
-  const hour = Math.floor(i / 2) + 8;
-  const minute = i % 2 === 0 ? '00' : '30';
-  return `${hour.toString().padStart(2, '0')}:${minute}`;
-});
-
-const TIME_LABELS = Array.from({ length: 17 }, (_, i) => {
-  const hour = i + 8;
-  return `${hour.toString().padStart(2, '0')}:00`;
-});
+import TimePickGrid from '@/widgets/teamroom/timepick/TimePickGrid';
+import TimePickControls from '@/widgets/teamroom/timepick/TimePickControls';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 const createInitialAvailability = () =>
   Array.from({ length: 7 }, () => Array.from({ length: 32 }, () => false));
 
 export default function TimePickPage() {
+  const openGuideModal = useModalStore((state) => state.openGuideModal);
+  const closeModal = useModalStore((state) => state.closeModal);
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [availability, setAvailability] = useState<boolean[][]>(
     createInitialAvailability,
   );
 
-  const isDragging = useRef(false);
-  const dragValue = useRef<boolean>(true);
-
-  const toggleCell = (dayIndex: number, slotIndex: number) => {
-    setAvailability((prev) => {
-      const newAvailability = prev.map((day) => [...day]);
-      newAvailability[dayIndex][slotIndex] = dragValue.current;
-      return newAvailability;
-    });
-  };
-
-  const handlePointerDown = (dayIndex: number, slotIndex: number) => {
-    if (!isEditMode) return;
-    isDragging.current = true;
-    dragValue.current = !availability[dayIndex][slotIndex];
-    toggleCell(dayIndex, slotIndex);
-  };
-
-  const handlePointerEnter = (dayIndex: number, slotIndex: number) => {
-    if (!isEditMode || !isDragging.current) return;
-    toggleCell(dayIndex, slotIndex);
-  };
-
-  const handlePointerUp = () => {
-    isDragging.current = false;
-  };
-
   const handleReset = () => {
     setAvailability(createInitialAvailability());
+  };
+
+  const handleImport = () => {
+    // TODO: 에브리타임 불러오기
   };
 
   const handleSubmit = () => {
@@ -77,7 +46,112 @@ export default function TimePickPage() {
         title="시간 설정"
         backIcon="arrow"
         rightContent={
-          <button type="button" className="h-[22px] w-[50px] flex-center">
+          <button
+            type="button"
+            className="h-[22px] w-[50px] flex-center"
+            onClick={() =>
+              openGuideModal({
+                title: '정기미팅 설정 가이드',
+                children: (
+                  <div className="flex flex-col items-center gap-[30px]">
+                    <div className="flex flex-col items-center gap-5">
+                      <p className="text-body-1 text-tx-default_black">
+                        시간 설정 방법
+                      </p>
+                      <div className="flex flex-col items-start gap-5">
+                        <div className="flex items-center gap-[10px]">
+                          <div className="h-4 w-4">
+                            <img
+                              src="/assets/timepick/guide-icon.svg"
+                              width={15}
+                              height={15}
+                            />
+                          </div>
+                          <p className="text-body-4.1 text-bg-default">
+                            장소는
+                            <span className="text-body-4 text-bg-primary">
+                              {' '}
+                              온라인으로 고정
+                            </span>
+                            한다
+                          </p>
+                        </div>
+                        <div className="flex gap-[10px]">
+                          <div className="h-4 w-4">
+                            <img
+                              src="/assets/timepick/guide-icon.svg"
+                              width={15}
+                              height={15}
+                            />
+                          </div>
+                          <p className="text-body-4.1 text-bg-default">
+                            <span className="text-body-4 text-bg-primary">
+                              클릭 또는 드래그
+                            </span>
+                            로 시간대를 <br />
+                            선택하세요
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-[10px]">
+                          <div className="h-4 w-4">
+                            <img
+                              src="/assets/timepick/guide-icon.svg"
+                              width={15}
+                              height={15}
+                            />
+                          </div>
+                          <p className="text-body-4.1 text-bg-default">
+                            선택한 시간은 다시 선택하면 취소돼요
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-[10px]">
+                          <div className="h-4 w-4">
+                            <img
+                              src="/assets/timepick/guide-icon.svg"
+                              width={15}
+                              height={15}
+                            />
+                          </div>
+                          <p className="text-body-4.1 text-bg-default">
+                            본인의
+                            <span className="text-body-4 text-bg-primary">
+                              {' '}
+                              선호 시간대를 선택
+                            </span>
+                            하세요
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-[10px]">
+                          <div className="h-4 w-4">
+                            <img
+                              src="/assets/timepick/guide-icon.svg"
+                              width={15}
+                              height={15}
+                            />
+                          </div>
+                          <p className="text-body-4.1 text-bg-default">
+                            야모요가
+                            <span className="text-body-4 text-bg-primary">
+                              {' '}
+                              최적의 시간대를
+                            </span>
+                            를 찾아드려요
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="text-body-1 text-bg-primary"
+                      onClick={closeModal}
+                    >
+                      확인
+                    </button>
+                  </div>
+                ),
+              })
+            }
+          >
             <img
               src="/assets/icons/badge-guide.svg"
               width={50}
@@ -96,95 +170,20 @@ export default function TimePickPage() {
           <br />을 찾고 있어요
         </p>
         <div className="flex w-full flex-col items-start gap-4">
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-1">
-              <BottomButton
-                text={isEditMode ? '설정 완료' : '시간 설정'}
-                onClick={() => setIsEditMode((prev) => !prev)}
-                className={cn(
-                  'h-[40px] w-[88px] rounded-lg text-body-4 transition-colors duration-200',
-                  isEditMode
-                    ? 'bg-tx-default_3 text-bg-default'
-                    : 'bg-bg-primary text-tx-default',
-                )}
-              />
-              <button
-                type="button"
-                onClick={handleReset}
-                className="size-[40px] gap-[10px] rounded-[5.714px] bg-bd-textfiled_line flex-center"
-              >
-                <img
-                  src="/assets/icons/timepick-reset.svg"
-                  alt="reset"
-                  width={28}
-                  height={28}
-                />
-              </button>
-            </div>
-
-            <button
-              type="button"
-              className="h-[40px] w-[110px] gap-1 rounded-lg bg-bd-textfiled_line flex-center"
-            >
-              <img
-                src="/assets/icons/everytime.svg"
-                alt="에브리타임"
-                className="size-5"
-              />
-              <span className="text-body-4 text-tx-default">불러오기</span>
-            </button>
-          </div>
+          <TimePickControls
+            isEditMode={isEditMode}
+            onToggleEditMode={() => setIsEditMode((prev) => !prev)}
+            onReset={handleReset}
+            onImport={handleImport}
+          />
         </div>
       </div>
 
-      {/* 시간표 그리드 */}
-      <div className="mt-4 flex justify-center px-5">
-        <div className="mr-[6px] mt-[25px] flex flex-col gap-[48px]">
-          {TIME_LABELS.map((label) => (
-            <span
-              key={label}
-              className="body-g11-2 flex items-start justify-end text-tx-default_3"
-            >
-              {label}
-            </span>
-          ))}
-        </div>
-
-        {/* 요일 + 버튼 그리드 */}
-        <div className="flex gap-[2px]">
-          {DAYS.map((day, dayIndex) => (
-            <div key={dayIndex} className="flex flex-col items-center">
-              <span className="body-g11 mb-[10px] text-tx-default_3">
-                {day}
-              </span>
-              <div
-                className="flex flex-col gap-[2px]"
-                onPointerUp={handlePointerUp}
-                onPointerLeave={handlePointerUp}
-              >
-                {TIME_SLOTS.map((_, slotIndex) => (
-                  <button
-                    key={`${dayIndex}-${slotIndex}`}
-                    type="button"
-                    onPointerDown={() => handlePointerDown(dayIndex, slotIndex)}
-                    onPointerEnter={() =>
-                      handlePointerEnter(dayIndex, slotIndex)
-                    }
-                    className={cn(
-                      'h-[30px] w-[42px] touch-none rounded',
-                      availability[dayIndex][slotIndex]
-                        ? 'bg-bg-secondary_2'
-                        : isEditMode
-                          ? 'bg-tx-default_3'
-                          : 'cursor-not-allowed bg-tx-default_5',
-                    )}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <TimePickGrid
+        isEditMode={isEditMode}
+        availability={availability}
+        onAvailabilityChange={setAvailability}
+      />
 
       <div className="mb-[48px] mt-[80px] px-5">
         <BottomButton
