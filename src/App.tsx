@@ -37,7 +37,7 @@ import TeamRoomEditPage from './pages/teamroom/[id]/edit';
 import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
-import RuleSetupPage from './pages/teamroom/[id]/rule-setup';
+import RuleSetupPage from './pages/teamroom/[id]/rule';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -97,7 +97,7 @@ export default function App() {
           <Route path="create" element={<TeamRoomCreatePage />} />
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
-          <Route path=":id/rule-setup" element={<RuleSetupPage />} />
+          <Route path=":id/rule" element={<RuleSetupPage />} />
         </Route>
 
         <Route path="/mypage">
