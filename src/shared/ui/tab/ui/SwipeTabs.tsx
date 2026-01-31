@@ -34,7 +34,7 @@ interface Props {
  *   return (
  *     <>
  *       <SwipeTabs tabs={tabs} Header={(p) => <FullWidthUnderlineTabHeader {...p} />} />
- *       <SwipeTabs tabs={tabs} Header={(p) => <LabelUnderlineTabHeader {...p} scrollable />} />
+ *       <SwipeTabs tabs={tabs} Header={(p) => <LabelUnderlineTabHeader {...p} />} />
  *     </>
  *   );
  * }
