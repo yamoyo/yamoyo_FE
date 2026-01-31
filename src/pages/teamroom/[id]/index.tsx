@@ -10,7 +10,6 @@ import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptio
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 
 export default function TeamRoomMainPage() {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [teamRoom, setTeamRoom] = useState<TeamRoom | null>(null);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
@@ -18,12 +17,6 @@ export default function TeamRoomMainPage() {
 
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
-
-  /** 팀장 정하기 게임 시작 */
-  const onStartLeaderGame = () => {
-    // TODO: API 연동 후 팀장 정하기 게임 화면으로 이동
-    navigate('leader');
-  };
 
   useEffect(() => {
     if (!id) return;
@@ -55,7 +48,7 @@ export default function TeamRoomMainPage() {
         members={teamRoom?.members ?? []}
         onAddMember={() => setIsAddMemberOpen(true)}
       />
-      <LeaderGameCard onStart={onStartLeaderGame} />
+      <TeamRoomContents />
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
