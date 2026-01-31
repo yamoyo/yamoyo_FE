@@ -100,6 +100,7 @@ export default function App() {
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
           <Route path=":id/rule" element={<RuleSetupPage />} />
+          <Route path=":id/timepick" element={<TimePickPage />} />
         </Route>
 
         <Route path="/mypage">
@@ -129,8 +130,6 @@ export default function App() {
           <Route path="major" element={<MajorStep />} />
           <Route path="persona" element={<PersonaStep />} />
         </Route>
-
-        <Route path="timepick" element={<TimePickPage />} />
 
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
