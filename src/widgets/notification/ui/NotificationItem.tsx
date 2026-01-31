@@ -29,7 +29,7 @@ export default function NotificationItem({
       disabled={isRead}
       onClick={onClick}
     >
-      <Character style={{ color: characterColor }} />
+      <Character style={{ color: characterColor }} className="h-10 min-w-10" />
       <div className="space-y-1 text-start">
         <p className="text-body-1 text-tx-default">{title}</p>
         <p className="text-body-6 text-tx-default_4">{description}</p>

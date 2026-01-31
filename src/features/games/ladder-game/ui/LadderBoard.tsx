@@ -79,7 +79,7 @@ export default function LadderBoard({
   teamLeaderIndex,
   containerClassName,
 }: Props) {
-  const { bind } = useHorizontalDragScroll();
+  const { bind } = useHorizontalDragScroll<HTMLDivElement>();
   const { openCharacterModal } = useModalStore();
   const navigate = useNavigate();
 

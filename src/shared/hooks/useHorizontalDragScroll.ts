@@ -1,10 +1,25 @@
 import { useCallback, useMemo, useRef } from 'react';
 
+type DragScrollBind<T extends HTMLElement> = {
+  ref: React.RefObject<T | null>;
+  onMouseDown: React.MouseEventHandler<T>;
+  onMouseMove: React.MouseEventHandler<T>;
+  onMouseUp: () => void;
+  onMouseLeave: () => void;
+  onTouchStart: React.TouchEventHandler<T>;
+  onTouchMove: React.TouchEventHandler<T>;
+  onTouchEnd: () => void;
+  onTouchCancel: () => void;
+};
+
 /** 가로 드래그 스크롤 훅
  *
  * - 사용 예시
  * ```tsx
- * const { bind } = useHorizontalDragScroll();
+ * // div 태그
+ * const { bind } = useHorizontalDragScroll<HTMLDivElement>();
+ * // ul 태그
+ * const { bind } = useHorizontalDragScroll<HTMLUListElement>();
  *
  * return (
  *  <div {...bind} className="overflow-x-auto">
@@ -13,8 +28,8 @@ import { useCallback, useMemo, useRef } from 'react';
  * );
  * ```
  */
-export function useHorizontalDragScroll() {
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+export function useHorizontalDragScroll<T extends HTMLElement>() {
+  const scrollRef = useRef<T | null>(null);
 
   const isDragging = useRef(false);
   const startX = useRef(0);
@@ -24,46 +39,33 @@ export function useHorizontalDragScroll() {
     isDragging.current = false;
   }, []);
 
-  const onMouseDown = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (!scrollRef.current) return;
-      isDragging.current = true;
-      startX.current = e.clientX;
-      scrollStartLeft.current = scrollRef.current.scrollLeft;
-    },
-    [],
-  );
+  const onMouseDown = useCallback<React.MouseEventHandler<T>>((e) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    startX.current = e.clientX;
+    scrollStartLeft.current = scrollRef.current.scrollLeft;
+  }, []);
 
-  const onMouseMove = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (!isDragging.current || !scrollRef.current) return;
-      const diff = e.clientX - startX.current;
-      scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
-    },
-    [],
-  );
+  const onMouseMove = useCallback<React.MouseEventHandler<T>>((e) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    const diff = e.clientX - startX.current;
+    scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
+  }, []);
 
-  const onTouchStart = useCallback<React.TouchEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (!scrollRef.current) return;
-      isDragging.current = true;
-      startX.current = e.touches[0].clientX;
-      scrollStartLeft.current = scrollRef.current.scrollLeft;
-    },
-    [],
-  );
+  const onTouchStart = useCallback<React.TouchEventHandler<T>>((e) => {
+    if (!scrollRef.current) return;
+    isDragging.current = true;
+    startX.current = e.touches[0].clientX;
+    scrollStartLeft.current = scrollRef.current.scrollLeft;
+  }, []);
 
-  const onTouchMove = useCallback<React.TouchEventHandler<HTMLDivElement>>(
-    (e) => {
-      if (!isDragging.current || !scrollRef.current) return;
-      const diff = e.touches[0].clientX - startX.current;
-      scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
-    },
-    [],
-  );
+  const onTouchMove = useCallback<React.TouchEventHandler<T>>((e) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    const diff = e.touches[0].clientX - startX.current;
+    scrollRef.current.scrollLeft = scrollStartLeft.current - diff;
+  }, []);
 
-  // 바깥에서 스프레드로 바로 붙이기 좋게 props 형태로 반환
-  const bind = useMemo(
+  const bind = useMemo<DragScrollBind<T>>(
     () => ({
       ref: scrollRef,
       onMouseDown,
@@ -75,7 +77,7 @@ export function useHorizontalDragScroll() {
       onTouchEnd: stopDragging,
       onTouchCancel: stopDragging,
     }),
-    [onMouseDown, onMouseMove, stopDragging, onTouchStart, onTouchMove], // ref는 stable, 핸들러도 이 훅 스코프에서 안정적
+    [onMouseDown, onMouseMove, onTouchStart, onTouchMove, stopDragging],
   );
 
   return { scrollRef, bind, stopDragging };

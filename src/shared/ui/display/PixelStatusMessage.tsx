@@ -15,7 +15,9 @@ export default function PixelStatusMessage({
         className="w-[192px]"
         draggable={false}
       />
-      <span className="text-body-1 text-tx-default">{message}</span>
+      <span className="whitespace-pre-line text-center text-body-1 text-tx-default">
+        {message}
+      </span>
     </div>
   );
 }
