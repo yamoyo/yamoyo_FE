@@ -152,7 +152,6 @@ export default function TimePickPage() {
           text="선호 시간대 설정"
           onClick={handleSubmit}
           disabled={!hasSelection}
-          className="h-auto gap-[10px] self-stretch px-[80px] py-4 flex-center"
         />
       </div>
     </div>
