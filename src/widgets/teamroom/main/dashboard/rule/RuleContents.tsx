@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import RuleItem from './ruleItem';
+import RuleItem from './RuleItem';
+import ContentsHeader from '../../ui/ContentsHeader';
 
 const RULES = [
   {
@@ -54,34 +55,12 @@ export default function Rules() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <img
-            className="h-6 w-6"
-            src="/assets/icons/dashboard/rule.svg"
-            alt="Rule Icon"
-            draggable={false}
-          />
-          <p className="text-body-2 text-tx-default">팀 규칙</p>
-        </div>
-        <button onClick={() => setEditMode((prev) => !prev)} className="p-2.5">
-          {editMode ? (
-            <img
-              className="h-5 w-5"
-              src="/assets/icons/check-active.svg"
-              alt="Check Active Icon"
-              draggable={false}
-            />
-          ) : (
-            <img
-              className="h-5 w-5"
-              src="/assets/icons/dashboard/edit.svg"
-              alt="Edit Icon"
-              draggable={false}
-            />
-          )}
-        </button>
-      </div>
+      <ContentsHeader
+        id="rule"
+        text="팀 규칙"
+        editMode={editMode}
+        onClickIcon={() => setEditMode((prev) => !prev)}
+      />
       <div className="space-y-2">
         {rules.map((rule, i) => (
           <RuleItem

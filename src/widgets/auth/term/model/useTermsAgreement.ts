@@ -10,18 +10,15 @@ const TERMS: TermItem[] = [
     id: 'privacy',
     label: '개인정보 수집 및 이용 동의 (필수)',
   },
-  {
-    id: 'age',
-    label: '만 14세 이상 확인 (필수)',
-  },
 ];
 
 export default function useTermsAgreement() {
   const [agreements, setAgreements] = useState<Record<TermId, boolean>>({
     service: false,
     privacy: false,
-    age: false,
   });
+
+  const [openedDetailTerm, setOpenedDetailTerm] = useState<TermId | null>(null);
 
   const allChecked = useMemo(
     () => TERMS.every((term) => agreements[term.id]),
@@ -33,7 +30,6 @@ export default function useTermsAgreement() {
     setAgreements({
       service: next,
       privacy: next,
-      age: next,
     });
   };
 
@@ -50,5 +46,7 @@ export default function useTermsAgreement() {
     allChecked,
     toggleAll,
     toggleOne,
+    openedDetailTerm,
+    setOpenedDetailTerm,
   };
 }

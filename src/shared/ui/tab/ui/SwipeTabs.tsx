@@ -20,10 +20,12 @@ interface Props {
  * ```tsx
  * import {
  *   SwipeTabs,
- *   FullWidthUnderlineTabHeader,
- *   LabelUnderlineTabHeader,
  *   type TabsConfig,
  * } from '@/shared/ui/tabs';
+ *
+ * // 헤더는 둘 중 선택
+ * import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnderlineTabHeader';
+ * import LabelUnderlineTabHeader from '@/shared/ui/tab/ui/headers/LabelUnderlineTabHeader';
  *
  * const tabs: TabsConfig[] = [
  *   { id: 'a', label: 'A', render: () => <div /> },

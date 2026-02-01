@@ -38,6 +38,7 @@ import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
+import ToolSetupPage from './pages/teamroom/[id]/tool';
 
 import TimeSelectPage from './pages/timeselect';
 import EveryTimePage from './pages/timeselect/everytime';
@@ -102,6 +103,7 @@ export default function App() {
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
           <Route path=":id/rule" element={<RuleSetupPage />} />
+          <Route path=":id/tool" element={<ToolSetupPage />} />
           <Route path=":id/timeselect" element={<TimeSelectPage />} />
           <Route path=":id/timeselect/everytime" element={<EveryTimePage />} />
           <Route path=":id/timeselect/liketime" element={<LikeTimePage />} />

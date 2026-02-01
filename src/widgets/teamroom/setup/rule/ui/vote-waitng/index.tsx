@@ -1,4 +1,3 @@
-import TopBar from '@/shared/ui/header/TopBar';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 import { DUMMY_UNVOTED, DUMMY_VOTED } from '@/widgets/vote/model/vote-dummy';
 
@@ -13,7 +12,7 @@ export default function RuleVoteWaitingScreen() {
 
   return (
     <VoteStatus
-      isHiddenBackButton
+      isHiddenCancelButton
       votedUsers={DUMMY_VOTED}
       unVotedUsers={DUMMY_UNVOTED}
       isCompleted={false}
