@@ -50,7 +50,7 @@ export default function VotingTool({ onFinish }: Props) {
       <TopBar title="협업툴 설정" />
       <div className="mt-5 flex flex-col gap-6 px-6 pb-12">
         <StepTitle
-          step={step}
+          step={step + 1}
           totalSteps={TOOL_CONTENTS.length}
           title={title}
           description={description}
