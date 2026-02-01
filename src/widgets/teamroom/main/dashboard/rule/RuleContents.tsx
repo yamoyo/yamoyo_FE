@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import RuleItem from './ruleItem';
+import RuleItem from './RuleItem';
 
 const RULES = [
   {

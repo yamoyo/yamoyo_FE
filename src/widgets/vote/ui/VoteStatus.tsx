@@ -10,7 +10,8 @@ interface Props {
   unVotedUsers: VoteCharacter[];
   isCompleted: boolean;
   handleVoteComplete: () => void;
-  isHiddenBackButton?: boolean;
+  isHiddenCancelButton?: boolean;
+  onClose?: () => void;
 }
 
 export default function VoteStatus({
@@ -18,7 +19,8 @@ export default function VoteStatus({
   unVotedUsers,
   isCompleted,
   handleVoteComplete,
-  isHiddenBackButton,
+  isHiddenCancelButton = false,
+  onClose,
 }: Props) {
   useEffect(() => {
     if (!isCompleted) return;
@@ -31,7 +33,8 @@ export default function VoteStatus({
       <TopBar
         title="투표 현황"
         backIcon="cancel"
-        showBackButton={!isHiddenBackButton}
+        showBackButton={!isHiddenCancelButton}
+        onBack={onClose}
       />
       <div className="mt-[30px] px-6">
         <p className="mb-1 text-title-2 text-white">

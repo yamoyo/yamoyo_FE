@@ -1,4 +1,5 @@
 import BottomButtonTwoOptions from '@/shared/ui/button/BottomButtonTwoOptions';
+import StepTitle from '@/shared/ui/tab/StepTitle';
 
 const VOTE_CONTENTS = [
   {
@@ -63,16 +64,12 @@ export default function VotingRule({ step, handleVote }: Props) {
 
   return (
     <div className="flex flex-1 select-none flex-col items-center px-5 pt-[30px] text-tx-default">
-      <div className="w-full space-y-1">
-        <div>
-          <span className="text-body4">{step}</span>
-          <span className="text-body5 text-tx-default_3">
-            /{VOTE_CONTENTS.length}
-          </span>
-        </div>
-        <p className="text-title-2">{title}</p>
-        <p className="text-body-5">{description}</p>
-      </div>
+      <StepTitle
+        step={step}
+        totalSteps={VOTE_CONTENTS.length}
+        title={title}
+        description={description}
+      />
       <div className="relative mt-9 flex max-w-[326px] flex-1 flex-col items-end">
         <img
           src="/assets/rule/speech-bubble.png"
