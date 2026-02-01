@@ -3,8 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
-import TimePickGrid from '@/widgets/teamroom/timepick/TimePickGrid';
-import TimePickControls from '@/widgets/teamroom/timepick/TimePickControls';
+import TimeSelectControls from '@/widgets/teamroom/timeselect/TimeSelectControls';
+import TimeSelectGrid from '@/widgets/teamroom/timeselect/TimeSelectGrid';
+
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 const createInitialAvailability = () =>
@@ -22,7 +23,7 @@ const GUIDE_ITEMS: { text: string; highlight?: string; suffix?: string }[] = [
   { text: '야모요가', highlight: '최적의 시간대를', suffix: '를 찾아드려요' },
 ];
 
-export default function TimePickPage() {
+export default function TimeSelectPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const openGuideModal = useModalStore((state) => state.openGuideModal);
@@ -38,15 +39,15 @@ export default function TimePickPage() {
   };
 
   const handleNavigateEverytime = () => {
-    navigate(`/teamroom/${id}/timepick/everytime`);
+    navigate(`/teamroom/${id}/timeselect/everytime`);
   };
 
   const handleSubmit = async () => {
     // TODO: teamRoomId를 useParams로 받아와서 API 호출
     // const body = { availability };
-    // await authClient.post(`/api/team-rooms/${teamRoomId}/timepick/availability`, body);
+    // await authClient.post(`/api/team-rooms/${teamRoomId}/timeselect/availability`, body);
 
-    navigate(`/teamroom/${id}/timepick/liketime`, { replace: true });
+    navigate(`/teamroom/${id}/timeselect/liketime`, { replace: true });
   };
 
   const hasSelection = availability.some((day) => day.some((slot) => slot));
@@ -54,7 +55,7 @@ export default function TimePickPage() {
   return (
     <div
       style={{
-        backgroundImage: 'url(/assets/timepick/timepick-bg.png)',
+        backgroundImage: 'url(/assets/timeselect/timeselect-bg.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
@@ -83,7 +84,7 @@ export default function TimePickPage() {
                           >
                             <div className="h-4 w-4">
                               <img
-                                src="/assets/timepick/guide-icon.svg"
+                                src="/assets/timeselect/guide-icon.svg"
                                 width={15}
                                 height={15}
                               />
@@ -135,7 +136,7 @@ export default function TimePickPage() {
           <br />을 찾고 있어요
         </p>
         <div className="flex w-full flex-col items-start gap-4">
-          <TimePickControls
+          <TimeSelectControls
             isEditMode={isEditMode}
             onToggleEditMode={() => setIsEditMode((prev) => !prev)}
             onReset={handleReset}
@@ -144,7 +145,7 @@ export default function TimePickPage() {
         </div>
       </div>
 
-      <TimePickGrid
+      <TimeSelectGrid
         isEditMode={isEditMode}
         availability={availability}
         onAvailabilityChange={setAvailability}

@@ -8,7 +8,7 @@ export default function GuideModal({ title, children }: GuideModalOptions) {
         <div
           className="h-[40px] w-[220px] bg-cover bg-center flex-center"
           style={{
-            backgroundImage: 'url(/assets/timepick/guide-title-bg.png)',
+            backgroundImage: 'url(/assets/timeselect/guide-title-bg.png)',
           }}
         >
           <h2 className="body-g2 text-[#C7B2FF]">{title}</h2>

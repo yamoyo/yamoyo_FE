@@ -11,17 +11,17 @@ const TIME_LABELS = Array.from({ length: 17 }, (_, i) => {
   return `${hour.toString().padStart(2, '0')}:00`;
 });
 
-interface TimePickGridProps {
+interface TimeSelectGridProps {
   isEditMode: boolean;
   availability: boolean[][];
   onAvailabilityChange: (availability: boolean[][]) => void;
 }
 
-export default function TimePickGrid({
+export default function TimeSelectGrid({
   isEditMode,
   availability,
   onAvailabilityChange,
-}: TimePickGridProps) {
+}: TimeSelectGridProps) {
   const isDragging = useRef(false);
   const dragValue = useRef<boolean>(true);
   const lastCell = useRef<string | null>(null);
