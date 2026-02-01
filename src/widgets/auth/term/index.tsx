@@ -4,13 +4,22 @@ import useTermsAgreement from './model/useTermsAgreement';
 import TermsList from './ui/TermsList';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
+import { TermsOfService } from './ui/detail-term/TermsOfService';
+import { PrivacyPolicy } from './ui/detail-term/PrivacyPolicy';
 
-export default function TermsAgreementWidget() {
+export function TermsAgreementPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { terms, agreements, allChecked, toggleAll, toggleOne } =
-    useTermsAgreement();
+  const {
+    terms,
+    agreements,
+    allChecked,
+    toggleAll,
+    toggleOne,
+    openedDetailTerm,
+    setOpenedDetailTerm,
+  } = useTermsAgreement();
 
   const handleSubmit = () => {
     if (!allChecked) {
@@ -23,6 +32,24 @@ export default function TermsAgreementWidget() {
 
     setIsSubmitting(false);
   };
+
+  if (openedDetailTerm === 'service') {
+    return (
+      <>
+        <TopBar onBack={() => setOpenedDetailTerm(null)} />
+        <TermsOfService />
+      </>
+    );
+  }
+
+  if (openedDetailTerm === 'privacy') {
+    return (
+      <>
+        <TopBar onBack={() => setOpenedDetailTerm(null)} />
+        <PrivacyPolicy />
+      </>
+    );
+  }
 
   return (
     <>
@@ -37,7 +64,7 @@ export default function TermsAgreementWidget() {
             onToggleAll={toggleAll}
             agreements={agreements}
             onToggleOne={toggleOne}
-            onOpenDetail={() => {}}
+            onOpenDetail={setOpenedDetailTerm}
           />
         </div>
         <BottomButton
