@@ -10,6 +10,18 @@ import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 const createInitialAvailability = () =>
   Array.from({ length: 7 }, () => Array.from({ length: 32 }, () => false));
 
+const GUIDE_ITEMS: { text: string; highlight?: string; suffix?: string }[] = [
+  { text: '장소는', highlight: '온라인으로 고정', suffix: '한다' },
+  {
+    text: '',
+    highlight: '클릭 또는 드래그',
+    suffix: '로 시간대를\n선택하세요',
+  },
+  { text: '선택한 시간은 다시 선택하면 취소돼요' },
+  { text: '본인의', highlight: '선호 시간대를 선택', suffix: '하세요' },
+  { text: '야모요가', highlight: '최적의 시간대를', suffix: '를 찾아드려요' },
+];
+
 export default function TimePickPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -64,85 +76,30 @@ export default function TimePickPage() {
                         시간 설정 방법
                       </p>
                       <div className="flex flex-col items-start gap-5">
-                        <div className="flex items-center gap-[10px]">
-                          <div className="h-4 w-4">
-                            <img
-                              src="/assets/timepick/guide-icon.svg"
-                              width={15}
-                              height={15}
-                            />
+                        {GUIDE_ITEMS.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-[10px]"
+                          >
+                            <div className="h-4 w-4">
+                              <img
+                                src="/assets/timepick/guide-icon.svg"
+                                width={15}
+                                height={15}
+                              />
+                            </div>
+                            <p className="whitespace-pre-line text-body-4.1 text-bg-default">
+                              {item.text}
+                              {item.highlight && (
+                                <span className="text-body-4 text-bg-primary">
+                                  {' '}
+                                  {item.highlight}
+                                </span>
+                              )}
+                              {item.suffix}
+                            </p>
                           </div>
-                          <p className="text-body-4.1 text-bg-default">
-                            장소는
-                            <span className="text-body-4 text-bg-primary">
-                              {' '}
-                              온라인으로 고정
-                            </span>
-                            한다
-                          </p>
-                        </div>
-                        <div className="flex gap-[10px]">
-                          <div className="h-4 w-4">
-                            <img
-                              src="/assets/timepick/guide-icon.svg"
-                              width={15}
-                              height={15}
-                            />
-                          </div>
-                          <p className="text-body-4.1 text-bg-default">
-                            <span className="text-body-4 text-bg-primary">
-                              클릭 또는 드래그
-                            </span>
-                            로 시간대를 <br />
-                            선택하세요
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-[10px]">
-                          <div className="h-4 w-4">
-                            <img
-                              src="/assets/timepick/guide-icon.svg"
-                              width={15}
-                              height={15}
-                            />
-                          </div>
-                          <p className="text-body-4.1 text-bg-default">
-                            선택한 시간은 다시 선택하면 취소돼요
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-[10px]">
-                          <div className="h-4 w-4">
-                            <img
-                              src="/assets/timepick/guide-icon.svg"
-                              width={15}
-                              height={15}
-                            />
-                          </div>
-                          <p className="text-body-4.1 text-bg-default">
-                            본인의
-                            <span className="text-body-4 text-bg-primary">
-                              {' '}
-                              선호 시간대를 선택
-                            </span>
-                            하세요
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-[10px]">
-                          <div className="h-4 w-4">
-                            <img
-                              src="/assets/timepick/guide-icon.svg"
-                              width={15}
-                              height={15}
-                            />
-                          </div>
-                          <p className="text-body-4.1 text-bg-default">
-                            야모요가
-                            <span className="text-body-4 text-bg-primary">
-                              {' '}
-                              최적의 시간대를
-                            </span>
-                            를 찾아드려요
-                          </p>
-                        </div>
+                        ))}
                       </div>
                     </div>
                     <button
