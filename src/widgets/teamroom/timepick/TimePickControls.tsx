@@ -15,7 +15,10 @@ export default function TimePickControls({
   onImport,
 }: TimePickControlsProps) {
   return (
-    <div className="flex w-full items-center justify-between">
+    <div
+      className="flex w-full select-none items-center justify-between"
+      draggable="false"
+    >
       <div className="flex items-center gap-1">
         <BottomButton
           text={isEditMode ? '설정 해제' : '시간 설정'}

@@ -129,7 +129,8 @@ export default function TimePickGrid({
         {TIME_LABELS.map((label) => (
           <span
             key={label}
-            className="body-g11-2 flex items-start justify-end text-tx-default_3"
+            className="body-g11-2 flex select-none items-start justify-end text-tx-default_3"
+            draggable="false"
           >
             {label}
           </span>
@@ -145,7 +146,12 @@ export default function TimePickGrid({
       >
         {DAYS.map((day, dayIndex) => (
           <div key={dayIndex} className="flex flex-col items-center">
-            <span className="body-g11 mb-[10px] text-tx-default_3">{day}</span>
+            <span
+              className="body-g11 mb-[10px] select-none text-tx-default_3"
+              draggable="false"
+            >
+              {day}
+            </span>
             <div className="flex flex-col gap-[2px]">
               {Array.from({ length: TIME_SLOT_COUNT }, (_, slotIndex) => (
                 <button

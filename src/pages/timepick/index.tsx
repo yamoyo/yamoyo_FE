@@ -126,7 +126,10 @@ export default function TimePickPage() {
       />
 
       <div className="mt-5 flex flex-col items-start gap-[30px] px-5">
-        <p className="w-[264px] text-title-2 text-tx-default">
+        <p
+          className="w-[264px] select-none text-title-2 text-tx-default"
+          draggable="false"
+        >
           팀원들이 가장
           <span className="text-bg-secondary_2"> 많이 겹치는 시간</span>
           <br />을 찾고 있어요
@@ -147,7 +150,7 @@ export default function TimePickPage() {
         onAvailabilityChange={setAvailability}
       />
 
-      <div className="mb-[48px] mt-[80px] px-5">
+      <div className="mb-[48px] mt-[80px] select-none px-5" draggable="false">
         <BottomButton
           text="선호 시간대 설정"
           onClick={handleSubmit}
