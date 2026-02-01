@@ -11,7 +11,7 @@ const TIEMS = [
 ] as const;
 
 export default function LikeTimePage() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<string | null>(null);
 
   return (
     <>
@@ -21,20 +21,20 @@ export default function LikeTimePage() {
           본인의 선호 시간대를 추천해주세요.
         </p>
         <div className="flex w-full flex-col items-start gap-4">
-          {TIEMS.map((item, index) => (
+          {TIEMS.map((item) => (
             <button
-              key={index}
+              key={item}
               type="button"
               className={`flex h-[59px] w-full items-center gap-[25px] rounded-xl border border-bd-textfiled_line px-[18px] py-[17px] text-body-2 text-tx-default transition-colors ${
-                selectedIndex === index
+                selectedIndex === item
                   ? 'bg-bg-secondary_2 text-tx-default_black'
                   : 'bg-bg-card'
               }`}
-              onClick={() => setSelectedIndex(index)}
+              onClick={() => setSelectedIndex(item)}
             >
               <TimeIcon
                 className={
-                  selectedIndex === index
+                  selectedIndex === item
                     ? 'text-tx-default_black'
                     : 'text-tx-default_4'
                 }
@@ -43,7 +43,7 @@ export default function LikeTimePage() {
             </button>
           ))}
         </div>
-        <div className="mt-[274px] w-full">
+        <div className="mb-4 mt-[274px] w-full">
           <BottomButton text="선호 시간대 설정" onClick={() => {}} />
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { cn } from '@/shared/config/tailwind/cn';
 
-const DAYS = ['일', '월', '화', '수', '금', '토', '일'] as const;
+const DAYS = ['일', '월', '화', '수', '목', '금', '토'] as const;
 
 const TIME_SLOTS = Array.from({ length: 32 }, (_, i) => {
   const hour = Math.floor(i / 2) + 8;

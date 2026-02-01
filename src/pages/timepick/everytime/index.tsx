@@ -21,7 +21,7 @@ export default function EveryTimePage() {
           />
         </div>
 
-        <div className="flex flex-col gap-[66px] px-6">
+        <div className="mb-4 flex flex-col gap-[66px] px-6">
           <div className="flex flex-col items-start gap-5">
             <div className="text-body-4.1 text-tx-default_2">
               <p>* 시간표의 공개 범위를 잠시 동안 '전체 공개'로 바꿔주세요.</p>
