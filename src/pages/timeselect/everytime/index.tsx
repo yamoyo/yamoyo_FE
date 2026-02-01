@@ -30,7 +30,7 @@ export default function EveryTimePage() {
               </p>
             </div>
             <img
-              src="/assets/timepick/guide-everytime.png"
+              src="/assets/timeselect/guide-everytime.png"
               alt="에브리타임 가이드"
             />
           </div>

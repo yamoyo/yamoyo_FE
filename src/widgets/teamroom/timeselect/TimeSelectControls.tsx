@@ -1,19 +1,19 @@
 import BottomButton from '@/shared/ui/button/BottomButton';
 import { cn } from '@/shared/config/tailwind/cn';
 
-interface TimePickControlsProps {
+interface TimeSelectControlsProps {
   isEditMode: boolean;
   onToggleEditMode: () => void;
   onReset: () => void;
   onImport: () => void;
 }
 
-export default function TimePickControls({
+export default function TimeSelectControls({
   isEditMode,
   onToggleEditMode,
   onReset,
   onImport,
-}: TimePickControlsProps) {
+}: TimeSelectControlsProps) {
   return (
     <div
       className="flex w-full select-none items-center justify-between"
@@ -36,7 +36,7 @@ export default function TimePickControls({
           className="size-[40px] gap-[10px] rounded-[5.714px] bg-bd-textfiled_line flex-center"
         >
           <img
-            src="/assets/icons/timepick-reset.svg"
+            src="/assets/icons/timeselect-reset.svg"
             alt="reset"
             width={28}
             height={28}

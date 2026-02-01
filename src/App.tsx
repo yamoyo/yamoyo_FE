@@ -39,9 +39,9 @@ import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
 
-import TimePickPage from './pages/timepick';
-import EveryTimePage from './pages/timepick/everytime';
-import LikeTimePage from './pages/timepick/liketime';
+import TimeSelectPage from './pages/timeselect';
+import EveryTimePage from './pages/timeselect/everytime';
+import LikeTimePage from './pages/timeselect/liketime';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -102,9 +102,9 @@ export default function App() {
           <Route path="create/banner" element={<BannerPage />} />
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
           <Route path=":id/rule" element={<RuleSetupPage />} />
-          <Route path=":id/timepick" element={<TimePickPage />} />
-          <Route path=":id/timepick/everytime" element={<EveryTimePage />} />
-          <Route path=":id/timepick/liketime" element={<LikeTimePage />} />
+          <Route path=":id/timeselect" element={<TimeSelectPage />} />
+          <Route path=":id/timeselect/everytime" element={<EveryTimePage />} />
+          <Route path=":id/timeselect/liketime" element={<LikeTimePage />} />
         </Route>
 
         <Route path="/mypage">
