@@ -29,10 +29,12 @@ export default function TimePickPage() {
     navigate(`/teamroom/${id}/timepick/everytime`);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // TODO: teamRoomId를 useParams로 받아와서 API 호출
     // const body = { availability };
     // await authClient.post(`/api/team-rooms/${teamRoomId}/timepick/availability`, body);
+
+    navigate(`/teamroom/${id}/timepick/liketime`, { replace: true });
   };
 
   const hasSelection = availability.some((day) => day.some((slot) => slot));
