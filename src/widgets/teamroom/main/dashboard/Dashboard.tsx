@@ -4,7 +4,7 @@ import { DashboardStatus } from '@/entities/teamroom/model/types';
 import Rules from './rule/RuleContents';
 
 const decided: DashboardStatus = {
-  meeting: false,
+  timepick: false,
   tool: false,
   rule: true,
 };
@@ -22,13 +22,13 @@ export function Dashboard() {
 
   const tabs: TabsConfig[] = [
     {
-      id: 'meeting',
+      id: 'timepick',
       label: '미팅일정',
       render: () =>
-        decided.meeting ? (
+        decided.timepick ? (
           <></>
         ) : (
-          fallback('빠른 미팅일정을 설정하세요', 'meeting')
+          fallback('빠른 미팅일정을 설정하세요', 'timepick')
         ),
     },
     {
