@@ -1,6 +1,6 @@
 interface BaseProps {
   text: string;
-  id: 'rule' | 'tool' | 'meeting';
+  id: 'rule' | 'tool' | 'timepick';
 }
 
 type EditProps =

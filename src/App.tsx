@@ -40,6 +40,10 @@ import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
 import ToolSetupPage from './pages/teamroom/[id]/tool';
 
+import TimePickPage from './pages/timepick';
+import EveryTimePage from './pages/timepick/everytime';
+import LikeTimePage from './pages/timepick/liketime';
+
 export default function App() {
   // 스플래시 표시 여부 상태
   // localStorage에 'hasVisited' 값이 없으면 첫 방문 -> 스플래시 표시
@@ -100,6 +104,9 @@ export default function App() {
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
           <Route path=":id/rule" element={<RuleSetupPage />} />
           <Route path=":id/tool" element={<ToolSetupPage />} />
+          <Route path=":id/timepick" element={<TimePickPage />} />
+          <Route path=":id/timepick/everytime" element={<EveryTimePage />} />
+          <Route path=":id/timepick/liketime" element={<LikeTimePage />} />
         </Route>
 
         <Route path="/mypage">
