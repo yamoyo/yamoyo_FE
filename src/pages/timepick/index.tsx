@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
@@ -10,6 +11,8 @@ const createInitialAvailability = () =>
   Array.from({ length: 7 }, () => Array.from({ length: 32 }, () => false));
 
 export default function TimePickPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const openGuideModal = useModalStore((state) => state.openGuideModal);
   const closeModal = useModalStore((state) => state.closeModal);
 
@@ -22,8 +25,8 @@ export default function TimePickPage() {
     setAvailability(createInitialAvailability());
   };
 
-  const handleImport = () => {
-    // TODO: 에브리타임 불러오기
+  const handleNavigateEverytime = () => {
+    navigate(`/teamroom/${id}/timepick/everytime`);
   };
 
   const handleSubmit = () => {
@@ -174,7 +177,7 @@ export default function TimePickPage() {
             isEditMode={isEditMode}
             onToggleEditMode={() => setIsEditMode((prev) => !prev)}
             onReset={handleReset}
-            onImport={handleImport}
+            onImport={handleNavigateEverytime}
           />
         </div>
       </div>

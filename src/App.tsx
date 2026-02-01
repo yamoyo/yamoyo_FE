@@ -40,6 +40,7 @@ import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
 
 import TimePickPage from './pages/timepick';
+import EveryTimePage from './pages/timepick/everytime';
 
 export default function App() {
   // 스플래시 표시 여부 상태
@@ -101,6 +102,7 @@ export default function App() {
           <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
           <Route path=":id/rule" element={<RuleSetupPage />} />
           <Route path=":id/timepick" element={<TimePickPage />} />
+          <Route path=":id/timepick/everytime" element={<EveryTimePage />} />
         </Route>
 
         <Route path="/mypage">
