@@ -24,12 +24,18 @@ export interface TeamRoomCreatedModalOptions {
   inviteLink: string;
 }
 
+export interface GuideModalOptions {
+  title: string;
+  children: React.ReactNode;
+}
+
 /** 현재 활성화된 모달의 상태를 나타내는 타입 */
 export type ActiveModal =
   | { type: 'choice'; options: ChoiceModalOptions }
   | { type: 'calendar'; options: CalendarModalOptions }
   | { type: 'character'; options: CharacterModalOptions }
   | { type: 'teamroom-created'; options: TeamRoomCreatedModalOptions }
+  | { type: 'guide'; options: GuideModalOptions }
   | null;
 
 export interface ModalStore {
@@ -56,5 +62,6 @@ export interface ModalStore {
    */
   openCharacterModal: (options: CharacterModalOptions) => void;
   openTeamRoomCreatedModal: (options: TeamRoomCreatedModalOptions) => void;
+  openGuideModal: (options: GuideModalOptions) => void;
   closeModal: () => void;
 }

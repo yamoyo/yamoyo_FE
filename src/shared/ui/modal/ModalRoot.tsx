@@ -1,6 +1,7 @@
 import CalendarModal from './CalendarModal';
 import CharacterModal from './character-modal/CharacterModal';
 import ChoiceModal from './ChoiceModal';
+import GuideModal from './GuideModal';
 import TeamRoomCreatedModal from './TeamRoomCreatedModal';
 import { useModalStore } from './model/modal-store';
 
@@ -17,6 +18,8 @@ export default function ModalRoot() {
       return <CharacterModal {...modal.options} />;
     case 'teamroom-created':
       return <TeamRoomCreatedModal {...modal.options} />;
+    case 'guide':
+      return <GuideModal {...modal.options} />;
     default:
       return null;
   }

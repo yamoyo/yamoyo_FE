@@ -105,6 +105,12 @@
   .body-g5 {
     @apply font-galmuri-14 text-[10px] font-normal leading-[18px];
   }
+  .body-g11 {
+    @apply font-galmuri-11 text-[16px] font-bold leading-[20px];
+  }
+  .body-g11-2 {
+    @apply font-galmuri-11 text-[11px] font-bold leading-[15.519px];
+  }
 }
 
 html,

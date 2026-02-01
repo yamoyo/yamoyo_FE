@@ -36,5 +36,13 @@ export const useModalStore = create<ModalStore>((set) => ({
       },
     }),
 
+  openGuideModal: (options) =>
+    set({
+      modal: {
+        type: 'guide',
+        options,
+      },
+    }),
+
   closeModal: () => set({ modal: null }),
 }));

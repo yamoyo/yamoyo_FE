@@ -31,7 +31,7 @@ export interface CreateTeamRoomResponse {
 }
 
 export interface DashboardStatus {
-  meeting: boolean;
+  timepick: boolean;
   tool: boolean;
   rule: boolean;
 }
