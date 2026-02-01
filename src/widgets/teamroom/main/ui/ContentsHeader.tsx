@@ -1,9 +1,19 @@
-interface Props {
+interface BaseProps {
   text: string;
   id: 'rule' | 'tool' | 'meeting';
-  editMode: boolean;
-  onClickIcon: () => void;
 }
+
+type EditProps =
+  | {
+      editMode: boolean;
+      onClickIcon: () => void;
+    }
+  | {
+      editMode?: never;
+      onClickIcon?: never;
+    };
+
+type Props = BaseProps & EditProps;
 
 export default function ContentsHeader({
   text,
@@ -22,23 +32,25 @@ export default function ContentsHeader({
         />
         <p className="text-body-2 text-tx-default">{text}</p>
       </div>
-      <button onClick={onClickIcon} className="p-2.5">
-        {editMode ? (
-          <img
-            className="h-5 w-5"
-            src="/assets/icons/check-active.svg"
-            alt="Check Active Icon"
-            draggable={false}
-          />
-        ) : (
-          <img
-            className="h-5 w-5"
-            src="/assets/icons/dashboard/edit.svg"
-            alt="Edit Icon"
-            draggable={false}
-          />
-        )}
-      </button>
+      {onClickIcon && editMode !== undefined && (
+        <button onClick={onClickIcon} className="p-2.5">
+          {editMode ? (
+            <img
+              className="h-5 w-5"
+              src="/assets/icons/check-active.svg"
+              alt="Check Active Icon"
+              draggable={false}
+            />
+          ) : (
+            <img
+              className="h-5 w-5"
+              src="/assets/icons/dashboard/edit.svg"
+              alt="Edit Icon"
+              draggable={false}
+            />
+          )}
+        </button>
+      )}
     </div>
   );
 }

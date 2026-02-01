@@ -2,10 +2,11 @@ import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
 import FocusTimerCard from './FocusTimerCard';
 import { DashboardStatus } from '@/entities/teamroom/model/types';
 import Rules from './rule/RuleContents';
+import ToolContents from './Tool/ToolContents';
 
 const decided: DashboardStatus = {
   meeting: false,
-  tool: false,
+  tool: true,
   rule: true,
 };
 
@@ -35,7 +36,11 @@ export function Dashboard() {
       id: 'tool',
       label: '협업툴',
       render: () =>
-        decided.tool ? <></> : fallback('협업툴을 설정하세요', 'tool'),
+        decided.tool ? (
+          <ToolContents />
+        ) : (
+          fallback('협업툴을 설정하세요', 'tool')
+        ),
     },
     {
       id: 'rule',

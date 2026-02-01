@@ -1,6 +1,6 @@
 import { ToolVoteDetailCount } from '@/entities/teamroom/setup/tool/model/types';
 import BottomButton from '@/shared/ui/button/BottomButton';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 type Props = ToolVoteDetailCount & {
   totalVotes: number;
@@ -15,6 +15,7 @@ export default function VoteCountList({
   openVoteStatusModal,
 }: Props) {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   return (
     <div className="mt-[34px] px-6 pb-12">
@@ -28,33 +29,29 @@ export default function VoteCountList({
           const percent = `${Math.round(ratio * 100)}%`;
 
           return (
-            <div key={item.id} className="flex flex-col items-start gap-[2px]">
-              {/* Top row */}
+            <div key={item.id} className="flex flex-col items-start gap-0.5">
               <div className="flex h-10 w-full items-center justify-between">
-                <div className="flex h-full items-start gap-4">
+                <div className="flex items-start gap-4">
                   <img
                     src={`/assets/tool/${item.id}.png`}
                     alt={item.name}
                     className="h-[26px] w-[26px]"
                   />
 
-                  <p className="shrink-0 text-[15px] font-bold leading-5 text-white">
-                    {item.name}
-                  </p>
+                  <p className="text-body-3.9 text-tx-default">{item.name}</p>
                 </div>
 
-                <div className="flex h-full w-[19px] flex-col items-end justify-end">
-                  <p className="w-full text-right text-[12px] leading-[18px] text-white">
+                <div className="flex h-full flex-col items-end justify-end">
+                  <p className="text-caption-1 text-tx-default">
                     {item.voteCount}명
                   </p>
                 </div>
               </div>
 
-              {/* Progress bar */}
               <div className="w-full">
-                <div className="w-full rounded-full bg-[#3E4463]">
+                <div className="w-full rounded-full bg-bd-default">
                   <div
-                    className="h-[5px] rounded-full bg-[#FDDA08]"
+                    className="h-[5px] rounded-full bg-bg-secondary_2"
                     style={{ width: percent }}
                   />
                 </div>
@@ -71,7 +68,10 @@ export default function VoteCountList({
           투표 현황 &gt;
         </button>
       </div>
-      <BottomButton text="팀룸으로 이동" onClick={() => navigate('..')} />
+      <BottomButton
+        text="팀룸으로 이동"
+        onClick={() => navigate(`/teamroom/${id}`)}
+      />
     </div>
   );
 }
