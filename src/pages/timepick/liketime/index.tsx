@@ -18,7 +18,7 @@ export default function LikeTimePage() {
       <TopBar title="선호 시간대 설정" showBackButton={false} />
       <div className="mt-5 flex flex-col items-start gap-[30px] px-6">
         <p className="text-title-2 text-tx-default">
-          본인의 선호 시간대를 추천해주세요.
+          본인의 선호 시간대를 설정해주세요.
         </p>
         <div className="flex w-full flex-col items-start gap-4">
           {TIEMS.map((item) => (
