@@ -16,9 +16,9 @@ export function CheckBox({ checked, className }: Props) {
     >
       {checked && (
         <img
-          src="/assets/icons/check/check-default.svg"
-          width={14}
-          height={10}
+          src="/assets/icons/check-active.svg"
+          width={24}
+          height={24}
           alt="checked"
         />
       )}
