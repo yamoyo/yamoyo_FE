@@ -1,5 +1,6 @@
-import { MAJOR } from '../options/profile-items';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
+
+import { MAJOR } from '../options/profile-items';
 
 export type MajorId = keyof typeof MAJOR;
 export type MajorLabel = (typeof MAJOR)[MajorId]['label'];

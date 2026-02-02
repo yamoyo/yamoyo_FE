@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import RuleItem from './RuleItem';
+
 import ContentsHeader from '../../ui/ContentsHeader';
+import RuleItem from './RuleItem';
 
 const RULES = [
   {

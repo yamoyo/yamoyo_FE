@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props<T> {
@@ -40,7 +41,7 @@ export default function LeaderApplicationButton<T>({
     >
       <p
         className={cn(
-          'text-title-3 body-g2-5 mb-1 text-start text-white transition-colors',
+          'body-g2-5 mb-1 text-start text-title-3 text-white transition-colors',
           isActive && 'text-tx-default_black',
         )}
       >
@@ -48,7 +49,7 @@ export default function LeaderApplicationButton<T>({
       </p>
       <p
         className={cn(
-          'text-title-3 body-g5 mb-5 text-start text-tx-default_4 transition-colors',
+          'body-g5 mb-5 text-start text-title-3 text-tx-default_4 transition-colors',
           isActive && 'text-tx-default_black',
         )}
       >

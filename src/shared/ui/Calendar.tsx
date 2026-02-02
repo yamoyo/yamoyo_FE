@@ -1,6 +1,7 @@
 import { generateCalendarDates } from '@/entities/calendar/lib/generate-calendar-dates';
 import { isSameDay } from '@/entities/calendar/lib/is-same-day';
 import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
+
 import { cn } from '../config/tailwind/cn';
 
 interface CalendarProps {

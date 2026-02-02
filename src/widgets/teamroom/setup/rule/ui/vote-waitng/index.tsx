@@ -1,5 +1,5 @@
-import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 import { DUMMY_UNVOTED, DUMMY_VOTED } from '@/widgets/vote/model/vote-dummy';
+import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
 /** 투표 후 다른 팀원이 투표하길 대기하는 화면
  *

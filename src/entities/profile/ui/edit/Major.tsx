@@ -1,7 +1,8 @@
 import TopBar from '@/shared/ui/header/TopBar';
-import EditProfileLayout from './Layout';
+
 import { useEditMajor } from '../../model/hook/useEditProfile';
 import MajorGrid from '../MajorGrid';
+import EditProfileLayout from './Layout';
 
 export default function EditMajor() {
   const { major, setMajor, handleSaveMajor } = useEditMajor();

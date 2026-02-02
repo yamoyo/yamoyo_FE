@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
-import BottomButton from '@/shared/ui/button/BottomButton';
+
 import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
-import {
-  DEFAULT_TEAMROOM_IMAGE_ID,
-  TEAMROOM_IMAGES,
-} from '@/shared/constants/teamroom-images';
+import { formatDateString } from '@/entities/calendar/lib/recurrence';
 import {
   getTeamRoomDetail,
   updateTeamRoom,
 } from '@/entities/teamroom/api/teamroom-api';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
+import {
+  DEFAULT_TEAMROOM_IMAGE_ID,
+  TEAMROOM_IMAGES,
+} from '@/shared/constants/teamroom-images';
+import BottomButton from '@/shared/ui/button/BottomButton';
+import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,
@@ -19,7 +21,6 @@ import {
   DescriptionField,
   TeamNameField,
 } from '@/widgets/teamroom/create';
-import { formatDateString } from '@/entities/calendar/lib/recurrence';
 
 export default function TeamRoomEditPage() {
   const navigate = useNavigate();

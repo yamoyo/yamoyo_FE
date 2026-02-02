@@ -1,5 +1,5 @@
-import HomeHeader from '@/widgets/home/HomeHeader';
 import HomeCard from '@/widgets/home/HomeCard';
+import HomeHeader from '@/widgets/home/HomeHeader';
 import HomeList from '@/widgets/home/HomeList';
 
 export function HomePage() {

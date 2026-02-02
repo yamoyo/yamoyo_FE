@@ -5,11 +5,12 @@
  * */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
+
 import UserProfile from '@/entities/profile/ui/UserProfile';
-import MenuListItem from '@/shared/ui/MenuListItem';
 import { CharacterImageId } from '@/shared/constants/char-images';
+import TopBar from '@/shared/ui/header/TopBar';
 import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
+import MenuListItem from '@/shared/ui/MenuListItem';
 
 const MENU_ITEMS = [
   {

@@ -1,5 +1,5 @@
-import BottomButton from '@/shared/ui/button/BottomButton';
 import { cn } from '@/shared/config/tailwind/cn';
+import BottomButton from '@/shared/ui/button/BottomButton';
 
 interface TimeSelectControlsProps {
   isEditMode: boolean;

@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
-import BottomButton from '@/shared/ui/button/BottomButton';
+
 import {
   formatDateString,
   formatMonthDayLabel,
 } from '@/entities/calendar/lib/recurrence';
+import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
+import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
 import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
-import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
-import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
+import BottomButton from '@/shared/ui/button/BottomButton';
+import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
   BannerSection,

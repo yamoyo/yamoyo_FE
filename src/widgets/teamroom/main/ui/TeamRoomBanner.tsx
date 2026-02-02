@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
+
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+import TopBar from '@/shared/ui/header/TopBar';
 
 interface TeamRoomBannerProps {
   teamRoom: TeamRoomDetail | null;

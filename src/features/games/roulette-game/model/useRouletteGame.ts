@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { RouletteGameResponse } from './types';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { BASE_TURNS, SPIN_DURATION_MS } from './constants';
+import { RouletteGameResponse } from './types';
 
 export function useRouletteGame(data: RouletteGameResponse | null) {
   const [rotation, setRotation] = useState(0);

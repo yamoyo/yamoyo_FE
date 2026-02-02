@@ -1,7 +1,8 @@
 import { useState } from 'react';
+
+import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import TextField from '@/shared/ui/input/TextField';
-import BottomButton from '@/shared/ui/button/BottomButton';
 
 export default function EveryTimePage() {
   const [url, setUrl] = useState('');

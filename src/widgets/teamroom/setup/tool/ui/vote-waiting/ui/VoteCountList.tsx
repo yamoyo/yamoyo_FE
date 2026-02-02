@@ -1,6 +1,7 @@
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { ToolVoteDetailCount } from '@/entities/teamroom/setup/tool/model/types';
 import BottomButton from '@/shared/ui/button/BottomButton';
-import { useNavigate, useParams } from 'react-router-dom';
 
 type Props = ToolVoteDetailCount & {
   totalVotes: number;

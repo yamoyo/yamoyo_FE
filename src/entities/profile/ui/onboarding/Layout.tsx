@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+
+import { MAJOR } from '@/entities/profile/model/options/profile-items';
+import { userApi } from '@/entities/user/api/user-api';
+import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
+import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import StepProgressBar from '@/shared/ui/StepProgressBar';
-import BottomButton from '@/shared/ui/button/BottomButton';
-import { useState } from 'react';
+
 import { ProfileOnboardingForm } from '../../model/types/types';
-import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
-import { userApi } from '@/entities/user/api/user-api';
-import { MAJOR } from '@/entities/profile/model/options/profile-items';
 
 const paths = [
   '/onboarding/profile/name',

@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 
 /** 하단 여백 24px만 있는 레이아웃
  *

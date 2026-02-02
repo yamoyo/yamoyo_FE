@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useTermsAgreement from './model/useTermsAgreement';
-import TermsList from './ui/TermsList';
+
+import { userApi } from '@/entities/user/api/user-api';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
-import { TermsOfService } from './ui/detail-term/TermsOfService';
+
+import useTermsAgreement from './model/useTermsAgreement';
 import { PrivacyPolicy } from './ui/detail-term/PrivacyPolicy';
-import { userApi } from '@/entities/user/api/user-api';
+import { TermsOfService } from './ui/detail-term/TermsOfService';
+import TermsList from './ui/TermsList';
 
 export function TermsAgreementPage() {
   const navigate = useNavigate();

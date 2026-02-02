@@ -2,8 +2,8 @@ import CalendarModal from './CalendarModal';
 import CharacterModal from './character-modal/CharacterModal';
 import ChoiceModal from './ChoiceModal';
 import GuideModal from './GuideModal';
-import TeamRoomCreatedModal from './TeamRoomCreatedModal';
 import { useModalStore } from './model/modal-store';
+import TeamRoomCreatedModal from './TeamRoomCreatedModal';
 
 export default function ModalRoot() {
   const modal = useModalStore((s) => s.modal);

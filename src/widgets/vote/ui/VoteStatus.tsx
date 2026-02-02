@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
+import CharacterCard from '@/shared/ui/character/CharacterCard';
+import { CharacterSlider } from '@/shared/ui/character/CharacterSlider';
 import TopBar from '@/shared/ui/header/TopBar';
 import SectionDividerTitle from '@/shared/ui/SectionDividerTitle';
-import { CharacterSlider } from '@/shared/ui/character/CharacterSlider';
+
 import { VoteCharacter } from '../model/types';
-import CharacterCard from '@/shared/ui/character/CharacterCard';
-import { useEffect } from 'react';
 
 interface Props {
   votedUsers: VoteCharacter[];

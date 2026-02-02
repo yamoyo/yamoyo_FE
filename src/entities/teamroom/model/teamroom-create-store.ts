@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+
 import { DEFAULT_TEAMROOM_IMAGE_ID } from '@/shared/constants/teamroom-images';
 
 interface TeamRoomCreateData {

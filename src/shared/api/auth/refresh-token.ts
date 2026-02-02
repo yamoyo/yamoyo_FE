@@ -1,4 +1,5 @@
 import { baseRequest } from '@/shared/api/base/request';
+
 import { useAuthStore } from './store';
 import { TokenResponse } from './types';
 

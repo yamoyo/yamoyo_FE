@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
+
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type {
   LegacyTeamMember,
   TeamMember,
 } from '@/entities/teamroom/api/teamroom-dto';
+import TopBar from '@/shared/ui/header/TopBar';
 import MemberListItem from '@/widgets/teamroom/members/ui/MemberListItem';
 
 export default function TeamRoomMembersPage() {

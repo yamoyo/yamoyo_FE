@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
+
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
-import MemberProfileSection from '@/widgets/teamroom/members/member/ui/MemberProfileSection';
-import MemberInfoSection from '@/widgets/teamroom/members/member/ui/MemberInfoSection';
+import TopBar from '@/shared/ui/header/TopBar';
 import MemberActionButtons from '@/widgets/teamroom/members/member/ui/MemberActionButtons';
+import MemberInfoSection from '@/widgets/teamroom/members/member/ui/MemberInfoSection';
+import MemberProfileSection from '@/widgets/teamroom/members/member/ui/MemberProfileSection';
 
 export default function TeamRoomMemberPage() {
   const { id, memberId } = useParams<{ id: string; memberId: string }>();

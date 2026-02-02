@@ -1,6 +1,7 @@
 import TopBar from '@/shared/ui/header/TopBar';
-import { MOCK_COMPLETED_TEAM_ROOMS } from '../model/constants';
 import HomeListItem from '@/widgets/home/HomeListItem';
+
+import { MOCK_COMPLETED_TEAM_ROOMS } from '../model/constants';
 
 export function CompletedTasks() {
   return (

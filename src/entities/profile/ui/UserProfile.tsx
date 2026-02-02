@@ -4,11 +4,13 @@
  * @author junyeol
  */
 import { useState } from 'react';
-import BottomSheet from '@/shared/ui/BottomSheet';
+
 import {
   CHARACTER_IMAGE_ID,
   CharacterImageId,
 } from '@/shared/constants/char-images';
+import BottomSheet from '@/shared/ui/BottomSheet';
+
 import { cn } from '../../../shared/config/tailwind/cn';
 
 interface props {

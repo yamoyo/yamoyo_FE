@@ -1,47 +1,44 @@
-import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
-
-import SplashPage from './pages/splash';
-import OAuthCallbackPage from './pages/oauth/callback';
-import LoginPage from './pages';
-
-import HomePage from './pages/home';
-import TermsPage from './pages/onboarding/term';
-import Mypage from './widgets/mypage';
-import Profile from './pages/mypage/profile';
-import CompletedTasks from './pages/mypage/completed-tasks';
-import NotificationSettings from './pages/mypage/notification-settings';
-import RoulettePage from './pages/games/roulette';
-import TimingGame from './pages/games/timing-game';
-import NameStep from './entities/profile/ui/onboarding/Name';
-import MajorStep from './entities/profile/ui/onboarding/Major';
-import PersonaStep from './entities/profile/ui/onboarding/Persona';
-import ProfileOnboardingLayout from './entities/profile/ui/onboarding/Layout';
-import ModalRoot from './shared/ui/modal/ModalRoot';
-import EditName from './entities/profile/ui/edit/Name';
 import EditMajor from './entities/profile/ui/edit/Major';
 import EditMBTI from './entities/profile/ui/edit/MBTI';
-import NotificationPage from './pages/notification';
+import EditName from './entities/profile/ui/edit/Name';
+import ProfileOnboardingLayout from './entities/profile/ui/onboarding/Layout';
+import MajorStep from './entities/profile/ui/onboarding/Major';
+import NameStep from './entities/profile/ui/onboarding/Name';
+import PersonaStep from './entities/profile/ui/onboarding/Persona';
+import LoginPage from './pages';
+import RoulettePage from './pages/games/roulette';
+import TimingGame from './pages/games/timing-game';
+import HomePage from './pages/home';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
+import CompletedTasks from './pages/mypage/completed-tasks';
+import NotificationSettings from './pages/mypage/notification-settings';
+import Profile from './pages/mypage/profile';
+import NotificationPage from './pages/notification';
+import OAuthCallbackPage from './pages/oauth/callback';
+import TermsPage from './pages/onboarding/term';
+import SplashPage from './pages/splash';
 import MyTeamRoomPage from './pages/teamroom';
-import TeamRoomCreatePage from './pages/teamroom/create';
-import TeamLeaderSelectPage from './pages/teamroom/[id]/leader';
-import BannerPage from './pages/teamroom/create/banner';
-
 import TeamRoomMainPage from './pages/teamroom/[id]';
 import TeamRoomEditPage from './pages/teamroom/[id]/edit';
 import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
+import TeamLeaderSelectPage from './pages/teamroom/[id]/leader';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
 import ToolSetupPage from './pages/teamroom/[id]/tool';
-
+import TeamRoomCreatePage from './pages/teamroom/create';
+import BannerPage from './pages/teamroom/create/banner';
 import TimeSelectPage from './pages/timeselect';
 import EveryTimePage from './pages/timeselect/everytime';
 import LikeTimePage from './pages/timeselect/liketime';
+import ModalRoot from './shared/ui/modal/ModalRoot';
+import Mypage from './widgets/mypage';
 
 export default function App() {
   // 스플래시 표시 여부 상태

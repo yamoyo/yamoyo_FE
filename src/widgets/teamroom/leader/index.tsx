@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+
+import LadderGame from '@/features/games/ladder-game/ui/LadderGame';
+import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
+import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
+
 import { Phase } from './model/type';
+import SelectGame from './ui/game/SelectGame';
 import LeaderApplication from './ui/leader-application/LeaderApplication';
 import LeaderApplicationWait from './ui/leader-application/LeaderApplicationWait';
-import SelectGame from './ui/game/SelectGame';
-import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
-import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
-import LadderGame from '@/features/games/ladder-game/ui/LadderGame';
 
 export function SelectLeader() {
   const [phase, setPhase] = useState<Phase | null>(null);

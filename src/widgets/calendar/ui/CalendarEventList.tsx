@@ -1,6 +1,6 @@
 import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
-import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
 import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
+import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
 import { useTeamStore } from '@/entities/team/model/team-store';
 
 interface CalendarEventListProps {

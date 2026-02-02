@@ -35,3 +35,6 @@ yarn-error.log*
 
 # vscode
 .vscode
+# settings.json, extensions.json 만 예외 처리
+!.vscode/settings.json
+!.vscode/extensions.json

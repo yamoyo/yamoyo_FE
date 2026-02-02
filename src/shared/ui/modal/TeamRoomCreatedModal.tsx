@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import ModalDim from '@/shared/ui/modal/ModalDim';
-import { TeamRoomCreatedModalOptions } from './model/types';
-import { useModalStore } from './model/modal-store';
+
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
+import ModalDim from '@/shared/ui/modal/ModalDim';
+
+import { useModalStore } from './model/modal-store';
+import { TeamRoomCreatedModalOptions } from './model/types';
 
 export default function TeamRoomCreatedModal({
   teamRoomId,

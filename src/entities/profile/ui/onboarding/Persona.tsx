@@ -1,8 +1,10 @@
 import { useOutletContext } from 'react-router-dom';
-import { ProfileOnboardingContext } from '../../model/types/types';
-import TextField from '@/shared/ui/input/TextField';
+
 import UserProfile from '@/entities/profile/ui/UserProfile';
+import TextField from '@/shared/ui/input/TextField';
+
 import { validateProfileItem } from '../../model/hook/useEditProfile';
+import { ProfileOnboardingContext } from '../../model/types/types';
 
 export default function PersonaStep() {
   const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();

@@ -1,6 +1,7 @@
 import Character from '@/shared/assets/character/main-char.svg?react';
-import { CHARACTER_COLORS } from '../model/constants';
 import { cn } from '@/shared/config/tailwind/cn';
+
+import { CHARACTER_COLORS } from '../model/constants';
 
 interface Props {
   index: number;

@@ -1,4 +1,5 @@
 import { cn } from '@/shared/config/tailwind/cn';
+
 import type { TabsConfig } from '../../model/types';
 
 interface Props {

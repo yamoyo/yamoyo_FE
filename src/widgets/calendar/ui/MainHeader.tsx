@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+
+import { useTeamStore } from '@/entities/team/model/team-store';
 import TeamRoomSelectSheet from '@/widgets/calendar/ui/TeamRoomSelectSheet';
 import { MOCK_TEAM_ROOMS } from '@/widgets/teamroom/model/constants';
-import { useTeamStore } from '@/entities/team/model/team-store';
 
 export default function MainHeader() {
   const [searchParams, setSearchParams] = useSearchParams();

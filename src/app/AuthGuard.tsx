@@ -1,6 +1,7 @@
-import { onAuthExpired } from '@/shared/api/auth/event-bus';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+
+import { onAuthExpired } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { useAuthBootstrap } from '@/shared/api/auth/use-auth-bootstrap';
 

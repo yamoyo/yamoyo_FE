@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
 import { onBoardingContents } from '../lib/onBoardingContents';
 
 const AUTO_SLIDE_MS = 4000; // 자동 슬라이드 간격

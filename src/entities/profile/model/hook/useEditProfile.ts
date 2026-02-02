@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { MAJOR } from '../options/profile-items';
 import { majorType } from '../types/types';
-import { useNavigate } from 'react-router-dom';
 
 export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   if (type === 'name') {

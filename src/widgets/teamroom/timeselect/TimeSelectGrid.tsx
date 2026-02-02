@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+
 import { cn } from '@/shared/config/tailwind/cn';
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'] as const;

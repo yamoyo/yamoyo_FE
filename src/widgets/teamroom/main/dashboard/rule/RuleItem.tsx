@@ -1,5 +1,6 @@
-import { cn } from '@/shared/config/tailwind/cn';
 import { useEffect, useRef, useState } from 'react';
+
+import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   text: string;
