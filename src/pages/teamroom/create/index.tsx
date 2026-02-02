@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
-import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
+import {
+  formatDateString,
+  formatMonthDayLabel,
+} from '@/entities/calendar/lib/recurrence';
 import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
@@ -83,7 +86,7 @@ export default function TeamRoomCreatePage() {
       return;
     }
 
-    const deadlineDateTime = `${deadlineDate!.toISOString().split('T')[0]}T00:00:00`;
+    const deadlineDateTime = `${formatDateString(deadlineDate!)}T00:00:00`;
 
     const res = await createTeamRoom({
       title: teamName.trim(),
