@@ -3,17 +3,15 @@ import TopBar from '@/shared/ui/header/TopBar';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 
-const BANNER_IMAGES = TEAMROOM_IMAGES.filter(
-  (image) => image.id !== 'banner-empty',
-);
+const BANNER_IMAGES = TEAMROOM_IMAGES.filter((image) => image.id !== 0);
 
 export default function TeamRoomEditBannerPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const updateEditData = useTeamRoomEditStore((state) => state.updateEditData);
 
-  const handleSelect = (imageId: string) => {
-    updateEditData({ bannerId: imageId });
+  const handleSelect = (imageId: number) => {
+    updateEditData({ bannerImageId: imageId });
     navigate(`/teamroom/${id}/edit`, { replace: true });
   };
 
@@ -31,7 +29,7 @@ export default function TeamRoomEditBannerPage() {
           >
             <img
               src={image.src}
-              alt={image.id}
+              alt={`banner-${String(image.id)}`}
               className="size-[128px] object-cover"
               draggable="false"
             />

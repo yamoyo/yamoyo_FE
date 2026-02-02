@@ -3,9 +3,7 @@ import TopBar from '@/shared/ui/header/TopBar';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
 
-const BANNER_IMAGES = TEAMROOM_IMAGES.filter(
-  (image) => image.id !== 'banner-empty',
-);
+const BANNER_IMAGES = TEAMROOM_IMAGES.filter((image) => image.id !== 0);
 
 export default function BannerPage() {
   const navigate = useNavigate();
@@ -13,8 +11,8 @@ export default function BannerPage() {
     (state) => state.updateCreateData,
   );
 
-  const handleSelect = (imageId: string) => {
-    updateCreateData({ bannerId: imageId });
+  const handleSelect = (imageId: number) => {
+    updateCreateData({ bannerImageId: imageId });
     navigate('/teamroom/create', { replace: true });
   };
 
@@ -32,7 +30,7 @@ export default function BannerPage() {
           >
             <img
               src={image.src}
-              alt={image.id}
+              alt={`banner-${String(image.id)}`}
               className="size-[128px] object-cover"
               draggable="false"
             />

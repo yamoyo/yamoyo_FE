@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
-import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
+import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import MemberProfileSection from '@/widgets/teamroom/members/member/ui/MemberProfileSection';
 import MemberInfoSection from '@/widgets/teamroom/members/member/ui/MemberInfoSection';
@@ -24,13 +24,15 @@ export default function TeamRoomMemberPage() {
   // TODO (준열) : 불필요하게 팀 전체 데이터를 가져오므로 향후에 1명에 대한 데이터 페칭 API가 있어야 할 듯
   useEffect(() => {
     if (!id || !memberId) return;
-    getTeamRoom(id).then((data) => {
+    getTeamRoomDetail(Number(id)).then((data) => {
       if (data) {
-        const found = data.members.find((m) => m.id === Number(memberId));
+        const found = data.members.find(
+          (m: TeamMember) => m.userId === Number(memberId),
+        );
         if (found) setMember(found);
 
-        const leader = data.members.find((m) => isLeader(m.role));
-        setIsCurrentUserLeader(leader?.id === currentUserId);
+        const leader = data.members.find((m: TeamMember) => isLeader(m.role));
+        setIsCurrentUserLeader(leader?.userId === currentUserId);
       }
     });
   }, [id, memberId]);
@@ -45,16 +47,20 @@ export default function TeamRoomMemberPage() {
     // TODO: 팀원 방출 로직
   };
 
+  // TODO: 멤버 상세 API가 추가되면 email, major, mbti, joinedAt 필드 연결 필요
   return (
     <>
       <TopBar title="프로필 관리" />
-      <MemberProfileSection avatar={member.avatar} name={member.name} />
+      <MemberProfileSection
+        avatar={`/assets/profile/${member.profileImageId}.png`}
+        name={member.name}
+      />
       <MemberInfoSection
         name={member.name}
-        email={member.email}
-        major={member.major}
-        mbti={member.mbti}
-        joinedAt={member.joinedAt}
+        email="-"
+        major="-"
+        mbti="-"
+        joinedAt="-"
       />
       <MemberActionButtons
         isLeader={isCurrentUserLeader}

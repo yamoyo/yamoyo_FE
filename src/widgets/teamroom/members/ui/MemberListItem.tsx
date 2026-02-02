@@ -1,4 +1,4 @@
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import SettingIcon from '@/shared/assets/icons/setting.svg?react';
 

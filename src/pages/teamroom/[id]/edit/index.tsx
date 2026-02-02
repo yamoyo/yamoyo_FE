@@ -7,7 +7,11 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
-import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
+import {
+  getTeamRoomDetail,
+  updateTeamRoom,
+} from '@/entities/teamroom/api/teamroom-api';
+
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import {
@@ -30,11 +34,11 @@ export default function TeamRoomEditPage() {
   const setEditData = useTeamRoomEditStore((state) => state.setEditData);
   const updateEditData = useTeamRoomEditStore((state) => state.updateEditData);
 
-  const teamName = editData?.name ?? '';
+  const teamName = editData?.title ?? '';
   const description = editData?.description ?? '';
-  const selectedImageId = editData?.bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
-  const deadlineDate = editData?.deadlineDate
-    ? new Date(editData.deadlineDate)
+  const selectedImageId = editData?.bannerImageId ?? DEFAULT_TEAMROOM_IMAGE_ID;
+  const deadlineDate = editData?.deadline
+    ? new Date(editData.deadline)
     : undefined;
   const isDeadlineSelected = Boolean(deadlineDate);
 
@@ -46,13 +50,13 @@ export default function TeamRoomEditPage() {
       return;
     }
 
-    getTeamRoom(id).then((teamRoom) => {
+    getTeamRoomDetail(Number(id)).then((teamRoom) => {
       if (!teamRoom) return;
       setEditData({
-        name: teamRoom.name,
+        title: teamRoom.title,
         description: teamRoom.description,
-        deadlineDate: teamRoom.deadlineDate,
-        bannerId: teamRoom.bannerId,
+        deadline: teamRoom.deadline,
+        bannerImageId: teamRoom.bannerImageId,
       });
       setIsLoading(false);
     });
@@ -72,8 +76,7 @@ export default function TeamRoomEditPage() {
   const handleOpenDeadlineCalendar = () => {
     openCalendarModal({
       selectedDate: deadlineDate,
-      onSelectDate: (date) =>
-        updateEditData({ deadlineDate: date.toISOString() }),
+      onSelectDate: (date) => updateEditData({ deadline: date.toISOString() }),
     });
   };
 
@@ -85,20 +88,20 @@ export default function TeamRoomEditPage() {
       return;
     }
 
-    // TODO: 팀룸 수정 API 호출
-    // await updateTeamRoom(id, {
-    //   name: teamName.trim(),
-    //   description,
-    //   bannerId: selectedImageId,
-    //   deadlineDate: deadlineDate!.toISOString(),
-    // });
+    const deadlineDateTime = `${deadlineDate!.toISOString().split('T')[0]}T00:00:00`;
 
-    // 전역 상태에 최종 데이터 저장
-    setEditData({
-      name: teamName.trim(),
+    await updateTeamRoom(Number(id), {
+      title: teamName.trim(),
       description,
-      bannerId: selectedImageId,
-      deadlineDate: deadlineDate!.toISOString(),
+      bannerImageId: selectedImageId,
+      deadline: deadlineDateTime,
+    });
+
+    setEditData({
+      title: teamName.trim(),
+      description,
+      bannerImageId: selectedImageId,
+      deadline: deadlineDate!.toISOString(),
     });
 
     navigate(`/teamroom/${id}`);
@@ -125,7 +128,7 @@ export default function TeamRoomEditPage() {
       <section className="flex flex-col gap-9 px-6 pt-9">
         <TeamNameField
           value={teamName}
-          onChange={(value) => updateEditData({ name: value })}
+          onChange={(value) => updateEditData({ title: value })}
           errorMessage={
             isSubmitted && teamName.trim().length === 0
               ? '팀 이름을 입력해주세요'

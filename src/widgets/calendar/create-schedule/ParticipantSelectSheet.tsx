@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import { TeamMember } from '@/shared/constants/mock-team-members';
+import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
 
 interface ParticipantSelectSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  members: TeamMember[];
+  members: LegacyTeamMember[];
   selectedIds: number[];
   onConfirm: (selectedIds: number[]) => void;
 }

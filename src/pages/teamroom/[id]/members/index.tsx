@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
-import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
+import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import MemberListItem from '@/widgets/teamroom/members/ui/MemberListItem';
 
 export default function TeamRoomMembersPage() {
@@ -15,13 +15,13 @@ export default function TeamRoomMembersPage() {
 
   useEffect(() => {
     if (!id) return;
-    getTeamRoom(id).then((data) => {
+    getTeamRoomDetail(Number(id)).then((data) => {
       if (data) setMembers(data.members);
     });
   }, [id]);
 
   const handleSettingClick = (member: TeamMember) => {
-    navigate(`/teamroom/${id}/members/${member.id}`);
+    navigate(`/teamroom/${id}/members/${member.userId}`);
   };
 
   return (
@@ -34,7 +34,7 @@ export default function TeamRoomMembersPage() {
         <ul className="flex w-full flex-col gap-4">
           {members.map((member) => (
             <MemberListItem
-              key={member.id}
+              key={member.userId}
               member={member}
               currentUserId={currentUserId}
               onSettingClick={handleSettingClick}

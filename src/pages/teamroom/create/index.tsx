@@ -36,18 +36,19 @@ export default function TeamRoomCreatePage() {
   useEffect(() => {
     if (createData) return;
     setCreateData({
-      name: '',
+      title: '',
       description: '',
-      bannerId: DEFAULT_TEAMROOM_IMAGE_ID,
-      deadlineDate: '',
+      bannerImageId: DEFAULT_TEAMROOM_IMAGE_ID,
+      deadline: '',
     });
   }, [createData, setCreateData]);
 
-  const teamName = createData?.name ?? '';
+  const teamName = createData?.title ?? '';
   const description = createData?.description ?? '';
-  const selectedImageId = createData?.bannerId ?? DEFAULT_TEAMROOM_IMAGE_ID;
-  const deadlineDate = createData?.deadlineDate
-    ? new Date(createData.deadlineDate)
+  const selectedImageId =
+    createData?.bannerImageId ?? DEFAULT_TEAMROOM_IMAGE_ID;
+  const deadlineDate = createData?.deadline
+    ? new Date(createData.deadline)
     : undefined;
   const isDeadlineSelected = Boolean(deadlineDate);
 
@@ -70,7 +71,7 @@ export default function TeamRoomCreatePage() {
     openCalendarModal({
       selectedDate: deadlineDate,
       onSelectDate: (date) =>
-        updateCreateData({ deadlineDate: date.toISOString() }),
+        updateCreateData({ deadline: date.toISOString() }),
     });
   };
 
@@ -82,15 +83,18 @@ export default function TeamRoomCreatePage() {
       return;
     }
 
+    const deadlineDateTime = `${deadlineDate!.toISOString().split('T')[0]}T00:00:00`;
+
     const res = await createTeamRoom({
-      name: teamName.trim(),
+      title: teamName.trim(),
       description,
-      bannerId: selectedImageId,
-      deadlineDate: deadlineDate!.toISOString(),
+      bannerImageId: selectedImageId,
+      deadline: deadlineDateTime,
     });
+    const inviteLink = `${window.location.origin}/invite/${res.inviteToken}`;
     openTeamRoomCreatedModal({
       teamRoomId: res.teamRoomId,
-      inviteLink: res.inviteLink,
+      inviteLink,
     });
     clearCreateData();
   };
@@ -112,7 +116,7 @@ export default function TeamRoomCreatePage() {
       <section className="flex flex-col gap-9 px-6 pt-9">
         <TeamNameField
           value={teamName}
-          onChange={(value) => updateCreateData({ name: value })}
+          onChange={(value) => updateCreateData({ title: value })}
           errorMessage={
             isSubmitted && teamName.trim().length === 0
               ? '팀 이름을 입력해주세요'

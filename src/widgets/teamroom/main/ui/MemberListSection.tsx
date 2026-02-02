@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import MemberItem from './MemberItem';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 
@@ -47,7 +47,7 @@ export default function MemberListSection({
           className="no-scrollbar -mx-6 flex gap-2 overflow-x-auto px-6"
         >
           {members.map((member) => (
-            <MemberItem key={member.id} member={member} />
+            <MemberItem key={member.userId} member={member} />
           ))}
           <li className="flex shrink-0 flex-col items-center gap-2">
             <button

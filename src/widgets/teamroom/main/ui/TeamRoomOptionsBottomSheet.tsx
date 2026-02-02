@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import type { TeamRoom } from '@/entities/teamroom/model/types';
+import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -10,7 +10,7 @@ import { isLeader as checkIsLeader } from '@/entities/teamroom/lib/is-leader';
 interface TeamRoomOptionsBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  teamRoom: TeamRoom | null;
+  teamRoom: TeamRoomDetail | null;
   currentUserId?: number;
 }
 
@@ -24,11 +24,12 @@ export default function TeamRoomOptionsBottomSheet({
   const openChoiceModal = useModalStore((state) => state.openChoiceModal);
 
   const bannerSrc =
-    TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerId)?.src ?? '';
+    TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerImageId)?.src ??
+    '';
 
   const leader = teamRoom?.members.find((member) => checkIsLeader(member.role));
 
-  const isLeader = leader?.id === currentUserId;
+  const isLeader = leader?.userId === currentUserId;
 
   const handleLeaveTeamRoom = () => {
     onClose();
@@ -48,16 +49,15 @@ export default function TeamRoomOptionsBottomSheet({
 
   const handleEditTeamRoom = () => {
     onClose();
-    // 현재 teamRoom 데이터를 전역 상태에 저장
     if (teamRoom) {
       setEditData({
-        bannerId: teamRoom.bannerId,
-        name: teamRoom.name,
+        bannerImageId: teamRoom.bannerImageId,
+        title: teamRoom.title,
         description: teamRoom.description,
-        deadlineDate: teamRoom.deadlineDate,
+        deadline: teamRoom.deadline,
       });
     }
-    navigate(`/teamroom/${teamRoom?.id}/edit`);
+    navigate(`/teamroom/${teamRoom?.teamRoomId}/edit`);
   };
 
   return (
@@ -90,7 +90,7 @@ export default function TeamRoomOptionsBottomSheet({
             />
             <div className="flex flex-col gap-1">
               <span className="text-body-1 text-tx-default">
-                {teamRoom?.name}의 팀룸
+                {teamRoom?.title}의 팀룸
               </span>
               {leader && (
                 <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ export default function TeamRoomOptionsBottomSheet({
             type="button"
             onClick={() => {
               onClose();
-              navigate(`/teamroom/${teamRoom?.id}/members`);
+              navigate(`/teamroom/${teamRoom?.teamRoomId}/members`);
             }}
             className="flex items-center gap-4"
           >
