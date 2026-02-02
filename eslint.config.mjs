@@ -3,6 +3,7 @@ import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import prettierConfig from 'eslint-config-prettier';
+import importPlugin from 'eslint-plugin-import';
 
 const eslintConfig = defineConfig([
   ...tseslint.configs.recommended,
@@ -11,6 +12,13 @@ const eslintConfig = defineConfig([
     plugins: {
       'react-hooks': reactHooks,
       'simple-import-sort': simpleImportSort,
+      import: importPlugin,
+    },
+
+    settings: {
+      'import/resolver': {
+        typescript: true,
+      },
     },
     rules: {
       'react-hooks/rules-of-hooks': 'error', // Hook 규칙 위반 (if 안에서 호출 등)

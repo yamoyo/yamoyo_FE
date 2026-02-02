@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { userApi } from '@/entities/user/api/user-api';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
-
-import useTermsAgreement from './model/useTermsAgreement';
-import { PrivacyPolicy } from './ui/detail-term/PrivacyPolicy';
-import { TermsOfService } from './ui/detail-term/TermsOfService';
-import TermsList from './ui/TermsList';
+import useTermsAgreement from '@/widgets/auth/term/model/useTermsAgreement';
+import { PrivacyPolicy } from '@/widgets/auth/term/ui/detail-term/PrivacyPolicy';
+import { TermsOfService } from '@/widgets/auth/term/ui/detail-term/TermsOfService';
+import TermsList from '@/widgets/auth/term/ui/TermsList';
 
 export function TermsAgreementPage() {
   const navigate = useNavigate();
