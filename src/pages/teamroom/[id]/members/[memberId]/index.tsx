@@ -24,8 +24,12 @@ export default function TeamRoomMemberPage() {
   // TODO (준열) : 불필요하게 팀 전체 데이터를 가져오므로 향후에 1명에 대한 데이터 페칭 API가 있어야 할 듯
   useEffect(() => {
     if (!id || !memberId) return;
-    getTeamRoomDetail(Number(id)).then((data) => {
-      if (data) {
+
+    const fetchMember = async () => {
+      try {
+        const data = await getTeamRoomDetail(Number(id));
+        if (!data) return;
+
         const found = data.members.find(
           (m: TeamMember) => m.userId === Number(memberId),
         );
@@ -33,9 +37,13 @@ export default function TeamRoomMemberPage() {
 
         const leader = data.members.find((m: TeamMember) => isLeader(m.role));
         setIsCurrentUserLeader(leader?.userId === currentUserId);
+      } catch (error) {
+        console.error(error);
       }
-    });
-  }, [id, memberId]);
+    };
+
+    fetchMember();
+  }, [id, memberId, currentUserId]);
 
   if (!member) return null;
 
