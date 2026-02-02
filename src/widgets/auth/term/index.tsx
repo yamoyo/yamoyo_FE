@@ -6,6 +6,7 @@ import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { TermsOfService } from './ui/detail-term/TermsOfService';
 import { PrivacyPolicy } from './ui/detail-term/PrivacyPolicy';
+import { userApi } from '@/entities/user/api/user-api';
 
 export function TermsAgreementPage() {
   const navigate = useNavigate();
@@ -21,16 +22,23 @@ export function TermsAgreementPage() {
     setOpenedDetailTerm,
   } = useTermsAgreement();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!allChecked) {
       alert('모든 약관에 동의해 주세요.');
       return;
     }
 
     setIsSubmitting(true);
-    navigate('/onboarding/profile/name');
-
-    setIsSubmitting(false);
+    try {
+      await userApi.onboardingTerm();
+      navigate('/onboarding/profile/name');
+    } catch (_) {
+      alert(
+        '약관 동의 과정 중 일시적인 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (openedDetailTerm === 'service') {

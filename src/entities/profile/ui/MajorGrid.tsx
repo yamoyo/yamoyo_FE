@@ -1,10 +1,10 @@
 import { MAJOR } from '../model/options/profile-items';
-import { majorType } from '../model/types/types';
+import { MajorId } from '../model/types/types';
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
-  major: majorType | null;
-  setMajor: (major: majorType) => void;
+  major: MajorId | null;
+  setMajor: (major: MajorId) => void;
 }
 
 /** 전공 선택 그리드 컴포넌트 */
@@ -23,15 +23,16 @@ export default function MajorGrid({ major, setMajor }: Props) {
 
       {/* 전공 선택 그리드 */}
       <div className="grid grid-cols-3 gap-3">
-        {MAJOR.map((item) => {
-          const { Icon } = item;
-          const isSelected = major === item.id;
+        {Object.entries(MAJOR).map(([id, item]) => {
+          const { Icon, label } = item;
+          const majorId = Number(id) as MajorId;
+          const isSelected = major === majorId;
 
           return (
             <button
-              key={item.id}
+              key={id}
               type="button"
-              onClick={() => setMajor(item.id)}
+              onClick={() => setMajor(majorId)}
               aria-pressed={isSelected}
               className={cn(
                 'h-[100px] flex-col gap-[15px] rounded-lg bg-bg-card transition flex-center',
@@ -41,7 +42,7 @@ export default function MajorGrid({ major, setMajor }: Props) {
               )}
             >
               <Icon className="h-10 w-10" />
-              <span className="text-body-8">{item.label}</span>
+              <span className="text-body-8">{label}</span>
             </button>
           );
         })}

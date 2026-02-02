@@ -6,6 +6,8 @@ import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { useNavigate } from 'react-router-dom';
 import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
+import { useAuthStore } from '@/shared/api/auth/store';
+import { userApi } from '@/entities/user/api/user-api';
 
 const dummyData: Record<(typeof BASIC_INFO_ITEMS)[number]['key'], string> = {
   name: '박서영',
@@ -17,22 +19,26 @@ const dummyData: Record<(typeof BASIC_INFO_ITEMS)[number]['key'], string> = {
 
 export function Profile() {
   const openModal = useModalStore((s) => s.openChoiceModal);
-  const closeModal = useModalStore((s) => s.closeModal);
+  const clear = useAuthStore((s) => s.clear);
   const navigate = useNavigate();
 
   const handleSettingClick = (
     item: (typeof SETTINGS_MODAL_OPTIONS)[number],
   ) => {
     const baseOptions = item.modalOptions;
-    const onClickRightBtn = () => {
+    const onClickRightBtn = async () => {
       // 여기에 로그아웃 또는 회원탈퇴 로직 추가
       if (item.label === '로그아웃') {
-        // 로그아웃 로직
-      } else {
-        // 회원탈퇴 로직
+        try {
+          await userApi.logout();
+          clear();
+          navigate('/');
+        } catch (_) {
+          alert(
+            '로그아웃 과정 중 일시적이 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+          );
+        }
       }
-      navigate('/');
-      closeModal();
     };
 
     openModal({

@@ -5,6 +5,8 @@ import BottomButton from '@/shared/ui/button/BottomButton';
 import { useState } from 'react';
 import { ProfileOnboardingForm } from '../../model/types/types';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
+import { userApi } from '@/entities/user/api/user-api';
+import { MAJOR } from '@/entities/profile/model/options/profile-items';
 
 const paths = [
   '/onboarding/profile/name',
@@ -12,7 +14,7 @@ const paths = [
   '/onboarding/profile/persona',
 ] as const;
 
-const randomCharacterId =
+const randomProfileImageId =
   CHARACTER_IMAGE_ID[Math.floor(Math.random() * CHARACTER_IMAGE_ID.length)];
 
 export default function ProfileOnboardingLayout() {
@@ -23,13 +25,13 @@ export default function ProfileOnboardingLayout() {
   const [form, setForm] = useState<ProfileOnboardingForm>({
     name: '',
     major: null,
-    persona: { characterId: randomCharacterId, mbti: '' },
+    persona: { profileImageId: randomProfileImageId, mbti: '' },
   });
 
   const disableCondition =
     (form.name.trim().length === 0 && location.pathname === paths[0]) ||
     (form.major === null && location.pathname === paths[1]) ||
-    (form.persona.characterId === null && location.pathname === paths[2]);
+    (form.persona.profileImageId === null && location.pathname === paths[2]);
 
   const updateForm = (patch: Partial<ProfileOnboardingForm>) => {
     setForm((prev) => ({ ...prev, ...patch }));
@@ -64,10 +66,25 @@ export default function ProfileOnboardingLayout() {
       return;
     }
 
-    // TODO: API 연동
+    if (!form.major) {
+      alert('전공을 선택해 주세요.');
+      return;
+    }
+    const major = MAJOR[form.major].label;
+
     setIsLoading(true);
-    navigate('/home', { replace: true });
-    setIsLoading(false);
+    try {
+      await userApi.onboardingProfile({
+        name: form.name,
+        major,
+        ...form.persona,
+      });
+      navigate('/home', { replace: true });
+    } catch (_) {
+      alert('프로필 설정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -23,9 +23,3 @@ export interface ApiResponse<T = unknown> {
   message: string;
   data?: T;
 }
-
-export interface TokenResponse {
-  grantType: string;
-  accessToken: string;
-  accessTokenExpiration: number;
-}

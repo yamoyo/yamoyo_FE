@@ -13,9 +13,9 @@ export default function PersonaStep() {
     <div className="space-y-[22px]">
       <UserProfile
         name={form.name}
-        characterId={form.persona.characterId}
+        characterId={form.persona.profileImageId}
         onChangeCharacterId={(id) =>
-          updateForm({ persona: { ...form.persona, characterId: id } })
+          updateForm({ persona: { ...form.persona, profileImageId: id } })
         }
       />
       <div className="space-y-2">
