@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/entities/auth/model/auth-store';
-import { refreshAccessToken } from '@/entities/auth/api/refresh-token';
+import { useAuthStore } from './store';
+import { refreshAccessToken } from './refresh-token';
 
 export function useAuthBootstrap(isGuest: boolean) {
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ export function useAuthBootstrap(isGuest: boolean) {
       if (!ok) {
         // refresh 토큰 없거나 만료된 상황
         navigate('/', { replace: true });
+        return;
       }
       setAuthReady(true);
     })();
