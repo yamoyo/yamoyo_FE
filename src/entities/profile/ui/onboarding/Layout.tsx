@@ -81,6 +81,7 @@ export default function ProfileOnboardingLayout() {
       });
       navigate('/home', { replace: true });
     } catch (_) {
+      alert('프로필 설정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
     }

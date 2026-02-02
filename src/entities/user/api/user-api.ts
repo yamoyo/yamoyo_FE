@@ -1,5 +1,8 @@
 import { authClient } from '@/shared/api/auth/client';
-import type { OnboardingProfileRequest } from '@/entities/user/api/user-dto';
+import {
+  OnboardingProfileRequest,
+  OnboardingTermBody,
+} from '@/entities/user/api/user-dto';
 
 export const userApi = {
   logout() {
@@ -7,20 +10,7 @@ export const userApi = {
   },
 
   onboardingTerm() {
-    const body = {
-      agreements: [
-        {
-          termsId: 1,
-          agreed: true,
-        },
-        {
-          termsId: 2,
-          agreed: true,
-        },
-      ],
-    };
-
-    return authClient.post('/onboarding/terms', body);
+    return authClient.post('/onboarding/terms', OnboardingTermBody);
   },
 
   onboardingProfile(body: OnboardingProfileRequest) {
