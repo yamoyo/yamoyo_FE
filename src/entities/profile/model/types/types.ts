@@ -1,16 +1,17 @@
 import { MAJOR } from '../options/profile-items';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
 
-export type majorType = (typeof MAJOR)[number]['id'];
+export type MajorId = keyof typeof MAJOR;
+export type MajorLabel = (typeof MAJOR)[MajorId]['label'];
 
 interface Persona {
-  characterId: (typeof CHARACTER_IMAGE_ID)[number];
+  profileImageId: (typeof CHARACTER_IMAGE_ID)[number];
   mbti: string;
 }
 
 export interface ProfileOnboardingForm {
   name: string;
-  major: majorType | null;
+  major: MajorId | null;
   persona: Persona;
 }
 

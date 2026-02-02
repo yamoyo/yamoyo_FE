@@ -8,7 +8,6 @@ import OAuthCallbackPage from './pages/oauth/callback';
 import LoginPage from './pages';
 
 import HomePage from './pages/home';
-import OnboardPage from './pages/onboarding';
 import TermsPage from './pages/onboarding/term';
 import Mypage from './widgets/mypage';
 import Profile from './pages/mypage/profile';
@@ -126,16 +125,8 @@ export default function App() {
 
         <Route path="/notification" element={<NotificationPage />} />
 
-        <Route path="/onboarding" element={<OnboardPage />} />
-        <Route path="/onboarding/terms" element={<TermsPage />} />
         <Route path="/games/roulette" element={<RoulettePage />} />
         <Route path="/games/timing-game" element={<TimingGame />} />
-
-        <Route path="/onboarding/profile" element={<ProfileOnboardingLayout />}>
-          <Route path="name" element={<NameStep />} />
-          <Route path="major" element={<MajorStep />} />
-          <Route path="persona" element={<PersonaStep />} />
-        </Route>
 
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
@@ -144,7 +135,17 @@ export default function App() {
         </Route>
 
         {/* 로그인된 유저 전용 */}
-        <Route element={<AuthGuard />}></Route>
+        <Route element={<AuthGuard />}>
+          <Route path="/onboarding/terms" element={<TermsPage />} />
+          <Route
+            path="/onboarding/profile"
+            element={<ProfileOnboardingLayout />}
+          >
+            <Route path="name" element={<NameStep />} />
+            <Route path="major" element={<MajorStep />} />
+            <Route path="persona" element={<PersonaStep />} />
+          </Route>
+        </Route>
       </Routes>
     </main>
   );
