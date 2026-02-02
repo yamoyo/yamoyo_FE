@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { DEFAULT_TEAMROOM_IMAGE_ID } from '@/shared/constants/teamroom-images';
 
 interface TeamRoomCreateData {
-  name: string;
+  title: string;
   description: string;
-  bannerId: string;
-  deadlineDate: string;
+  bannerImageId: number;
+  deadline: string;
 }
 
 interface TeamRoomCreateStore {
@@ -16,10 +16,10 @@ interface TeamRoomCreateStore {
 }
 
 const DEFAULT_CREATE_DATA: TeamRoomCreateData = {
-  name: '',
+  title: '',
   description: '',
-  bannerId: DEFAULT_TEAMROOM_IMAGE_ID,
-  deadlineDate: '',
+  bannerImageId: DEFAULT_TEAMROOM_IMAGE_ID,
+  deadline: '',
 };
 
 export const useTeamRoomCreateStore = create<TeamRoomCreateStore>((set) => ({

@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
-import type { TeamRoom } from '@/entities/teamroom/model/types';
+import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
 
 interface TeamRoomBannerProps {
-  teamRoom: TeamRoom | null;
+  teamRoom: TeamRoomDetail | null;
   onSettingsClick?: () => void;
 }
 
@@ -15,7 +15,8 @@ export default function TeamRoomBanner({
   const navigate = useNavigate();
 
   const bannerSrc =
-    TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerId)?.src ?? '';
+    TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerImageId)?.src ??
+    '';
 
   return (
     <div className="relative h-[260px] w-full">
@@ -65,7 +66,7 @@ export default function TeamRoomBanner({
       </div>
 
       <div className="absolute bottom-4 left-6 flex flex-col gap-1">
-        <h1 className="text-body-4 text-tx-default">{teamRoom?.name}</h1>
+        <h1 className="text-body-4 text-tx-default">{teamRoom?.title}</h1>
         {teamRoom?.description && (
           <p className="text-caption-1 text-tx-default_3">
             {teamRoom.description}

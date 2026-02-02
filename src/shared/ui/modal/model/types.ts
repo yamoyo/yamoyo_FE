@@ -20,7 +20,7 @@ export interface CalendarModalOptions {
 }
 
 export interface TeamRoomCreatedModalOptions {
-  teamRoomId: string;
+  teamRoomId: number;
   inviteLink: string;
 }
 

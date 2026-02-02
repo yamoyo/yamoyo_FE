@@ -1,7 +1,7 @@
-import { TeamMember } from '@/shared/constants/mock-team-members';
+import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
 
 interface ParticipantsSectionProps {
-  selectedMembers: TeamMember[];
+  selectedMembers: LegacyTeamMember[];
   onOpenSheet: () => void;
   onRemove: (id: number) => void;
 }

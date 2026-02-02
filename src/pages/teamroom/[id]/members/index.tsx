@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
-import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
+import type {
+  LegacyTeamMember,
+  TeamMember,
+} from '@/entities/teamroom/api/teamroom-dto';
 import MemberListItem from '@/widgets/teamroom/members/ui/MemberListItem';
 
 export default function TeamRoomMembersPage() {
@@ -15,12 +18,21 @@ export default function TeamRoomMembersPage() {
 
   useEffect(() => {
     if (!id) return;
-    getTeamRoom(id).then((data) => {
-      if (data) setMembers(data.members);
-    });
+
+    const fetchMembers = async () => {
+      try {
+        const data = await getTeamRoomDetail(Number(id));
+        if (data) setMembers(data.members);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMembers();
   }, [id]);
 
-  const handleSettingClick = (member: TeamMember) => {
+  // TODO : 임시 방편으로 레거시 타입으로 지정 TeamMember로 바꿔야함
+  const handleSettingClick = (member: LegacyTeamMember) => {
     navigate(`/teamroom/${id}/members/${member.id}`);
   };
 
@@ -32,14 +44,27 @@ export default function TeamRoomMembersPage() {
           멤버 {members.length}
         </span>
         <ul className="flex w-full flex-col gap-4">
-          {members.map((member) => (
-            <MemberListItem
-              key={member.id}
-              member={member}
-              currentUserId={currentUserId}
-              onSettingClick={handleSettingClick}
-            />
-          ))}
+          {members.map((member) => {
+            // TODO : 타입오류 방지를 위해 하드코딩 형태 API 호출 여부에 따라 수정될 예정
+            const legacy = {
+              id: member.userId,
+              name: member.name,
+              role: member.role,
+              avatar: `/assets/character/char-${member.profileImageId}.png`,
+              email: '-',
+              major: '-',
+              mbti: '-',
+              joinedAt: '-',
+            };
+            return (
+              <MemberListItem
+                key={legacy.id}
+                member={legacy}
+                currentUserId={currentUserId}
+                onSettingClick={handleSettingClick}
+              />
+            );
+          })}
         </ul>
       </section>
     </>

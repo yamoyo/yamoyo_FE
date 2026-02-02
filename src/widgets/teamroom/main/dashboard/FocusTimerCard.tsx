@@ -1,4 +1,4 @@
-import { DashboardStatus } from '@/entities/teamroom/model/types';
+import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
 import { formatTimeString } from '@/entities/calendar/lib/recurrence';
 import { TimerBar } from '../../leader/ui/TimerBar';
 import { useEffect, useState } from 'react';

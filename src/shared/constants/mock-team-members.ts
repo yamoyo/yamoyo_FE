@@ -1,4 +1,4 @@
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
 
 const memberNames = [
   '김준열',
@@ -77,7 +77,7 @@ const memberJoinedDates = [
   '2025-01-18T10:45:00.000Z',
 ];
 
-const createMembers = (count: number, offset = 0): TeamMember[] =>
+const createMembers = (count: number, offset = 0): LegacyTeamMember[] =>
   Array.from({ length: count }, (_, index) => {
     const key = offset + index;
     return {

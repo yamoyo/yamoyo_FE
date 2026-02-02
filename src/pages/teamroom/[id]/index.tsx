@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getTeamRoom } from '@/entities/teamroom/api/teamroom-api';
-import type { TeamRoom } from '@/entities/teamroom/model/types';
+import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
+import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
@@ -11,7 +11,7 @@ import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents
 
 export default function TeamRoomMainPage() {
   const { id } = useParams<{ id: string }>();
-  const [teamRoom, setTeamRoom] = useState<TeamRoom | null>(null);
+  const [teamRoom, setTeamRoom] = useState<TeamRoomDetail | null>(null);
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
@@ -21,7 +21,7 @@ export default function TeamRoomMainPage() {
   useEffect(() => {
     if (!id) return;
     let isMounted = true;
-    getTeamRoom(id).then((data) => {
+    getTeamRoomDetail(Number(id)).then((data) => {
       if (isMounted && data) {
         setTeamRoom(data);
       }
@@ -33,7 +33,17 @@ export default function TeamRoomMainPage() {
 
   useEffect(() => {
     if (editData) {
-      setTeamRoom((prev) => (prev ? { ...prev, ...editData } : null));
+      setTeamRoom((prev) =>
+        prev
+          ? {
+              ...prev,
+              title: editData.title,
+              description: editData.description,
+              bannerImageId: editData.bannerImageId,
+              deadline: editData.deadline,
+            }
+          : null,
+      );
       clearEditData();
     }
   }, [editData, clearEditData]);

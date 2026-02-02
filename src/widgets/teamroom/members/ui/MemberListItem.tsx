@@ -1,11 +1,11 @@
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import SettingIcon from '@/shared/assets/icons/setting.svg?react';
 
 interface MemberListItemProps {
-  member: TeamMember;
+  member: LegacyTeamMember;
   currentUserId?: number;
-  onSettingClick?: (member: TeamMember) => void;
+  onSettingClick?: (member: LegacyTeamMember) => void;
 }
 
 export default function MemberListItem({

@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
 interface TeamRoomEditData {
-  name: string;
+  title: string;
   description: string;
-  bannerId: string;
-  deadlineDate: string;
+  bannerImageId: number;
+  deadline: string;
 }
 
 interface TeamRoomEditStore {

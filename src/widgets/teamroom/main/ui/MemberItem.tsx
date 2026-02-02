@@ -1,4 +1,4 @@
-import type { TeamMember } from '@/entities/teamroom/model/types';
+import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
 
 interface MemberItemProps {
@@ -19,7 +19,7 @@ export default function MemberItem({ member }: MemberItemProps) {
           draggable={false}
         />
         <img
-          src={member.avatar}
+          src={`/assets/character/char-${member.profileImageId}.png`}
           width={36}
           height={26}
           alt={member.name}
