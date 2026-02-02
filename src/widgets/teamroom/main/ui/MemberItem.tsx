@@ -19,7 +19,7 @@ export default function MemberItem({ member }: MemberItemProps) {
           draggable={false}
         />
         <img
-          src={String(member.profileImageId)}
+          src={`/assets/character/char-${member.profileImageId}.png`}
           width={36}
           height={26}
           alt={member.name}
