@@ -10,7 +10,7 @@ export const requestAccessToken = async () => {
   try {
     const res: TokenResponse = await baseRequest('/auth/refresh', {
       method: 'POST',
-      credentials: 'include', // refreshToken 쿠키 전송
+      credentials: 'include',
     });
 
     if (!res.accessToken) throw new Error('No access token in response');

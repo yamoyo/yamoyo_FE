@@ -10,7 +10,7 @@ async function authAwareRequest<T>(
   path: string,
   options: HttpRequestOptions,
 ): Promise<T> {
-  const { authMode, ...rest } = options;
+  const { authMode, credentials, ...rest } = options;
 
   let retry = false;
 
@@ -28,6 +28,7 @@ async function authAwareRequest<T>(
     return baseRequest<T>(path, {
       ...rest,
       headers,
+      credentials,
     });
   };
 
@@ -46,10 +47,7 @@ async function authAwareRequest<T>(
       if (!ok) {
         useAuthStore.getState().clear();
         notifyAuthExpired();
-        // throw new YamoyoError({
-        //   message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
-        //   code: 401,
-        // });
+        throw e;
       }
 
       return await doRequest();
@@ -80,17 +78,23 @@ async function authAwareRequest<T>(
 
 /** 로그인/회원가입 등 토큰 쓰이지 않는 API용 */
 export const publicClient = {
-  get<T>(path: string) {
+  get<T>(path: string, options?: { credentials?: RequestCredentials }) {
     return authAwareRequest<T>(path, {
       method: 'GET',
       authMode: 'none',
+      ...options,
     });
   },
-  post<T>(path: string, body?: unknown) {
+  post<T>(
+    path: string,
+    body?: unknown,
+    options?: { credentials?: RequestCredentials },
+  ) {
     return authAwareRequest<T>(path, {
       method: 'POST',
       body,
       authMode: 'none',
+      ...options,
     });
   },
   // 필요하면 put/patch/delete도 추가
@@ -98,37 +102,54 @@ export const publicClient = {
 
 /** 로그인 이후, 토큰이 필요한 API용 */
 export const authClient = {
-  get<T>(path: string) {
+  get<T>(path: string, options?: { credentials?: RequestCredentials }) {
     return authAwareRequest<T>(path, {
       method: 'GET',
       authMode: 'required',
+      ...options,
     });
   },
-  post<T>(path: string, body?: unknown) {
+  post<T>(
+    path: string,
+    body?: unknown,
+    options?: { credentials?: RequestCredentials },
+  ) {
     return authAwareRequest<T>(path, {
       method: 'POST',
       body,
       authMode: 'required',
+      ...options,
     });
   },
-  put<T>(path: string, body?: unknown) {
+  put<T>(
+    path: string,
+    body?: unknown,
+    options?: { credentials?: RequestCredentials },
+  ) {
     return authAwareRequest<T>(path, {
       method: 'PUT',
       body,
       authMode: 'required',
+      ...options,
     });
   },
-  patch<T>(path: string, body?: unknown) {
+  patch<T>(
+    path: string,
+    body?: unknown,
+    options?: { credentials?: RequestCredentials },
+  ) {
     return authAwareRequest<T>(path, {
       method: 'PATCH',
       body,
       authMode: 'required',
+      ...options,
     });
   },
-  delete<T>(path: string) {
+  delete<T>(path: string, options?: { credentials?: RequestCredentials }) {
     return authAwareRequest<T>(path, {
       method: 'DELETE',
       authMode: 'required',
+      ...options,
     });
   },
 };
