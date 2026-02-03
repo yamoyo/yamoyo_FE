@@ -99,6 +99,26 @@ export interface ChangeLeaderRequest {
   newLeaderMemberId: number;
 }
 
+/** 팀원 상세 조회 응답 (GET /api/team-rooms/{teamRoomId}/members/{memberId}) */
+export interface TeamMemberDetail {
+  memberId: number;
+  userId: number;
+  name: string;
+  email: string;
+  major: string;
+  mbti: string;
+  joinedAt: string;
+}
+
+/** TeamMember + TeamMemberDetail 조합 (목록 UI에서 사용) */
+export interface TeamMemberWithDetail {
+  userId: number;
+  name: string;
+  profileImageId: number;
+  role: TeamMemberRole;
+  major: string;
+}
+
 // ========== 대시보드 상태 (기존 호환) ==========
 export interface DashboardStatus {
   timeselect: boolean;

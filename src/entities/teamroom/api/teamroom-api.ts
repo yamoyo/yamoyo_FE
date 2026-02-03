@@ -7,6 +7,7 @@ import type {
   InviteLinkResponse,
   JoinTeamRoomRequest,
   JoinTeamRoomResponse,
+  TeamMemberDetail,
   TeamRoomDetail,
   TeamRoomLifecycle,
   TeamRoomListItem,
@@ -92,4 +93,14 @@ export async function changeLeader(
   data: ChangeLeaderRequest,
 ): Promise<void> {
   return authClient.put<void>(`/team-rooms/${teamRoomId}/leader`, data);
+}
+
+/** 팀원 상세 조회 */
+export async function getTeamMemberDetail(
+  teamRoomId: number,
+  memberId: number,
+): Promise<TeamMemberDetail> {
+  return authClient.get<TeamMemberDetail>(
+    `/team-rooms/${teamRoomId}/members/${memberId}`,
+  );
 }
