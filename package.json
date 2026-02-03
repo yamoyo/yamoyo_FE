@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@tanstack/react-query": "^5.90.20",
     "clsx": "^2.1.1",
     "framer-motion": "^12.28.1",
     "react": "^19.2.3",

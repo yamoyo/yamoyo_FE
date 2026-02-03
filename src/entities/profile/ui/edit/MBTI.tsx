@@ -5,16 +5,17 @@ import { useEditMBTI } from '../../model/hook/useEditProfile';
 import EditProfileLayout from './Layout';
 
 export default function EditMBTI() {
-  const { MBTI, setMBTI, errorMessage, handleSaveMBTI } = useEditMBTI();
+  const { MBTI, setMBTI, errorMessage, handleSaveMBTI, isLoading } =
+    useEditMBTI();
 
   return (
     <>
       <TopBar title="MBTI" />
       <EditProfileLayout
-        disabled={!MBTI.trim()}
+        disabled={!MBTI.trim() || !!errorMessage}
         showBackCharacter
         onClickBtn={handleSaveMBTI}
-        isLoading={false} // TODO: 로딩 상태 관리
+        isLoading={isLoading}
       >
         <TextField
           value={MBTI}

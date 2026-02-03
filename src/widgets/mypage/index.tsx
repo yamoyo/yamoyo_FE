@@ -3,10 +3,13 @@
  * 위 세 페이지로 이동할 수 있는 내부 공통 컴포넌트
  * @author junyeol
  * */
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import UserProfile from '@/entities/profile/ui/UserProfile';
+import {
+  useCurrentUser,
+  useUpdateUser,
+} from '@/entities/user/hooks/useCurrentUser';
 import { CharacterImageId } from '@/shared/constants/char-images';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
@@ -35,17 +38,24 @@ const MENU_ITEMS = [
 
 export default function Mypage() {
   const navigate = useNavigate();
-  const [characterId, setCharacterId] = useState<CharacterImageId>(9);
+  const { data: user } = useCurrentUser();
+  const { mutate: updateUser } = useUpdateUser();
+
+  const handleChangeCharacterId = (id: CharacterImageId) => {
+    updateUser({ profileImageId: id });
+  };
 
   return (
     <BottomPadding24>
       <TopBar title="마이페이지" />
-      <UserProfile
-        name="박서영"
-        characterId={characterId}
-        onChangeCharacterId={setCharacterId}
-        className="pt-[18px]"
-      />
+      {user && (
+        <UserProfile
+          name={user.name}
+          characterId={user.profileImageId}
+          onChangeCharacterId={handleChangeCharacterId}
+          className="pt-[18px]"
+        />
+      )}
       <div className="flex flex-col gap-[15px] px-6 pt-[50px]">
         {MENU_ITEMS.map((item) => (
           <MenuListItem
