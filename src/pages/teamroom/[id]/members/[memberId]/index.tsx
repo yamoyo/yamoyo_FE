@@ -34,11 +34,20 @@ export default function TeamRoomMemberPage() {
 
   if (!memberDetail) return null;
 
+  // 개별 팀원 이미지 조회가 불가능하여 팀룸 멤버 데이터에서 이미지를 뽑아와서 할당
+  const teamRoomMember = teamRoom?.members.find(
+    (member) => member.userId === memberDetail.userId,
+  );
+  let profileImageId = memberDetail.profileImageId;
+  if (!profileImageId) {
+    profileImageId = teamRoomMember?.profileImageId ?? 1;
+  }
+
   return (
     <>
       <TopBar title="프로필 관리" />
       <MemberProfileSection
-        avatar={`/assets/character/char-${memberDetail.profileImageId}.png`}
+        avatar={`/assets/character/char-${profileImageId}.png`}
         name={memberDetail.name}
       />
       <MemberInfoSection
