@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { MajorId } from '@/entities/profile/model/types/types';
+import {
+  useCurrentUser,
+  useUpdateUser,
+} from '@/entities/user/hooks/useCurrentUser';
+
+import { MAJOR } from '../options/profile-items';
 
 export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   if (type === 'name') {
@@ -21,55 +27,75 @@ export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   }
 };
 
+// 서버와 클라이언트 사이에서의 major 형식 변환
+const getMajorIdByLabel = (label: string): MajorId | null => {
+  const entry = Object.entries(MAJOR).find(([, v]) => v.label === label);
+  return entry ? (Number(entry[0]) as MajorId) : null;
+};
+
 export const useEditName = () => {
   const navigate = useNavigate();
+  const { data: user } = useCurrentUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const [name, setName] = useState('');
   const errorMessage = validateProfileItem('name', name);
 
   useEffect(() => {
-    // TODO: 초기 데이터 로드
-    setName('박서영');
-  }, []);
+    if (user) setName(user.name);
+  }, [user]);
 
-  const handleSaveName = async () => {
-    // TODO: API 호출 로직 작성
-    navigate('/mypage/profile');
+  const handleSaveName = () => {
+    updateUser(
+      { name },
+      { onSuccess: () => navigate('/mypage/profile', { replace: true }) },
+    );
   };
 
-  return { name, setName, errorMessage, handleSaveName };
+  return { name, setName, errorMessage, handleSaveName, isLoading: isPending };
 };
 
 export const useEditMajor = () => {
   const navigate = useNavigate();
+  const { data: user } = useCurrentUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const [major, setMajor] = useState<MajorId | null>(null);
 
   useEffect(() => {
-    // TODO: 초기 데이터 로드
-    setMajor(1);
-  }, []);
+    if (user) {
+      const majorId = getMajorIdByLabel(user.major);
+      setMajor(majorId);
+    }
+  }, [user]);
 
-  const handleSaveMajor = async () => {
-    // TODO: API 호출 로직 작성
-    navigate('/mypage/profile');
+  const handleSaveMajor = () => {
+    if (!major) return;
+    const majorLabel = MAJOR[major].label;
+    updateUser(
+      { major: majorLabel },
+      { onSuccess: () => navigate('/mypage/profile', { replace: true }) },
+    );
   };
 
-  return { major, setMajor, handleSaveMajor };
+  return { major, setMajor, handleSaveMajor, isLoading: isPending };
 };
 
 export const useEditMBTI = () => {
   const navigate = useNavigate();
+  const { data: user } = useCurrentUser();
+  const { mutate: updateUser, isPending } = useUpdateUser();
   const [MBTI, setMBTI] = useState('');
   const errorMessage = validateProfileItem('MBTI', MBTI);
 
   useEffect(() => {
-    // TODO: 초기 데이터 로드
-    setMBTI('ESFJ');
-  }, []);
+    if (user) setMBTI(user.mbti);
+  }, [user]);
 
-  const handleSaveMBTI = async () => {
-    // TODO: API 호출 로직 작성
-    navigate('/mypage/profile');
+  const handleSaveMBTI = () => {
+    updateUser(
+      { mbti: MBTI },
+      { onSuccess: () => navigate('/mypage/profile', { replace: true }) },
+    );
   };
 
-  return { MBTI, setMBTI, errorMessage, handleSaveMBTI };
+  return { MBTI, setMBTI, errorMessage, handleSaveMBTI, isLoading: isPending };
 };

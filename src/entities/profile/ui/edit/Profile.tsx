@@ -4,25 +4,28 @@ import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting
 import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
 import UserProfile from '@/entities/profile/ui/UserProfile';
 import { userApi } from '@/entities/user/api/user-api';
+import {
+  useCurrentUser,
+  useUpdateUser,
+} from '@/entities/user/hooks/useCurrentUser';
 import { useAuthStore } from '@/shared/api/auth/store';
+import { CharacterImageId } from '@/shared/constants/char-images';
 import TopBar from '@/shared/ui/header/TopBar';
 import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 import { BASIC_INFO_ITEMS } from '../../model/options/profile-items';
 
-const dummyData: Record<(typeof BASIC_INFO_ITEMS)[number]['key'], string> = {
-  name: '박서영',
-  email: 'seoyoung.park@example.com',
-  major: '컴퓨터공학',
-  mbti: 'INTJ',
-  joinDate: '2022-01-15',
-};
-
 export function Profile() {
   const openModal = useModalStore((s) => s.openChoiceModal);
   const clear = useAuthStore((s) => s.clear);
   const navigate = useNavigate();
+  const { data: user } = useCurrentUser();
+  const { mutate: updateUser } = useUpdateUser();
+
+  const handleChangeCharacterId = (id: CharacterImageId) => {
+    updateUser({ profileImageId: id });
+  };
 
   const handleSettingClick = (
     item: (typeof SETTINGS_MODAL_OPTIONS)[number],
@@ -49,11 +52,35 @@ export function Profile() {
     });
   };
 
+  const getUserValue = (key: string) => {
+    if (!user) return '';
+    switch (key) {
+      case 'name':
+        return user.name;
+      case 'email':
+        return user.email;
+      case 'major':
+        return user.major;
+      case 'mbti':
+        return user.mbti;
+      case 'joinDate':
+        return user.createdAt.split('T')[0];
+      default:
+        return '';
+    }
+  };
+
   return (
     <BottomPadding24>
-      <TopBar title="프로필 관리" />
+      <TopBar title="프로필 관리" onBack={() => navigate('/mypage')} />
       <div className="space-y-[50px] px-6 pt-[18px]">
-        <UserProfile characterId={9} name="박서영" />
+        {user && (
+          <UserProfile
+            characterId={user.profileImageId}
+            name={user.name}
+            onChangeCharacterId={handleChangeCharacterId}
+          />
+        )}
         <div className="space-y-5">
           <p className="text-title-1 text-tx-default">기본 정보</p>
           <div className="space-y-[22px]">
@@ -61,7 +88,7 @@ export function Profile() {
               <BasicInfoItem
                 key={item.key}
                 label={item.label}
-                value={dummyData[item.key]}
+                value={getUserValue(item.key)}
                 editRoute={item.editable ? item.key : undefined}
               />
             ))}

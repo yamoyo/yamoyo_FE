@@ -5,16 +5,17 @@ import { useEditName } from '../../model/hook/useEditProfile';
 import EditProfileLayout from './Layout';
 
 export default function EditName() {
-  const { name, setName, errorMessage, handleSaveName } = useEditName();
+  const { name, setName, errorMessage, handleSaveName, isLoading } =
+    useEditName();
 
   return (
     <>
       <TopBar title="이름" />
       <EditProfileLayout
-        disabled={!name.trim()}
+        disabled={!name.trim() || !!errorMessage}
         showBackCharacter
         onClickBtn={handleSaveName}
-        isLoading={false} // TODO: 로딩 상태 관리
+        isLoading={isLoading}
       >
         <TextField
           value={name}

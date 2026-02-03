@@ -5,7 +5,7 @@ import MajorGrid from '../MajorGrid';
 import EditProfileLayout from './Layout';
 
 export default function EditMajor() {
-  const { major, setMajor, handleSaveMajor } = useEditMajor();
+  const { major, setMajor, handleSaveMajor, isLoading } = useEditMajor();
 
   return (
     <>
@@ -13,7 +13,7 @@ export default function EditMajor() {
       <EditProfileLayout
         disabled={!major}
         onClickBtn={handleSaveMajor}
-        isLoading={false} // TODO: 로딩 상태 관리
+        isLoading={isLoading}
       >
         <MajorGrid major={major} setMajor={setMajor} />
       </EditProfileLayout>
