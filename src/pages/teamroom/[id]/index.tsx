@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
+import { useLeaderGameSocket } from '@/features/leader-game/ws/model/useLeaderGameSocket';
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
@@ -19,35 +20,56 @@ export default function TeamRoomMainPage() {
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
 
+  useLeaderGameSocket({
+    teamRoomId: id ?? '', // id가 없으면 빈값
+    enabled: Boolean(id) && (teamRoom?.members?.length ?? 0) > 1, // 연결 여부 제어
+    onRoomMessage: (_msg) => {
+      // console.log('팀룸 전체 메시지 수신:', msg);
+    },
+    // onJoinSuccess: (msg) => {
+    //   console.log('팀룸 참가 성공 메시지 수신:', msg);
+    // },
+    // onVoteUpdated: (msg) => {
+    //   console.log('투표 업데이트 메시지 수신:', msg);
+    // },
+    onError: (err) => {
+      console.error('WebSocket 오류 발생:', err);
+    },
+  });
+
   useEffect(() => {
     if (!id) return;
-    let isMounted = true;
-    getTeamRoomDetail(Number(id)).then((data) => {
-      if (isMounted && data) {
+    try {
+      (async () => {
+        const data = await getTeamRoomDetail(id);
         setTeamRoom(data);
-      }
-    });
-    return () => {
-      isMounted = false;
-    };
+        // TODO: 팀룸 멤버 온라인 상태 조회 후 상태관리 저장
+        // const gameMembers = await leaderGameApi.getLeaderGameMembers(id);
+      })();
+    } catch (error) {
+      console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
+    }
   }, [id]);
 
   useEffect(() => {
     if (editData) {
+      const { title, description, bannerImageId, deadline } = editData;
       setTeamRoom((prev) =>
         prev
           ? {
               ...prev,
-              title: editData.title,
-              description: editData.description,
-              bannerImageId: editData.bannerImageId,
-              deadline: editData.deadline,
+              title,
+              description,
+              bannerImageId,
+              deadline,
             }
           : null,
       );
       clearEditData();
     }
   }, [editData, clearEditData]);
+
+  if (!teamRoom) return <p>팀룸 정보를 불러오는 중입니다...</p>;
 
   return (
     <>
@@ -56,10 +78,10 @@ export default function TeamRoomMainPage() {
         onSettingsClick={() => setIsOptionsOpen(true)}
       />
       <MemberListSection
-        members={teamRoom?.members ?? []}
+        members={teamRoom.members}
         onAddMember={() => setIsAddMemberOpen(true)}
       />
-      <TeamRoomContents />
+      <TeamRoomContents {...teamRoom} />
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
