@@ -47,7 +47,7 @@ export default function Mypage() {
 
   return (
     <BottomPadding24>
-      <TopBar title="마이페이지" />
+      <TopBar title="마이페이지" onBack={() => navigate('/home')} />
       {user && (
         <UserProfile
           name={user.name}

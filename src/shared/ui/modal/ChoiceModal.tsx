@@ -31,8 +31,8 @@ export default function ChoiceModal({
   };
 
   const handleOnClickRightBtn = () => {
-    onClickRightBtn();
     closeModal();
+    onClickRightBtn();
   };
 
   return (

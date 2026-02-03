@@ -16,6 +16,7 @@ import TimingGame from './pages/games/timing-game';
 import HomePage from './pages/home';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
+import InvitePage from './pages/invite';
 import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
 import Profile from './pages/mypage/profile';
@@ -124,6 +125,8 @@ export default function App() {
 
         <Route path="/games/roulette" element={<RoulettePage />} />
         <Route path="/games/timing-game" element={<TimingGame />} />
+
+        <Route path="/invite" element={<InvitePage />} />
 
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>

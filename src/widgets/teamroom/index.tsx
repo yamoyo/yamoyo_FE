@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import type { TeamRoomListItem } from '@/entities/teamroom/api/teamroom-dto';
+import { useTeamRoomList } from '@/entities/teamroom/hooks/useTeamRoom';
 import ArrowDropdown, {
   ArrowDropdownOption,
 } from '@/shared/ui/dropdown/ArrowDropdown';
@@ -8,8 +10,6 @@ import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnd
 import SwipeTabs from '@/shared/ui/tab/ui/SwipeTabs';
 import HomeListItem from '@/widgets/home/HomeListItem';
 
-import { MOCK_TEAM_ROOMS } from './model/constants';
-import { TeamRoom } from './model/types';
 import { sortTeams, SortType } from './utils/sortTeams';
 
 const SORT_OPTIONS: ArrowDropdownOption<SortType>[] = [
@@ -18,7 +18,7 @@ const SORT_OPTIONS: ArrowDropdownOption<SortType>[] = [
 ];
 
 type TeamListPanelProps = {
-  teams: TeamRoom[];
+  teams: TeamRoomListItem[];
   sortType: SortType;
   onChangeSortType: (value: SortType) => void;
 };
@@ -37,33 +37,34 @@ function TeamListPanel({
       />
 
       {teams.map((team) => (
-        <HomeListItem key={team.id} {...team} />
+        <HomeListItem key={team.teamRoomId} teamRoom={team} />
       ))}
     </div>
   );
 }
 
 export default function MyTeams() {
-  const [allTeams, setAllTeams] = useState<TeamRoom[]>([]);
-
-  const [loading, setLoading] = useState(true);
-
   const [sortType, setSortType] = useState<SortType>('latest');
 
-  useEffect(() => {
-    // TODO: API 연동 및 로딩 처리
-    setLoading(true);
-    setAllTeams(MOCK_TEAM_ROOMS);
-    setLoading(false);
-  }, []);
+  const { data: activeTeams, isLoading: isLoadingActive } =
+    useTeamRoomList('ACTIVE');
+  const { data: archivedTeams, isLoading: isLoadingArchived } =
+    useTeamRoomList('ARCHIVED');
+
+  const allTeams = useMemo(
+    () => [...(activeTeams ?? []), ...(archivedTeams ?? [])],
+    [activeTeams, archivedTeams],
+  );
+
+  const isLoading = isLoadingActive || isLoadingArchived;
 
   const progressTeams = useMemo(
-    () => allTeams.filter((team) => team.isProgress),
+    () => allTeams.filter((team) => team.status === 'ACTIVE'),
     [allTeams],
   );
 
   const doneTeams = useMemo(
-    () => allTeams.filter((team) => !team.isProgress),
+    () => allTeams.filter((team) => team.status === 'ARCHIVED'),
     [allTeams],
   );
 
@@ -81,11 +82,11 @@ export default function MyTeams() {
     [doneTeams, sortType],
   );
 
-  if (loading) {
+  if (isLoading) {
     return <div className="p-4">로딩 중...</div>;
   }
 
-  const renderPanel = (teams: TeamRoom[]) => {
+  const renderPanel = (teams: TeamRoomListItem[]) => {
     if (teams.length === 0) {
       return (
         <p className="flex justify-center pt-10 text-body-3.9 text-tx-default_4">

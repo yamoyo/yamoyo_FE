@@ -1,25 +1,21 @@
-import { TeamRoom } from '../../teamroom/model/types';
+import type { TeamRoomListItem } from '@/entities/teamroom/api/teamroom-dto';
 
 export type SortType = 'latest' | 'deadline';
 
-const parseDday = (dday: string): number => {
-  const sign = dday.includes('+') ? -1 : 1;
-  const number = Number(dday.replace(/D[-+]/, ''));
-  return sign * number;
-};
+const toTime = (value: string) => new Date(value).getTime();
 
-export function sortTeams(teams: TeamRoom[], sortType: SortType): TeamRoom[] {
+export function sortTeams(
+  teams: TeamRoomListItem[],
+  sortType: SortType,
+): TeamRoomListItem[] {
   if (sortType === 'latest') {
     // 최신순 (날짜 내림차순)
-    return [...teams].sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
+    return [...teams].sort((a, b) => toTime(b.createdAt) - toTime(a.createdAt));
   }
 
   if (sortType === 'deadline') {
-    // 마감임박순 (D-day 오름차순)
-    return [...teams].sort((a, b) => parseDday(a.dday) - parseDday(b.dday));
+    // 마감임박순 (deadline 오름차순)
+    return [...teams].sort((a, b) => toTime(a.deadline) - toTime(b.deadline));
   }
 
   return teams;

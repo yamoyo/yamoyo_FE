@@ -1,2 +1,4 @@
-export const isLeader = (role: string) =>
-  role === 'leader' || role === '방장' || role === '팀장';
+import { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
+
+export const isLeader = (role: TeamMemberRole | string) =>
+  role === 'LEADER' || role === 'HOST';

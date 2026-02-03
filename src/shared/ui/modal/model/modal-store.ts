@@ -45,5 +45,13 @@ export const useModalStore = create<ModalStore>((set) => ({
       },
     }),
 
+  openAlertModal: (options) =>
+    set({
+      modal: {
+        type: 'alert',
+        options,
+      },
+    }),
+
   closeModal: () => set({ modal: null }),
 }));
