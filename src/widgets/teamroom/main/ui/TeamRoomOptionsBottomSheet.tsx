@@ -1,6 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
+import {
+  useDeleteTeamRoom,
+  useLeaveTeamRoom,
+} from '@/entities/teamroom/hooks/useTeamRoom';
 import { isLeader as checkIsLeader } from '@/entities/teamroom/lib/is-leader';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { cn } from '@/shared/config/tailwind/cn';
@@ -34,6 +38,17 @@ export default function TeamRoomOptionsBottomSheet({
     ? checkIsLeader(teamRoom.myRole)
     : false;
 
+  const leaveMutation = useLeaveTeamRoom();
+  const deleteMutation = useDeleteTeamRoom(() => {
+    openAlertModal({
+      title: '팀룸이 삭제되었습니다.',
+      buttonLabel: '확인',
+      onClickBtn: () => {
+        navigate('/home', { replace: true });
+      },
+    });
+  });
+
   const handleLeaveTeamRoom = () => {
     onClose();
     openChoiceModal({
@@ -42,8 +57,7 @@ export default function TeamRoomOptionsBottomSheet({
       leftLabel: '취소',
       rightLabel: '나가기',
       onClickRightBtn: () => {
-        // TODO: 팀룸 나가기 API 호출
-        navigate('/home', { replace: true });
+        if (teamRoom) leaveMutation.mutate(teamRoom.teamRoomId);
       },
     });
   };
@@ -57,14 +71,7 @@ export default function TeamRoomOptionsBottomSheet({
       leftLabel: '취소',
       rightLabel: '삭제',
       onClickRightBtn: () => {
-        // TODO: 팀룸 삭제 API 호출
-        openAlertModal({
-          title: '팀룸이 삭제되었습니다.',
-          buttonLabel: '확인',
-          onClickBtn: () => {
-            navigate('/home', { replace: true });
-          },
-        });
+        if (teamRoom) deleteMutation.mutate(teamRoom.teamRoomId);
       },
     });
   };
