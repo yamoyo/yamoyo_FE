@@ -1,6 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
+import {
+  useDeleteTeamRoom,
+  useLeaveTeamRoom,
+} from '@/entities/teamroom/hooks/useTeamRoom';
 import { isLeader as checkIsLeader } from '@/entities/teamroom/lib/is-leader';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { cn } from '@/shared/config/tailwind/cn';
@@ -12,17 +16,16 @@ interface TeamRoomOptionsBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   teamRoom: TeamRoomDetail | null;
-  currentUserId?: number;
 }
 
 export default function TeamRoomOptionsBottomSheet({
   isOpen,
   onClose,
   teamRoom,
-  currentUserId,
 }: TeamRoomOptionsBottomSheetProps) {
   const navigate = useNavigate();
   const openChoiceModal = useModalStore((state) => state.openChoiceModal);
+  const openAlertModal = useModalStore((state) => state.openAlertModal);
 
   const bannerSrc =
     TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerImageId)?.src ??
@@ -30,7 +33,21 @@ export default function TeamRoomOptionsBottomSheet({
 
   const leader = teamRoom?.members.find((member) => checkIsLeader(member.role));
 
-  const isLeader = leader?.userId === currentUserId;
+  // myRole을 사용해서 현재 유저가 팀장/방장인지 확인
+  const isCurrentUserLeader = teamRoom?.myRole
+    ? checkIsLeader(teamRoom.myRole)
+    : false;
+
+  const leaveMutation = useLeaveTeamRoom();
+  const deleteMutation = useDeleteTeamRoom(() => {
+    openAlertModal({
+      title: '팀룸이 삭제되었습니다.',
+      buttonLabel: '확인',
+      onClickBtn: () => {
+        navigate('/home', { replace: true });
+      },
+    });
+  });
 
   const handleLeaveTeamRoom = () => {
     onClose();
@@ -40,12 +57,24 @@ export default function TeamRoomOptionsBottomSheet({
       leftLabel: '취소',
       rightLabel: '나가기',
       onClickRightBtn: () => {
-        // TODO: 팀룸 나가기 API 호출
-        navigate('/home', { replace: true });
+        if (teamRoom) leaveMutation.mutate(teamRoom.teamRoomId);
       },
     });
   };
 
+  const handleDeleteTeamRoom = () => {
+    onClose();
+    openChoiceModal({
+      title: '팀룸을 삭제하시겠습니까?',
+      description:
+        '삭제시 모든 멤버가 탈퇴되고 컨텐츠가\n영구 삭제되어 복구가 불가능합니다.',
+      leftLabel: '취소',
+      rightLabel: '삭제',
+      onClickRightBtn: () => {
+        if (teamRoom) deleteMutation.mutate(teamRoom.teamRoomId);
+      },
+    });
+  };
   const setEditData = useTeamRoomEditStore((state) => state.setEditData);
 
   const handleEditTeamRoom = () => {
@@ -157,13 +186,13 @@ export default function TeamRoomOptionsBottomSheet({
             <p className="text-body-4.1 text-tx-default">팀룸 나가기</p>
           </button>
 
-          {/** TODO(준열) : 로그인 유저의 권한에 따른 팀룸 삭제 활성화 여부 구현 해야함 + 모달 연결*/}
           <button
             type="button"
-            disabled={!isLeader}
+            onClick={handleDeleteTeamRoom}
+            disabled={!isCurrentUserLeader}
             className={cn(
               'flex items-center gap-4',
-              !isLeader && 'cursor-not-allowed opacity-40',
+              !isCurrentUserLeader && 'cursor-not-allowed opacity-40',
             )}
           >
             <img

@@ -1,3 +1,4 @@
+import { useCreateInviteLink } from '@/entities/teamroom/hooks/useTeamRoom';
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
 import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
 import BottomSheet from '@/shared/ui/BottomSheet';
@@ -5,6 +6,7 @@ import BottomSheet from '@/shared/ui/BottomSheet';
 interface AddMemberBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
+  teamRoomId: number;
 }
 
 interface ShareButtonProps {
@@ -46,7 +48,14 @@ function ShareButton({
 export default function AddMemberBottomSheet({
   isOpen,
   onClose,
+  teamRoomId,
 }: AddMemberBottomSheetProps) {
+  const createInviteLinkMutation = useCreateInviteLink();
+
+  const handleCopyLink = () => {
+    createInviteLinkMutation.mutate(teamRoomId);
+  };
+
   return (
     <BottomSheet
       isOpen={isOpen}
@@ -79,7 +88,7 @@ export default function AddMemberBottomSheet({
         iconBgColor="bg-bg-bt-disabled"
         title="링크복사"
         description="링크로 팀원과 공유하세요."
-        onClick={() => {}}
+        onClick={handleCopyLink}
       />
 
       <ShareButton

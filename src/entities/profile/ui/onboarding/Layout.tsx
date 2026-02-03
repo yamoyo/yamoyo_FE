@@ -81,7 +81,13 @@ export default function ProfileOnboardingLayout() {
         major,
         ...form.persona,
       });
-      navigate('/home', { replace: true });
+      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
+      if (redirectUrl) {
+        sessionStorage.removeItem('redirectAfterLogin');
+        navigate(redirectUrl, { replace: true });
+      } else {
+        navigate('/home', { replace: true });
+      }
     } catch (_) {
       alert('프로필 설정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {

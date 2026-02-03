@@ -29,6 +29,12 @@ export interface GuideModalOptions {
   children: React.ReactNode;
 }
 
+export interface AlertModalOptions {
+  title: string;
+  buttonLabel: string;
+  onClickBtn?: () => void;
+}
+
 /** 현재 활성화된 모달의 상태를 나타내는 타입 */
 export type ActiveModal =
   | { type: 'choice'; options: ChoiceModalOptions }
@@ -36,6 +42,7 @@ export type ActiveModal =
   | { type: 'character'; options: CharacterModalOptions }
   | { type: 'teamroom-created'; options: TeamRoomCreatedModalOptions }
   | { type: 'guide'; options: GuideModalOptions }
+  | { type: 'alert'; options: AlertModalOptions }
   | null;
 
 export interface ModalStore {
@@ -80,5 +87,13 @@ export interface ModalStore {
   openCharacterModal: (options: CharacterModalOptions) => void;
   openTeamRoomCreatedModal: (options: TeamRoomCreatedModalOptions) => void;
   openGuideModal: (options: GuideModalOptions) => void;
+  /**
+   * 단일 확인 버튼만 있는 알림 모달
+   *
+   * @param options.title       모달 제목 (필수)
+   * @param options.buttonLabel 버튼 라벨 (필수)
+   * @param options.onClickBtn  버튼 클릭 핸들러 (선택) - 미지정 시 모달만 닫힘
+   */
+  openAlertModal: (options: AlertModalOptions) => void;
   closeModal: () => void;
 }

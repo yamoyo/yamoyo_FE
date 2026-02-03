@@ -1,11 +1,11 @@
-import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
+import type { TeamRoomMember } from '@/entities/teamroom/api/teamroom-dto';
 import { isLeader } from '@/entities/teamroom/lib/is-leader';
 import SettingIcon from '@/shared/assets/icons/setting.svg?react';
 
 interface MemberListItemProps {
-  member: LegacyTeamMember;
+  member: TeamRoomMember;
   currentUserId?: number;
-  onSettingClick?: (member: LegacyTeamMember) => void;
+  onSettingClick?: (member: TeamRoomMember) => void;
 }
 
 export default function MemberListItem({
@@ -13,7 +13,7 @@ export default function MemberListItem({
   currentUserId,
   onSettingClick,
 }: MemberListItemProps) {
-  const isCurrentUser = member.id === currentUserId;
+  const isCurrentUser = member.userId === currentUserId;
   return (
     <li className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -27,7 +27,7 @@ export default function MemberListItem({
             draggable={false}
           />
           <img
-            src={member.avatar}
+            src={`/assets/character/char-${member.profileImageId}.png`}
             width={36}
             height={26}
             alt={member.name}
@@ -45,7 +45,7 @@ export default function MemberListItem({
           )}
         </div>
 
-        {/* 이름, 직무 */}
+        {/* 이름, 전공 */}
         <div className="flex flex-col gap-0.5">
           <span className="text-body-4 text-tx-default">{member.name}</span>
           <span className="text-body-6 text-tx-default_4">{member.major}</span>
