@@ -8,7 +8,7 @@ interface BaseRequestOptions {
   credentials?: RequestCredentials;
 }
 
-const BASE_URL: string = import.meta.env?.VITE_BASE_URL;
+export const BASE_URL: string = import.meta.env?.VITE_BASE_URL;
 
 /**
  * 네트워크 요청이 성공적으로 도착했는지 확인

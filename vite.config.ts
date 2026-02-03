@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import svgr from 'vite-plugin-svgr';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
 
 // __dirname 대체 (ESM 환경)
 const __filename = fileURLToPath(import.meta.url);
@@ -53,5 +54,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
       '@public': path.resolve(__dirname, 'public'),
     },
+  },
+  define: {
+    global: 'globalThis',
   },
 });
