@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import LadderGame from '@/features/games/ladder-game/ui/LadderGame';
-import { TimingGame } from '@/features/games/timing-game/ui/TimingGame';
+import LadderGame from '@/features/leader-game/ladder-game/ui/LadderGame';
+import { TimingGame } from '@/features/leader-game/timing-game/ui/TimingGame';
 import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
 
 import { Phase } from './model/type';
