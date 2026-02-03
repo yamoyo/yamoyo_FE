@@ -8,6 +8,16 @@ export interface TeamMember {
   role: TeamMemberRole;
 }
 
+/** 팀룸 멤버 목록 조회 응답 (GET /api/team-rooms/{teamRoomId}/members) */
+export interface TeamRoomMember {
+  memberId: number;
+  userId: number;
+  name: string;
+  major: string;
+  profileImageId: number;
+  role: TeamMemberRole;
+}
+
 // 팀룸 목록 조회 시 사용되는 간소화된 멤버 정보
 export interface TeamMemberSummary {
   userId: number;
@@ -107,11 +117,14 @@ export interface TeamMemberDetail {
   email: string;
   major: string;
   mbti: string;
+  profileImageId: number;
+  role: TeamMemberRole;
   joinedAt: string;
 }
 
 /** TeamMember + TeamMemberDetail 조합 (목록 UI에서 사용) */
 export interface TeamMemberWithDetail {
+  memberId: number;
   userId: number;
   name: string;
   profileImageId: number;

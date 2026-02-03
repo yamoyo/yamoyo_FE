@@ -11,6 +11,7 @@ import type {
   TeamRoomDetail,
   TeamRoomLifecycle,
   TeamRoomListItem,
+  TeamRoomMember,
   UpdateTeamRoomRequest,
 } from './teamroom-dto';
 
@@ -37,6 +38,16 @@ export async function getTeamRoomDetail(
   teamRoomId: number,
 ): Promise<TeamRoomDetail> {
   return authClient.get<TeamRoomDetail>(`/team-rooms/${teamRoomId}`);
+}
+
+/** 팀룸 멤버 목록 조회 */
+export async function getTeamRoomMembers(
+  teamRoomId: number,
+): Promise<TeamRoomMember[]> {
+  const res = await authClient.get<{ teamMembers: TeamRoomMember[] }>(
+    `/team-rooms/${teamRoomId}/members`,
+  );
+  return res.teamMembers;
 }
 
 /** 팀룸 수정 */

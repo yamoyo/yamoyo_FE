@@ -1,3 +1,4 @@
+import AlertModal from './AlertModal';
 import CalendarModal from './CalendarModal';
 import CharacterModal from './character-modal/CharacterModal';
 import ChoiceModal from './ChoiceModal';
@@ -20,6 +21,8 @@ export default function ModalRoot() {
       return <TeamRoomCreatedModal {...modal.options} />;
     case 'guide':
       return <GuideModal {...modal.options} />;
+    case 'alert':
+      return <AlertModal {...modal.options} />;
     default:
       return null;
   }
