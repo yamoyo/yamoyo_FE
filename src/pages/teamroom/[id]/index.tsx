@@ -63,6 +63,7 @@ export default function TeamRoomMainPage() {
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}
+        teamRoomId={Number(id)}
       />
       <TeamRoomOptionsBottomSheet
         isOpen={isOptionsOpen}
