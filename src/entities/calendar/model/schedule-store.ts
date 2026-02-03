@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+
 import { Schedule } from './types';
 
 interface ScheduleState {

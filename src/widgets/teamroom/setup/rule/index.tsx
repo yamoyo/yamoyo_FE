@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import RuleVotingScreen from './ui/voting-rule';
+
 import RuleVoteWaitingScreen from './ui/vote-waitng';
+import RuleVotingScreen from './ui/voting-rule';
 
 type RulePhase = 'VOTING_RULE' | 'RULE_VOTE_WAITING';
 

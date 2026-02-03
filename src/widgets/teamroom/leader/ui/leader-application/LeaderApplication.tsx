@@ -1,8 +1,10 @@
 import { useState } from 'react';
+
+import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
+
 import { TimerBar } from '../TimerBar';
 import LeaderApplicationButton from './LeaderApplicationButton';
-import BottomButton from '@/shared/ui/button/BottomButton';
 
 const BUTTON_ITEMS = [
   {

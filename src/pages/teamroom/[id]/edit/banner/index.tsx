@@ -1,7 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import TopBar from '@/shared/ui/header/TopBar';
-import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
+import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+import TopBar from '@/shared/ui/header/TopBar';
 
 const BANNER_IMAGES = TEAMROOM_IMAGES.filter((image) => image.id !== 0);
 

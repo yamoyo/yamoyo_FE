@@ -1,6 +1,7 @@
+import { cn } from '@/shared/config/tailwind/cn';
+
 import { MAJOR } from '../model/options/profile-items';
 import { MajorId } from '../model/types/types';
-import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   major: MajorId | null;

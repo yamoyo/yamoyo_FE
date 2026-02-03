@@ -1,11 +1,13 @@
+import { useState } from 'react';
+
+import { TOOL_VOTE_COUNT } from '@/entities/teamroom/setup/tool/model/tool-contents';
 import TopBar from '@/shared/ui/header/TopBar';
 import { SwipeTabs, type TabsConfig } from '@/shared/ui/tab';
 import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnderlineTabHeader';
-import VoteCountList from './ui/VoteCountList';
-import { TOOL_VOTE_COUNT } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import { useState } from 'react';
+import { DUMMY_UNVOTED, DUMMY_VOTED } from '@/widgets/vote/model/vote-dummy';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
-import { DUMMY_VOTED, DUMMY_UNVOTED } from '@/widgets/vote/model/vote-dummy';
+
+import VoteCountList from './ui/VoteCountList';
 
 export default function ToolVoteWaiting() {
   const [isVoteStatusModalOpen, setIsVoteStatusModalOpen] = useState(false);

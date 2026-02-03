@@ -1,4 +1,5 @@
 import { ReactNode, useEffect } from 'react';
+
 import { useModalStore } from './model/modal-store';
 
 interface Props {

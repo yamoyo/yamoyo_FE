@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import LeaderGameCard from './LeaderGameCard';
 import { useNavigate } from 'react-router-dom';
+
 import { Dashboard } from './Dashboard';
+import LeaderGameCard from './LeaderGameCard';
 
 type Phase = 'LEADER_SELECTION' | 'LEADER_CONFIRMED'; // 팀장 정하기 전/후 단계로 나뉨
 

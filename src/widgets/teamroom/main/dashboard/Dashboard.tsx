@@ -1,6 +1,7 @@
-import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
-import FocusTimerCard from './FocusTimerCard';
 import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
+import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
+
+import FocusTimerCard from './FocusTimerCard';
 import Rules from './rule/RuleContents';
 import ToolContents from './Tool/ToolContents';
 

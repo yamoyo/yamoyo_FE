@@ -1,10 +1,12 @@
 'use client';
 
-import TopBar from '@/shared/ui/header/TopBar';
-import { useTimingGame } from '../model/useTimingGame';
-import { TimerBar } from '@/widgets/teamroom/leader/ui/TimerBar';
 import { useEffect, useRef, useState } from 'react';
+
+import TopBar from '@/shared/ui/header/TopBar';
+import { TimerBar } from '@/widgets/teamroom/leader/ui/TimerBar';
+
 import GameStartButton from '../../ui/GameStartButton';
+import { useTimingGame } from '../model/useTimingGame';
 
 export function TimingGame() {
   const { elapsed, isRunning, difference, diffText, onClickButton } =

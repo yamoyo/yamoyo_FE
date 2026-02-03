@@ -1,7 +1,9 @@
-import { BrowserRouter } from 'react-router-dom';
-import ReactDOM from 'react-dom/client';
-import App from './App';
 import '@/shared/styles/globals.css';
+
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+
+import App from './App';
 
 // PWA Service Worker 등록
 if ('serviceWorker' in navigator) {

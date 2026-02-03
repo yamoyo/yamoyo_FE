@@ -1,4 +1,5 @@
 import { FieldError, UseFormRegister } from 'react-hook-form';
+
 import {
   CreateScheduleFormData,
   SCHEDULE_COLORS,

@@ -1,10 +1,12 @@
+import { useState } from 'react';
+
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
 import { ToolId } from '@/entities/teamroom/setup/tool/model/types';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
-import StepTitle from '@/shared/ui/tab/StepTitle';
-import { useState } from 'react';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
+import StepTitle from '@/shared/ui/tab/StepTitle';
+
 import ToolItems from './ui/ToolItems';
 
 interface Props {

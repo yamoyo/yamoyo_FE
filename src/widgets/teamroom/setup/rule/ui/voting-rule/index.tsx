@@ -1,8 +1,10 @@
-import TopBar from '@/shared/ui/header/TopBar';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import TopBar from '@/shared/ui/header/TopBar';
+
 import RuleVotingNotice from './RuleVotingNotice';
 import VotingRule from './VotingRule';
-import { useNavigate } from 'react-router-dom';
 
 export default function RuleVotingScreen({
   onFinish,

@@ -1,6 +1,8 @@
 import '@/shared/styles/timer.css';
-import { cn } from '@/shared/config/tailwind/cn';
+
 import { useMemo } from 'react';
+
+import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   color?: 'white' | 'yellow';

@@ -1,5 +1,5 @@
-import { VoteCharacter } from '@/widgets/vote/model/types';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
+import { VoteCharacter } from '@/widgets/vote/model/types';
 
 interface Props {
   characters: VoteCharacter[];

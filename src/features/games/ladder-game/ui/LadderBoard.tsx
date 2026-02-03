@@ -6,13 +6,13 @@ import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll'
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 import GameStartButton from '../../ui/GameStartButton';
-import { DUMMY_LADDER } from '../model/user-dummy';
 import {
   ColumnToRowsMap,
   LadderGameResponse,
   PosAxisById,
   Step,
 } from '../model/types';
+import { DUMMY_LADDER } from '../model/user-dummy';
 import ResultButton from './ResultButton';
 
 interface Props {

@@ -1,7 +1,9 @@
 import { useOutletContext } from 'react-router-dom';
-import { ProfileOnboardingContext } from '../../model/types/types';
+
 import TextField from '@/shared/ui/input/TextField';
+
 import { validateProfileItem } from '../../model/hook/useEditProfile';
+import { ProfileOnboardingContext } from '../../model/types/types';
 
 export default function NameStep() {
   const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();

@@ -1,6 +1,7 @@
-import ContentsHeader from '../../ui/ContentsHeader';
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
 import ToolItems from '@/widgets/teamroom/setup/tool/ui/vote-tool/ui/ToolItems';
+
+import ContentsHeader from '../../ui/ContentsHeader';
 
 const sections = [
   {

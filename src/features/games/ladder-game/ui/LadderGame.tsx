@@ -1,4 +1,5 @@
 import TopBar from '@/shared/ui/header/TopBar';
+
 import LadderBoard from './LadderBoard';
 
 export default function LadderGame() {

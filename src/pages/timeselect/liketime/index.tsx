@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import TopBar from '@/shared/ui/header/TopBar';
-import BottomButton from '@/shared/ui/button/BottomButton';
+
 import TimeIcon from '@/shared/assets/icons/time.svg?react';
+import BottomButton from '@/shared/ui/button/BottomButton';
+import TopBar from '@/shared/ui/header/TopBar';
 
 const TIEMS = [
   '08:00 - 12:00am',

@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from './store';
+
 import { refreshAccessToken } from './refresh-token';
+import { useAuthStore } from './store';
 
 export function useAuthBootstrap(isGuest: boolean) {
   const navigate = useNavigate();

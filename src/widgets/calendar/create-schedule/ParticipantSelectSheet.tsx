@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import BottomSheet from '@/shared/ui/BottomSheet';
+
 import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
+import BottomSheet from '@/shared/ui/BottomSheet';
 
 interface ParticipantSelectSheetProps {
   isOpen: boolean;

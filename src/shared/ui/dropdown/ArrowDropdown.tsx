@@ -1,5 +1,6 @@
-import { cn } from '@/shared/config/tailwind/cn';
 import { useState } from 'react';
+
+import { cn } from '@/shared/config/tailwind/cn';
 
 export interface ArrowDropdownOption<T extends string | number> {
   label: string;

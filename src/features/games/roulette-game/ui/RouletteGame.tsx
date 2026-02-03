@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import TopBar from '@/shared/ui/header/TopBar';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 import GameStartButton from '../../ui/GameStartButton';
-import { useRouletteGame } from '../model/useRouletteGame';
 import { DUMMY_ROULETTE } from '../model/user-dummy';
+import { useRouletteGame } from '../model/useRouletteGame';
 import RouletteBoard from './RouletteBoard';
 
 const MODAL_DELAY_MS = 200;

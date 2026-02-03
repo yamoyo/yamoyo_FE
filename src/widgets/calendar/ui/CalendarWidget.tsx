@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
-import Calendar from '@/shared/ui/Calendar';
-import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
+
 import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
 import { useTeamStore } from '@/entities/team/model/team-store';
+import Calendar from '@/shared/ui/Calendar';
+import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
+import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
 
 export default function CalendarWidget() {
   const navigate = useNavigate();

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
-import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
-import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
-import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
-import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
+import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
+import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
+import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
+import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
 
 export default function TeamRoomMainPage() {
   const { id } = useParams<{ id: string }>();

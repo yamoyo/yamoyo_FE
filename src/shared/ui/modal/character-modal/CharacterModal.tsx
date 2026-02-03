@@ -1,7 +1,7 @@
 import ModalDim from '../ModalDim';
+import { useModalStore } from '../model/modal-store';
 import CharacterModalMainVisual from './MainVisual';
 import { CharacterModalOptions } from './model/types';
-import { useModalStore } from '../model/modal-store';
 
 /** 가운데 캐릭터가 있는 모달
  *

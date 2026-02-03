@@ -1,6 +1,6 @@
-import OnboardingContent from './OnboardingContent';
 import { onBoardingContents } from '../../lib/onBoardingContents';
 import { useOnboardingCarousel } from '../../model/useOnboardingCarousel';
+import OnboardingContent from './OnboardingContent';
 
 export function OnboardingCarousel() {
   const {

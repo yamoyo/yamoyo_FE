@@ -1,13 +1,15 @@
-import TopBar from '@/shared/ui/header/TopBar';
-import UserProfile from '@/entities/profile/ui/UserProfile';
-import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
-import { BASIC_INFO_ITEMS } from '../../model/options/profile-items';
-import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
-import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { useNavigate } from 'react-router-dom';
-import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
-import { useAuthStore } from '@/shared/api/auth/store';
+
+import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
+import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
+import UserProfile from '@/entities/profile/ui/UserProfile';
 import { userApi } from '@/entities/user/api/user-api';
+import { useAuthStore } from '@/shared/api/auth/store';
+import TopBar from '@/shared/ui/header/TopBar';
+import BottomPadding24 from '@/shared/ui/layout/BottomPadding24';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
+
+import { BASIC_INFO_ITEMS } from '../../model/options/profile-items';
 
 const dummyData: Record<(typeof BASIC_INFO_ITEMS)[number]['key'], string> = {
   name: '박서영',

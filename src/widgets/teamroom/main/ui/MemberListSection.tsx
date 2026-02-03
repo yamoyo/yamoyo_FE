@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import type { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
-import MemberItem from './MemberItem';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
+
+import MemberItem from './MemberItem';
 
 interface MemberListSectionProps {
   members: TeamMember[];

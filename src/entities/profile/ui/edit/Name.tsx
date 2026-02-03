@@ -1,7 +1,8 @@
 import TopBar from '@/shared/ui/header/TopBar';
 import TextField from '@/shared/ui/input/TextField';
-import EditProfileLayout from './Layout';
+
 import { useEditName } from '../../model/hook/useEditProfile';
+import EditProfileLayout from './Layout';
 
 export default function EditName() {
   const { name, setName, errorMessage, handleSaveName } = useEditName();

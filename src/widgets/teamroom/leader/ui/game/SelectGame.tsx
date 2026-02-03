@@ -1,7 +1,8 @@
 import TopBar from '@/shared/ui/header/TopBar';
+
 import { TimerBar } from '../TimerBar';
-import SelectGameItem from './SelectGameItem';
 import { GAMES } from './model/constants';
+import SelectGameItem from './SelectGameItem';
 
 export default function SelectGame() {
   // TODO: 실제 startedAt 값을 서버에서 받아와야 함

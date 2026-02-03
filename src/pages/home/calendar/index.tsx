@@ -1,5 +1,5 @@
-import MainHeader from '@/widgets/calendar/ui/MainHeader';
 import CalendarWidget from '@/widgets/calendar/ui/CalendarWidget';
+import MainHeader from '@/widgets/calendar/ui/MainHeader';
 
 export default function Calendar() {
   return (

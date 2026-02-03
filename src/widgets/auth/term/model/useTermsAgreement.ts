@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+
 import type { TermId, TermItem } from './types';
 
 const TERMS: TermItem[] = [

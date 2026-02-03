@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import TopBar from '@/shared/ui/header/TopBar';
 import BottomButton from '@/shared/ui/button/BottomButton';
+import TopBar from '@/shared/ui/header/TopBar';
+import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import TimeSelectControls from '@/widgets/teamroom/timeselect/TimeSelectControls';
 import TimeSelectGrid from '@/widgets/teamroom/timeselect/TimeSelectGrid';
-
-import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
 const createInitialAvailability = () =>
   Array.from({ length: 7 }, () => Array.from({ length: 32 }, () => false));

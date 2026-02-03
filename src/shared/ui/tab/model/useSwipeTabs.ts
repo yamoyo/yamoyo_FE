@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+
 import { UseSwipeTabsOptions } from './types';
 
 export function useSwipeTabs({

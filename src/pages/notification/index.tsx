@@ -1,6 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 import TopBar from '@/shared/ui/header/TopBar';
 import NotificationList from '@/widgets/notification/ui/NotificationList';
-import { useNavigate } from 'react-router-dom';
 
 export default function NotificationPage() {
   const navigate = useNavigate();

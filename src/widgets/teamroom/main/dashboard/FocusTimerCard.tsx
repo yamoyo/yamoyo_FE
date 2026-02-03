@@ -1,9 +1,11 @@
-import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
-import { formatTimeString } from '@/entities/calendar/lib/recurrence';
-import { TimerBar } from '../../leader/ui/TimerBar';
 import { useEffect, useState } from 'react';
-import { cn } from '@/shared/config/tailwind/cn';
 import { useNavigate } from 'react-router-dom';
+
+import { formatTimeString } from '@/entities/calendar/lib/recurrence';
+import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
+import { cn } from '@/shared/config/tailwind/cn';
+
+import { TimerBar } from '../../leader/ui/TimerBar';
 
 interface Props {
   title: string;

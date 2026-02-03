@@ -1,8 +1,8 @@
-import { authClient } from '@/shared/api/auth/client';
 import {
   OnboardingProfileRequest,
   OnboardingTermBody,
 } from '@/entities/user/api/user-dto';
+import { authClient } from '@/shared/api/auth/client';
 
 export const userApi = {
   logout() {

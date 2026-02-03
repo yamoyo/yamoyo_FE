@@ -1,9 +1,9 @@
-import { HttpRequestOptions } from '../base/types';
-import { useAuthStore } from './store';
-import { baseRequest } from '../base/request';
 import { YamoyoError } from '../base/http-error';
-import { refreshAccessToken } from './refresh-token';
+import { baseRequest } from '../base/request';
+import { HttpRequestOptions } from '../base/types';
 import { notifyAuthExpired } from './event-bus';
+import { refreshAccessToken } from './refresh-token';
+import { useAuthStore } from './store';
 
 /** 토큰 부착 + 401 → refresh + 1회 재시도 */
 async function authAwareRequest<T>(

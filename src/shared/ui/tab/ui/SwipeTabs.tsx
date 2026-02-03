@@ -1,4 +1,5 @@
 import { cn } from '@/shared/config/tailwind/cn';
+
 import { TabsConfig } from '../model/types';
 import { useSwipeTabs } from '../model/useSwipeTabs';
 import { SwipeTabPanels } from './SwipeTabPanels';

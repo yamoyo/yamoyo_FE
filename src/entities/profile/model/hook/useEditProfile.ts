@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { MAJOR } from '../options/profile-items';
-import { majorType } from '../types/types';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { MajorId } from '@/entities/profile/model/types/types';
 
 export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   if (type === 'name') {
@@ -41,11 +41,11 @@ export const useEditName = () => {
 
 export const useEditMajor = () => {
   const navigate = useNavigate();
-  const [major, setMajor] = useState<majorType | null>(null);
+  const [major, setMajor] = useState<MajorId | null>(null);
 
   useEffect(() => {
     // TODO: 초기 데이터 로드
-    setMajor(MAJOR[1].id);
+    setMajor(1);
   }, []);
 
   const handleSaveMajor = async () => {

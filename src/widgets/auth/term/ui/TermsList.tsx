@@ -1,6 +1,6 @@
 import type { TermId, TermItem as TermItemType } from '../model/types';
-import { TermItem } from './TermItem';
 import CheckBox from './CheckBox';
+import { TermItem } from './TermItem';
 
 type Props = {
   terms: TermItemType[];

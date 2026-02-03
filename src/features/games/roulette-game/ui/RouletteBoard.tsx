@@ -1,17 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { Participant } from '../../ladder-game/model/types';
 
+import { Participant } from '../../ladder-game/model/types';
 import {
+  ARROW_HEIGHT_PX,
+  ARROW_OFFSET_X_PX,
+  ARROW_WIDTH_PX,
+  ARROW_WRAPPER_HEIGHT_PX,
+  BORDER_SIZE_PX,
+  LABEL_RADIUS_RATIO,
+  SEGMENT_COLORS,
+  SEGMENT_STROKE,
   SPIN_DURATION_MS,
   WHEEL_SIZE_PX,
-  BORDER_SIZE_PX,
-  ARROW_WRAPPER_HEIGHT_PX,
-  ARROW_HEIGHT_PX,
-  ARROW_WIDTH_PX,
-  ARROW_OFFSET_X_PX,
-  LABEL_RADIUS_RATIO,
-  SEGMENT_STROKE,
-  SEGMENT_COLORS,
 } from '../model/constants';
 
 interface RouletteBoardProps {

@@ -1,5 +1,5 @@
-import { DUMMY_UNVOTED, DUMMY_VOTED } from '@/widgets/vote/model/vote-dummy';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
+import { DUMMY_UNVOTED, DUMMY_VOTED } from '@/widgets/vote/model/vote-dummy';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
 export default function LeaderApplicationWait({

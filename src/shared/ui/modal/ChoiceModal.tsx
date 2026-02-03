@@ -1,7 +1,8 @@
-import ModalDim from '@/shared/ui/modal/ModalDim';
 import { cn } from '@/shared/config/tailwind/cn';
-import { ChoiceModalOptions } from './model/types';
+import ModalDim from '@/shared/ui/modal/ModalDim';
+
 import { useModalStore } from './model/modal-store';
+import { ChoiceModalOptions } from './model/types';
 
 /** 두 가지 선택지 중 하나를 고르는 모달
  *

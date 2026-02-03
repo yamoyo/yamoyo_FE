@@ -13,6 +13,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "allowImportingTsExtensions": true,
+    "forceConsistentCasingInFileNames": true, // 대소문자 불일치 검사
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
