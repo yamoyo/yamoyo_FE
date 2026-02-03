@@ -3,11 +3,37 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   createInviteLink,
+  createTeamRoom,
   deleteTeamRoom,
   getTeamRoomDetail,
+  getTeamRoomList,
   joinTeamRoom,
   leaveTeamRoom,
 } from '@/entities/teamroom/api/teamroom-api';
+import type {
+  CreateTeamRoomRequest,
+  TeamRoomLifecycle,
+} from '@/entities/teamroom/api/teamroom-dto';
+
+/** 팀룸 목록 조회 */
+export function useTeamRoomList(lifecycle: TeamRoomLifecycle = 'ACTIVE') {
+  return useQuery({
+    queryKey: ['teamrooms', lifecycle],
+    queryFn: () => getTeamRoomList(lifecycle),
+  });
+}
+
+/** 팀룸 생성 */
+export function useCreateTeamRoom() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateTeamRoomRequest) => createTeamRoom(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
+    },
+  });
+}
 
 /** 팀룸 상세 조회 */
 export function useTeamRoomDetail(teamRoomId: number) {

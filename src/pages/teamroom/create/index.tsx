@@ -5,7 +5,7 @@ import {
   formatDateString,
   formatMonthDayLabel,
 } from '@/entities/calendar/lib/recurrence';
-import { createTeamRoom } from '@/entities/teamroom/api/teamroom-api';
+import { useCreateTeamRoom } from '@/entities/teamroom/hooks/useTeamRoom';
 import { useTeamRoomCreateStore } from '@/entities/teamroom/model/teamroom-create-store';
 import {
   DEFAULT_TEAMROOM_IMAGE_ID,
@@ -24,6 +24,7 @@ import {
 export default function TeamRoomCreatePage() {
   const navigate = useNavigate();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { mutateAsync: createTeamRoom } = useCreateTeamRoom();
 
   const createData = useTeamRoomCreateStore((state) => state.createData);
 
