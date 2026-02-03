@@ -1,3 +1,9 @@
+import { userApi } from '@/entities/user/api/user-api';
+import {
+  notifyAuthExpired,
+  resetAuthExpired,
+} from '@/shared/api/auth/event-bus';
+import { YamoyoError } from '@/shared/api/base/http-error';
 import { baseRequest } from '@/shared/api/base/request';
 
 import { useAuthStore } from './store';
@@ -5,8 +11,10 @@ import { TokenResponse } from './types';
 
 // 동시에 여러 401이 발생했을 때 refresh 중복 호출 방지용
 let refreshPromise: Promise<boolean> | null = null;
+let refreshFailCount = 0;
+const MAX_REFRESH_FAILS = 2;
 
-export const requestAccessToken = async () => {
+export const requestAccessToken = async (): Promise<boolean> => {
   try {
     const res: TokenResponse = await baseRequest('/auth/refresh', {
       method: 'POST',
@@ -18,14 +26,29 @@ export const requestAccessToken = async () => {
     useAuthStore.getState().setAccessToken(res.accessToken);
     useAuthStore.getState().setIsAuthenticated(true);
 
+    resetAuthExpired();
     return true;
   } catch (e) {
-    console.error(e);
-    useAuthStore.getState().clear();
+    const isInvalidRefresh =
+      e instanceof YamoyoError &&
+      (e.code === 401 || e.code === 403) &&
+      typeof e.message === 'string' &&
+      e.message.includes('Refresh Token');
 
-    alert(
-      '로그인 처리 중 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-    );
+    if (isInvalidRefresh) {
+      try {
+        await userApi.logout();
+      } catch (logoutErr) {
+        console.warn('logout failed', logoutErr);
+      } finally {
+        useAuthStore.getState().clear();
+        notifyAuthExpired();
+      }
+      return false;
+    }
+
+    // 나머지 에러(네트워크 오류/서버 오류 등)도 boolean 반환
+    console.error(e);
     return false;
   }
 };
@@ -37,18 +60,23 @@ export const requestAccessToken = async () => {
  * - 실패 시 store 초기화 후 false 반환
  */
 export async function refreshAccessToken(): Promise<boolean> {
-  if (refreshPromise) return refreshPromise;
+  if (refreshFailCount >= MAX_REFRESH_FAILS) {
+    useAuthStore.getState().clear();
+    return false;
+  }
 
-  refreshPromise = (async () => {
-    try {
-      await requestAccessToken();
-      return true;
-    } catch (_) {
-      return false;
-    }
-  })().finally(() => {
-    refreshPromise = null;
-  });
+  if (!refreshPromise) {
+    refreshPromise = (async () => {
+      const ok = await requestAccessToken().catch(() => false);
+      if (ok) refreshFailCount = 0;
+      else refreshFailCount += 1;
+      return ok;
+    })().finally(() => {
+      refreshPromise = null;
+    });
+  }
 
-  return refreshPromise;
+  const ok = await refreshPromise;
+  if (!ok) useAuthStore.getState().clear();
+  return ok;
 }
