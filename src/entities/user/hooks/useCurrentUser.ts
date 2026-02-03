@@ -18,6 +18,8 @@ export function useUpdateUser() {
     onSuccess: (data) => {
       // 서버 응답 데이터로 캐시를 즉시 업데이트 (refetch 없이 바로 반영)
       queryClient.setQueryData(['user', 'me'], data);
+      queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
+      queryClient.invalidateQueries({ queryKey: ['teamroom'] });
     },
   });
 }
