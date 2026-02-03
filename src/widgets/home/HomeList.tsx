@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTeamRoomList } from '@/entities/teamroom/hooks/useTeamRoom';
 import HomeListEmptyItem from '@/widgets/home/HomeListEmptyItem';
 import HomeListItem from '@/widgets/home/HomeListItem';
+import { sortTeams } from '@/widgets/teamroom/utils/sortTeams';
 
 export default function HomeList() {
   const { data: teamRooms, isLoading } = useTeamRoomList('ACTIVE');
@@ -25,11 +26,7 @@ export default function HomeList() {
       {isLoading ? (
         <div className="py-4 text-center text-white/50">로딩 중...</div>
       ) : teamRooms && teamRooms.length > 0 ? (
-        [...teamRooms]
-          .sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-          )
+        sortTeams(teamRooms, 'latest')
           .slice(0, 3)
           .map((teamRoom) => (
             <HomeListItem key={teamRoom.teamRoomId} teamRoom={teamRoom} />
