@@ -92,7 +92,7 @@ export interface InviteLinkResponse {
 
 /** 팀룸 입장 요청 (POST /api/team-rooms/join) */
 export interface JoinTeamRoomRequest {
-  token: string;
+  inviteToken: string;
 }
 
 /** 팀룸 입장 응답 */

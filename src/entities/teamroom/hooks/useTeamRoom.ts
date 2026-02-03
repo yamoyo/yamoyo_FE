@@ -5,6 +5,7 @@ import {
   createInviteLink,
   deleteTeamRoom,
   getTeamRoomDetail,
+  joinTeamRoom,
   leaveTeamRoom,
 } from '@/entities/teamroom/api/teamroom-api';
 
@@ -55,6 +56,20 @@ export function useCreateInviteLink() {
     },
     onError: () => {
       alert('초대 링크 생성에 실패했습니다.');
+    },
+  });
+}
+
+/** 팀룸 참여 (초대 링크로) */
+export function useJoinTeamRoom() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (token: string) => joinTeamRoom({ inviteToken: token }),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
+      navigate(`/teamroom/${data.teamRoomId}`, { replace: true });
     },
   });
 }
