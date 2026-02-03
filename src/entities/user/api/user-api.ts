@@ -22,7 +22,7 @@ export const userApi = {
   },
 
   logout() {
-    return authClient.post('/auth/logout', {
+    return authClient.post('/auth/logout', undefined, {
       credentials: 'include',
     });
   },

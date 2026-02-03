@@ -45,7 +45,6 @@ async function authAwareRequest<T>(
 
       const ok = await refreshAccessToken();
       if (!ok) {
-        useAuthStore.getState().clear();
         notifyAuthExpired();
         throw e;
       }
