@@ -1,11 +1,21 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import {
   createInviteLink,
   deleteTeamRoom,
+  getTeamRoomDetail,
   leaveTeamRoom,
 } from '@/entities/teamroom/api/teamroom-api';
+
+/** 팀룸 상세 조회 */
+export function useTeamRoomDetail(teamRoomId: number) {
+  return useQuery({
+    queryKey: ['teamroom', teamRoomId],
+    queryFn: () => getTeamRoomDetail(teamRoomId),
+    enabled: !!teamRoomId,
+  });
+}
 
 /** 팀룸 나가기 */
 export function useLeaveTeamRoom() {
