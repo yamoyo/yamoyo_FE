@@ -22,7 +22,9 @@ export const userApi = {
   },
 
   logout() {
-    return authClient.delete('/auth/me');
+    return authClient.post('/auth/logout', undefined, {
+      credentials: 'include',
+    });
   },
 
   onboardingTerm() {

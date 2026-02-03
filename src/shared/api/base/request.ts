@@ -12,7 +12,7 @@ const BASE_URL: string = import.meta.env?.VITE_BASE_URL;
 
 /**
  * 네트워크 요청이 성공적으로 도착했는지 확인
- * - try: fetch 요청 시도
+ * - try: fetch 요청 시도 후 Response 반환
  * - catch: 네트워크 오류 발생 시 YamoyoError 던짐
  */
 async function fetchWithNetworkSafety(
@@ -31,28 +31,62 @@ async function fetchWithNetworkSafety(
 }
 
 /**
- * API 응답을 ApiResponse<T> 타입으로 파싱
+ * API 응답을 ApiResponse<T> 형태로 변환
  *
- * @param response - fetch 응답 객체
- * @returns ApiResponse<unknown> 객체
- * @throws YamoyoError - 응답이 JSON 형식이 아닐 경우 발생
- *
+ * 204 No Content: 성공으로 간주
+ * 빈 JSON -> 성공으로 간주
+ * JSON이 아닐 경우 -> 필요 시 텍스트로 처리 후 에러
  *
  */
 async function parseApiResponse(
   response: Response,
 ): Promise<ApiResponse<unknown>> {
+  const contentType = response.headers.get('content-type') ?? '';
+
+  // 204 No Content -> body가 없으니 성공 형태로 반환 (로그아웃 등)
+  if (response.status === 204) {
+    return { success: true, message: '', code: 0, data: null };
+  }
+
+  // JSON이 아니면 text로 읽어 예외/성공 처리
+  if (!contentType.includes('application/json')) {
+    const text = await response.text();
+    // 성공 응답이면서 내용이 없거나 'ok' 텍스트라면 성공 처리
+    if (response.ok && (text === '' || text.toLowerCase() === 'ok')) {
+      return { success: true, message: '', code: 0, data: null };
+    }
+
+    throw new YamoyoError({
+      message: '서버 응답이 JSON이 아닙니다.',
+      code: response.status,
+      data: { contentType, text },
+    });
+  }
+
+  // JSON이어도 빈 body면 파싱 에러가 나므로 text로 안전하게 파싱
+  const raw = await response.text();
+  if (!raw) {
+    // 200인데 body가 비어있는 케이스는 성공으로 처리
+    return { success: true, message: '', code: 0, data: null };
+  }
+
   try {
-    return (await response.json()) as ApiResponse<unknown>;
+    return JSON.parse(raw) as ApiResponse<unknown>;
   } catch {
     throw new YamoyoError({
-      message: '서버 응답 형식이 올바르지 않습니다.',
+      message: '서버 JSON 파싱에 실패했습니다.',
       code: response.status,
+      data: { raw },
     });
   }
 }
 
-/** 🔑 실제 HTTP 요청을 담당하는 공통 함수 */
+/**
+ * 공통 HTTP 요청 함수
+ * - fetch 실행
+ * - 응답 파싱
+ * - 실패 시 YamoyoError 발생
+ */
 export async function baseRequest<T>(
   path: string,
   options: BaseRequestOptions,
@@ -66,9 +100,7 @@ export async function baseRequest<T>(
       headers,
       credentials,
 
-      // body는 문자열/바이너리 타입만 허용됨
-      // (타입 예: string, Blob, FormData, URLSearchParams 등)
-      // 그래서 plain object를 보낼 땐 JSON.stringify를 통해 문자열로 바꿔서 보내야 함
+      // body는 문자열/바이너리만 허용됨 → 객체는 JSON.stringify 처리
       body: body !== undefined ? JSON.stringify(body) : undefined,
     });
     const json = await parseApiResponse(res);
@@ -82,8 +114,7 @@ export async function baseRequest<T>(
       });
     }
 
-    // 성공인 경우 data만 꺼내서 반환
-    // data가 없는 경우도 있을 수 있으므로 unknown을 T로 단언
+    // 성공인 경우 data만 반환
     return json.data as T;
   } catch (error) {
     console.error('baseRequest error:', error);

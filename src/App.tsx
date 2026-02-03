@@ -21,7 +21,6 @@ import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
 import Profile from './pages/mypage/profile';
 import NotificationPage from './pages/notification';
-import OAuthCallbackPage from './pages/oauth/callback';
 import TermsPage from './pages/onboarding/term';
 import SplashPage from './pages/splash';
 import MyTeamRoomPage from './pages/teamroom';
@@ -77,8 +76,6 @@ export default function App() {
       <ModalRoot />
 
       <Routes>
-        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
-
         <Route path="/home" element={<HomePage />} />
 
         <Route path="/calendar">

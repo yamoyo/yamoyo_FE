@@ -4,6 +4,7 @@ export interface HttpRequestOptions {
   method: HttpMethod;
   authMode: 'none' | 'required';
   body?: unknown;
+  credentials?: RequestCredentials;
 }
 
 /**
