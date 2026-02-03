@@ -1,11 +1,19 @@
 import { Link } from 'react-router-dom';
 
+import { useCurrentUser } from '@/entities/user/hooks/useCurrentUser';
+
 /**
  * 홈뷰 페이지 헤더 컴포넌트
  * @author junyeol
  */
 
 export default function HomeHeader() {
+  const { data: user } = useCurrentUser();
+
+  const profileImageSrc = user
+    ? `/assets/character/char-${user.profileImageId}.png`
+    : '/assets/home/home-example-profile.png';
+
   return (
     <header className="flex items-center justify-between px-[24px] text-white">
       <Link to="/" draggable="false">
@@ -47,7 +55,7 @@ export default function HomeHeader() {
           draggable="false"
         >
           <img
-            src="/assets/home/home-example-profile.png"
+            src={profileImageSrc}
             width={18}
             height={18}
             alt="마이프로필"
