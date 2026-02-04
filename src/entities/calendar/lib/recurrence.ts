@@ -1,5 +1,3 @@
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-
 export function parseDateString(value?: string) {
   // YYYY-MM-DD 문자열을 Date로 변환 (로컬 시간)
   if (!value) return undefined;
@@ -8,12 +6,9 @@ export function parseDateString(value?: string) {
 }
 
 export function formatDateLabel(date: Date) {
-  // UI용 날짜 라벨 포맷 (YYYY년 MM월 DD일 (요일))
+  // UI용 날짜 라벨 포맷 (YYYY.M.D(요일))
   const dayNames = ['일', '월', '화', '수', '목', '금', '토'] as const;
-  return `${date.getFullYear()}년 ${String(date.getMonth() + 1).padStart(
-    2,
-    '0',
-  )}월 ${String(date.getDate()).padStart(2, '0')}일 (${dayNames[date.getDay()]})`;
+  return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}(${dayNames[date.getDay()]})`;
 }
 
 export function formatMonthDayLabel(date: Date) {
@@ -23,17 +18,15 @@ export function formatMonthDayLabel(date: Date) {
   ).padStart(2, '0')}일`;
 }
 
+/** 30분 단위 시간 옵션 생성 (예: "08:00", "08:30", "09:00", ...) */
 export function buildTimeOptions(startHour: number, endHour: number) {
-  // 시간 범위 옵션 생성 (예: 08:00-09:00)
-  const totalHours = endHour - startHour;
-  return Array.from({ length: totalHours }, (_, index) => {
-    const start = startHour + index;
-    const end = start + 1;
-    return `${String(start).padStart(2, '0')}:00-${String(end).padStart(
-      2,
-      '0',
-    )}:00`;
-  });
+  const options: string[] = [];
+  for (let h = startHour; h < endHour; h++) {
+    options.push(`${String(h).padStart(2, '0')}:00`);
+    options.push(`${String(h).padStart(2, '0')}:30`);
+  }
+  options.push(`${String(endHour).padStart(2, '0')}:00`);
+  return options;
 }
 
 export function addMonths(date: Date, months: number) {
@@ -47,27 +40,6 @@ export function formatDateString(date: Date) {
     2,
     '0',
   )}-${String(date.getDate()).padStart(2, '0')}`;
-}
-
-export function buildWeeklySchedules(
-  base: CreateScheduleFormData,
-  startDate: Date,
-  endDate: Date,
-) {
-  // 시작일 포함, 종료일 미포함으로 주간 일정 생성
-  const schedules: CreateScheduleFormData[] = [];
-  const current = new Date(startDate);
-  while (current < endDate) {
-    schedules.push({
-      ...base,
-      date: formatDateString(current),
-    });
-    current.setDate(current.getDate() + 7);
-  }
-  return schedules.map((schedule) => ({
-    ...schedule,
-    id: crypto.randomUUID(),
-  }));
 }
 
 /** ms -> HH:MM:SS */

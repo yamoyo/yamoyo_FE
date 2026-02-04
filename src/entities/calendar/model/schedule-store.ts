@@ -10,7 +10,7 @@ interface ScheduleState {
   addSchedule: (schedule: LocalSchedule) => void;
   removeSchedule: (id: string) => void;
   updateSchedule: (id: string, schedule: Partial<LocalSchedule>) => void;
-  getSchedulesByDate: (date: string) => LocalSchedule[];
+  getSchedulesByDate: (startDate: string) => LocalSchedule[];
   getSchedulesByTeamId: (teamId: number) => LocalSchedule[];
   getSchedulesByTeam: (teamId: number | null) => LocalSchedule[];
 }
@@ -35,8 +35,8 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
       ),
     })),
 
-  getSchedulesByDate: (date) => {
-    return get().schedules.filter((s) => s.date === date);
+  getSchedulesByDate: (startDate) => {
+    return get().schedules.filter((s) => s.startDate === startDate);
   },
 
   getSchedulesByTeamId: (teamId) => {

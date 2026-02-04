@@ -79,9 +79,14 @@ function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
 
   const startTimeStr = meeting.startTime.split('T')[1]?.slice(0, 5); // "14:00"
   const endTimeStr = meeting.endTime.split('T')[1]?.slice(0, 5); // "15:30"
+  const hasLocation = Boolean(meeting.location?.trim());
+  const locationLabel = hasLocation ? meeting.location!.trim() : '온라인';
+  const locationIconSrc = hasLocation
+    ? '/assets/icons/place.svg'
+    : '/assets/icons/online.svg';
 
   return (
-    <div className="flex items-stretch gap-4 rounded-2xl bg-[#2a2d3e] p-4">
+    <div className="flex items-stretch gap-4 rounded-2xl bg-bg-card p-4">
       <div className="flex min-w-[48px] flex-col items-center justify-center pt-0.5">
         <span className="text-2xl font-bold text-white">
           {meetingDate.getDate()}
@@ -89,7 +94,7 @@ function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
         <span className="text-xs text-gray-400">{dayLabel}</span>
       </div>
 
-      <div className="w-px self-stretch bg-[#3a3f52]" />
+      <div className="w-[1.5px] self-stretch bg-bg-textfiled" />
 
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center gap-2">
@@ -97,13 +102,21 @@ function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
             className="h-3 w-3 shrink-0 rounded-full"
             style={{ backgroundColor: colorHex }}
           />
-          <span className="text-sm font-medium text-white">
-            {meeting.title}
-          </span>
+          <span className="text-body-5 text-tx-default_3">{meeting.title}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <img
+            src={locationIconSrc}
+            alt={hasLocation ? '오프라인' : '온라인'}
+            width={12}
+            height={12}
+          />
+          <div className="text-body-5 text-tx-default_3">{locationLabel}</div>
         </div>
 
         {startTimeStr && endTimeStr && (
-          <div className="text-xs text-gray-400">
+          <div className="text-body-5 text-tx-default_3">
             {startTimeStr} - {endTimeStr}
           </div>
         )}

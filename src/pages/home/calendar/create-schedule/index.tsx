@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { formatDateString } from '@/entities/calendar/lib/recurrence';
+import type { ScheduleColorId } from '@/entities/calendar/model/types';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
   DateSection,
@@ -24,13 +25,15 @@ export default function CreateSchedulePage() {
     setValue,
     errors,
     selectedColor,
-    scheduleType,
+    isRecurring,
     titleLength,
     descLength,
     selectedDate,
     dateLabel,
     timeOptions,
-    selectedParticipantIds,
+    startTime,
+    endTime,
+    participantUserIds,
     selectedMembers,
     teamMembers,
     onSubmit,
@@ -40,7 +43,9 @@ export default function CreateSchedulePage() {
   } = useScheduleForm();
 
   const handleDateSelect = (selected: Date) => {
-    setValue('date', formatDateString(selected), { shouldValidate: true });
+    setValue('startDate', formatDateString(selected), {
+      shouldValidate: true,
+    });
   };
 
   return (
@@ -56,14 +61,16 @@ export default function CreateSchedulePage() {
           titleLength={titleLength}
           isColorPickerOpen={isColorPickerOpen}
           onToggleColorPicker={() => setIsColorPickerOpen((prev) => !prev)}
-          onSelectColor={(colorId) => setValue('color', colorId)}
+          onSelectColor={(colorId) =>
+            setValue('color', colorId as ScheduleColorId)
+          }
           register={register}
           error={errors.title}
         />
 
         <FrequencySection
-          scheduleType={scheduleType}
-          onSelectType={(type) => setValue('type', type)}
+          isRecurring={isRecurring}
+          onSelectRecurring={(value) => setValue('isRecurring', value)}
         />
 
         <DescriptionSection
@@ -76,12 +83,26 @@ export default function CreateSchedulePage() {
           title="미팅 날짜"
           dateLabel={dateLabel}
           register={register}
-          error={errors.date}
+          error={errors.startDate}
           selectedDate={selectedDate}
           onDateSelect={handleDateSelect}
         />
 
-        <TimeSection timeOptions={timeOptions} register={register} />
+        <TimeSection
+          timeOptions={timeOptions}
+          register={register}
+          startTime={startTime}
+          endTime={endTime}
+          startTimeError={errors.startTime}
+          endTimeError={errors.endTime}
+          onStartTimeChange={() => setValue('endTime', '')}
+          onSelectStartTime={(value) =>
+            setValue('startTime', value, { shouldValidate: true })
+          }
+          onSelectDuration={(value) =>
+            setValue('endTime', value, { shouldValidate: true })
+          }
+        />
 
         <LocationSection register={register} />
 
@@ -98,7 +119,7 @@ export default function CreateSchedulePage() {
         isOpen={isParticipantSheetOpen}
         onClose={() => setIsParticipantSheetOpen(false)}
         members={teamMembers}
-        selectedIds={selectedParticipantIds}
+        selectedIds={participantUserIds}
         onConfirm={setParticipants}
       />
     </div>

@@ -1,7 +1,19 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 
-import { getTeamMemberDetail } from '@/entities/teamroom/api/teamroom-api';
+import {
+  getTeamMemberDetail,
+  getTeamRoomMembers,
+} from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomMember } from '@/entities/teamroom/api/teamroom-dto';
+
+/** 팀룸 멤버 목록 조회 */
+export function useTeamRoomMembers(teamRoomId: number | null) {
+  return useQuery({
+    queryKey: ['teamroom', teamRoomId, 'members'],
+    queryFn: () => getTeamRoomMembers(teamRoomId!),
+    enabled: !!teamRoomId,
+  });
+}
 
 /** 단일 팀원 상세 조회 */
 export function useTeamMemberDetail(teamRoomId: number, memberId: number) {

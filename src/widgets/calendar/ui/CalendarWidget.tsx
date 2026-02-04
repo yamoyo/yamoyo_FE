@@ -38,9 +38,7 @@ export default function CalendarWidget() {
 
   const handleAddEvent = () => {
     const teamId = searchParams.get('teamId') || '';
-    const now = new Date();
-    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    navigate(`/calendar/create-schedule?teamId=${teamId}&date=${today}`);
+    navigate(`/calendar/create-schedule?teamId=${teamId}`);
   };
 
   return (

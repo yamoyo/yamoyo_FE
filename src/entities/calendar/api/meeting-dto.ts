@@ -23,10 +23,31 @@ export interface MeetingSummary {
   meetingType: MeetingType;
   isIndividuallyModified: boolean;
   participantCount: number;
+  location?: string | null;
 }
 
 export interface MeetingListResponse {
   year: number;
   month: number;
   meetings: MeetingSummary[];
+}
+
+// ========== 회의 생성 ==========
+
+export interface CreateMeetingRequest {
+  title: string;
+  description?: string;
+  location?: string;
+  startDate: string; // YYYY-MM-DD
+  startTime: string; // HH:mm (정각 또는 30분만 가능)
+  endTime: string; // HH:mm (30분 단위, 최소 30분 ~ 최대 4시간)
+  color: Exclude<MeetingColor, 'PURPLE'>; // PURPLE은 INITIAL_REGULAR 전용
+  isRecurring: boolean;
+  participantUserIds: number[];
+}
+
+export interface CreateMeetingResponse {
+  meetingSeriesId: number;
+  meetingIds: number[];
+  createdMeetingCount: number;
 }

@@ -26,11 +26,12 @@ export type ScheduleColorId = (typeof SCHEDULE_COLORS)[number]['id'];
 export type CreateScheduleFormData = {
   teamId: number;
   title: string;
-  color: string;
-  type: 'none' | 'weekly';
+  color: ScheduleColorId;
+  isRecurring: boolean;
   description?: string;
-  date: string;
-  time?: string;
+  startDate: string; // YYYY-MM-DD
+  startTime: string; // HH:mm
+  endTime: string; // HH:mm
   location?: string;
-  participants: string[];
+  participantUserIds: number[];
 };

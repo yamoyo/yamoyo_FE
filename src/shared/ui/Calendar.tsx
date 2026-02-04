@@ -11,6 +11,7 @@ interface CalendarProps {
   meetings?: MeetingSummary[];
   onDateSelect?: (date: Date) => void;
   containerClassName?: string;
+  disableBeforeToday?: boolean;
 }
 
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
@@ -21,8 +22,11 @@ export default function Calendar({
   meetings = [],
   onDateSelect,
   containerClassName,
+  disableBeforeToday = false,
 }: CalendarProps) {
   const dates = generateCalendarDates(currentDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   const meetingsByDate = meetings.reduce(
     (acc, meeting) => {
@@ -59,13 +63,20 @@ export default function Calendar({
               const isSelected = selectedDate && isSameDay(date, selectedDate);
               const isToday = isSameDay(date, new Date());
               const isCurrentMonth = date.getMonth() === currentDate.getMonth();
+              const dateStart = new Date(date);
+              dateStart.setHours(0, 0, 0, 0);
+              const isDisabled = disableBeforeToday && dateStart <= today;
               const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
               const dayMeetings = meetingsByDate[dateString] || [];
 
               return (
                 <div key={dateString} className="flex flex-1 flex-col">
                   <button
-                    onClick={() => onDateSelect?.(date)}
+                    type="button"
+                    disabled={isDisabled}
+                    onClick={() => {
+                      if (!isDisabled) onDateSelect?.(date);
+                    }}
                     className={cn(
                       'h-9 w-9 shrink-0 self-center rounded-xl text-body-4.1 flex-center',
                       'transition-colors duration-200',
@@ -73,10 +84,13 @@ export default function Calendar({
                         'text-tx-default_5': !isCurrentMonth,
                         'text-white': isCurrentMonth,
                         'bg-bg-primary text-white hover:bg-bg-primary/80':
-                          isToday,
+                          isToday && !isDisabled,
                         'border-[1.5px] border-textfiled-line_focus text-white':
-                          isSelected && !isToday,
-                        'hover:bg-white/10': !isToday && !isSelected,
+                          isSelected && !isToday && !isDisabled,
+                        'hover:bg-white/10':
+                          !isToday && !isSelected && !isDisabled,
+                        'cursor-not-allowed text-tx-default_5 opacity-40':
+                          isDisabled,
                       },
                     )}
                   >

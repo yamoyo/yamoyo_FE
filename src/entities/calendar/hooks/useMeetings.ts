@@ -1,6 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { getMeetings } from '@/entities/calendar/api/meeting-api';
+import {
+  createMeeting,
+  getMeetings,
+} from '@/entities/calendar/api/meeting-api';
+import type { CreateMeetingRequest } from '@/entities/calendar/api/meeting-dto';
 
 /** 팀룸의 월별 회의 목록 조회 */
 export function useMeetings(
@@ -12,5 +16,17 @@ export function useMeetings(
     queryKey: ['meetings', teamRoomId, year, month],
     queryFn: () => getMeetings(teamRoomId!, year, month),
     enabled: !!teamRoomId,
+  });
+}
+
+/** 회의 생성 */
+export function useCreateMeeting(teamRoomId: number) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: CreateMeetingRequest) => createMeeting(teamRoomId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['meetings', teamRoomId] });
+    },
   });
 }

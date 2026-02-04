@@ -1,9 +1,9 @@
-import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
+import type { TeamRoomMember } from '@/entities/teamroom/api/teamroom-dto';
 
 interface ParticipantsSectionProps {
-  selectedMembers: LegacyTeamMember[];
+  selectedMembers: TeamRoomMember[];
   onOpenSheet: () => void;
-  onRemove: (id: number) => void;
+  onRemove: (userId: number) => void;
 }
 
 export default function ParticipantsSection({
@@ -28,13 +28,13 @@ export default function ParticipantsSection({
           <div className="grid grid-cols-3 gap-[10px]">
             {selectedMembers.map((member) => (
               <div
-                key={member.id}
+                key={member.userId}
                 className="flex flex-1 items-center gap-[10px] self-stretch rounded-[52px] border border-bd-textfiled_line px-[11px] py-[6px]"
               >
                 <div className="flex items-center gap-1">
                   <div className="flex size-[25px] items-center justify-center rounded-full bg-bg-textfiled">
                     <img
-                      src={member.avatar}
+                      src={`/assets/character/char-${member.profileImageId}.png`}
                       alt={member.name}
                       className="size-4 object-contain"
                       draggable="false"
@@ -46,7 +46,7 @@ export default function ParticipantsSection({
                 </div>
                 <button
                   type="button"
-                  onClick={() => onRemove(member.id)}
+                  onClick={() => onRemove(member.userId)}
                   className="h-4 w-4 flex-center"
                   aria-label={`${member.name} 제거`}
                 >
