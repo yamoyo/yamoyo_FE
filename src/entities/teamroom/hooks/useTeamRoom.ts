@@ -2,12 +2,14 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import {
+  changeLeader,
   createInviteLink,
   createTeamRoom,
   deleteTeamRoom,
   getTeamRoomDetail,
   getTeamRoomList,
   joinTeamRoom,
+  kickMember,
   leaveTeamRoom,
 } from '@/entities/teamroom/api/teamroom-api';
 import type {
@@ -96,6 +98,37 @@ export function useJoinTeamRoom() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
       navigate(`/teamroom/${data.teamRoomId}`, { replace: true });
+    },
+  });
+}
+
+/** 팀장 위임 */
+export function useChangeLeader(teamRoomId: number) {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (newLeaderMemberId: number) =>
+      changeLeader(teamRoomId, { newLeaderMemberId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teamroom', teamRoomId] });
+      queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
+      navigate(`/teamroom/${teamRoomId}`, { replace: true });
+    },
+  });
+}
+
+/** 팀원 방출 */
+export function useKickMember(teamRoomId: number) {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (memberId: number) => kickMember(teamRoomId, memberId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teamroom', teamRoomId] });
+      queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
+      navigate(`/teamroom/${teamRoomId}`, { replace: true });
     },
   });
 }

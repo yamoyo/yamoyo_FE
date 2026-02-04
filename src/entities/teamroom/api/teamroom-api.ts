@@ -88,7 +88,7 @@ export async function leaveTeamRoom(teamRoomId: number): Promise<void> {
   return authClient.delete<void>(`/team-rooms/${teamRoomId}/members/me`);
 }
 
-/** 팀원 강퇴 */
+/** 팀원 방출 */
 export async function kickMember(
   teamRoomId: number,
   memberId: number,
@@ -98,7 +98,7 @@ export async function kickMember(
   );
 }
 
-/** 팀장 변경 */
+/** 팀장 위임 */
 export async function changeLeader(
   teamRoomId: number,
   data: ChangeLeaderRequest,

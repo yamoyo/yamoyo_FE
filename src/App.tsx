@@ -123,8 +123,6 @@ export default function App() {
         <Route path="/games/roulette" element={<RoulettePage />} />
         <Route path="/games/timing-game" element={<TimingGame />} />
 
-        <Route path="/invite" element={<InvitePage />} />
-
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -142,6 +140,8 @@ export default function App() {
             <Route path="major" element={<MajorStep />} />
             <Route path="persona" element={<PersonaStep />} />
           </Route>
+
+          <Route path="/invite" element={<InvitePage />} />
         </Route>
       </Routes>
     </main>
