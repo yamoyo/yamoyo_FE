@@ -17,16 +17,18 @@ export default function TeamRoomBanner({
 
   const bannerSrc =
     TEAMROOM_IMAGES.find((img) => img.id === teamRoom?.bannerImageId)?.src ??
-    '';
+    null;
 
   return (
     <div className="relative h-[260px] w-full">
-      <img
-        src={bannerSrc}
-        alt="팀룸 배너"
-        className="h-full w-full select-none object-cover [image-rendering:pixelated]"
-        draggable="false"
-      />
+      {bannerSrc && (
+        <img
+          src={bannerSrc}
+          alt="팀룸 배너"
+          className="h-full w-full select-none object-cover [image-rendering:pixelated]"
+          draggable="false"
+        />
+      )}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
