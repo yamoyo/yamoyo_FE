@@ -54,12 +54,14 @@ export default function CalendarModal({
               className="px-3 pt-4"
               labelClassName="min-w-[88px]"
               todayButtonClassName="px-3"
+              showTodayButton={false}
             />
             <Calendar
               currentDate={currentDate}
               selectedDate={highlightDate}
               onDateSelect={handleDateSelect}
               containerClassName="px-2 pt-3"
+              disableBeforeToday
             />
           </div>
         </div>

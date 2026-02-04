@@ -1,13 +1,11 @@
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-
 interface FrequencySectionProps {
-  scheduleType: CreateScheduleFormData['type'];
-  onSelectType: (type: CreateScheduleFormData['type']) => void;
+  isRecurring: boolean;
+  onSelectRecurring: (isRecurring: boolean) => void;
 }
 
 export default function FrequencySection({
-  scheduleType,
-  onSelectType,
+  isRecurring,
+  onSelectRecurring,
 }: FrequencySectionProps) {
   return (
     <div>
@@ -17,9 +15,9 @@ export default function FrequencySection({
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => onSelectType('none')}
+          onClick={() => onSelectRecurring(false)}
           className={`flex-1 rounded-lg py-3 text-body-4 transition-colors ${
-            scheduleType === 'none'
+            !isRecurring
               ? 'bg-bg-secondary_2 text-black'
               : 'bg-bg-textfiled text-white'
           }`}
@@ -28,9 +26,9 @@ export default function FrequencySection({
         </button>
         <button
           type="button"
-          onClick={() => onSelectType('weekly')}
+          onClick={() => onSelectRecurring(true)}
           className={`flex-1 rounded-lg py-3 text-body-4 transition-colors ${
-            scheduleType === 'weekly'
+            isRecurring
               ? 'bg-bg-secondary_2 text-black'
               : 'bg-bg-textfiled text-white'
           }`}

@@ -9,6 +9,7 @@ interface CalendarHeaderProps {
   className?: string;
   labelClassName?: string;
   todayButtonClassName?: string;
+  showTodayButton?: boolean;
 }
 
 export default function CalendarHeader({
@@ -19,6 +20,7 @@ export default function CalendarHeader({
   className,
   labelClassName,
   todayButtonClassName,
+  showTodayButton = true,
 }: CalendarHeaderProps) {
   return (
     <div
@@ -54,16 +56,18 @@ export default function CalendarHeader({
         </button>
       </div>
 
-      <button
-        type="button"
-        onClick={onToday}
-        className={cn(
-          'rounded-2xl bg-bd-textfiled_line px-[12px] py-[4px] text-body-4 text-tx-default_3',
-          todayButtonClassName,
-        )}
-      >
-        오늘
-      </button>
+      {showTodayButton && (
+        <button
+          type="button"
+          onClick={onToday}
+          className={cn(
+            'rounded-2xl bg-bd-textfiled_line px-[12px] py-[4px] text-body-4 text-tx-default_3',
+            todayButtonClassName,
+          )}
+        >
+          오늘
+        </button>
+      )}
     </div>
   );
 }
