@@ -1,1 +1,1 @@
-export { TimingGame as default } from '@/features/games/timing-game/ui/TimingGame';
+export { TimingGame as default } from '@/features/leader-game/timing-game/ui/TimingGame';

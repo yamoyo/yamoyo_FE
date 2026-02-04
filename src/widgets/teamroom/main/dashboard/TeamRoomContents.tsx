@@ -1,31 +1,50 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
+import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 
 import { Dashboard } from './Dashboard';
 import LeaderGameCard from './LeaderGameCard';
 
-type Phase = 'LEADER_SELECTION' | 'LEADER_CONFIRMED'; // 팀장 정하기 전/후 단계로 나뉨
+type Workflow = TeamRoomDetail['workflow'];
+type myRole = TeamRoomDetail['myRole'];
+type teamRoomId = TeamRoomDetail['teamRoomId'];
 
-export default function TeamRoomContents() {
+interface Props {
+  teamRoomId: teamRoomId;
+  workflow: Workflow;
+  myRole: myRole;
+}
+
+export default function TeamRoomContents({
+  teamRoomId,
+  workflow,
+  myRole,
+}: Props) {
   const navigate = useNavigate();
-  const [phase, setPhase] = useState<Phase>('LEADER_SELECTION');
-
-  useEffect(() => {
-    // TODO: 서버에서 현재 phase 정보를 받아오는 로직
-    setPhase('LEADER_CONFIRMED');
-  }, []);
 
   /** 팀장 정하기 게임 시작 */
-  const onStartLeaderGame = () => {
-    // TODO: API 연동 후 팀장 정하기 게임 화면으로 이동
-    navigate('leader');
+  const onStartLeaderGame = async () => {
+    if (workflow !== 'PENDING' || myRole !== 'HOST') {
+      alert('잘못된 접근입니다.');
+      return;
+    }
+    try {
+      await leaderGameApi.startLeaderGame(teamRoomId);
+      navigate('leader');
+    } catch (error) {
+      console.error('팀장 정하기 게임 시작 중 오류가 발생했습니다.', error);
+      alert('팀장 정하기 게임 시작에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
-  if (phase === 'LEADER_SELECTION') {
-    return <LeaderGameCard onStart={onStartLeaderGame} />;
+  if (workflow === 'PENDING') {
+    return myRole === 'HOST' ? (
+      <LeaderGameCard onStart={onStartLeaderGame} />
+    ) : null;
   }
 
-  if (phase === 'LEADER_CONFIRMED') {
+  if (workflow === 'COMPLETED') {
     return <Dashboard />;
   }
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
-import GameStartButton from '../../ui/GameStartButton';
+import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
 import { DUMMY_ROULETTE } from '../model/user-dummy';
 import { useRouletteGame } from '../model/useRouletteGame';
 import RouletteBoard from './RouletteBoard';
