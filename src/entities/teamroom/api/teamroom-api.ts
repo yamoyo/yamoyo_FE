@@ -35,7 +35,7 @@ export async function getTeamRoomList(
 
 /** 팀룸 상세 조회 */
 export async function getTeamRoomDetail(
-  teamRoomId: number,
+  teamRoomId: number | string,
 ): Promise<TeamRoomDetail> {
   return authClient.get<TeamRoomDetail>(`/team-rooms/${teamRoomId}`);
 }

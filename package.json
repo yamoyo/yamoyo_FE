@@ -28,6 +28,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@stomp/stompjs": "^7.3.0",
     "@tanstack/react-query": "^5.90.20",
     "clsx": "^2.1.1",
     "framer-motion": "^12.28.1",
@@ -35,6 +36,7 @@
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.71.1",
     "react-router-dom": "^7.12.0",
+    "sockjs-client": "^1.6.1",
     "tailwind-merge": "^3.4.0",
     "zustand": "^5.0.9"
   },
@@ -42,6 +44,7 @@
     "@types/node": "^20",
     "@types/react": "^19.2.8",
     "@types/react-dom": "^19.2.3",
+    "@types/sockjs-client": "^1.5.4",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "autoprefixer": "^10.4.23",
     "eslint": "^9",

@@ -1,1 +1,1 @@
-export { RouletteGame as default } from '@/features/games/roulette-game/ui/RouletteGame';
+export { RouletteGame as default } from '@/features/leader-game/roulette-game/ui/RouletteGame';

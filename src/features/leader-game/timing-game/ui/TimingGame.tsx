@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import TopBar from '@/shared/ui/header/TopBar';
 import { TimerBar } from '@/widgets/teamroom/leader/ui/TimerBar';
 
-import GameStartButton from '../../ui/GameStartButton';
+import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
 import { useTimingGame } from '../model/useTimingGame';
 
 export function TimingGame() {

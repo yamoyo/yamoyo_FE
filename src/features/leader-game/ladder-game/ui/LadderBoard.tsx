@@ -5,7 +5,7 @@ import { cn } from '@/shared/config/tailwind/cn';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
-import GameStartButton from '../../ui/GameStartButton';
+import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
 import {
   ColumnToRowsMap,
   LadderGameResponse,
