@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
@@ -20,21 +20,25 @@ export default function TeamRoomMainPage() {
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
 
+  const onRoomMessage = useCallback((_msg: unknown) => {
+    // console.log('팀룸 전체 메시지 수신:', msg);
+  }, []);
+
+  const onError = useCallback((err: unknown) => {
+    console.error('WebSocket 오류 발생:', err);
+  }, []);
+
   useLeaderGameSocket({
     teamRoomId: id ?? '', // id가 없으면 빈값
     enabled: Boolean(id) && (teamRoom?.members?.length ?? 0) > 1, // 연결 여부 제어
-    onRoomMessage: (_msg) => {
-      // console.log('팀룸 전체 메시지 수신:', msg);
-    },
+    onRoomMessage,
     // onJoinSuccess: (msg) => {
     //   console.log('팀룸 참가 성공 메시지 수신:', msg);
     // },
     // onVoteUpdated: (msg) => {
     //   console.log('투표 업데이트 메시지 수신:', msg);
     // },
-    onError: (err) => {
-      console.error('WebSocket 오류 발생:', err);
-    },
+    onError,
   });
 
   useEffect(() => {
