@@ -1,15 +1,18 @@
 import { create } from 'zustand';
 
-import { Schedule } from './types';
+import { CreateScheduleFormData } from './types';
+
+/** 로컬 일정 (일정 생성 API 연동 전 임시 사용) */
+type LocalSchedule = CreateScheduleFormData & { id: string };
 
 interface ScheduleState {
-  schedules: Schedule[];
-  addSchedule: (schedule: Schedule) => void;
+  schedules: LocalSchedule[];
+  addSchedule: (schedule: LocalSchedule) => void;
   removeSchedule: (id: string) => void;
-  updateSchedule: (id: string, schedule: Partial<Schedule>) => void;
-  getSchedulesByDate: (date: string) => Schedule[];
-  getSchedulesByTeamId: (teamId: number) => Schedule[];
-  getSchedulesByTeam: (teamId: number | null) => Schedule[];
+  updateSchedule: (id: string, schedule: Partial<LocalSchedule>) => void;
+  getSchedulesByDate: (date: string) => LocalSchedule[];
+  getSchedulesByTeamId: (teamId: number) => LocalSchedule[];
+  getSchedulesByTeam: (teamId: number | null) => LocalSchedule[];
 }
 
 export const useScheduleStore = create<ScheduleState>((set, get) => ({

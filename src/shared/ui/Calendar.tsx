@@ -1,13 +1,14 @@
+import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
 import { generateCalendarDates } from '@/entities/calendar/lib/generate-calendar-dates';
 import { isSameDay } from '@/entities/calendar/lib/is-same-day';
-import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
+import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
 
 import { cn } from '../config/tailwind/cn';
 
 interface CalendarProps {
   currentDate: Date;
   selectedDate?: Date;
-  schedules?: Schedule[];
+  meetings?: MeetingSummary[];
   onDateSelect?: (date: Date) => void;
   containerClassName?: string;
 }
@@ -17,19 +18,20 @@ const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
 export default function Calendar({
   currentDate,
   selectedDate,
-  schedules = [],
+  meetings = [],
   onDateSelect,
   containerClassName,
 }: CalendarProps) {
   const dates = generateCalendarDates(currentDate);
 
-  const schedulesByDate = schedules.reduce(
-    (acc, schedule) => {
-      if (!acc[schedule.date]) acc[schedule.date] = [];
-      acc[schedule.date].push(schedule);
+  const meetingsByDate = meetings.reduce(
+    (acc, meeting) => {
+      const date = meeting.startTime.split('T')[0]; // "2025-02-15T14:00:00" → "2025-02-15"
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(meeting);
       return acc;
     },
-    {} as Record<string, Schedule[]>,
+    {} as Record<string, MeetingSummary[]>,
   );
 
   return (
@@ -58,7 +60,7 @@ export default function Calendar({
               const isToday = isSameDay(date, new Date());
               const isCurrentMonth = date.getMonth() === currentDate.getMonth();
               const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-              const daySchedules = schedulesByDate[dateString] || [];
+              const dayMeetings = meetingsByDate[dateString] || [];
 
               return (
                 <div key={dateString} className="flex flex-1 flex-col">
@@ -82,14 +84,12 @@ export default function Calendar({
                   </button>
 
                   <div className="h-3 w-9 gap-0.5 self-center flex-center">
-                    {daySchedules.slice(0, 2).map((schedule) => (
+                    {dayMeetings.slice(0, 2).map((meeting) => (
                       <div
-                        key={schedule.id}
+                        key={meeting.meetingId}
                         className="h-2 w-2 rounded-full"
                         style={{
-                          backgroundColor:
-                            SCHEDULE_COLORS.find((c) => c.id === schedule.color)
-                              ?.hex || schedule.color,
+                          backgroundColor: MEETING_COLOR_MAP[meeting.color],
                         }}
                       />
                     ))}

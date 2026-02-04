@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
+import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
 import { useTeamStore } from '@/entities/team/model/team-store';
 import Calendar from '@/shared/ui/Calendar';
 import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
@@ -14,10 +14,11 @@ export default function CalendarWidget() {
   const [selectedDate, setSelectedDate] = useState<Date>();
 
   const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
-  const getSchedulesByTeam = useScheduleStore(
-    (state) => state.getSchedulesByTeam,
-  );
-  const teamSchedules = getSchedulesByTeam(selectedTeamId);
+
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const { data } = useMeetings(selectedTeamId, year, month);
+  const meetings = data?.meetings ?? [];
 
   const handlePrevMonth = () => {
     setCurrentDate((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1));
@@ -55,12 +56,13 @@ export default function CalendarWidget() {
         <Calendar
           currentDate={currentDate}
           selectedDate={selectedDate}
-          schedules={teamSchedules}
+          meetings={meetings}
           onDateSelect={setSelectedDate}
         />
       </div>
 
       <CalendarEventList
+        meetings={meetings}
         currentDate={currentDate}
         selectedDate={selectedDate}
         onAddEvent={handleAddEvent}
