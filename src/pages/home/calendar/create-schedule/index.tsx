@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { formatDateString } from '@/entities/calendar/lib/recurrence';
-import type { ScheduleColorId } from '@/entities/calendar/model/types';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
   DateSection,
@@ -61,9 +60,7 @@ export default function CreateSchedulePage() {
           titleLength={titleLength}
           isColorPickerOpen={isColorPickerOpen}
           onToggleColorPicker={() => setIsColorPickerOpen((prev) => !prev)}
-          onSelectColor={(colorId) =>
-            setValue('color', colorId as ScheduleColorId)
-          }
+          onSelectColor={(colorId) => setValue('color', colorId)}
           register={register}
           error={errors.title}
         />

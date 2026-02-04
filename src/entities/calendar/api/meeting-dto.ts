@@ -40,7 +40,7 @@ export interface CreateMeetingRequest {
   location?: string;
   startDate: string; // YYYY-MM-DD
   startTime: string; // HH:mm (정각 또는 30분만 가능)
-  endTime: string; // HH:mm (30분 단위, 최소 30분 ~ 최대 4시간)
+  endTime: string; // HH:mm (30분 단위, 최소 30분 ~ 최대 2시간)
   color: Exclude<MeetingColor, 'PURPLE'>; // PURPLE은 INITIAL_REGULAR 전용
   isRecurring: boolean;
   participantUserIds: number[];
