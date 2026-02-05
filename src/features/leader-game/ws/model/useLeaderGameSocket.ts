@@ -21,8 +21,8 @@ const wsDest = {
   pass: (roomId: number | string) => `/pub/room/${roomId}/pass`,
   selectGame: (roomId: number | string) => `/pub/room/${roomId}/select-game`,
   startTiming: (roomId: number | string) => `/pub/room/${roomId}/start-timing`,
-  submitTiming: (roomId: number | string) =>
-    `/pub/room/${roomId}/submit-timing`,
+  submitTimingResult: (roomId: number | string) =>
+    `/pub/room/${roomId}/timing-result`,
 } as const;
 
 export function useLeaderGameSocket({
@@ -73,7 +73,7 @@ export function useLeaderGameSocket({
         },
         submitTimingResult: (timeDifference: number) => {
           if (!roomId) return;
-          publish(wsDest.submitTiming(roomId), {
+          publish(wsDest.submitTimingResult(roomId), {
             timeDifference,
           });
         },
