@@ -1,38 +1,42 @@
+import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { VolunteerUpdatedMessage } from '@/entities/leader-game/api/ws-types';
 import { useTeamRoomWsClient } from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
+import { useAuthStore } from '@/shared/api/auth/store';
 import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
 
 type Params = {
   roomId?: number | string;
   enabled?: boolean;
-  onJoinSuccess?: (data: unknown) => void;
-  onVoteUpdated?: (data: VolunteerUpdatedMessage) => void;
+  onJoinResponse: (data: VolunteerUpdatedMessage) => void;
   onError?: (err: unknown) => void;
 };
 
 const wsDest = {
-  joinResponse: '/user/queue/join-response',
-  voteStatus: '/user/queue/vote-status',
+  onJoinResponse: (roomId: number | string, userId: string | number) =>
+    `/sub/room/${roomId}/user/${userId}`,
   join: (roomId: number | string) => `/pub/room/${roomId}/join`,
   volunteer: (roomId: number | string) => `/pub/room/${roomId}/volunteer`,
   pass: (roomId: number | string) => `/pub/room/${roomId}/pass`,
+  selectGame: (roomId: number | string) => `/pub/room/${roomId}/select-game`,
+  startTiming: (roomId: number | string) => `/pub/room/${roomId}/start-timing`,
+  submitTiming: (roomId: number | string) =>
+    `/pub/room/${roomId}/submit-timing`,
 } as const;
 
 export function useLeaderGameSocket({
   roomId,
   enabled = false,
-  onJoinSuccess,
-  onVoteUpdated,
+  onJoinResponse,
   onError,
 }: Params) {
   const ws = useTeamRoomWsClient();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   // 최신 콜백 유지
   const handlersRef = useRef({
-    onJoinSuccess,
-    onVoteUpdated,
+    onJoinResponse,
     onError,
   });
 
@@ -61,15 +65,15 @@ export function useLeaderGameSocket({
         },
         selectGame: (gameType: GameType) => {
           if (!roomId) return;
-          publish(`/pub/room/${roomId}/select-game`, { gameType });
+          publish(wsDest.selectGame(roomId), { gameType });
         },
         startTiming: () => {
           if (!roomId) return;
-          publish(`/pub/room/${roomId}/start-timing`, {});
+          publish(wsDest.startTiming(roomId), {});
         },
         submitTimingResult: (timeDifference: number) => {
           if (!roomId) return;
-          publish(`/pub/room/${roomId}/submit-timing`, {
+          publish(wsDest.submitTiming(roomId), {
             timeDifference,
           });
         },
@@ -79,34 +83,33 @@ export function useLeaderGameSocket({
 
   useEffect(() => {
     handlersRef.current = {
-      onJoinSuccess,
-      onVoteUpdated,
+      onJoinResponse,
       onError,
     };
-  }, [onJoinSuccess, onVoteUpdated, onError]);
+  }, [onJoinResponse, onError]);
 
   useEffect(() => {
     if (!ws || !enabled || !roomId) return;
+    if (!accessToken) return;
 
-    // join 응답 (본인만)
-    const unsubJoin = ws.subscribe(`/user/queue/join-response`, (msg) => {
-      if (!msg.json) return;
-      handlersRef.current.onJoinSuccess?.(msg.json);
-    });
+    const userId = jwtDecode<{ sub: string }>(accessToken).sub as string;
+
+    if (!userId) return;
+
+    // 개인 메시지 수신 처리 (reload 응답, 투표 현황, 에러)
+    const unsubJoinResponse = ws.subscribe(
+      wsDest.onJoinResponse(roomId, userId),
+      (msg) => {
+        if (!msg.json) return;
+        handlersRef.current.onJoinResponse?.(
+          msg.json as VolunteerUpdatedMessage,
+        );
+      },
+    );
 
     actions.join();
-
-    // 투표 현황 (투표 완료자만 수신)
-    const unsubVote = ws.subscribe(`/user/queue/vote-status`, (msg) => {
-      if (!msg.json) return;
-      handlersRef.current.onVoteUpdated?.(msg.json as VolunteerUpdatedMessage);
-    });
-
-    return () => {
-      unsubJoin();
-      unsubVote();
-    };
-  }, [ws, enabled, roomId, actions]);
+    return () => unsubJoinResponse();
+  }, [ws, enabled, roomId, actions, accessToken]);
 
   return { ws, actions };
 }
