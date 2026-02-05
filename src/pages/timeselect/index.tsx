@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { useAvailabilityStore } from '@/entities/everytime/model/availability-store';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -28,10 +29,25 @@ export default function TimeSelectPage() {
   const openGuideModal = useModalStore((state) => state.openGuideModal);
   const closeModal = useModalStore((state) => state.closeModal);
 
+  const importedAvailability = useAvailabilityStore(
+    (state) => state.importedAvailability,
+  );
+  const clearImportedAvailability = useAvailabilityStore(
+    (state) => state.clearImportedAvailability,
+  );
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [availability, setAvailability] = useState<boolean[][]>(
     createInitialAvailability,
   );
+
+  // 에브리타임에서 불러온 데이터가 있으면 적용
+  useEffect(() => {
+    if (importedAvailability) {
+      setAvailability(importedAvailability);
+      clearImportedAvailability();
+    }
+  }, [importedAvailability, clearImportedAvailability]);
 
   const handleReset = () => {
     setAvailability(createInitialAvailability());

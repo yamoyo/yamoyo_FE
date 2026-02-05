@@ -76,6 +76,13 @@ export default function App() {
       <ModalRoot />
 
       <Routes>
+        {/* DEV: 개발용 라우트 (AuthGuard 우회) */}
+        <Route path="/dev/timeselect/:id" element={<TimeSelectPage />} />
+        <Route
+          path="/dev/timeselect/:id/everytime"
+          element={<EveryTimePage />}
+        />
+
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />

@@ -1,11 +1,19 @@
 import { useState } from 'react';
 
+import { useParseEverytime } from '@/entities/everytime/hooks/useParseEverytime';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import TextField from '@/shared/ui/input/TextField';
 
 export default function EveryTimePage() {
   const [url, setUrl] = useState('');
+  const { mutate, isPending, isError } = useParseEverytime();
+
+  const handleSubmit = () => {
+    if (!url.trim()) return;
+    mutate(url.trim());
+  };
+
   return (
     <>
       <TopBar title="에브리타임 시간 등록" backIcon="arrow" />
@@ -20,6 +28,11 @@ export default function EveryTimePage() {
             onChange={setUrl}
             placeholder="링크 붙혀넣기"
           />
+          {isError && (
+            <p className="text-sm text-red-400">
+              시간표를 불러오는데 실패했습니다. URL을 확인해주세요.
+            </p>
+          )}
         </div>
 
         <div className="mb-4 flex flex-col gap-[66px] px-6">
@@ -35,7 +48,11 @@ export default function EveryTimePage() {
               alt="에브리타임 가이드"
             />
           </div>
-          <BottomButton text="등록" onClick={() => {}} />
+          <BottomButton
+            text={isPending ? '불러오는 중...' : '등록'}
+            onClick={handleSubmit}
+            disabled={isPending || !url.trim()}
+          />
         </div>
       </div>
     </>
