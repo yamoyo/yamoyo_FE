@@ -35,7 +35,6 @@ export default function LeaderApplication({
   >(null);
 
   const payload = useLeaderGameStore((s) => s.payload);
-  const setPhase = useLeaderGameStore((s) => s.setPhase);
   const clearPayload = useLeaderGameStore((s) => s.clearPayload);
 
   const startedAt = new Date(payload?.phaseStartTime ?? Date.now());
@@ -49,9 +48,6 @@ export default function LeaderApplication({
     } else {
       passAsLeader();
     }
-
-    // // 다음 단계로
-    setPhase('LEADER_APPLICATION_WAIT');
     clearPayload();
   };
 

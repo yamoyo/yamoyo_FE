@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,7 @@ import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
+import { useAuthStore } from '@/shared/api/auth/store';
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
@@ -18,6 +20,7 @@ import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptio
 export default function TeamRoomMainPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   const teamRoomRef = useRef<TeamRoomDetail | null>(null);
   /** 팀룸 정보를 받기 전에 수신된 메시지를 임시로 저장하는 버퍼 */
@@ -41,6 +44,7 @@ export default function TeamRoomMainPage() {
   const setPhase = useLeaderGameStore((s) => s.setPhase);
   const setTeamRoomId = useLeaderGameStore((s) => s.setTeamRoomId);
   const setPayload = useLeaderGameStore((s) => s.setPayload);
+  const setRole = useLeaderGameStore((s) => s.setRole);
 
   const isAllOnline =
     (teamRoom?.members?.length ?? 0) > 1 &&
@@ -106,6 +110,7 @@ export default function TeamRoomMainPage() {
       if (
         msg.type !== 'PHASE_CHANGE' ||
         msg.payload.phase !== 'VOLUNTEER' ||
+        !teamRoom ||
         !id
       ) {
         return;
@@ -114,15 +119,15 @@ export default function TeamRoomMainPage() {
       setTeamRoomId(id);
       setPhase('LEADER_VOLUNTEER');
       setPayload(msg.payload);
+      setRole(teamRoom.myRole);
       navigate('leader-game');
     },
-    [navigate, setPhase, setTeamRoomId, setPayload, id],
+    [navigate, setPhase, setTeamRoomId, setPayload, setRole, teamRoom, id],
   );
 
   const onRoomMessage = useCallback(
     (msg: LeaderGameMessage) => {
-      // eslint-disable-next-line
-      console.log('팀룸 전체 메시지 수신:', msg);
+      // console.log('팀룸 전체 메시지 수신:', msg);
 
       switch (msg.type) {
         case 'USER_STATUS_CHANGE':
@@ -157,6 +162,17 @@ export default function TeamRoomMainPage() {
           return;
         }
 
+        const myUserId = accessToken
+          ? jwtDecode<{ sub: string }>(accessToken).sub
+          : null;
+
+        // 내 상태를 ONLINE으로 강제 설정
+        onlineStatus.forEach((status) => {
+          if (status.userId.toString() === myUserId) {
+            status.status = 'ONLINE';
+          }
+        });
+
         setTeamRoom({ ...teamRoomDetail, members: onlineStatus });
 
         isBootstrappedRef.current = true;
@@ -169,7 +185,7 @@ export default function TeamRoomMainPage() {
     } catch (error) {
       console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
     }
-  }, [id, setTeamRoom, onRoomMessage, navigate]);
+  }, [id, setTeamRoom, onRoomMessage, navigate, accessToken]);
 
   useEffect(() => {
     if (editData) {

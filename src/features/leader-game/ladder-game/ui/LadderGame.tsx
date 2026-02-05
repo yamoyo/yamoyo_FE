@@ -8,6 +8,9 @@ export default function LadderGame({
 }: {
   gameResultPayload: GameResultPayload;
 }) {
+  // gameData가 null일 경우 이미 방장이 선정된 상태이므로 기본값으로 0 지정
+  const teamLeaderIndex = gameResultPayload.gameData ? 1 : 0;
+
   return (
     <div
       style={{
@@ -27,9 +30,9 @@ export default function LadderGame({
       </h1>
 
       <LadderBoard
-        teamLeaderIndex={1}
-        containerClassName="mt-4"
+        teamLeaderIndex={teamLeaderIndex}
         gameResultPayload={gameResultPayload}
+        containerClassName="mt-4"
       />
     </div>
   );

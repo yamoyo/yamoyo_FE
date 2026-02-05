@@ -3,20 +3,26 @@ import { useNavigate } from 'react-router-dom';
 
 import { VoteUpdatedPayload } from '@/entities/leader-game/api/ws-types';
 import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
+import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
 interface Props {
   members: TeamMember[];
   voteUpdatedPayload: VoteUpdatedPayload;
+  // onNext: () => void;
 }
 
 export default function LeaderApplicationWait({
   members,
   voteUpdatedPayload,
+  // onNext
 }: Props) {
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
+
+  const phase = useLeaderGameStore((s) => s.phase);
+  const setPhase = useLeaderGameStore((s) => s.setPhase);
 
   const votedUsers: TeamMember[] = members.filter((m) =>
     voteUpdatedPayload.votedUserIds.includes(m.userId),
@@ -70,10 +76,18 @@ export default function LeaderApplicationWait({
     // 5초 뒤에 모달 닫기
     const timer = setTimeout(() => {
       closeModal();
-      // onNext();
+      if (phase === 'LEADER_APPLICATION_WAIT') setPhase('SELECT_GAME');
     }, 5000);
     return () => clearTimeout(timer);
-  }, [closeModal, openCharacterModal, members, voteUpdatedPayload, navigate]);
+  }, [
+    closeModal,
+    openCharacterModal,
+    members,
+    voteUpdatedPayload,
+    navigate,
+    phase,
+    setPhase,
+  ]);
 
   useEffect(() => {
     const { totalCount, votedCount } = voteUpdatedPayload;

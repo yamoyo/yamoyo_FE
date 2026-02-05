@@ -1,3 +1,4 @@
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -14,6 +15,7 @@ import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-
 import { useLeaderGameSocket } from '@/features/leader-game/ws/model/useLeaderGameSocket';
 import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
 import RouletteGame from '@/pages/games/roulette';
+import { useAuthStore } from '@/shared/api/auth/store';
 import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
@@ -26,6 +28,7 @@ export function SelectLeader() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
+  const accessToken = useAuthStore((s) => s.accessToken);
   const phase = useLeaderGameStore((s) => s.phase);
   const role = useLeaderGameStore((s) => s.role);
   const payload = useLeaderGameStore((s) => s.payload);
@@ -57,7 +60,19 @@ export function SelectLeader() {
     });
   };
 
+  /** 팀장 지원 투표 후 결과 화면으로 이동 (phase를 'LEADER_APPLICATION_WAIT'로 변경) */
+  const goToLeaderApplicationWaitPhase = (payload: VoteUpdatedPayload) => {
+    if (phase !== 'LEADER_VOLUNTEER' || !accessToken) return;
+
+    const userId = jwtDecode<{ sub: string }>(accessToken).sub;
+    if (!userId) return;
+
+    const isVolunteer = payload.votedUserIds.includes(Number(userId));
+    if (isVolunteer) setPhase('LEADER_APPLICATION_WAIT');
+  };
+
   const onRoomMessage = (msg: LeaderGameMessage) => {
+    // console.log('onRoomMessage', msg);
     const { type } = msg;
     if (type === 'PHASE_CHANGE') setPayload(msg.payload);
 
@@ -81,8 +96,6 @@ export function SelectLeader() {
           return;
       }
     }
-    // eslint-disable-next-line
-    console.log('팀장 정하기 게임 WS 메시지 수신:', msg);
   };
 
   useTeamRoomWsListener(onRoomMessage);
@@ -90,14 +103,14 @@ export function SelectLeader() {
   const { actions } = useLeaderGameSocket({
     roomId: id,
     enabled: Boolean(id),
-    onJoinSuccess: (data) => {
-      // eslint-disable-next-line
-      console.log('팀장 정하기 게임 참가 성공:', data);
-    },
-    onVoteUpdated: (data) => {
-      // eslint-disable-next-line
-      console.log('투표 현황 업데이트:', data);
-      setVoteUpdatedPayload(data.payload);
+    onJoinResponse: (data) => {
+      // console.log('onJoinResponse', data);
+      const { type, payload } = data;
+      if (type !== 'VOTE_UPDATED') return;
+      setVoteUpdatedPayload(payload);
+
+      // 팀장 지원 투표 결과에 따라 phase 변경
+      goToLeaderApplicationWaitPhase(payload);
     },
   });
 

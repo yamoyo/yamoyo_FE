@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
@@ -8,8 +9,10 @@ import {
   Step,
 } from '@/features/leader-game/ladder-game/model/types';
 import ResultButton from '@/features/leader-game/ladder-game/ui/ResultButton';
+import { useAuthStore } from '@/shared/api/auth/store';
 import { cn } from '@/shared/config/tailwind/cn';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
+import { useViewportHeightPx } from '@/shared/hooks/useViewportHeightPx';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import GameStartButton from '@/widgets/teamroom/main/ui/GameStartButton';
 
@@ -27,14 +30,11 @@ const HORIZONTAL_SRC = '/assets/game/ladder/ladder-line-short.svg';
 const LAYOUT = {
   /** 사다리 상단에 여백 (가로줄이 여백 아래부터 시작하게 두기 위함) */
   TOP_PADDING_PX: 64,
-  /** 사다리 각 행(가로줄) 간의 간격 */
-  ROW_GAP_PX: 36,
 } as const;
 
 // --- 캐릭터 아이콘 이동 거리 (게임 시작 후 이동) --- //
 const MOVE = {
   /** 한 행 아래로 내려갈 때 이동 거리 (사다리 각 행 간격과 동일) */
-  DOWN_PX: LAYOUT.ROW_GAP_PX,
   /** 가로줄을 타고 이동할 때 좌우 이동 거리 */
   SIDE_PX: 72,
   /** 마지막 박스까지 내려가는 추가 이동 거리 */
@@ -55,9 +55,6 @@ const TIMING = {
    */
   START_STAGGER_MS: 40,
 } as const;
-
-// 내 유저 아이디 (TODO 추후 서버 연동 시 교체)
-const MY_USER_ID = 3;
 
 // 사다리 가로줄 위치 계산용 맵 생성
 const createColumnToRowsMap = (ladderLines: number[][]) => {
@@ -83,40 +80,68 @@ export default function LadderBoard({
   const { bind } = useHorizontalDragScroll<HTMLDivElement>();
   const { openCharacterModal } = useModalStore();
 
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const myUserId = accessToken
+    ? jwtDecode<{ sub: string }>(accessToken).sub
+    : null;
+
+  const vh = useViewportHeightPx();
+
   const { participants, winnerId, winnerName, gameData } = gameResultPayload;
+
+  // 필터링된 사다리 줄 데이터 (빈 배열 제거)
+  const ladderLines = useMemo(
+    () => gameData?.ladderLines.filter((l) => l.length > 0) || [],
+    [gameData],
+  );
+
+  // 팀장 한 명만 지원 => gameData가 null
+  const isVolunteerOnly = !gameData;
+
+  /** 팀장 한 명만 지원 => 팀장을 첫 번째로 배치 */
+  const orderedParticipants = useMemo(() => {
+    if (!isVolunteerOnly) return participants;
+
+    const idx = participants.findIndex((p) => p.userId === winnerId);
+    if (idx <= 0) return participants; // 이미 첫번째거나 못 찾으면 그대로
+
+    const winner = participants[idx];
+    const rest = participants.filter((_, i) => i !== idx);
+    return [winner, ...rest];
+  }, [isVolunteerOnly, participants, winnerId]);
 
   const [gameStarted, setGameStarted] = useState(false);
   const [columnToRowsMap, setColumnToRowsMap] = useState<ColumnToRowsMap>(
     new Map(),
   );
-  const [posById, setPosById] = useState<PosAxisById | null>(null);
+  const [posById, setPosById] = useState<PosAxisById>(() =>
+    orderedParticipants.reduce<PosAxisById>((acc, u) => {
+      acc[u.userId] = { x: 0, y: 0 };
+      return acc;
+    }, {}),
+  );
 
   // 타이머 ID 저장용 ref
   const timeoutsRef = useRef<number[]>([]);
 
   // 사다리 행 개수에 따른 레일 높이 계산
-  const ROWS = gameData?.ladderLines.length ?? 0;
-  const RAIL_HEIGHT_PX = LAYOUT.TOP_PADDING_PX + (ROWS - 1) * LAYOUT.ROW_GAP_PX;
+  const ROWS = ladderLines.length;
+
+  const ROW_GAP_PX =
+    ROWS > 0 ? Math.max(24, Math.min(44, (vh * 0.4) / ROWS)) : 0;
+
+  const RAIL_HEIGHT_PX =
+    ROWS > 0
+      ? Math.min(520, Math.max(260, vh * 0.45))
+      : Math.min(520, Math.max(260, vh * 0.4));
+
+  const FALLBACK_STEPS = 10; // 내려가는 가짜 행 수(연출용)
+
+  const DOWN_PX = ROWS > 0 ? ROW_GAP_PX : RAIL_HEIGHT_PX / FALLBACK_STEPS;
 
   useEffect(() => {
-    if (!gameData) {
-      alert('사다리 게임 데이터를 불러오지 못했습니다. 다시 시도해 주세요.');
-      return;
-    }
-
-    // TODO: 서버에서 사다리 게임 데이터 받아오는 로직
-    const filteredLadderLines = gameData.ladderLines.filter(
-      (l) => l.length > 0,
-    );
-
-    setColumnToRowsMap(createColumnToRowsMap(filteredLadderLines));
-    setPosById(() =>
-      participants.reduce<PosAxisById>((acc, u) => {
-        acc[u.userId] = { x: 0, y: 0 };
-        return acc;
-      }, {}),
-    );
-  }, [gameData, participants]);
+    setColumnToRowsMap(createColumnToRowsMap(ladderLines));
+  }, [ladderLines]);
 
   // 예약된 타이머 정리
   const clearAllTimeouts = useCallback(() => {
@@ -148,21 +173,50 @@ export default function LadderBoard({
   // 캐릭터 이동 애니메이션 스케줄링
   const scheduleMove = useCallback(
     (userId: number, startIndex: number, startDelayMs: number) => {
-      if (!gameData) return 0;
-
-      const path = getPath(startIndex, gameData.ladderLines ?? []);
-      const steps = path.slice(1);
+      let t = startDelayMs;
 
       let currentX = 0;
       let currentY = 10;
-      let prevCol = path[0].col;
 
-      let t = startDelayMs;
+      // gameData가 null -> 이미 방장이 정해졌을 때: 아래로만 내려가는 연
+      if (!ladderLines.length) {
+        const steps = FALLBACK_STEPS;
+
+        for (let i = 0; i < steps; i++) {
+          timeoutsRef.current.push(
+            window.setTimeout(() => {
+              currentY += DOWN_PX;
+              setPosById((prev) => ({
+                ...prev,
+                [userId]: { x: currentX, y: currentY },
+              }));
+            }, t),
+          );
+          t += TIMING.DOWN_MS;
+        }
+
+        // 마지막 박스까지 살짝 더 내려가는 연출이 필요하면:
+        timeoutsRef.current.push(
+          window.setTimeout(() => {
+            currentY += MOVE.FINAL_DOWN_PX;
+            setPosById((prev) => ({
+              ...prev,
+              [userId]: { x: currentX, y: currentY },
+            }));
+          }, t),
+        );
+
+        return t + TIMING.DOWN_MS;
+      }
+
+      const path = getPath(startIndex, ladderLines);
+      const steps = path.slice(1);
+      let prevCol = path[0].col;
 
       steps.forEach((step) => {
         timeoutsRef.current.push(
           window.setTimeout(() => {
-            currentY += MOVE.DOWN_PX;
+            currentY += DOWN_PX;
             setPosById((prev) => ({
               ...prev,
               [userId]: { x: currentX, y: currentY },
@@ -204,7 +258,7 @@ export default function LadderBoard({
 
       return t + TIMING.DOWN_MS;
     },
-    [gameData, getPath],
+    [getPath, DOWN_PX, ladderLines],
   );
 
   // 게임 시작 처리
@@ -215,7 +269,7 @@ export default function LadderBoard({
     clearAllTimeouts();
 
     setPosById(() =>
-      participants.reduce<PosAxisById>((acc, u) => {
+      orderedParticipants.reduce<PosAxisById>((acc, u) => {
         acc[u.userId] = { x: 0, y: 0 };
         return acc;
       }, {}),
@@ -223,12 +277,12 @@ export default function LadderBoard({
 
     let maxEnd = 0;
 
-    participants.forEach((u, idx) => {
+    orderedParticipants.forEach((u, idx) => {
       const endAt = scheduleMove(u.userId, idx, idx * TIMING.START_STAGGER_MS);
       maxEnd = Math.max(maxEnd, endAt);
     });
 
-    const winnerProfileImageId = participants.find(
+    const winnerProfileImageId = orderedParticipants.find(
       (u) => u.userId === winnerId,
     )?.profileImageId;
 
@@ -252,7 +306,7 @@ export default function LadderBoard({
       }, modalAt),
     );
   }, [
-    participants,
+    orderedParticipants,
     gameStarted,
     winnerId,
     winnerName,
@@ -261,11 +315,6 @@ export default function LadderBoard({
     openCharacterModal,
     navigate,
   ]);
-
-  if (!gameData) {
-    // TODO: 로딩 처리
-    return <p>데이터를 불러오고 있습니다.</p>;
-  }
 
   return (
     <div
@@ -284,7 +333,7 @@ export default function LadderBoard({
         <div className="w-max pl-6 pr-4">
           <div className="relative z-10">
             <div className="flex gap-2">
-              {participants.map((user, i) => (
+              {orderedParticipants.map((user, i) => (
                 <div
                   key={user.userId}
                   className="relative flex flex-col items-center"
@@ -294,7 +343,7 @@ export default function LadderBoard({
                       className={cn(
                         'select-none text-center text-body-7 text-tx-default',
                         {
-                          'opacity-0': user.userId !== MY_USER_ID,
+                          'opacity-0': user.userId !== Number(myUserId),
                         },
                       )}
                     >
@@ -368,8 +417,7 @@ export default function LadderBoard({
                       className="pointer-events-none absolute left-[calc(50%)] z-10 min-w-[74px] select-none"
                       draggable={false}
                       style={{
-                        top:
-                          (y + 1) * LAYOUT.ROW_GAP_PX + LAYOUT.TOP_PADDING_PX,
+                        top: (y + 1) * ROW_GAP_PX + LAYOUT.TOP_PADDING_PX,
                         pointerEvents: 'none',
                       }}
                     />

@@ -127,7 +127,7 @@ export function TimingGame({
     >
       <TopBar title="타이밍 맞추기" showBackButton={false} gameFont />
       <TimerBar
-        totalMs={15000}
+        totalMs={durationSeconds * 1000}
         startedAt={new Date(phaseStartTime)}
         containerClassName="mt-0.5"
         hideIcon={isRunning}
