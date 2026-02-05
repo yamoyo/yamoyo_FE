@@ -10,13 +10,11 @@ import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 interface Props {
   members: TeamMember[];
   voteUpdatedPayload: VoteUpdatedPayload;
-  // onNext: () => void;
 }
 
 export default function LeaderApplicationWait({
   members,
   voteUpdatedPayload,
-  // onNext
 }: Props) {
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
