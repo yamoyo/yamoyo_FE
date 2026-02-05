@@ -1,19 +1,25 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useTimingGame } from '@/features/leader-game/timing-game/model/useTimingGame';
 import TopBar from '@/shared/ui/header/TopBar';
-import { TimerBar } from '@/widgets/teamroom/leader/ui/TimerBar';
+import { TimerBar } from '@/widgets/teamroom/leader-game/ui/TimerBar';
+import GameStartButton from '@/widgets/teamroom/main/ui/GameStartButton';
 
-import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
-import { useTimingGame } from '../model/useTimingGame';
+interface Props {
+  phaseStartTime: number;
+  durationSeconds: number;
+  submitTimingResult: (timeDifference: number) => void;
+}
 
-export function TimingGame() {
+export function TimingGame({
+  phaseStartTime,
+  durationSeconds,
+  submitTimingResult,
+}: Props) {
   const { elapsed, isRunning, difference, diffText, onClickButton } =
-    useTimingGame();
-
-  // TODO: 실제 startedAt 값을 서버에서 받아와야 함
-  const [startedAt] = useState(() => new Date().toISOString());
+    useTimingGame(submitTimingResult);
 
   // 10초 지나도 시작 안 했을 때 보여줄 모달 상태
   const [showTimeoutModal, setShowTimeoutModal] = useState(false);
@@ -25,7 +31,7 @@ export function TimingGame() {
   const hasShownTimeoutModalRef = useRef(false);
 
   // 다음 두 경우가 일어나는 예외처리가 겹치지 않게 막는 플래그
-  // 1. 15초 동안 게임을 시작하지 않음
+  // 1. phaseStartTime + durationSeconds - 10초가 지나도 게임 시작 안 함
   // 2. 게임 시작 후 10초 동안 정지 버튼을 누르지 않음
   const hasHandledTimeoutRef = useRef(false);
 
@@ -37,49 +43,52 @@ export function TimingGame() {
     differenceRef.current = difference;
   }, [difference]);
 
-  const handleTimeout = () => {
+  const handleTimeout = useCallback(() => {
     if (hasHandledTimeoutRef.current) return;
     hasHandledTimeoutRef.current = true;
 
-    // TODO: 15초 동안 게임을 하지 않거나,
+    // TODO: phaseStartTime + durationSeconds 동안 게임을 하지 않거나,
     //       게임 시작 후 10초 동안 정지 버튼을 누르지 않으면
-    //       서버에 max 시간을 넘겨주고 다음 단계로 넘어가도록 구현
-  };
+    //       서버에 max 시간(10초)을 넘겨주고 다음 단계로 넘어가도록 구현
+  }, []);
 
-  // startedAt 기준 10초 / 15초 타이머
   useEffect(() => {
-    const startMs = new Date(startedAt).getTime();
+    if (!phaseStartTime || !durationSeconds) return;
+
+    const startMs = phaseStartTime;
+    const endMs = startMs + durationSeconds * 1000;
+
+    const modalAtMs = endMs - 10_000 - 5_000; // 마감 15초 전에 5초 남았다는 모달 표시
+    const timeoutAtMs = endMs - 10_000; // 마감 10초 전: 타임아웃 처리
+
     const now = Date.now();
+    const modalDelay = Math.max(modalAtMs - now, 0);
+    const timeoutDelay = Math.max(timeoutAtMs - now, 0);
 
-    const tenSecDelay = Math.max(startMs + 10000 - now, 0);
-    const fifteenSecDelay = Math.max(startMs + 15000 - now, 0);
+    // 타임아웃 처리 가능 여부
+    const canTrigger = () =>
+      !isRunningRef.current && differenceRef.current === null;
 
-    const tenSecTimer = window.setTimeout(() => {
-      // 이미 모달 보여준 적 있으면 무시
+    // 모달 표시 및 타임아웃 타이머 설정
+    const modalTimer = window.setTimeout(() => {
       if (hasShownTimeoutModalRef.current) return;
+      if (!canTrigger()) return;
 
-      // 아직 게임 시작 전 + 결과도 없는 상태일 때만 모달 표시
-      if (!isRunningRef.current && differenceRef.current === null) {
-        hasShownTimeoutModalRef.current = true; // 다시는 안 뜨게 플래그
-        setShowTimeoutModal(true);
-      }
-    }, tenSecDelay);
+      hasShownTimeoutModalRef.current = true;
+      setShowTimeoutModal(true);
+    }, modalDelay);
 
-    // 15초 동안 게임을 하지 않으면 실행되어야 할 동작
-    const fifteenSecTimer = window.setTimeout(() => {
-      // 15초가 되었을 때도 여전히
-      // - 게임을 시작하지 않았고 (isRunning === false)
-      // - 결과도 없는 상태(difference === null)라면
-      if (!isRunningRef.current && differenceRef.current === null) {
-        handleTimeout();
-      }
-    }, fifteenSecDelay);
+    // 타임아웃 처리 타이머 설정
+    const timeoutTimer = window.setTimeout(() => {
+      if (!canTrigger()) return;
+      handleTimeout();
+    }, timeoutDelay);
 
     return () => {
-      clearTimeout(tenSecTimer);
-      clearTimeout(fifteenSecTimer);
+      clearTimeout(modalTimer);
+      clearTimeout(timeoutTimer);
     };
-  }, [startedAt]);
+  }, [phaseStartTime, durationSeconds, handleTimeout]);
 
   // 게임을 시작한 시점에서 10초가 지나도 정지하지 않으면 타임아웃 처리
   useEffect(() => {
@@ -97,7 +106,7 @@ export function TimingGame() {
     return () => {
       clearTimeout(timerId);
     };
-  }, [isRunning]);
+  }, [isRunning, handleTimeout]);
 
   const handleOnClick = () => {
     if (showTimeoutModal) {
@@ -118,8 +127,8 @@ export function TimingGame() {
     >
       <TopBar title="타이밍 맞추기" showBackButton={false} gameFont />
       <TimerBar
-        totalMs={15000}
-        startedAt={startedAt}
+        totalMs={durationSeconds * 1000}
+        startedAt={new Date(phaseStartTime)}
         containerClassName="mt-0.5"
         hideIcon={isRunning}
       />

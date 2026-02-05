@@ -1,8 +1,16 @@
+import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
 import TopBar from '@/shared/ui/header/TopBar';
 
 import LadderBoard from './LadderBoard';
 
-export default function LadderGame() {
+export default function LadderGame({
+  gameResultPayload,
+}: {
+  gameResultPayload: GameResultPayload;
+}) {
+  // gameData가 null일 경우 이미 방장이 선정된 상태이므로 기본값으로 0 지정
+  const teamLeaderIndex = gameResultPayload.gameData ? 1 : 0;
+
   return (
     <div
       style={{
@@ -21,7 +29,11 @@ export default function LadderGame() {
         {'예측 불허!\n가장 클래식한 운명의 복불복'}
       </h1>
 
-      <LadderBoard teamLeaderIndex={1} containerClassName="mt-4" />
+      <LadderBoard
+        teamLeaderIndex={teamLeaderIndex}
+        gameResultPayload={gameResultPayload}
+        containerClassName="mt-4"
+      />
     </div>
   );
 }

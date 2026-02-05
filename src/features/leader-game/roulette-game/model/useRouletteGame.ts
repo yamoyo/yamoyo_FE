@@ -1,28 +1,28 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { BASE_TURNS, SPIN_DURATION_MS } from './constants';
-import { RouletteGameResponse } from './types';
+import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
 
-export function useRouletteGame(data: RouletteGameResponse | null) {
+import { BASE_TURNS, SPIN_DURATION_MS } from './constants';
+
+export function useRouletteGame(payload: GameResultPayload) {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
 
   const participants = useMemo(
-    () => data?.participants ?? [],
-    [data?.participants],
+    () => payload.participants,
+    [payload.participants],
   );
   const count = participants.length;
 
   const spin = useCallback(() => {
-    if (isSpinning || !data || gameStarted) return;
-
+    if (isSpinning || !payload || gameStarted) return;
     setIsSpinning(true);
     setGameStarted(true);
 
     // winnerId로 당첨 인덱스 계산
     const winnerIndex = participants.findIndex(
-      (p) => p.userId === data.winnerId,
+      (p) => p.userId === payload.winnerId,
     );
     if (winnerIndex === -1) return;
 
@@ -34,7 +34,7 @@ export function useRouletteGame(data: RouletteGameResponse | null) {
       const delta = (desiredAngle - current + 360) % 360;
       return prev + BASE_TURNS * 360 + delta;
     });
-  }, [isSpinning, data, gameStarted, participants, count]);
+  }, [isSpinning, payload, gameStarted, participants, count]);
 
   useEffect(() => {
     if (!isSpinning) return;
@@ -51,6 +51,5 @@ export function useRouletteGame(data: RouletteGameResponse | null) {
     spin,
     isSpinning,
     gameStarted,
-    participants,
   };
 }

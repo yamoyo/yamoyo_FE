@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 const TARGET_SECONDS = 7.777; // 목표 시간 (초)
 
-export function useTimingGame() {
+export function useTimingGame(
+  submitTimingResult: (timeDifference: number) => void,
+) {
   // 목표 시간과 정지한 시간의 차이
   const [difference, setDifference] = useState<number | null>(null);
 
@@ -42,7 +44,12 @@ export function useTimingGame() {
     setIsRunning(false);
 
     // 목표 시간과의 차이 계산
-    setDifference(elapsed - TARGET_SECONDS);
+    const difference = elapsed - TARGET_SECONDS;
+    setDifference(difference);
+
+    // 결과 제출
+    const absDifference = Math.abs(difference);
+    submitTimingResult(absDifference);
   };
 
   const onClickButton = isRunning ? stop : start;

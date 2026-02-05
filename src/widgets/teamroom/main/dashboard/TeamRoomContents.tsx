@@ -1,5 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-
 import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 
@@ -14,14 +12,16 @@ interface Props {
   teamRoomId: teamRoomId;
   workflow: Workflow;
   myRole: myRole;
+  isAllOnline: boolean;
 }
 
 export default function TeamRoomContents({
   teamRoomId,
   workflow,
   myRole,
+  isAllOnline,
 }: Props) {
-  const navigate = useNavigate();
+  const isHost = myRole === 'HOST';
 
   /** 팀장 정하기 게임 시작 */
   const onStartLeaderGame = async () => {
@@ -31,7 +31,6 @@ export default function TeamRoomContents({
     }
     try {
       await leaderGameApi.startLeaderGame(teamRoomId);
-      navigate('leader');
     } catch (error) {
       console.error('팀장 정하기 게임 시작 중 오류가 발생했습니다.', error);
       alert('팀장 정하기 게임 시작에 실패했습니다. 다시 시도해주세요.');
@@ -39,12 +38,16 @@ export default function TeamRoomContents({
   };
 
   if (workflow === 'PENDING') {
-    return myRole === 'HOST' ? (
-      <LeaderGameCard onStart={onStartLeaderGame} />
-    ) : null;
+    return (
+      <LeaderGameCard
+        onStart={onStartLeaderGame}
+        isAllOnline={isAllOnline}
+        isHost={isHost}
+      />
+    );
   }
 
-  if (workflow === 'COMPLETED') {
+  if (workflow === 'SETUP') {
     return <Dashboard />;
   }
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import { Participant } from '../../ladder-game/model/types';
+import { Participants } from '@/entities/leader-game/api/ws-types';
+
 import {
   ARROW_HEIGHT_PX,
   ARROW_OFFSET_X_PX,
@@ -15,7 +16,7 @@ import {
 } from '../model/constants';
 
 interface RouletteBoardProps {
-  participants: Participant[];
+  participants: Participants[];
   rotation: number;
 }
 

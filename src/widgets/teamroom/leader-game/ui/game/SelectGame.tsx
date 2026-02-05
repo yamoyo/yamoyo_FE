@@ -1,17 +1,18 @@
 import TopBar from '@/shared/ui/header/TopBar';
+import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
 
-import { TimerBar } from '../TimerBar';
 import { GAMES } from './model/constants';
 import SelectGameItem from './SelectGameItem';
 
-export default function SelectGame() {
-  // TODO: 실제 startedAt 값을 서버에서 받아와야 함
-  const startedAt = new Date().toISOString(); // 예시 시작 시간 (현재 시간)
-
+export default function SelectGame({
+  selectGame,
+}: {
+  selectGame: (gameType: GameType) => void;
+}) {
   return (
     <>
       <TopBar title="팀장 정하기" backIcon="cancel" />
-      <TimerBar startedAt={startedAt} />
+      {/* <TimerBar startedAt={startedAt} /> */}
       <div className="mt-8 px-6">
         <h1 className="mb-1 text-title-2 text-tx-default_2">
           팀장을 어떻게 찾을까요?
@@ -21,7 +22,11 @@ export default function SelectGame() {
         </p>
         <div className="mt-9 space-y-6">
           {GAMES.map((game) => (
-            <SelectGameItem {...game} key={game.id} />
+            <SelectGameItem
+              {...game}
+              key={game.gameType}
+              onSelect={selectGame}
+            />
           ))}
         </div>
       </div>

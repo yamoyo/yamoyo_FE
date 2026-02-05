@@ -17,7 +17,6 @@ export type WsClient = {
     destination: string,
     handler: WsMessageHandler<T>,
   ) => () => void;
-
   publish: (destination: string, body?: unknown) => void;
 };
 

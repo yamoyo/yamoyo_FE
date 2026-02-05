@@ -37,7 +37,7 @@ export default function VotingTool({ onFinish }: Props) {
       // TODO: API
       openChoiceModal({
         title: '투표하시겠습니까?',
-        description: '함께한 팀원들을 투표 후 수정/삭제가 불가능합니다.',
+        description: '투표 이후 수정/삭제가 불가능합니다.',
         leftLabel: '취소',
         rightLabel: '확인',
         onClickRightBtn: onFinish,

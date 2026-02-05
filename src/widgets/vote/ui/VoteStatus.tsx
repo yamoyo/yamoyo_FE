@@ -1,17 +1,12 @@
-import { useEffect } from 'react';
-
 import CharacterCard from '@/shared/ui/character/CharacterCard';
 import { CharacterSlider } from '@/shared/ui/character/CharacterSlider';
 import TopBar from '@/shared/ui/header/TopBar';
 import SectionDividerTitle from '@/shared/ui/SectionDividerTitle';
-
-import { VoteCharacter } from '../model/types';
+import { VotedUser } from '@/widgets/vote/model/types';
 
 interface Props {
-  votedUsers: VoteCharacter[];
-  unVotedUsers: VoteCharacter[];
-  isCompleted: boolean;
-  handleVoteComplete: () => void;
+  votedUsers: VotedUser[];
+  unVotedUsers: VotedUser[];
   isHiddenCancelButton?: boolean;
   onClose?: () => void;
 }
@@ -19,17 +14,9 @@ interface Props {
 export default function VoteStatus({
   votedUsers,
   unVotedUsers,
-  isCompleted,
-  handleVoteComplete,
   isHiddenCancelButton = false,
   onClose,
 }: Props) {
-  useEffect(() => {
-    if (!isCompleted) return;
-
-    handleVoteComplete();
-  }, [isCompleted, handleVoteComplete]);
-
   return (
     <>
       <TopBar
@@ -54,7 +41,11 @@ export default function VoteStatus({
         <SectionDividerTitle title="미참여자" />
         <div className="grid grid-cols-3 gap-2">
           {unVotedUsers.map((c) => (
-            <CharacterCard characterId={c.imgId} name={c.name} key={c.id} />
+            <CharacterCard
+              characterId={c.profileImageId}
+              name={c.name}
+              key={c.userId}
+            />
           ))}
         </div>
       </div>

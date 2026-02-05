@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import TeamRoomWsLayout from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
+import LeaderGameStoreDebugPage from '@/pages/Debug';
+
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
 import EditMajor from './entities/profile/ui/edit/Major';
@@ -11,8 +14,6 @@ import MajorStep from './entities/profile/ui/onboarding/Major';
 import NameStep from './entities/profile/ui/onboarding/Name';
 import PersonaStep from './entities/profile/ui/onboarding/Persona';
 import LoginPage from './pages';
-import RoulettePage from './pages/games/roulette';
-import TimingGame from './pages/games/timing-game';
 import HomePage from './pages/home';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
@@ -27,7 +28,7 @@ import MyTeamRoomPage from './pages/teamroom';
 import TeamRoomMainPage from './pages/teamroom/[id]';
 import TeamRoomEditPage from './pages/teamroom/[id]/edit';
 import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
-import TeamLeaderSelectPage from './pages/teamroom/[id]/leader';
+import TeamLeaderSelectPage from './pages/teamroom/[id]/leader-game';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
@@ -76,6 +77,8 @@ export default function App() {
       <ModalRoot />
 
       <Routes>
+        <Route path="/debug" element={<LeaderGameStoreDebugPage />} />
+
         {/* DEV: 개발용 라우트 (AuthGuard 우회) */}
         <Route path="/dev/timeselect/:id" element={<TimeSelectPage />} />
         <Route
@@ -98,32 +101,6 @@ export default function App() {
             <Route path="create-schedule" element={<CreateSchedulePage />} />
           </Route>
 
-          <Route path="/teamroom">
-            <Route index element={<MyTeamRoomPage />} />
-            <Route path=":id" element={<TeamRoomMainPage />} />
-            <Route path=":id/edit" element={<TeamRoomEditPage />} />
-            <Route
-              path=":id/edit/banner"
-              element={<TeamRoomEditBannerPage />}
-            />
-            <Route path=":id/members" element={<TeamRoomMembersPage />} />
-            <Route
-              path=":id/members/:memberId"
-              element={<TeamRoomMemberPage />}
-            />
-            <Route path="create" element={<TeamRoomCreatePage />} />
-            <Route path="create/banner" element={<BannerPage />} />
-            <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
-            <Route path=":id/rule" element={<RuleSetupPage />} />
-            <Route path=":id/tool" element={<ToolSetupPage />} />
-            <Route path=":id/timeselect" element={<TimeSelectPage />} />
-            <Route
-              path=":id/timeselect/everytime"
-              element={<EveryTimePage />}
-            />
-            <Route path=":id/timeselect/liketime" element={<LikeTimePage />} />
-          </Route>
-
           <Route path="/mypage">
             <Route index element={<Mypage />} />
             <Route path="profile">
@@ -141,9 +118,6 @@ export default function App() {
 
           <Route path="/notification" element={<NotificationPage />} />
 
-          <Route path="/games/roulette" element={<RoulettePage />} />
-          <Route path="/games/timing-game" element={<TimingGame />} />
-
           <Route path="/onboarding/terms" element={<TermsPage />} />
           <Route
             path="/onboarding/profile"
@@ -155,6 +129,39 @@ export default function App() {
           </Route>
 
           <Route path="/invite" element={<InvitePage />} />
+
+          <Route path="/teamroom">
+            <Route index element={<MyTeamRoomPage />} />
+
+            <Route path="create" element={<TeamRoomCreatePage />} />
+            <Route path="create/banner" element={<BannerPage />} />
+
+            {/* WS 필요한 라우트 */}
+            <Route path=":id" element={<TeamRoomWsLayout />}>
+              <Route index element={<TeamRoomMainPage />} />
+              <Route path="leader-game" element={<TeamLeaderSelectPage />} />
+            </Route>
+
+            <Route path=":id/edit" element={<TeamRoomEditPage />} />
+            <Route
+              path=":id/edit/banner"
+              element={<TeamRoomEditBannerPage />}
+            />
+            <Route path=":id/members" element={<TeamRoomMembersPage />} />
+            <Route
+              path=":id/members/:memberId"
+              element={<TeamRoomMemberPage />}
+            />
+
+            <Route path=":id/rule" element={<RuleSetupPage />} />
+            <Route path=":id/tool" element={<ToolSetupPage />} />
+            <Route path=":id/timeselect" element={<TimeSelectPage />} />
+            <Route
+              path=":id/timeselect/everytime"
+              element={<EveryTimePage />}
+            />
+            <Route path=":id/timeselect/liketime" element={<LikeTimePage />} />
+          </Route>
         </Route>
       </Routes>
     </main>
