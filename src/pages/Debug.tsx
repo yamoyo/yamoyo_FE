@@ -1,27 +1,20 @@
 import { useMemo, useState } from 'react';
 
 import type { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
-import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import type { Phase } from '@/widgets/teamroom/leader-game/model/types';
 
 export default function LeaderGameStoreDebugPage() {
   const {
-    teamRoomId,
     role,
     phase,
     payload,
-    setTeamRoomId,
     setRole,
     setPhase,
     setPayload,
     clearPayload,
     reset,
-  } = useLeaderGameStore();
-
-  // 입력용 로컬 상태
-  const [teamRoomIdInput, setTeamRoomIdInput] = useState<string>(
-    teamRoomId?.toString() ?? '',
-  );
+  } = useLeaderSelectionStore();
   const [roleInput, setRoleInput] = useState<TeamMemberRole | ''>(role ?? '');
   const [phaseInput, setPhaseInput] = useState<Phase | null>(
     (phase as Phase) ?? null,
@@ -33,23 +26,11 @@ export default function LeaderGameStoreDebugPage() {
   // 보기용 JSON
   const snapshot = useMemo(() => {
     return {
-      teamRoomId,
       role,
       phase,
       payload,
     };
-  }, [teamRoomId, role, phase, payload]);
-
-  const applyTeamRoomId = () => {
-    const v = teamRoomIdInput.trim();
-    if (!v) return setTeamRoomId(null);
-
-    // 숫자면 number로, 아니면 string으로
-    const asNumber = Number(v);
-    setTeamRoomId(
-      Number.isFinite(asNumber) && v === String(asNumber) ? asNumber : v,
-    );
-  };
+  }, [role, phase, payload]);
 
   const applyRole = () => {
     setRole(roleInput === '' ? null : (roleInput as TeamMemberRole));
@@ -82,7 +63,7 @@ export default function LeaderGameStoreDebugPage() {
       <header className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">LeaderGame Store Debug</h1>
         <p className="text-sm text-gray-500">
-          useLeaderGameStore 상태 확인/수정/초기화 페이지
+          useLeaderSelectionStore 상태 확인/수정/초기화 페이지
         </p>
       </header>
 
@@ -110,36 +91,6 @@ export default function LeaderGameStoreDebugPage() {
         <pre className="overflow-auto rounded-lg bg-gray-50 p-3 text-xs">
           {JSON.stringify(snapshot, null, 2)}
         </pre>
-      </section>
-
-      {/* teamRoomId */}
-      <section className="rounded-xl border p-4">
-        <h2 className="mb-3 font-medium">teamRoomId</h2>
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          <input
-            className="w-full rounded-lg border px-3 py-2 text-sm"
-            placeholder="예: 1 또는 room-1 또는 빈값(null)"
-            value={teamRoomIdInput}
-            onChange={(e) => setTeamRoomIdInput(e.target.value)}
-          />
-          <div className="flex gap-2">
-            <button
-              className="rounded-lg border px-3 py-2 text-sm"
-              onClick={() => {
-                setTeamRoomIdInput('');
-                setTeamRoomId(null);
-              }}
-            >
-              Set null
-            </button>
-            <button
-              className="rounded-lg bg-black px-3 py-2 text-sm text-white"
-              onClick={applyTeamRoomId}
-            >
-              Apply
-            </button>
-          </div>
-        </div>
       </section>
 
       {/* role */}
