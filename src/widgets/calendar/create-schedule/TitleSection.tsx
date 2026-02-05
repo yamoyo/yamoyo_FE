@@ -3,14 +3,15 @@ import { FieldError, UseFormRegister } from 'react-hook-form';
 import {
   CreateScheduleFormData,
   SCHEDULE_COLORS,
+  ScheduleColorId,
 } from '@/entities/calendar/model/types';
 
 interface TitleSectionProps {
-  selectedColor: string;
+  selectedColor: ScheduleColorId;
   titleLength: number;
   isColorPickerOpen: boolean;
   onToggleColorPicker: () => void;
-  onSelectColor: (colorId: string) => void;
+  onSelectColor: (colorId: ScheduleColorId) => void;
   register: UseFormRegister<CreateScheduleFormData>;
   error?: FieldError;
 }

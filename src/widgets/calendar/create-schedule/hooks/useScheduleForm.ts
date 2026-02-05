@@ -1,16 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import type { CreateMeetingRequest } from '@/entities/calendar/api/meeting-dto';
+import { useCreateMeeting } from '@/entities/calendar/hooks/useMeetings';
 import {
-  addMonths,
   buildTimeOptions,
-  buildWeeklySchedules,
   formatDateLabel,
   parseDateString,
 } from '@/entities/calendar/lib/recurrence';
-import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-import { getMockTeamMembers } from '@/shared/constants/mock-team-members';
+import type { CreateScheduleFormData } from '@/entities/calendar/model/types';
+import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
 
 // 일정 생성 폼 상태/파생값/제출 로직을 묶은 훅
 export default function useScheduleForm() {
@@ -19,7 +18,9 @@ export default function useScheduleForm() {
 
   const teamId = Number(searchParams.get('teamId')) || 0;
   const date = searchParams.get('date') || '';
-  const addSchedule = useScheduleStore((state) => state.addSchedule);
+
+  const createMeeting = useCreateMeeting(teamId);
+  const { data: teamMembers = [] } = useTeamRoomMembers(teamId);
 
   const {
     register,
@@ -30,38 +31,34 @@ export default function useScheduleForm() {
   } = useForm<CreateScheduleFormData>({
     defaultValues: {
       teamId,
-      color: 'yellow',
-      type: 'none',
-      date,
-      participants: [],
+      color: 'YELLOW',
+      isRecurring: false,
+      startDate: date,
+      startTime: '',
+      endTime: '',
+      participantUserIds: [],
     },
   });
 
-  // 선택된 색상/타입 값
+  // 선택된 색상/반복 여부
   const selectedColor = watch('color');
-  const scheduleType = watch('type');
+  const isRecurring = watch('isRecurring');
+  const startTime = watch('startTime');
+  const endTime = watch('endTime');
 
   // 입력 길이 표시용 카운트
   const titleLength = watch('title')?.length || 0;
   const descLength = watch('description')?.length || 0;
 
-  // 참가자 id 리스트(문자열)를 안전하게 가져옴
-  const participants = watch('participants') ?? [];
+  // 참가자 userId 리스트
+  const participantUserIds = watch('participantUserIds') ?? [];
 
   // 선택된 날짜 문자열
-  const selectedDateValue = watch('date');
+  const selectedDateValue = watch('startDate');
 
-  // 참가자 id를 number로 변환하고 유효한 값만 남김
-  const selectedParticipantIds = participants
-    .map((id) => Number(id))
-    .filter((id) => !Number.isNaN(id));
-
-  // 팀 멤버 목업 목록
-  const teamMembers = getMockTeamMembers(teamId);
-
-  // 선택된 참가자 id에 해당하는 멤버 객체 리스트
-  const selectedMembers = selectedParticipantIds
-    .map((id) => teamMembers.find((member) => member.id === id))
+  // 선택된 참가자에 해당하는 멤버 객체 리스트
+  const selectedMembers = participantUserIds
+    .map((userId) => teamMembers.find((m) => m.userId === userId))
     .filter((member): member is NonNullable<typeof member> => Boolean(member));
 
   // 선택된 날짜 객체(없으면 undefined)
@@ -72,23 +69,24 @@ export default function useScheduleForm() {
     ? formatDateLabel(selectedDate)
     : '날짜를 선택해주세요';
 
-  // 시간 드롭다운 옵션
+  // 시간 드롭다운 옵션 (30분 단위, 08:00 ~ 24:00)
   const timeOptions = buildTimeOptions(8, 24);
 
-  const onSubmit = (data: CreateScheduleFormData) => {
-    if (data.type === 'weekly') {
-      const startDate = parseDateString(data.date);
-      if (!startDate) return;
-      const endDate = addMonths(startDate, 3);
-      const weeklySchedules = buildWeeklySchedules(data, startDate, endDate);
-      weeklySchedules.forEach(addSchedule);
-    } else {
-      const newSchedule = {
-        ...data,
-        id: crypto.randomUUID(),
-      };
-      addSchedule(newSchedule);
-    }
+  const onSubmit = async (data: CreateScheduleFormData) => {
+    const requestBase: CreateMeetingRequest = {
+      title: data.title,
+      startDate: data.startDate,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      color: data.color,
+      isRecurring: data.isRecurring,
+      participantUserIds: data.participantUserIds,
+      ...(data.description && { description: data.description }),
+      ...(data.location && { location: data.location }),
+    };
+
+    await createMeeting.mutateAsync(requestBase);
+
     navigate(-1);
   };
 
@@ -96,22 +94,16 @@ export default function useScheduleForm() {
     navigate(-1);
   };
 
-  const removeParticipant = (id: number) => {
+  const removeParticipant = (userId: number) => {
     setValue(
-      'participants',
-      selectedParticipantIds
-        .filter((item) => item !== id)
-        .map((item) => String(item)),
+      'participantUserIds',
+      participantUserIds.filter((id) => id !== userId),
       { shouldValidate: true },
     );
   };
 
-  const setParticipants = (ids: number[]) => {
-    setValue(
-      'participants',
-      ids.map((id) => String(id)),
-      { shouldValidate: true },
-    );
+  const setParticipants = (userIds: number[]) => {
+    setValue('participantUserIds', userIds, { shouldValidate: true });
   };
 
   return {
@@ -122,18 +114,21 @@ export default function useScheduleForm() {
     setValue,
     errors,
     selectedColor,
-    scheduleType,
+    isRecurring,
+    startTime,
+    endTime,
     titleLength,
     descLength,
     selectedDate,
     dateLabel,
     timeOptions,
-    selectedParticipantIds,
+    participantUserIds,
     selectedMembers,
     teamMembers,
     onSubmit,
     handleCancel,
     removeParticipant,
     setParticipants,
+    isPending: createMeeting.isPending,
   };
 }

@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import type { LegacyTeamMember } from '@/entities/teamroom/api/teamroom-dto';
+import type { TeamRoomMember } from '@/entities/teamroom/api/teamroom-dto';
 import BottomSheet from '@/shared/ui/BottomSheet';
 
 interface ParticipantSelectSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  members: LegacyTeamMember[];
+  members: TeamRoomMember[];
   selectedIds: number[];
   onConfirm: (selectedIds: number[]) => void;
 }
@@ -31,9 +31,11 @@ export default function ParticipantSelectSheet({
     [currentSelected],
   );
 
-  const handleToggle = (id: number) => {
+  const handleToggle = (userId: number) => {
     setCurrentSelected((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
+      prev.includes(userId)
+        ? prev.filter((item) => item !== userId)
+        : [...prev, userId],
     );
   };
 
@@ -44,7 +46,7 @@ export default function ParticipantSelectSheet({
 
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose} title="팀원 멤버">
-      <p className="mb-4 text-center text-body-6 text-tx-default">
+      <p className="mb-4 text-center text-body-6 text-[#BEC4DE]">
         프로필을 선택하면 일정 참가자로 추가할 수 있습니다.
       </p>
 
@@ -54,32 +56,30 @@ export default function ParticipantSelectSheet({
 
       <ul className="flex max-h-[360px] flex-col gap-3 overflow-y-auto pr-1">
         {members.map((member) => {
-          const isSelected = selectedSet.has(member.id);
+          const isSelected = selectedSet.has(member.userId);
           return (
             <li
-              key={member.id}
+              key={member.userId}
               className={`flex items-center gap-3 rounded-xl py-3 pl-2 pr-3 transition-colors ${
                 isSelected ? 'bg-bg-textfiled text-white' : 'text-gray-300'
               }`}
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2D314A]">
+              <div className="flex size-[55px] items-center justify-center rounded-full bg-[#2D314A]">
                 <img
-                  src={member.avatar}
+                  src={`/assets/character/char-${member.profileImageId}.png`}
                   alt={member.name}
-                  className="h-7 w-7 object-contain"
+                  className="h-8 w-8 object-contain"
                   draggable="false"
                 />
               </div>
               <button
                 type="button"
-                onClick={() => handleToggle(member.id)}
-                className="flex flex-1 flex-col items-start gap-0"
+                onClick={() => handleToggle(member.userId)}
+                className="flex flex-1 flex-col items-start gap-[3px]"
               >
-                <span className="text-sm font-semibold leading-[1.1]">
-                  {member.name}
-                </span>
-                <span className="text-xs leading-[1.1] text-gray-400">
-                  {member.role}
+                <span className="text-[15px] font-medium">{member.name}</span>
+                <span className="text-[14px] font-normal text-tx-default_4">
+                  {member.major}
                 </span>
               </button>
             </li>

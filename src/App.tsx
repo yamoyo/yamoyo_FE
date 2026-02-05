@@ -102,6 +102,13 @@ export default function App() {
         </Route>
         <Route path="/notification" element={<NotificationPage />} />
 
+        {/* DEV: 개발용 라우트 (AuthGuard 우회) */}
+        <Route path="/dev/timeselect/:id" element={<TimeSelectPage />} />
+        <Route
+          path="/dev/timeselect/:id/everytime"
+          element={<EveryTimePage />}
+        />
+
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -110,6 +117,56 @@ export default function App() {
 
         {/* 로그인된 유저 전용 */}
         <Route element={<AuthGuard />}>
+          <Route path="/home" element={<HomePage />} />
+
+          <Route path="/calendar">
+            <Route index element={<Calendar />} />
+            <Route path="create-schedule" element={<CreateSchedulePage />} />
+          </Route>
+
+          <Route path="/teamroom">
+            <Route index element={<MyTeamRoomPage />} />
+            <Route path=":id" element={<TeamRoomMainPage />} />
+            <Route path=":id/edit" element={<TeamRoomEditPage />} />
+            <Route
+              path=":id/edit/banner"
+              element={<TeamRoomEditBannerPage />}
+            />
+            <Route path=":id/members" element={<TeamRoomMembersPage />} />
+            <Route
+              path=":id/members/:memberId"
+              element={<TeamRoomMemberPage />}
+            />
+            <Route path="create" element={<TeamRoomCreatePage />} />
+            <Route path="create/banner" element={<BannerPage />} />
+            <Route path=":id/leader" element={<TeamLeaderSelectPage />} />
+            <Route path=":id/rule" element={<RuleSetupPage />} />
+            <Route path=":id/tool" element={<ToolSetupPage />} />
+            <Route path=":id/timeselect" element={<TimeSelectPage />} />
+            <Route
+              path=":id/timeselect/everytime"
+              element={<EveryTimePage />}
+            />
+            <Route path=":id/timeselect/liketime" element={<LikeTimePage />} />
+          </Route>
+
+          <Route path="/mypage">
+            <Route index element={<Mypage />} />
+            <Route path="profile">
+              <Route index element={<Profile />} />
+              <Route path="name" element={<EditName />} />
+              <Route path="major" element={<EditMajor />} />
+              <Route path="mbti" element={<EditMBTI />} />
+            </Route>
+            <Route path="completed-tasks" element={<CompletedTasks />} />
+            <Route
+              path="notification-settings"
+              element={<NotificationSettings />}
+            />
+          </Route>
+
+          <Route path="/notification" element={<NotificationPage />} />
+
           <Route path="/onboarding/terms" element={<TermsPage />} />
           <Route
             path="/onboarding/profile"

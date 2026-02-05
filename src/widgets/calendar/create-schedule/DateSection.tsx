@@ -31,7 +31,7 @@ export default function DateSection({
 
   return (
     <div>
-      <label className="mb-2 block text-body-4.1 text-tx-default_3">
+      <label className="mb-2 block text-body-5 text-tx-default_3">
         {title}
       </label>
       <button
@@ -39,7 +39,11 @@ export default function DateSection({
         onClick={handleOpenCalendar}
         className="flex w-full items-center justify-between rounded-lg bg-bg-textfiled px-4 py-3 text-left text-body-5 text-white"
       >
-        <span>{dateLabel}</span>
+        <span
+          className={selectedDate ? 'text-white' : 'text-tx-textfiled_disabled'}
+        >
+          {dateLabel}
+        </span>
         <img
           src="/assets/icons/calendar.svg"
           alt=""
@@ -49,7 +53,7 @@ export default function DateSection({
       </button>
       <input
         type="hidden"
-        {...register('date', {
+        {...register('startDate', {
           required: '날짜를 선택해주세요',
         })}
       />

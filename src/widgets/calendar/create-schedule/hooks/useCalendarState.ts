@@ -36,13 +36,13 @@ export default function useCalendarState(
     // 오늘 날짜로 이동 + 폼 날짜값 업데이트 + 달력 닫기
     const today = new Date();
     setCalendarCurrentDate(today);
-    setValue('date', formatDateString(today), { shouldValidate: true });
+    setValue('startDate', formatDateString(today), { shouldValidate: true });
     setIsCalendarOpen(false);
   };
 
   const handleDateSelect = (selected: Date) => {
     // 날짜 선택 시 폼 값 반영 + 달력 닫기
-    setValue('date', formatDateString(selected), { shouldValidate: true });
+    setValue('startDate', formatDateString(selected), { shouldValidate: true });
     setCalendarCurrentDate(selected);
     setIsCalendarOpen(false);
   };

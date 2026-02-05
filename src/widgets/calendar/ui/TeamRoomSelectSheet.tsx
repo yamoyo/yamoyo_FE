@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
+import type { TeamRoomListItem } from '@/entities/teamroom/api/teamroom-dto';
 import BottomSheet from '@/shared/ui/BottomSheet';
-import { TeamRoom } from '@/widgets/teamroom/model/types';
 
 interface TeamRoomSelectSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  teamRooms: TeamRoom[];
+  teamRooms: TeamRoomListItem[];
   selectedId?: number;
   onSelect: (id: number) => void;
 }
@@ -44,21 +44,23 @@ export default function TeamRoomSelectSheet({
       <ul className="flex flex-col gap-3">
         {teamRooms.map((room) => (
           <li
-            key={room.id}
+            key={room.teamRoomId}
             className="flex items-center gap-4 rounded-xl bg-bg-textfiled pr-4"
           >
             <img
-              src={`/assets/banner/banner-${room.imgId}.png`}
-              alt={room.name}
+              src={`/assets/banner/banner-${room.bannerImageId}.png`}
+              alt={room.title}
               className="h-12 w-12 rounded-[10px] object-cover"
             />
             <span className="flex-1 text-[14px] font-bold leading-[21px] text-tx-default">
-              {room.name}
+              {room.title}
             </span>
             <button
               onClick={() =>
                 setCurrentSelected(
-                  currentSelected === room.id ? undefined : room.id,
+                  currentSelected === room.teamRoomId
+                    ? undefined
+                    : room.teamRoomId,
                 )
               }
               className="relative h-6 w-6"
@@ -70,7 +72,9 @@ export default function TeamRoomSelectSheet({
                 height={24}
                 draggable="false"
                 className={`absolute inset-0 transition-opacity duration-200 ${
-                  currentSelected === room.id ? 'opacity-0' : 'opacity-100'
+                  currentSelected === room.teamRoomId
+                    ? 'opacity-0'
+                    : 'opacity-100'
                 }`}
               />
               <img
@@ -80,7 +84,9 @@ export default function TeamRoomSelectSheet({
                 height={24}
                 draggable="false"
                 className={`absolute inset-0 transition-opacity duration-200 ${
-                  currentSelected === room.id ? 'opacity-100' : 'opacity-0'
+                  currentSelected === room.teamRoomId
+                    ? 'opacity-100'
+                    : 'opacity-0'
                 }`}
               />
             </button>

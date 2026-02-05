@@ -1,15 +1,17 @@
+import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
 import { generateCalendarDates } from '@/entities/calendar/lib/generate-calendar-dates';
 import { isSameDay } from '@/entities/calendar/lib/is-same-day';
-import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
+import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
 
 import { cn } from '../config/tailwind/cn';
 
 interface CalendarProps {
   currentDate: Date;
   selectedDate?: Date;
-  schedules?: Schedule[];
+  meetings?: MeetingSummary[];
   onDateSelect?: (date: Date) => void;
   containerClassName?: string;
+  disableBeforeToday?: boolean;
 }
 
 const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
@@ -17,19 +19,23 @@ const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
 export default function Calendar({
   currentDate,
   selectedDate,
-  schedules = [],
+  meetings = [],
   onDateSelect,
   containerClassName,
+  disableBeforeToday = false,
 }: CalendarProps) {
   const dates = generateCalendarDates(currentDate);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  const schedulesByDate = schedules.reduce(
-    (acc, schedule) => {
-      if (!acc[schedule.date]) acc[schedule.date] = [];
-      acc[schedule.date].push(schedule);
+  const meetingsByDate = meetings.reduce(
+    (acc, meeting) => {
+      const date = meeting.startTime.split('T')[0]; // "2025-02-15T14:00:00" → "2025-02-15"
+      if (!acc[date]) acc[date] = [];
+      acc[date].push(meeting);
       return acc;
     },
-    {} as Record<string, Schedule[]>,
+    {} as Record<string, MeetingSummary[]>,
   );
 
   return (
@@ -57,13 +63,20 @@ export default function Calendar({
               const isSelected = selectedDate && isSameDay(date, selectedDate);
               const isToday = isSameDay(date, new Date());
               const isCurrentMonth = date.getMonth() === currentDate.getMonth();
+              const dateStart = new Date(date);
+              dateStart.setHours(0, 0, 0, 0);
+              const isDisabled = disableBeforeToday && dateStart <= today;
               const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-              const daySchedules = schedulesByDate[dateString] || [];
+              const dayMeetings = meetingsByDate[dateString] || [];
 
               return (
                 <div key={dateString} className="flex flex-1 flex-col">
                   <button
-                    onClick={() => onDateSelect?.(date)}
+                    type="button"
+                    disabled={isDisabled}
+                    onClick={() => {
+                      if (!isDisabled) onDateSelect?.(date);
+                    }}
                     className={cn(
                       'h-9 w-9 shrink-0 self-center rounded-xl text-body-4.1 flex-center',
                       'transition-colors duration-200',
@@ -71,10 +84,13 @@ export default function Calendar({
                         'text-tx-default_5': !isCurrentMonth,
                         'text-white': isCurrentMonth,
                         'bg-bg-primary text-white hover:bg-bg-primary/80':
-                          isToday,
+                          isToday && !isDisabled,
                         'border-[1.5px] border-textfiled-line_focus text-white':
-                          isSelected && !isToday,
-                        'hover:bg-white/10': !isToday && !isSelected,
+                          isSelected && !isToday && !isDisabled,
+                        'hover:bg-white/10':
+                          !isToday && !isSelected && !isDisabled,
+                        'cursor-not-allowed text-tx-default_5 opacity-40':
+                          isDisabled,
                       },
                     )}
                   >
@@ -82,14 +98,12 @@ export default function Calendar({
                   </button>
 
                   <div className="h-3 w-9 gap-0.5 self-center flex-center">
-                    {daySchedules.slice(0, 2).map((schedule) => (
+                    {dayMeetings.slice(0, 2).map((meeting) => (
                       <div
-                        key={schedule.id}
+                        key={meeting.meetingId}
                         className="h-2 w-2 rounded-full"
                         style={{
-                          backgroundColor:
-                            SCHEDULE_COLORS.find((c) => c.id === schedule.color)
-                              ?.hex || schedule.color,
+                          backgroundColor: MEETING_COLOR_MAP[meeting.color],
                         }}
                       />
                     ))}

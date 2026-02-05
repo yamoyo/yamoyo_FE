@@ -1,36 +1,30 @@
+import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
 import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
-import { useScheduleStore } from '@/entities/calendar/model/schedule-store';
-import { Schedule, SCHEDULE_COLORS } from '@/entities/calendar/model/types';
-import { useTeamStore } from '@/entities/team/model/team-store';
+import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
 
 interface CalendarEventListProps {
+  meetings: MeetingSummary[];
   currentDate: Date;
   selectedDate?: Date;
   onAddEvent?: () => void;
 }
 
 export default function CalendarEventList({
+  meetings,
   currentDate,
   selectedDate,
   onAddEvent,
 }: CalendarEventListProps) {
-  const selectedTeamId = useTeamStore((state) => state.selectedTeamId);
-  const getSchedulesByTeam = useScheduleStore(
-    (state) => state.getSchedulesByTeam,
-  );
-  const teamSchedules = getSchedulesByTeam(selectedTeamId);
-
-  const filteredSchedules = teamSchedules.filter((schedule) => {
+  const filteredMeetings = meetings.filter((meeting) => {
+    const meetingDate = meeting.startTime.split('T')[0]; // "2025-02-15"
     if (selectedDate) {
       const dateString = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-      return schedule.date === dateString;
+      return meetingDate === dateString;
     } else {
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1;
-      const [scheduleYear, scheduleMonth] = schedule.date
-        .split('-')
-        .map(Number);
-      return scheduleYear === year && scheduleMonth === month;
+      const [meetingYear, meetingMonth] = meetingDate.split('-').map(Number);
+      return meetingYear === year && meetingMonth === month;
     }
   });
 
@@ -57,7 +51,7 @@ export default function CalendarEventList({
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 pb-6">
-        {filteredSchedules.length === 0 ? (
+        {filteredMeetings.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center gap-6 pt-8">
             <img src={'/assets/calendar/empty.png'} width={214} height={77} />
             <p className="text-body-2 text-tx-default_2">
@@ -66,8 +60,8 @@ export default function CalendarEventList({
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {filteredSchedules.map((schedule) => (
-              <ScheduleItem key={schedule.id} schedule={schedule} />
+            {filteredMeetings.map((meeting) => (
+              <MeetingItem key={meeting.meetingId} meeting={meeting} />
             ))}
           </div>
         )}
@@ -76,24 +70,31 @@ export default function CalendarEventList({
   );
 }
 
-function ScheduleItem({ schedule }: { schedule: Schedule }) {
-  const colorHex =
-    SCHEDULE_COLORS.find((c) => c.id === schedule.color)?.hex || schedule.color;
-  const scheduleDate = new Date(schedule.date);
+function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
+  const colorHex = MEETING_COLOR_MAP[meeting.color];
+  const meetingDate = new Date(meeting.startTime);
   const dayLabel = ['일', '월', '화', '수', '목', '금', '토'][
-    scheduleDate.getDay()
+    meetingDate.getDay()
   ];
 
+  const startTimeStr = meeting.startTime.split('T')[1]?.slice(0, 5); // "14:00"
+  const endTimeStr = meeting.endTime.split('T')[1]?.slice(0, 5); // "15:30"
+  const hasLocation = Boolean(meeting.location?.trim());
+  const locationLabel = hasLocation ? meeting.location!.trim() : '온라인';
+  const locationIconSrc = hasLocation
+    ? '/assets/icons/place.svg'
+    : '/assets/icons/online.svg';
+
   return (
-    <div className="flex items-stretch gap-4 rounded-2xl bg-[#2a2d3e] p-4">
+    <div className="flex items-stretch gap-4 rounded-2xl bg-bg-card p-4">
       <div className="flex min-w-[48px] flex-col items-center justify-center pt-0.5">
         <span className="text-2xl font-bold text-white">
-          {scheduleDate.getDate()}
+          {meetingDate.getDate()}
         </span>
         <span className="text-xs text-gray-400">{dayLabel}</span>
       </div>
 
-      <div className="w-px self-stretch bg-[#3a3f52]" />
+      <div className="w-[1.5px] self-stretch bg-bg-textfiled" />
 
       <div className="flex flex-1 flex-col gap-2">
         <div className="flex items-center gap-2">
@@ -101,20 +102,23 @@ function ScheduleItem({ schedule }: { schedule: Schedule }) {
             className="h-3 w-3 shrink-0 rounded-full"
             style={{ backgroundColor: colorHex }}
           />
-          <span className="text-sm font-medium text-white">
-            {schedule.title}
-          </span>
+          <span className="text-body-5 text-tx-default_3">{meeting.title}</span>
         </div>
 
-        {schedule.location && (
-          <div className="flex items-center gap-1 text-xs text-gray-400">
-            <img src="/assets/icons/place.svg" alt="" className="h-3 w-3" />
-            <span>{schedule.location}</span>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <img
+            src={locationIconSrc}
+            alt={hasLocation ? '오프라인' : '온라인'}
+            width={12}
+            height={12}
+          />
+          <div className="text-body-5 text-tx-default_3">{locationLabel}</div>
+        </div>
 
-        {schedule.time && (
-          <div className="text-xs text-gray-400">{schedule.time}</div>
+        {startTimeStr && endTimeStr && (
+          <div className="text-body-5 text-tx-default_3">
+            {startTimeStr} - {endTimeStr}
+          </div>
         )}
       </div>
     </div>
