@@ -9,6 +9,7 @@ import {
   Step,
 } from '@/features/leader-game/ladder-game/model/types';
 import ResultButton from '@/features/leader-game/ladder-game/ui/ResultButton';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { cn } from '@/shared/config/tailwind/cn';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
@@ -80,6 +81,7 @@ export default function LadderBoard({
   const { bind } = useHorizontalDragScroll<HTMLDivElement>();
   const { openCharacterModal } = useModalStore();
 
+  const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
   const accessToken = useAuthStore((s) => s.accessToken);
   const myUserId = accessToken
     ? jwtDecode<{ sub: string }>(accessToken).sub
@@ -300,8 +302,11 @@ export default function LadderBoard({
           subTitle: '축하합니다. 팀 빌딩을 이어가주세요.',
           type: 'CROWN',
           characterId: winnerProfileImageId,
-          buttonText: '확인',
-          onClick: () => navigate('..', { replace: true }),
+          buttonText: '팀룸으로 이동',
+          onClick: () => {
+            navigate('..', { replace: true });
+            setWorkflow('SETUP');
+          },
         });
       }, modalAt),
     );
@@ -312,6 +317,7 @@ export default function LadderBoard({
     winnerName,
     clearAllTimeouts,
     scheduleMove,
+    setWorkflow,
     openCharacterModal,
     navigate,
   ]);

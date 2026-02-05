@@ -7,5 +7,10 @@ import { addTeamRoomWsHandler } from './ws-bus';
 export function useTeamRoomWsListener(
   handler: (msg: LeaderGameMessage) => void,
 ) {
-  useEffect(() => addTeamRoomWsHandler(handler), [handler]);
+  useEffect(() => {
+    const unsub = addTeamRoomWsHandler(handler);
+    return () => {
+      void unsub();
+    };
+  }, [handler]);
 }

@@ -1,64 +1,65 @@
 import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 
 import type { PhaseChangeMessage } from '@/entities/leader-game/api/ws-types';
-import { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
+import type {
+  TeamMemberRole,
+  TeamRoomWorkflow,
+} from '@/entities/teamroom/api/teamroom-dto';
 import type { Phase } from '@/widgets/teamroom/leader-game/model/types';
 
-interface LeaderGameState {
+type PhasePayload = PhaseChangeMessage['payload'];
+
+interface LeaderSelectionState {
+  // 공통 컨텍스트
   teamRoomId: number | string | null;
   role: TeamMemberRole | null;
-  phase: Phase;
-  payload: PhaseChangeMessage['payload'] | null;
 
-  setTeamRoomId: (teamRoomId: number | string | null) => void;
+  // 팀장 정하기 게임 상태
+  phase: Phase;
+  payload: PhasePayload | null;
+
+  // ws 연결 가드용 상태
+  workflow: TeamRoomWorkflow | null;
+
+  // setters
   setRole: (role: TeamMemberRole | null) => void;
   setPhase: (phase: Phase) => void;
-  setPayload: (payload: PhaseChangeMessage['payload'] | null) => void;
+  setPayload: (payload: PhasePayload | null) => void;
+  setWorkflow: (workflow: TeamRoomWorkflow | null) => void;
 
+  // helpers
   clearPayload: () => void;
   reset: () => void;
+
+  // ws 연결 조건을 store에서 바로 계산
+  canConnectOnMain: () => boolean;
 }
 
 const initialState = {
   teamRoomId: null,
-  phase: null,
   role: null,
-  payload: null as PhaseChangeMessage['payload'] | null,
+  phase: null as Phase,
+  payload: null as PhasePayload | null,
+  workflow: null as TeamRoomWorkflow | null,
 };
 
-export const useLeaderGameStore = create<LeaderGameState>()(
-  persist(
-    (set) => ({
-      ...initialState,
+export const useLeaderSelectionStore = create<LeaderSelectionState>(
+  (set, get) => ({
+    ...initialState,
 
-      setRole: (role) => set({ role }),
-      setTeamRoomId: (teamRoomId) => set({ teamRoomId }),
-      setPhase: (phase) => set({ phase }),
-      setPayload: (payload) => set({ payload }),
+    setRole: (role) => set({ role }),
+    setPhase: (phase) => set({ phase }),
+    setPayload: (payload) => set({ payload }),
+    setWorkflow: (workflow) => set({ workflow }),
 
-      clearPayload: () => set({ payload: null }),
+    clearPayload: () => set({ payload: null }),
 
-      reset: () => {
-        set(initialState);
-        // localStorage도 같이 비우고 싶으면 아래도 같이 써도 됨:
-        // useLeaderGameStore.persist.clearStorage();
-      },
-    }),
-    {
-      name: 'leader-game-store', // localStorage key
-      storage: createJSONStorage(() => localStorage),
+    reset: () => set(initialState),
 
-      /**
-       * 저장할 필드만 고르기 (필요 없으면 삭제해도 됨)
-       * - 보통 volunteerPayload는 휘발성이라 저장 안 하는 게 안전할 때가 많음
-       */
-      partialize: (s) => ({
-        teamRoomId: s.teamRoomId,
-        role: s.role,
-        phase: s.phase,
-        payload: s.payload,
-      }),
+    canConnectOnMain: () => {
+      const wf = get().workflow;
+      // PENDING, LEADER_SELECTION 상태에서만 연결 허용
+      return wf === 'PENDING' || wf === 'LEADER_SELECTION';
     },
-  ),
+  }),
 );

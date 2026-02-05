@@ -47,7 +47,7 @@ export default function TeamRoomContents({
     );
   }
 
-  if (workflow === 'COMPLETED') {
+  if (workflow === 'SETUP') {
     return <Dashboard />;
   }
 

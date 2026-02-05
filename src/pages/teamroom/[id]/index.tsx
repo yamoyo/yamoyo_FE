@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { LeaderGameMessage } from '@/entities/leader-game/api/ws-types';
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
-import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
 import { useAuthStore } from '@/shared/api/auth/store';
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
@@ -22,17 +22,7 @@ export default function TeamRoomMainPage() {
   const { id } = useParams<{ id: string }>();
   const accessToken = useAuthStore((s) => s.accessToken);
 
-  const teamRoomRef = useRef<TeamRoomDetail | null>(null);
-  /** 팀룸 정보를 받기 전에 수신된 메시지를 임시로 저장하는 버퍼 */
-  const pendingMessagesRef = useRef<LeaderGameMessage[]>([]);
-  // 초기화 완료 여부
-  const isBootstrappedRef = useRef(false);
-
-  const [teamRoom, _setTeamRoom] = useState<TeamRoomDetail | null>(null);
-  const setTeamRoom = useCallback((next: TeamRoomDetail | null) => {
-    teamRoomRef.current = next;
-    _setTeamRoom(next);
-  }, []);
+  const [teamRoom, setTeamRoom] = useState<TeamRoomDetail | null>(null);
 
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -41,10 +31,10 @@ export default function TeamRoomMainPage() {
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
 
   // 팀장 정하기 게임 상태 관리
-  const setPhase = useLeaderGameStore((s) => s.setPhase);
-  const setTeamRoomId = useLeaderGameStore((s) => s.setTeamRoomId);
-  const setPayload = useLeaderGameStore((s) => s.setPayload);
-  const setRole = useLeaderGameStore((s) => s.setRole);
+  const setPhase = useLeaderSelectionStore((s) => s.setPhase);
+  const setPayload = useLeaderSelectionStore((s) => s.setPayload);
+  const setRole = useLeaderSelectionStore((s) => s.setRole);
+  const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   const isAllOnline =
     (teamRoom?.members?.length ?? 0) > 1 &&
@@ -56,38 +46,35 @@ export default function TeamRoomMainPage() {
     (msg: LeaderGameMessage) => {
       if (msg.type !== 'USER_STATUS_CHANGE') return;
 
-      const current = teamRoomRef.current;
-      if (!current) {
-        // 서버에서 팀룸 정보를 아직 못 받았으면 임시로 메시지를 저장
-        pendingMessagesRef.current.push(msg);
-        return;
-      }
-
       const { username, status, userId, profileImageId } = msg;
 
-      const updatedTeamRoom = teamRoom;
-
-      if (!updatedTeamRoom) return;
+      if (!teamRoom) return;
 
       const isNewMember =
-        !updatedTeamRoom?.members.find(
-          (member) => member.userId === msg.userId,
-        ) && profileImageId;
+        !teamRoom.members.find((member) => member.userId === msg.userId) &&
+        profileImageId;
 
       if (isNewMember) {
-        updatedTeamRoom.members.push({
+        const updatedMembers = [...teamRoom.members];
+        updatedMembers.push({
           role: 'MEMBER',
           userId,
           name: username,
           profileImageId,
           status,
         });
-        setTeamRoom({ ...updatedTeamRoom });
+        setTeamRoom((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            members: updatedMembers,
+          };
+        });
         return;
       }
 
       // 메시지 통해 받아 온 사용자 온라인 상태 변경
-      const updatedMembers = updatedTeamRoom.members.map((member) => {
+      const updatedMembers = teamRoom.members.map((member) => {
         if (member.userId === msg.userId) {
           return {
             ...member,
@@ -96,10 +83,9 @@ export default function TeamRoomMainPage() {
         }
         return member;
       });
-      setTeamRoom({
-        ...updatedTeamRoom,
-        members: updatedMembers,
-      });
+      setTeamRoom((prev) =>
+        prev ? { ...prev, members: updatedMembers } : prev,
+      );
     },
     [teamRoom, setTeamRoom],
   );
@@ -116,13 +102,12 @@ export default function TeamRoomMainPage() {
         return;
       }
 
-      setTeamRoomId(id);
       setPhase('LEADER_VOLUNTEER');
       setPayload(msg.payload);
       setRole(teamRoom.myRole);
       navigate('leader-game');
     },
-    [navigate, setPhase, setTeamRoomId, setPayload, setRole, teamRoom, id],
+    [navigate, setPhase, setPayload, setRole, teamRoom, id],
   );
 
   const onRoomMessage = useCallback(
@@ -146,16 +131,17 @@ export default function TeamRoomMainPage() {
   // WS 메시지 수신 리스너 등록
   useTeamRoomWsListener(onRoomMessage);
 
-  // 팀룸 정보 조회 및 버퍼 메시지 처리
+  // 팀룸 정보 조회
   useEffect(() => {
     if (!id) return;
-    if (isBootstrappedRef.current) return;
     try {
       (async () => {
         const [teamRoomDetail, onlineStatus] = await Promise.all([
           getTeamRoomDetail(id),
           leaderGameApi.getOnlineStatus(id),
         ]);
+
+        setWorkflow(teamRoomDetail.workflow);
 
         if (teamRoomDetail.workflow === 'LEADER_SELECTION') {
           navigate('leader-game');
@@ -174,18 +160,11 @@ export default function TeamRoomMainPage() {
         });
 
         setTeamRoom({ ...teamRoomDetail, members: onlineStatus });
-
-        isBootstrappedRef.current = true;
-
-        // 버퍼에 쌓인 메시지 처리
-        pendingMessagesRef.current.forEach((msg) => {
-          onRoomMessage(msg);
-        });
       })();
     } catch (error) {
       console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
     }
-  }, [id, setTeamRoom, onRoomMessage, navigate, accessToken]);
+  }, [id, setTeamRoom, navigate, accessToken, setWorkflow]);
 
   useEffect(() => {
     if (editData) {

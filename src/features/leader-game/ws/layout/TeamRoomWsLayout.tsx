@@ -6,9 +6,10 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 
 import type { LeaderGameMessage } from '@/entities/leader-game/api/ws-types';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { emitTeamRoomWsMessage } from '@/features/leader-game/ws/model/ws-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { createStompClient } from '@/shared/api/ws/stompClient';
@@ -30,7 +31,19 @@ export const useTeamRoomWsClient = () => useContext(TeamRoomWsClientContext);
  */
 export default function TeamRoomWsLayout() {
   const { id } = useParams<{ id: string }>();
+  const { pathname } = useLocation();
+
   const accessToken = useAuthStore((s) => s.accessToken);
+  const workflow = useLeaderSelectionStore((s) => s.workflow);
+
+  const isLeaderGameRoute = pathname.includes('/leader-game');
+
+  const shouldConnect =
+    Boolean(id) &&
+    Boolean(accessToken) &&
+    (isLeaderGameRoute ||
+      workflow === 'PENDING' ||
+      workflow === 'LEADER_SELECTION');
 
   const ws: WsClient | null = useMemo(() => {
     if (!accessToken) return null;
@@ -41,15 +54,33 @@ export default function TeamRoomWsLayout() {
     });
   }, [accessToken]);
 
-  // ws 연결/해제
+  // WebSocket 연결 상태 관리
+  const connectedRef = useRef(false);
+
+  // shouldConnect 변경 시 연결/해제 처리
   useEffect(() => {
     if (!ws) return;
-    ws.connect();
-    return () => ws.disconnect();
-  }, [ws]);
 
-  // 구독 해제 함수 보관용 ref
-  const unsubRef = useRef<null | (() => void)>(null);
+    if (shouldConnect && !connectedRef.current) {
+      ws.connect();
+      connectedRef.current = true;
+    }
+
+    if (!shouldConnect && connectedRef.current) {
+      ws.disconnect();
+      connectedRef.current = false;
+    }
+
+    return () => {
+      if (connectedRef.current) {
+        ws.disconnect();
+        connectedRef.current = false;
+      }
+    };
+  }, [ws, shouldConnect]);
+
+  // 공통 구독(/sub/room/{id})도 shouldConnect일 때만 등록
+  const unsubRoomRef = useRef<null | (() => void)>(null);
 
   // 팀룸 메시지 수신 처리
   const onRoom = useCallback((msg: LeaderGameMessage) => {
@@ -57,12 +88,11 @@ export default function TeamRoomWsLayout() {
   }, []);
 
   useEffect(() => {
-    if (!ws || !id) return;
+    if (!ws || !id || !shouldConnect) return;
 
-    // 이전 구독 해제
-    unsubRef.current?.();
+    unsubRoomRef.current?.();
 
-    unsubRef.current = ws.subscribe<LeaderGameMessage>(
+    unsubRoomRef.current = ws.subscribe<LeaderGameMessage>(
       `/sub/room/${id}`,
       (m) => {
         if (!m.json) return;
@@ -71,13 +101,13 @@ export default function TeamRoomWsLayout() {
     );
 
     return () => {
-      unsubRef.current?.();
-      unsubRef.current = null;
+      unsubRoomRef.current?.();
+      unsubRoomRef.current = null;
     };
-  }, [ws, id, onRoom]);
+  }, [ws, id, shouldConnect, onRoom]);
 
   return (
-    <TeamRoomWsClientContext.Provider value={ws}>
+    <TeamRoomWsClientContext.Provider value={shouldConnect ? ws : null}>
       <Outlet />
     </TeamRoomWsClientContext.Provider>
   );

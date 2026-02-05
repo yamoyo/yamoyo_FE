@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { VoteUpdatedPayload } from '@/entities/leader-game/api/ws-types';
 import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
-import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
@@ -19,8 +19,9 @@ export default function LeaderApplicationWait({
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
 
-  const phase = useLeaderGameStore((s) => s.phase);
-  const setPhase = useLeaderGameStore((s) => s.setPhase);
+  const phase = useLeaderSelectionStore((s) => s.phase);
+  const setPhase = useLeaderSelectionStore((s) => s.setPhase);
+  const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   const votedUsers: TeamMember[] = members.filter((m) =>
     voteUpdatedPayload.votedUserIds.includes(m.userId),
@@ -58,9 +59,9 @@ export default function LeaderApplicationWait({
         characterId: profileImageId,
         onClick: () => {
           navigate('..');
-          closeModal();
+          setWorkflow('SETUP');
         },
-        buttonText: '팀룸으로 돌아가기',
+        buttonText: '팀룸으로 이동',
       });
     } else {
       // 3. 2명 이상 지원
@@ -78,13 +79,14 @@ export default function LeaderApplicationWait({
     }, 5000);
     return () => clearTimeout(timer);
   }, [
-    closeModal,
-    openCharacterModal,
+    phase,
     members,
     voteUpdatedPayload,
-    navigate,
-    phase,
     setPhase,
+    setWorkflow,
+    closeModal,
+    openCharacterModal,
+    navigate,
   ]);
 
   useEffect(() => {

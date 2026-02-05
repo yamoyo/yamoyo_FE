@@ -11,7 +11,7 @@ import {
 import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import LadderGame from '@/features/leader-game/ladder-game/ui/LadderGame';
 import { TimingGame } from '@/features/leader-game/timing-game/ui/TimingGame';
-import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useLeaderGameSocket } from '@/features/leader-game/ws/model/useLeaderGameSocket';
 import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
 import RouletteGame from '@/pages/games/roulette';
@@ -29,11 +29,13 @@ export function SelectLeader() {
   const { id } = useParams<{ id: string }>();
 
   const accessToken = useAuthStore((s) => s.accessToken);
-  const phase = useLeaderGameStore((s) => s.phase);
-  const role = useLeaderGameStore((s) => s.role);
-  const payload = useLeaderGameStore((s) => s.payload);
-  const setPhase = useLeaderGameStore((s) => s.setPhase);
-  const setPayload = useLeaderGameStore((s) => s.setPayload);
+  const phase = useLeaderSelectionStore((s) => s.phase);
+  const role = useLeaderSelectionStore((s) => s.role);
+  const payload = useLeaderSelectionStore((s) => s.payload);
+  const setPhase = useLeaderSelectionStore((s) => s.setPhase);
+  const setPayload = useLeaderSelectionStore((s) => s.setPayload);
+  const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
+
   const openCharacterModal = useModalStore((s) => s.openCharacterModal);
 
   const [members, setMembers] = useState<TeamMember[] | null>(null);
@@ -55,8 +57,11 @@ export function SelectLeader() {
       subTitle: '축하합니다. 팀 빌딩을 이어가주세요.',
       type: 'CROWN',
       characterId: profileImageId ?? 1,
-      onClick: () => navigate('..', { replace: true }),
-      buttonText: '팀룸으로 돌아가기',
+      onClick: () => {
+        navigate('..', { replace: true });
+        setWorkflow('SETUP');
+      },
+      buttonText: '팀룸으로 이동',
     });
   };
 
@@ -129,8 +134,9 @@ export function SelectLeader() {
     (async () => {
       const members = await leaderGameApi.getOnlineStatus(id);
       setMembers(members);
+      setWorkflow('LEADER_SELECTION');
     })();
-  }, [id]);
+  }, [id, setWorkflow]);
 
   if (!phase) {
     // TODO: 로딩 스피너로 교체

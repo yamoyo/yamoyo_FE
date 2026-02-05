@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
 import { useRouletteGame } from '@/features/leader-game/roulette-game/model/useRouletteGame';
 import RouletteBoard from '@/features/leader-game/roulette-game/ui/RouletteBoard';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import GameStartButton from '@/widgets/teamroom/main/ui/GameStartButton';
@@ -24,6 +25,7 @@ export function RouletteGame({
     useRouletteGame(gameResultPayload);
 
   const timeoutRef = useRef<number | null>(null);
+  const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   // 스핀 완료 후 모달 표시
   useEffect(() => {
@@ -40,8 +42,11 @@ export function RouletteGame({
           subTitle: '축하합니다. 팀 빌딩을 이어가주세요.',
           type: 'CROWN',
           characterId: winnerCharacterId,
-          buttonText: '확인',
-          onClick: () => navigate('..', { replace: true }),
+          buttonText: '팀룸으로 이동',
+          onClick: () => {
+            navigate('..', { replace: true });
+            setWorkflow('SETUP');
+          },
         });
       }, MODAL_DELAY_MS);
     }
@@ -59,6 +64,7 @@ export function RouletteGame({
     participants,
     openCharacterModal,
     navigate,
+    setWorkflow,
   ]);
 
   return (

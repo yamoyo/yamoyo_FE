@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { VolunteerUpdatedMessage } from '@/entities/leader-game/api/ws-types';
 import { useTeamRoomWsClient } from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
 
@@ -33,6 +34,7 @@ export function useLeaderGameSocket({
 }: Params) {
   const ws = useTeamRoomWsClient();
   const accessToken = useAuthStore((s) => s.accessToken);
+  const canConnectOnMain = useLeaderSelectionStore((s) => s.canConnectOnMain);
 
   // 최신 콜백 유지
   const handlersRef = useRef({
@@ -89,7 +91,7 @@ export function useLeaderGameSocket({
   }, [onJoinResponse, onError]);
 
   useEffect(() => {
-    if (!ws || !enabled || !roomId) return;
+    if (!ws || !enabled || !roomId || !canConnectOnMain) return;
     if (!accessToken) return;
 
     const userId = jwtDecode<{ sub: string }>(accessToken).sub as string;
@@ -109,7 +111,7 @@ export function useLeaderGameSocket({
 
     actions.join();
     return () => unsubJoinResponse();
-  }, [ws, enabled, roomId, actions, accessToken]);
+  }, [ws, enabled, roomId, actions, accessToken, canConnectOnMain]);
 
   return { ws, actions };
 }

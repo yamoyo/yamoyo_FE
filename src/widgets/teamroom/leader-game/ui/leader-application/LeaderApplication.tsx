@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 
@@ -34,8 +34,8 @@ export default function LeaderApplication({
     (typeof BUTTON_ITEMS)[number]['value'] | null
   >(null);
 
-  const payload = useLeaderGameStore((s) => s.payload);
-  const clearPayload = useLeaderGameStore((s) => s.clearPayload);
+  const payload = useLeaderSelectionStore((s) => s.payload);
+  const clearPayload = useLeaderSelectionStore((s) => s.clearPayload);
 
   const startedAt = new Date(payload?.phaseStartTime ?? Date.now());
   const durationSeconds = payload?.durationSeconds ?? 0;
