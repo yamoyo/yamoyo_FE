@@ -26,14 +26,19 @@ export default function MemberItem({ member }: MemberItemProps) {
           className="absolute"
           draggable={false}
         />
-        {isMemberLeader && (
-          <img
-            src="/assets/icons/leader.svg"
-            alt="leader"
-            width={16}
-            height={16}
-            className="absolute bottom-2 right-2"
-          />
+        {(isMemberLeader || member.status === 'ONLINE') && (
+          <div className="absolute bottom-0.5 right-0.5 rounded-full bg-[#202540] p-0.5 flex-center">
+            {isMemberLeader ? (
+              <img
+                src="/assets/icons/leader.svg"
+                alt="leader"
+                width={16}
+                height={16}
+              />
+            ) : (
+              <div className="h-4 w-4 rounded-full bg-ct-ch-8" />
+            )}
+          </div>
         )}
       </div>
       <span className="text-body-6 text-tx-default_3">{member.name}</span>

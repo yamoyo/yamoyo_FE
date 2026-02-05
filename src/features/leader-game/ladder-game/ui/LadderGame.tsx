@@ -1,8 +1,13 @@
+import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
 import TopBar from '@/shared/ui/header/TopBar';
 
 import LadderBoard from './LadderBoard';
 
-export default function LadderGame() {
+export default function LadderGame({
+  gameResultPayload,
+}: {
+  gameResultPayload: GameResultPayload;
+}) {
   return (
     <div
       style={{
@@ -21,7 +26,11 @@ export default function LadderGame() {
         {'예측 불허!\n가장 클래식한 운명의 복불복'}
       </h1>
 
-      <LadderBoard teamLeaderIndex={1} containerClassName="mt-4" />
+      <LadderBoard
+        teamLeaderIndex={1}
+        containerClassName="mt-4"
+        gameResultPayload={gameResultPayload}
+      />
     </div>
   );
 }

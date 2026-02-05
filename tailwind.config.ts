@@ -73,7 +73,7 @@ const config: Config = {
         'ct-ch-5': '#F3546F',
         'ct-ch-6': '#F7EB55',
         'ct-ch-7': '#FBA000',
-        'ct-ch-9': '#5DFBDB',
+        'ct-ch-8': '#5DFBDB',
         'ct-ch-10': '#8255F7',
 
         /* etc */

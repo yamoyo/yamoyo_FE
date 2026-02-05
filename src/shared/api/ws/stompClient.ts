@@ -5,9 +5,22 @@ import { BASE_URL } from '@/shared/api/base/request';
 
 import type { WsClient, WsClientOptions, WsMessageHandler } from './types';
 
-/**
- * JSON 파싱
- */
+// 대기중인 구독 타입
+type PendingSub = {
+  destination: string;
+  callback: (msg: IMessage) => void; // 구독 콜백
+  sub?: { unsubscribe: () => void };
+  cancelled?: boolean;
+};
+
+// 대기중인 발행 타입
+type PendingPub = {
+  destination: string;
+  body?: unknown;
+  cancelled?: boolean;
+};
+
+/** JSON 파싱 */
 function parseJson<T>(raw: string): T | undefined {
   try {
     return JSON.parse(raw) as T;
@@ -24,6 +37,10 @@ function parseJson<T>(raw: string): T | undefined {
 export function createStompClient(options: WsClientOptions): WsClient {
   const { accessToken, onConnect, onError } = options;
 
+  let isConnected = false;
+  const pendingSubs: PendingSub[] = [];
+  const pendingPubs: PendingPub[] = [];
+
   // stomp 클라이언트 생성
   const client = new Client({
     webSocketFactory: () => new SockJS(`${BASE_URL}/ws-stomp`),
@@ -34,13 +51,37 @@ export function createStompClient(options: WsClientOptions): WsClient {
 
   // 연결 완료
   client.onConnect = () => {
+    isConnected = true;
+
+    // 연결되면 그동안 요청된 subscribe를 모두 등록
+    for (const p of pendingSubs) {
+      if (p.cancelled) continue;
+      p.sub = client.subscribe(p.destination, p.callback);
+    }
+
+    for (const p of pendingPubs) {
+      if (p.cancelled) continue;
+      client.publish({
+        destination: p.destination,
+        body: p.body ? JSON.stringify(p.body) : '{}',
+      });
+    }
+
+    pendingSubs.length = 0;
+    pendingPubs.length = 0;
+
     onConnect?.();
   };
 
-  // 에러 발생
-  client.onStompError = (frame) => {
-    onError?.(frame);
+  client.onDisconnect = () => {
+    isConnected = false;
   };
+  client.onWebSocketClose = () => {
+    isConnected = false;
+  };
+
+  // 에러 발생
+  client.onStompError = (frame) => onError?.(frame);
 
   // 연결
   function connect() {
@@ -49,28 +90,44 @@ export function createStompClient(options: WsClientOptions): WsClient {
 
   // 연결 종료
   function disconnect() {
+    // 연결 끊을 때 pending 정리
+    pendingSubs.length = 0;
+    pendingPubs.length = 0;
     client.deactivate();
   }
 
   // 구독
   // destination: 구독 주소
   function subscribe<T>(destination: string, handler: WsMessageHandler<T>) {
-    // 메시지 수신 핸들러 등록
-    const sub = client.subscribe(destination, (msg: IMessage) => {
+    // cb:
+    const callback = (msg: IMessage) => {
       const raw = msg.body ?? '';
-      handler({
-        raw,
-        json: parseJson<T>(raw),
-      });
-    });
+      handler({ raw, json: parseJson<T>(raw) });
+    };
 
-    // unsubscribe 함수 반환
-    return () => sub.unsubscribe();
+    // 아직 연결 전이면 pending에 추가 / 연결되면 구독 시작
+    const p: PendingSub = { destination, callback };
+    if (isConnected) {
+      p.sub = client.subscribe(destination, callback);
+    } else {
+      pendingSubs.push(p);
+    }
+
+    // unsubscribe는 언제든 안전하게 동작
+    return () => {
+      if (p.sub) p.sub.unsubscribe();
+      else p.cancelled = true;
+    };
   }
 
   // 메시지 보내기
   // destination: 구독 주소
   function publish(destination: string, body?: unknown) {
+    if (!isConnected) {
+      // 연결 전이면 pending에 추가
+      pendingPubs.push({ destination, body });
+      return;
+    }
     client.publish({
       destination,
       body: body ? JSON.stringify(body) : '{}',

@@ -6,6 +6,7 @@ export interface TeamMember {
   name: string;
   profileImageId: number;
   role: TeamMemberRole;
+  status?: 'ONLINE' | 'OFFLINE';
 }
 
 /** 팀룸 멤버 목록 조회 응답 (GET /api/team-rooms/{teamRoomId}/members) */

@@ -1,5 +1,3 @@
-export interface VoteCharacter {
-  id: number;
-  name: string;
-  imgId: number;
-}
+import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
+
+export type VotedUser = Pick<TeamMember, 'userId' | 'name' | 'profileImageId'>;

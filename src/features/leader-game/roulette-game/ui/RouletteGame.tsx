@@ -1,40 +1,42 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
+import { useRouletteGame } from '@/features/leader-game/roulette-game/model/useRouletteGame';
+import RouletteBoard from '@/features/leader-game/roulette-game/ui/RouletteBoard';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
-
-import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
-import { DUMMY_ROULETTE } from '../model/user-dummy';
-import { useRouletteGame } from '../model/useRouletteGame';
-import RouletteBoard from './RouletteBoard';
+import GameStartButton from '@/widgets/teamroom/main/ui/GameStartButton';
 
 const MODAL_DELAY_MS = 200;
 
-export function RouletteGame() {
-  const { openCharacterModal } = useModalStore();
+export function RouletteGame({
+  gameResultPayload,
+}: {
+  gameResultPayload: GameResultPayload;
+}) {
   const navigate = useNavigate();
+  const { openCharacterModal } = useModalStore();
 
-  // TODO: 서버에서 룰렛 게임 데이터 받아오는 로직
-  const data = DUMMY_ROULETTE;
+  const { winnerId, winnerName, participants } = gameResultPayload;
 
-  const { rotation, spin, isSpinning, gameStarted, participants } =
-    useRouletteGame(data);
+  const { rotation, spin, isSpinning, gameStarted } =
+    useRouletteGame(gameResultPayload);
 
   const timeoutRef = useRef<number | null>(null);
 
   // 스핀 완료 후 모달 표시
   useEffect(() => {
-    if (!isSpinning && gameStarted && data) {
+    if (!isSpinning && gameStarted) {
       const winnerCharacterId = participants.find(
-        (u) => u.userId === data.winnerId,
-      )?.characterId;
+        (u) => u.userId === winnerId,
+      )?.profileImageId;
 
       if (!winnerCharacterId) return;
 
       timeoutRef.current = window.setTimeout(() => {
         openCharacterModal({
-          title: `${data.winnerName}님! 팀장으로 선택되었습니다.`,
+          title: `${winnerName}님! 팀장으로 선택되었습니다.`,
           subTitle: '축하합니다. 팀 빌딩을 이어가주세요.',
           type: 'CROWN',
           characterId: winnerCharacterId,
@@ -52,7 +54,8 @@ export function RouletteGame() {
   }, [
     isSpinning,
     gameStarted,
-    data,
+    winnerId,
+    winnerName,
     participants,
     openCharacterModal,
     navigate,

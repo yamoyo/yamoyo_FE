@@ -1,70 +1,112 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { useAuthStore } from '@/shared/api/auth/store';
-import { createStompClient } from '@/shared/api/ws/stompClient';
+import { VolunteerUpdatedMessage } from '@/entities/leader-game/api/ws-types';
+import { useTeamRoomWsClient } from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
+import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
 
 type Params = {
-  teamRoomId: number | string;
+  roomId?: number | string;
   enabled?: boolean;
-  onRoomMessage?: (msg: unknown) => void;
+  onJoinSuccess?: (data: unknown) => void;
+  onVoteUpdated?: (data: VolunteerUpdatedMessage) => void;
   onError?: (err: unknown) => void;
 };
 
+const wsDest = {
+  joinResponse: '/user/queue/join-response',
+  voteStatus: '/user/queue/vote-status',
+  join: (roomId: number | string) => `/pub/room/${roomId}/join`,
+  volunteer: (roomId: number | string) => `/pub/room/${roomId}/volunteer`,
+  pass: (roomId: number | string) => `/pub/room/${roomId}/pass`,
+} as const;
+
 export function useLeaderGameSocket({
-  teamRoomId,
+  roomId,
   enabled = false,
-  onRoomMessage,
+  onJoinSuccess,
+  onVoteUpdated,
   onError,
 }: Params) {
-  const accessToken = useAuthStore((s) => s.accessToken);
+  const ws = useTeamRoomWsClient();
 
-  const onRoomMessageRef = useRef<Params['onRoomMessage']>(onRoomMessage);
-  const onErrorRef = useRef<Params['onError']>(onError);
+  // 최신 콜백 유지
+  const handlersRef = useRef({
+    onJoinSuccess,
+    onVoteUpdated,
+    onError,
+  });
+
+  const publish = useCallback(
+    (dest: string, body?: unknown) => {
+      if (!ws) return;
+      ws.publish(dest, body ?? {});
+    },
+    [ws],
+  );
+
+  const actions = useMemo(
+    () =>
+      ({
+        join: () => {
+          if (!roomId) return;
+          publish(wsDest.join(roomId), {});
+        },
+        volunteer: () => {
+          if (!roomId) return;
+          publish(wsDest.volunteer(roomId), {});
+        },
+        pass: () => {
+          if (!roomId) return;
+          publish(wsDest.pass(roomId), {});
+        },
+        selectGame: (gameType: GameType) => {
+          if (!roomId) return;
+          publish(`/pub/room/${roomId}/select-game`, { gameType });
+        },
+        startTiming: () => {
+          if (!roomId) return;
+          publish(`/pub/room/${roomId}/start-timing`, {});
+        },
+        submitTimingResult: (timeDifference: number) => {
+          if (!roomId) return;
+          publish(`/pub/room/${roomId}/submit-timing`, {
+            timeDifference,
+          });
+        },
+      }) as const,
+    [roomId, publish],
+  );
 
   useEffect(() => {
-    onRoomMessageRef.current = onRoomMessage;
-  }, [onRoomMessage]);
+    handlersRef.current = {
+      onJoinSuccess,
+      onVoteUpdated,
+      onError,
+    };
+  }, [onJoinSuccess, onVoteUpdated, onError]);
 
   useEffect(() => {
-    onErrorRef.current = onError;
-  }, [onError]);
+    if (!ws || !enabled || !roomId) return;
 
-  const ws = useMemo(() => {
-    if (!accessToken || !enabled) return null;
-
-    const client = createStompClient({
-      accessToken,
-      onError: (err) => onErrorRef.current?.(err),
-      onConnect: () => {
-        // 팀룸 구독
-        client.subscribe(`/sub/room/${teamRoomId}`, (msg) => {
-          if (!msg.json) return;
-          onRoomMessageRef.current?.(msg.json);
-        });
-
-        // // 2) join 응답 (본인만)
-        // client.subscribe(`/user/queue/join-response`, (msg) => {
-        //   if (!msg.json) return;
-        //   onJoinSuccess?.(msg.json);
-        // });
-
-        // // 3) 투표 현황 (투표 완료자만 수신)
-        // client.subscribe(`/user/queue/vote-status`, (msg) => {
-        //   if (!msg.json) return;
-        //   onVoteUpdated?.(msg.json);
-        // });
-      },
+    // join 응답 (본인만)
+    const unsubJoin = ws.subscribe(`/user/queue/join-response`, (msg) => {
+      if (!msg.json) return;
+      handlersRef.current.onJoinSuccess?.(msg.json);
     });
 
-    return client;
-  }, [accessToken, enabled, teamRoomId]);
+    actions.join();
 
-  useEffect(() => {
-    if (!ws) return;
+    // 투표 현황 (투표 완료자만 수신)
+    const unsubVote = ws.subscribe(`/user/queue/vote-status`, (msg) => {
+      if (!msg.json) return;
+      handlersRef.current.onVoteUpdated?.(msg.json as VolunteerUpdatedMessage);
+    });
 
-    ws.connect();
-    return () => ws.disconnect();
-  }, [ws]);
+    return () => {
+      unsubJoin();
+      unsubVote();
+    };
+  }, [ws, enabled, roomId, actions]);
 
-  return ws;
+  return { ws, actions };
 }

@@ -11,7 +11,7 @@ const decided: DashboardStatus = {
   rule: true,
 };
 
-const startedAt = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(); // 현재 시간에서 3시간 전
+const startedAt = new Date(Date.now() - 3 * 60 * 60 * 1000); // 현재 시간에서 3시간 전 (임시용)
 
 export function Dashboard() {
   /** 각 사항이 결정되지 않았을 때 보여줄 타이머 카드

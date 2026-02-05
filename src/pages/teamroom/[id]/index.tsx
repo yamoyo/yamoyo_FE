@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
+import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
+import { LeaderGameMessage } from '@/entities/leader-game/api/ws-types';
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
-import { useLeaderGameSocket } from '@/features/leader-game/ws/model/useLeaderGameSocket';
+import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
+import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
 import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
@@ -12,66 +16,169 @@ import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';
 import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptionsBottomSheet';
 
 export default function TeamRoomMainPage() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [teamRoom, setTeamRoom] = useState<TeamRoomDetail | null>(null);
+
+  const teamRoomRef = useRef<TeamRoomDetail | null>(null);
+  /** 팀룸 정보를 받기 전에 수신된 메시지를 임시로 저장하는 버퍼 */
+  const pendingMessagesRef = useRef<LeaderGameMessage[]>([]);
+  // 초기화 완료 여부
+  const isBootstrappedRef = useRef(false);
+
+  const [teamRoom, _setTeamRoom] = useState<TeamRoomDetail | null>(null);
+  const setTeamRoom = useCallback((next: TeamRoomDetail | null) => {
+    teamRoomRef.current = next;
+    _setTeamRoom(next);
+  }, []);
+
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
 
-  const onRoomMessage = useCallback((_msg: unknown) => {
-    // console.log('팀룸 전체 메시지 수신:', msg);
-  }, []);
+  // 팀장 정하기 게임 상태 관리
+  const setPhase = useLeaderGameStore((s) => s.setPhase);
+  const setTeamRoomId = useLeaderGameStore((s) => s.setTeamRoomId);
+  const setPayload = useLeaderGameStore((s) => s.setPayload);
 
-  const onError = useCallback((err: unknown) => {
-    console.error('WebSocket 오류 발생:', err);
-  }, []);
+  const isAllOnline =
+    (teamRoom?.members?.length ?? 0) > 1 &&
+    teamRoom?.workflow === 'PENDING' &&
+    teamRoom?.members?.every((member) => member.status === 'ONLINE');
 
-  useLeaderGameSocket({
-    teamRoomId: id ?? '', // id가 없으면 빈값
-    enabled: Boolean(id) && (teamRoom?.members?.length ?? 0) > 1, // 연결 여부 제어
-    onRoomMessage,
-    // onJoinSuccess: (msg) => {
-    //   console.log('팀룸 참가 성공 메시지 수신:', msg);
-    // },
-    // onVoteUpdated: (msg) => {
-    //   console.log('투표 업데이트 메시지 수신:', msg);
-    // },
-    onError,
-  });
+  //** WS - 유저 상태 변경에 따른 메시지 처리 */
+  const handleUserStatusChange = useCallback(
+    (msg: LeaderGameMessage) => {
+      if (msg.type !== 'USER_STATUS_CHANGE') return;
 
+      const current = teamRoomRef.current;
+      if (!current) {
+        // 서버에서 팀룸 정보를 아직 못 받았으면 임시로 메시지를 저장
+        pendingMessagesRef.current.push(msg);
+        return;
+      }
+
+      const { username, status, userId, profileImageId } = msg;
+
+      const updatedTeamRoom = teamRoom;
+
+      if (!updatedTeamRoom) return;
+
+      const isNewMember =
+        !updatedTeamRoom?.members.find(
+          (member) => member.userId === msg.userId,
+        ) && profileImageId;
+
+      if (isNewMember) {
+        updatedTeamRoom.members.push({
+          role: 'MEMBER',
+          userId,
+          name: username,
+          profileImageId,
+          status,
+        });
+        setTeamRoom({ ...updatedTeamRoom });
+        return;
+      }
+
+      // 메시지 통해 받아 온 사용자 온라인 상태 변경
+      const updatedMembers = updatedTeamRoom.members.map((member) => {
+        if (member.userId === msg.userId) {
+          return {
+            ...member,
+            status: msg.status,
+          };
+        }
+        return member;
+      });
+      setTeamRoom({
+        ...updatedTeamRoom,
+        members: updatedMembers,
+      });
+    },
+    [teamRoom, setTeamRoom],
+  );
+
+  /** 팀장 지원하기 단계 진입했을 때 처리 */
+  const handleVolunteerPhase = useCallback(
+    (msg: LeaderGameMessage) => {
+      if (
+        msg.type !== 'PHASE_CHANGE' ||
+        msg.payload.phase !== 'VOLUNTEER' ||
+        !id
+      ) {
+        return;
+      }
+
+      setTeamRoomId(id);
+      setPhase('LEADER_VOLUNTEER');
+      setPayload(msg.payload);
+      navigate('leader-game');
+    },
+    [navigate, setPhase, setTeamRoomId, setPayload, id],
+  );
+
+  const onRoomMessage = useCallback(
+    (msg: LeaderGameMessage) => {
+      // eslint-disable-next-line
+      console.log('팀룸 전체 메시지 수신:', msg);
+
+      switch (msg.type) {
+        case 'USER_STATUS_CHANGE':
+          handleUserStatusChange(msg);
+          break;
+        case 'PHASE_CHANGE':
+          handleVolunteerPhase(msg);
+          break;
+        default:
+          break;
+      }
+    },
+    [handleUserStatusChange, handleVolunteerPhase],
+  );
+
+  // WS 메시지 수신 리스너 등록
+  useTeamRoomWsListener(onRoomMessage);
+
+  // 팀룸 정보 조회 및 버퍼 메시지 처리
   useEffect(() => {
     if (!id) return;
+    if (isBootstrappedRef.current) return;
     try {
       (async () => {
-        const data = await getTeamRoomDetail(id);
-        setTeamRoom(data);
-        // TODO: 팀룸 멤버 온라인 상태 조회 후 상태관리 저장
-        // const gameMembers = await leaderGameApi.getLeaderGameMembers(id);
+        const [teamRoomDetail, onlineStatus] = await Promise.all([
+          getTeamRoomDetail(id),
+          leaderGameApi.getOnlineStatus(id),
+        ]);
+
+        if (teamRoomDetail.workflow === 'LEADER_SELECTION') {
+          navigate('leader-game');
+          return;
+        }
+
+        setTeamRoom({ ...teamRoomDetail, members: onlineStatus });
+
+        isBootstrappedRef.current = true;
+
+        // 버퍼에 쌓인 메시지 처리
+        pendingMessagesRef.current.forEach((msg) => {
+          onRoomMessage(msg);
+        });
       })();
     } catch (error) {
       console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
     }
-  }, [id]);
+  }, [id, setTeamRoom, onRoomMessage, navigate]);
 
   useEffect(() => {
     if (editData) {
-      const { title, description, bannerImageId, deadline } = editData;
-      setTeamRoom((prev) =>
-        prev
-          ? {
-              ...prev,
-              title,
-              description,
-              bannerImageId,
-              deadline,
-            }
-          : null,
-      );
+      const updatedTeamRoom = teamRoom ? { ...teamRoom, ...editData } : null;
+
+      setTeamRoom(updatedTeamRoom);
       clearEditData();
     }
-  }, [editData, clearEditData]);
+  }, [editData, clearEditData, setTeamRoom, teamRoom]);
 
   if (!teamRoom) return <p>팀룸 정보를 불러오는 중입니다...</p>;
 
@@ -85,7 +192,7 @@ export default function TeamRoomMainPage() {
         members={teamRoom.members}
         onAddMember={() => setIsAddMemberOpen(true)}
       />
-      <TeamRoomContents {...teamRoom} />
+      <TeamRoomContents {...teamRoom} isAllOnline={isAllOnline} />
       <AddMemberBottomSheet
         isOpen={isAddMemberOpen}
         onClose={() => setIsAddMemberOpen(false)}

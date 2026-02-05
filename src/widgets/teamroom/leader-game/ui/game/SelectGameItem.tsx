@@ -1,11 +1,20 @@
 import { GameOption } from './model/types';
 
-export default function SelectGameItem({ id, title, description }: GameOption) {
+export default function SelectGameItem({
+  gameType,
+  title,
+  description,
+  onSelect,
+}: GameOption) {
+  if (!onSelect) return null;
   return (
-    <button className="group flex h-[100px] w-full items-center gap-4 rounded-xl bg-bg-card px-5 transition-colors hover:bg-bg-secondary_2">
+    <button
+      onClick={() => onSelect(gameType)}
+      className="group flex h-[100px] w-full items-center gap-4 rounded-xl bg-bg-card px-5 transition-colors hover:bg-bg-secondary_2"
+    >
       <img
         className="w-16"
-        src={`/assets/game/icons/icon-${id}.png`}
+        src={`/assets/game/icons/icon-${gameType.toLowerCase()}.png`}
         alt={`${title} 아이콘`}
       />
       <div className="space-y-1 text-start">

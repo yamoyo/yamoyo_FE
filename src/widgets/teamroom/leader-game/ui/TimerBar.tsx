@@ -6,7 +6,7 @@ import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   color?: 'white' | 'yellow';
-  startedAt: string; // 타이머 시작 시간 (서버에서 시작 시간을 줄 것이라 예상)
+  startedAt: Date;
   totalMs?: number; // 타이머 전체 진행 시간 (기본값: 10000ms = 10초)
   hideIcon?: boolean;
   containerClassName?: string;
@@ -55,7 +55,7 @@ export function TimerBar({
    * - 이후에 모달이 뜨거나 다른 state가 바뀌어도 다시 계산되지 않도록 startedAt와 totalMs가 바뀔 때만 갱신
    */
   const elapsedSec = useMemo(() => {
-    const startedAtMs = new Date(startedAt).getTime();
+    const startedAtMs = startedAt.getTime();
     const now = Date.now();
 
     // 아직 시작 전이면 0초로 간주

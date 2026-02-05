@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useLeaderGameStore } from '@/features/leader-game/ws/model/leader-game-store';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 
@@ -19,18 +20,45 @@ const BUTTON_ITEMS = [
   },
 ] as const;
 
+interface Props {
+  volunteerAsLeader: () => void;
+  passAsLeader: () => void;
+}
+
 /** 팀장 지원 컴포넌트 */
-export default function LeaderApplication({ onNext }: { onNext: () => void }) {
+export default function LeaderApplication({
+  volunteerAsLeader,
+  passAsLeader,
+}: Props) {
   const [selected, setSelected] = useState<
     (typeof BUTTON_ITEMS)[number]['value'] | null
   >(null);
 
-  const dummyStartedAt = new Date().toISOString();
+  const payload = useLeaderGameStore((s) => s.payload);
+  const setPhase = useLeaderGameStore((s) => s.setPhase);
+  const clearPayload = useLeaderGameStore((s) => s.clearPayload);
+
+  const startedAt = new Date(payload?.phaseStartTime ?? Date.now());
+  const durationSeconds = payload?.durationSeconds ?? 0;
+
+  const onNext = () => {
+    if (!selected) return;
+
+    if (selected === 'APPLICATION') {
+      volunteerAsLeader();
+    } else {
+      passAsLeader();
+    }
+
+    // // 다음 단계로
+    setPhase('LEADER_APPLICATION_WAIT');
+    clearPayload();
+  };
 
   return (
     <>
       <TopBar title="팀장 정하기" />
-      <TimerBar startedAt={dummyStartedAt} />
+      <TimerBar startedAt={startedAt} totalMs={durationSeconds * 1000} />
       <div className="flex flex-grow flex-col justify-between px-6 pb-12 pt-[34px]">
         <div>
           <p className="mb-2 text-title-2 text-white">

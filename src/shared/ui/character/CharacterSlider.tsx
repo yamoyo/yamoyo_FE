@@ -1,8 +1,8 @@
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
-import { VoteCharacter } from '@/widgets/vote/model/types';
+import { VotedUser } from '@/widgets/vote/model/types';
 
 interface Props {
-  characters: VoteCharacter[];
+  characters: VotedUser[];
 }
 
 /** 캐릭터 목록을 가로로 스크롤 가능한 슬라이더 형태로 표시
@@ -21,12 +21,12 @@ export function CharacterSlider({ characters }: Props) {
       >
         {characters.map((character) => (
           <div
-            key={character.id}
+            key={character.userId}
             className="h-[102px] w-[102px] flex-shrink-0 gap-2 rounded-2xl bg-bg-secondary_2 py-4 flex-col-center"
           >
             {/* 캐릭터 이미지 영역 */}
             <img
-              src={`/assets/character/char-${character.imgId}.png`}
+              src={`/assets/character/char-${character.profileImageId}.png`}
               alt={character.name}
               className="h-[46px]"
               draggable={false}

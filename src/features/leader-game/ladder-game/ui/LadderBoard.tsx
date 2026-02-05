@@ -1,22 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
+import {
+  ColumnToRowsMap,
+  PosAxisById,
+  Step,
+} from '@/features/leader-game/ladder-game/model/types';
+import ResultButton from '@/features/leader-game/ladder-game/ui/ResultButton';
 import { cn } from '@/shared/config/tailwind/cn';
 import { useHorizontalDragScroll } from '@/shared/hooks/useHorizontalDragScroll';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
-
-import GameStartButton from '../../../../widgets/teamroom/main/ui/GameStartButton';
-import {
-  ColumnToRowsMap,
-  LadderGameResponse,
-  PosAxisById,
-  Step,
-} from '../model/types';
-import { DUMMY_LADDER } from '../model/user-dummy';
-import ResultButton from './ResultButton';
+import GameStartButton from '@/widgets/teamroom/main/ui/GameStartButton';
 
 interface Props {
   teamLeaderIndex: number;
+  gameResultPayload: GameResultPayload;
   containerClassName?: string;
 }
 
@@ -77,14 +76,16 @@ const createColumnToRowsMap = (ladderLines: number[][]) => {
 
 export default function LadderBoard({
   teamLeaderIndex,
+  gameResultPayload,
   containerClassName,
 }: Props) {
+  const navigate = useNavigate();
   const { bind } = useHorizontalDragScroll<HTMLDivElement>();
   const { openCharacterModal } = useModalStore();
-  const navigate = useNavigate();
+
+  const { participants, winnerId, winnerName, gameData } = gameResultPayload;
 
   const [gameStarted, setGameStarted] = useState(false);
-  const [data, setData] = useState<LadderGameResponse | null>(null);
   const [columnToRowsMap, setColumnToRowsMap] = useState<ColumnToRowsMap>(
     new Map(),
   );
@@ -94,28 +95,28 @@ export default function LadderBoard({
   const timeoutsRef = useRef<number[]>([]);
 
   // 사다리 행 개수에 따른 레일 높이 계산
-  const ROWS = data?.gameData.ladderLines.length ?? 0;
+  const ROWS = gameData?.ladderLines.length ?? 0;
   const RAIL_HEIGHT_PX = LAYOUT.TOP_PADDING_PX + (ROWS - 1) * LAYOUT.ROW_GAP_PX;
 
   useEffect(() => {
+    if (!gameData) {
+      alert('사다리 게임 데이터를 불러오지 못했습니다. 다시 시도해 주세요.');
+      return;
+    }
+
     // TODO: 서버에서 사다리 게임 데이터 받아오는 로직
-    const filteredLadderLines = DUMMY_LADDER.gameData.ladderLines.filter(
+    const filteredLadderLines = gameData.ladderLines.filter(
       (l) => l.length > 0,
     );
 
-    setData({
-      ...DUMMY_LADDER,
-      gameData: { ladderLines: filteredLadderLines },
-    });
-
     setColumnToRowsMap(createColumnToRowsMap(filteredLadderLines));
     setPosById(() =>
-      DUMMY_LADDER.participants.reduce<PosAxisById>((acc, u) => {
+      participants.reduce<PosAxisById>((acc, u) => {
         acc[u.userId] = { x: 0, y: 0 };
         return acc;
       }, {}),
     );
-  }, []);
+  }, [gameData, participants]);
 
   // 예약된 타이머 정리
   const clearAllTimeouts = useCallback(() => {
@@ -147,9 +148,9 @@ export default function LadderBoard({
   // 캐릭터 이동 애니메이션 스케줄링
   const scheduleMove = useCallback(
     (userId: number, startIndex: number, startDelayMs: number) => {
-      if (!data) return 0;
+      if (!gameData) return 0;
 
-      const path = getPath(startIndex, data.gameData.ladderLines ?? []);
+      const path = getPath(startIndex, gameData.ladderLines ?? []);
       const steps = path.slice(1);
 
       let currentX = 0;
@@ -203,18 +204,18 @@ export default function LadderBoard({
 
       return t + TIMING.DOWN_MS;
     },
-    [data, getPath],
+    [gameData, getPath],
   );
 
   // 게임 시작 처리
   const handleGameStart = useCallback(() => {
-    if (!data || gameStarted) return;
+    if (gameStarted) return;
 
     setGameStarted(true);
     clearAllTimeouts();
 
     setPosById(() =>
-      data.participants.reduce<PosAxisById>((acc, u) => {
+      participants.reduce<PosAxisById>((acc, u) => {
         acc[u.userId] = { x: 0, y: 0 };
         return acc;
       }, {}),
@@ -222,16 +223,16 @@ export default function LadderBoard({
 
     let maxEnd = 0;
 
-    data.participants.forEach((u, idx) => {
+    participants.forEach((u, idx) => {
       const endAt = scheduleMove(u.userId, idx, idx * TIMING.START_STAGGER_MS);
       maxEnd = Math.max(maxEnd, endAt);
     });
 
-    const winnerCharacterId = data.participants.find(
-      (u) => u.userId === data.winnerId,
-    )?.characterId;
+    const winnerProfileImageId = participants.find(
+      (u) => u.userId === winnerId,
+    )?.profileImageId;
 
-    if (!winnerCharacterId) {
+    if (!winnerProfileImageId) {
       alert('예기치 못한 오류가 발생하였습니다. 다시 시도해 주세요.');
       return;
     }
@@ -241,25 +242,27 @@ export default function LadderBoard({
     timeoutsRef.current.push(
       window.setTimeout(() => {
         openCharacterModal({
-          title: `${data.winnerName}님! 팀장으로 선택되었습니다.`,
+          title: `${winnerName}님! 팀장으로 선택되었습니다.`,
           subTitle: '축하합니다. 팀 빌딩을 이어가주세요.',
           type: 'CROWN',
-          characterId: winnerCharacterId,
+          characterId: winnerProfileImageId,
           buttonText: '확인',
           onClick: () => navigate('..', { replace: true }),
         });
       }, modalAt),
     );
   }, [
-    data,
+    participants,
     gameStarted,
+    winnerId,
+    winnerName,
     clearAllTimeouts,
     scheduleMove,
     openCharacterModal,
     navigate,
   ]);
 
-  if (!data) {
+  if (!gameData) {
     // TODO: 로딩 처리
     return <p>데이터를 불러오고 있습니다.</p>;
   }
@@ -281,7 +284,7 @@ export default function LadderBoard({
         <div className="w-max pl-6 pr-4">
           <div className="relative z-10">
             <div className="flex gap-2">
-              {data?.participants.map((user, i) => (
+              {participants.map((user, i) => (
                 <div
                   key={user.userId}
                   className="relative flex flex-col items-center"
@@ -305,7 +308,7 @@ export default function LadderBoard({
                       }}
                     >
                       <img
-                        src={`/assets/character/char-${user.characterId}.png`}
+                        src={`/assets/character/char-${user.profileImageId}.png`}
                         alt="character"
                         className="h-10 w-10 select-none"
                         draggable={false}
@@ -331,7 +334,7 @@ export default function LadderBoard({
                             }}
                           >
                             <img
-                              src={`/assets/character/char-${user.characterId}.png`}
+                              src={`/assets/character/char-${user.profileImageId}.png`}
                               alt="moving character"
                               className="min-h-10 min-w-10 select-none"
                               draggable={false}
