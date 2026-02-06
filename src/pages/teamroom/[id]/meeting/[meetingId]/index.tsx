@@ -1,10 +1,13 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import type { UpdateScope } from '@/entities/calendar/api/meeting-dto';
 import {
   useDeleteMeeting,
   useMeetingDetail,
 } from '@/entities/calendar/hooks/useMeetings';
 import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
+import BottomSheet from '@/shared/ui/BottomSheet';
 import TopBar from '@/shared/ui/header/TopBar';
 
 export default function MeetingDetailPage() {
@@ -14,6 +17,8 @@ export default function MeetingDetailPage() {
     meetingId: string;
   }>();
 
+  const [isDeleteSheetOpen, setIsDeleteSheetOpen] = useState(false);
+
   const { data: meeting, isLoading } = useMeetingDetail(
     meetingId ? Number(meetingId) : null,
   );
@@ -22,12 +27,17 @@ export default function MeetingDetailPage() {
     Number(teamRoomId),
   );
 
-  const handleDelete = () => {
+  const handleOpenDeleteSheet = () => {
+    setIsDeleteSheetOpen(true);
+  };
+
+  const handleDelete = (scope: UpdateScope) => {
     if (!meetingId) return;
     deleteMeeting(
-      { meetingId: Number(meetingId) },
+      { meetingId: Number(meetingId), scope },
       {
         onSuccess: () => {
+          setIsDeleteSheetOpen(false);
           navigate(`/teamroom/${teamRoomId}`, { replace: true });
         },
       },
@@ -65,7 +75,7 @@ export default function MeetingDetailPage() {
   const colorHex = MEETING_COLOR_MAP[meeting.color];
 
   const repeatLabel =
-    meeting.meetingType === 'ADDITIONAL_RECURRING' ? '주간 반복' : '반복 없음';
+    meeting.meetingType === 'ADDITIONAL_ONE_TIME' ? '반복 없음' : '주간 반복';
 
   return (
     <div
@@ -73,10 +83,18 @@ export default function MeetingDetailPage() {
       draggable="false"
     >
       <TopBar
-        title="미팅일정"
+        title="미팅 일정"
         backIcon="arrow"
         rightContent={
-          <p className="p-[10px] text-body-4 text-textfiled-line_focus">수정</p>
+          meeting.canModify ? (
+            <button
+              type="button"
+              className="p-[10px] text-body-4 text-textfiled-line_focus"
+              aria-label="미팅 일정 수정"
+            >
+              수정
+            </button>
+          ) : undefined
         }
       />
 
@@ -183,21 +201,68 @@ export default function MeetingDetailPage() {
         </div>
       </div>
 
-      <div className="fixed bottom-12 left-1/2 -translate-x-1/2">
-        <button
-          type="button"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="flex items-center gap-[10px] rounded-xl bg-tx-default p-[10px] shadow-[0_2px_4px_0_rgba(24,30,57,0.5)] disabled:opacity-50"
-        >
-          <img
-            src="/assets/icons/meeting/meeting-delete.svg"
-            alt="삭제"
-            width={24}
-            height={24}
-          />
-        </button>
-      </div>
+      {meeting.canModify && (
+        <div className="fixed bottom-12 left-1/2 -translate-x-1/2">
+          <button
+            type="button"
+            onClick={handleOpenDeleteSheet}
+            disabled={isDeleting}
+            className="flex items-center gap-[10px] rounded-xl bg-tx-default p-[10px] shadow-[0_2px_4px_0_rgba(24,30,57,0.5)] disabled:opacity-50"
+          >
+            <img
+              src="/assets/icons/meeting/meeting-delete.svg"
+              alt="삭제"
+              width={24}
+              height={24}
+            />
+          </button>
+        </div>
+      )}
+
+      <BottomSheet
+        isOpen={isDeleteSheetOpen}
+        onClose={() => setIsDeleteSheetOpen(false)}
+        contentClassName="px-6 pb-6"
+      >
+        <div className="flex h-[34px] items-start justify-end self-stretch px-[10px] pt-[10px]">
+          <button
+            type="button"
+            onClick={() => setIsDeleteSheetOpen(false)}
+            className="flex-center"
+          >
+            <img
+              src="/assets/icons/cancel.svg"
+              width={15}
+              height={15}
+              alt="닫기"
+              draggable="false"
+            />
+          </button>
+        </div>
+
+        <h2 className="pb-6 text-left text-title-3 text-tx-default">
+          미팅 일정을 삭제하시겠습니까?
+        </h2>
+
+        <div className="flex flex-col gap-4">
+          <button
+            type="button"
+            onClick={() => handleDelete('SINGLE')}
+            disabled={isDeleting}
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+          >
+            이 일정
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDelete('THIS_AND_FUTURE')}
+            disabled={isDeleting}
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+          >
+            이번 및 향후 모든 일정 삭제
+          </button>
+        </div>
+      </BottomSheet>
     </div>
   );
 }

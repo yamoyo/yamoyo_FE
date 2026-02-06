@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -11,7 +12,7 @@ import {
 import type { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
 
-// 일정 생성 폼 상태/파생값/제출 로직을 묶은 훅
+// 일정 생성/수정 폼 상태/파생값/제출 로직을 묶은 훅
 export default function useScheduleForm() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -27,6 +28,7 @@ export default function useScheduleForm() {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<CreateScheduleFormData>({
     defaultValues: {
@@ -39,6 +41,18 @@ export default function useScheduleForm() {
       participantUserIds: [],
     },
   });
+
+  useEffect(() => {
+    reset({
+      teamId,
+      color: 'YELLOW',
+      isRecurring: false,
+      startDate: date,
+      startTime: '',
+      endTime: '',
+      participantUserIds: [],
+    });
+  }, [teamId, date, reset]);
 
   // 선택된 색상/반복 여부
   const selectedColor = watch('color');
@@ -86,7 +100,6 @@ export default function useScheduleForm() {
     };
 
     await createMeeting.mutateAsync(requestBase);
-
     navigate(-1);
   };
 
@@ -111,6 +124,7 @@ export default function useScheduleForm() {
     date,
     register,
     handleSubmit,
+    watch,
     setValue,
     errors,
     selectedColor,

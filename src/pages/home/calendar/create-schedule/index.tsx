@@ -18,6 +18,7 @@ import { useScheduleForm } from '@/widgets/calendar/create-schedule/hooks';
 export default function CreateSchedulePage() {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
   const [isParticipantSheetOpen, setIsParticipantSheetOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
