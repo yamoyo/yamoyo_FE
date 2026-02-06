@@ -1,37 +1,44 @@
-import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
+import { jwtDecode } from 'jwt-decode';
+
+import type {
+  DashboardStatus,
+  TeamMemberRole,
+} from '@/entities/teamroom/api/teamroom-dto';
+import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
+import FocusTimerCard from '@/widgets/teamroom/main/dashboard/FocusTimerCard';
+import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
+import ToolContents from '@/widgets/teamroom/main/dashboard/Tool/ToolContents';
 
-import FocusTimerCard from './FocusTimerCard';
-import Rules from './rule/RuleContents';
-import ToolContents from './Tool/ToolContents';
+interface Props {
+  teamRoomId: string | number;
+  myRole: TeamMemberRole;
+  setupCreatedAt?: string;
+}
 
-const decided: DashboardStatus = {
-  timeselect: false,
-  tool: false,
-  rule: true,
-};
+export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
+  const fallback = (title: string, status: keyof DashboardStatus) =>
+    setupCreatedAt ? (
+      <FocusTimerCard
+        title={title}
+        startedAt={new Date(setupCreatedAt)}
+        status={status}
+      />
+    ) : null;
 
-const startedAt = new Date(Date.now() - 3 * 60 * 60 * 1000); // 현재 시간에서 3시간 전 (임시용)
+  const accessToken = useAuthStore((s) => s.accessToken);
 
-export function Dashboard() {
-  /** 각 사항이 결정되지 않았을 때 보여줄 타이머 카드
-   *
-   * - fallback: “대안”, “대신 보여주는 것”
-   */
-  const fallback = (title: string, status: keyof DashboardStatus) => (
-    <FocusTimerCard title={title} startedAt={startedAt} status={status} />
-  );
+  const myUserId = accessToken
+    ? jwtDecode<{ sub: string }>(accessToken).sub
+    : null;
+
 
   const tabs: TabsConfig[] = [
     {
       id: 'timeselect',
       label: '미팅일정',
       render: () =>
-        decided.timeselect ? (
-          <></>
-        ) : (
-          fallback('빠른 미팅일정을 설정하세요', 'timeselect')
-        ),
+        false ? <></> : fallback('빠른 미팅일정을 설정하세요', 'timeselect'),
     },
     {
       id: 'tool',

@@ -1,17 +1,21 @@
 import { startLeaderGame } from '@/entities/leader-game/api/leader-game-api';
+import type {
+  TeamMemberRole,
+  TeamRoomDetail,
+} from '@/entities/teamroom/api/teamroom-dto';
 
 import { Dashboard } from './Dashboard';
 import LeaderGameCard from './LeaderGameCard';
 
 type Workflow = TeamRoomDetail['workflow'];
-type myRole = TeamRoomDetail['myRole'];
 type teamRoomId = TeamRoomDetail['teamRoomId'];
 
 interface Props {
   teamRoomId: teamRoomId;
   workflow: Workflow;
-  myRole: myRole;
+  myRole: TeamMemberRole;
   isAllOnline: boolean;
+  setupCreatedAt?: string;
 }
 
 export default function TeamRoomContents({
@@ -19,6 +23,7 @@ export default function TeamRoomContents({
   workflow,
   myRole,
   isAllOnline,
+  setupCreatedAt,
 }: Props) {
   const isHost = myRole === 'HOST';
 
@@ -47,7 +52,13 @@ export default function TeamRoomContents({
   }
 
   if (workflow === 'SETUP') {
-    return <Dashboard />;
+    return (
+      <Dashboard
+        teamRoomId={teamRoomId}
+        myRole={myRole}
+        setupCreatedAt={setupCreatedAt}
+      />
+    );
   }
 
   return <p>데이터를 불러오고 있습니다...</p>;
