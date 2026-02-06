@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
+import { getOnlineStatus } from '@/entities/leader-game/api/leader-game-api';
 import { LeaderGameMessage } from '@/entities/leader-game/api/ws-types';
 import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
@@ -112,8 +112,6 @@ export default function TeamRoomMainPage() {
 
   const onRoomMessage = useCallback(
     (msg: LeaderGameMessage) => {
-      // console.log('팀룸 전체 메시지 수신:', msg);
-
       switch (msg.type) {
         case 'USER_STATUS_CHANGE':
           handleUserStatusChange(msg);
@@ -138,7 +136,7 @@ export default function TeamRoomMainPage() {
       (async () => {
         const [teamRoomDetail, onlineStatus] = await Promise.all([
           getTeamRoomDetail(id),
-          leaderGameApi.getOnlineStatus(id),
+          getOnlineStatus(id),
         ]);
 
         setWorkflow(teamRoomDetail.workflow);

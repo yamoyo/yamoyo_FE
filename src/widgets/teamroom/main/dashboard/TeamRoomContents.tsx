@@ -1,5 +1,4 @@
-import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
-import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
+import { startLeaderGame } from '@/entities/leader-game/api/leader-game-api';
 
 import { Dashboard } from './Dashboard';
 import LeaderGameCard from './LeaderGameCard';
@@ -30,7 +29,7 @@ export default function TeamRoomContents({
       return;
     }
     try {
-      await leaderGameApi.startLeaderGame(teamRoomId);
+      await startLeaderGame(teamRoomId);
     } catch (error) {
       console.error('팀장 정하기 게임 시작 중 오류가 발생했습니다.', error);
       alert('팀장 정하기 게임 시작에 실패했습니다. 다시 시도해주세요.');

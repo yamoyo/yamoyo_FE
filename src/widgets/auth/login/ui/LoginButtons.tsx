@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/shared/api/base/request';
 
-export function LoginButtons() {
+export default function LoginButtons() {
   return (
     <div className="flex w-full flex-col gap-2">
       <button
@@ -24,5 +24,3 @@ export function LoginButtons() {
     </div>
   );
 }
-
-export default LoginButtons;
