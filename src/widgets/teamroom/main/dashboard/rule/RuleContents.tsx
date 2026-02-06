@@ -112,21 +112,37 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
       ),
     );
 
-    // 임시 규칙 → 서버에 추가 요청
-    if (target.isTemp) {
+    try {
+      // 임시 규칙 → 서버에 추가 요청
+      if (target.isTemp) {
+        if (!trimmedText) {
+          // 텍스트 내용이 없으면 로컬에서 제거
+          setRules((prev) => prev.filter((r) => r.teamRuleId !== teamRuleId));
+          return;
+        }
+
+        // 서버 저장 요청
+        await addRuleMutateAsync({ content: trimmedText });
+        return;
+      }
+
       if (!trimmedText) {
-        // 텍스트 내용이 없으면 로컬에서 제거
+        // 빈 내용으로 수정 시 기존 규칙 삭제 처리
+        await deleteRuleMutateAsync(teamRuleId);
         setRules((prev) => prev.filter((r) => r.teamRuleId !== teamRuleId));
         return;
       }
 
-      // 서버 저장 요청
-      await addRuleMutateAsync({ content: trimmedText });
+      // 기존 규칙 → 서버 수정
+      await updateRuleMutateAsync({
+        teamRuleId,
+        body: { content: trimmedText },
+      });
+    } catch (error) {
+      console.error('규칙 저장 중 오류가 발생했습니다.', error);
+      alert('규칙 저장에 실패했습니다. 다시 시도해주세요.');
       return;
     }
-
-    // 기존 규칙 → 서버 수정
-    await updateRuleMutateAsync({ teamRuleId, body: { content: trimmedText } });
   };
 
   return (
