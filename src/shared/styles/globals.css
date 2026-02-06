@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Spoqa Han Sans Neo';
+  src: url('/font/SpoqaHanSansNeo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri14';
+  src: url('/font/Galmuri14.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('/font/Galmuri11.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('/font/Galmuri11-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer components {
+  .title-g {
+    @apply font-galmuri-11 text-[24px] font-bold leading-[32px];
+    -webkit-text-stroke-width: 1px;
+  }
+  .title-g2 {
+    @apply font-galmuri-11 text-[55px] font-bold leading-normal tracking-[.5156rem];
+  }
+  .title-g3 {
+    @apply font-galmuri-11 text-[17px] font-bold leading-normal;
+  }
+  .body-g1 {
+    @apply font-galmuri-14 text-[23px] leading-[32px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor; /* 텍스트 색과 동일하게 */
+  }
+  .body-g2 {
+    @apply font-galmuri-14 text-[19px] font-normal leading-normal;
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g2-5 {
+    @apply font-galmuri-14 text-[18px] font-normal leading-[27px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g3 {
+    @apply font-galmuri-14 text-[16px] font-normal leading-[22px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g4 {
+    @apply font-galmuri-14 text-[13px] font-normal leading-[18px];
+    -webkit-text-stroke-width: 0.3px;
+    -webkit-text-stroke-color: currentColor;
+  }
+  .body-g5 {
+    @apply font-galmuri-14 text-[10px] font-normal leading-[18px];
+  }
+  .body-g11 {
+    @apply font-galmuri-11 text-[16px] font-bold leading-[20px];
+  }
+  .body-g11-2 {
+    @apply font-galmuri-11 text-[11px] font-bold leading-[15.519px];
+  }
+}
+
+html,
+body {
+  height: 100%; /* 앱 레이아웃 기준 높이 확보 (h-full 계열 정상 동작) */
+  width: 100%; /* 뷰포트 기준 너비 고정 */
+}
+
+body {
+  min-height: 100dvh; /* 모바일 주소창 변화에도 안정적인 실제 화면 높이 */
+  overflow-x: hidden; /* 전체 페이지 가로 스크롤 차단 (캐러셀은 컨테이너에서만 허용) */
+  -webkit-font-smoothing: antialiased; /* macOS/iOS 폰트 렌더링 개선 */
+  font-family: 'Spoqa Han Sans Neo', sans-serif;
+}
+
+header {
+  /* 상단 안전 영역 고려 (iOS 노치 등) */
+  padding-top: calc(16px + env(safe-area-inset-top));
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+@layer utilities {
+  .outside-stroke {
+    --stroke: #000;
+    --w: 2px;
+    text-shadow:
+      calc(-1 * var(--w)) 0 0 var(--stroke),
+      var(--w) 0 0 var(--stroke),
+      0 calc(-1 * var(--w)) 0 var(--stroke),
+      0 var(--w) 0 var(--stroke),
+      calc(-1 * var(--w)) calc(-1 * var(--w)) 0 var(--stroke),
+      var(--w) calc(-1 * var(--w)) 0 var(--stroke),
+      calc(-1 * var(--w)) var(--w) 0 var(--stroke),
+      var(--w) var(--w) 0 var(--stroke);
+  }
+}
+/* outside-stroke 예시 */
+/* <span
+  className="outside-stroke"
+  style={{ ['--stroke' as string]: 'rgb(59 130 246)' }}
+>
+  TEXT
+</span> */

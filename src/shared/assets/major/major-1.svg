@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+  <style>
+    path[fill]:not([fill='none']) { fill: currentColor !important; }
+    path[stroke]:not([stroke='none']) { stroke: currentColor !important; }
+  </style>
+  <g clip-path="url(#clip0_101_8542)">
+    <path d="M38.1 26.6622H1.9V1.89966H0V32.3746H1.9V34.2746H13.3375V36.1871H15.2375V34.2746H24.7625V36.1871H26.6625V34.2746H38.1V32.3746H40V1.89966H38.1V26.6622Z" fill="#A3A8C4"/>
+    <path d="M28.5749 11.4251H30.4749V9.51265H32.3749V7.61265H30.4749V5.71265H28.5749V7.61265H26.6624V9.51265H28.5749V11.4251Z" fill="#A3A8C4"/>
+    <path d="M13.3373 38.0868V36.1868H11.4248V39.9993H28.5748V36.1868H26.6623V38.0868H13.3373Z" fill="#A3A8C4"/>
+    <path d="M26.6625 13.3245H24.7625V15.237H26.6625V13.3245Z" fill="#A3A8C4"/>
+    <path d="M26.6626 19.0369H13.3376V20.9494H26.6626V19.0369Z" fill="#A3A8C4"/>
+    <path d="M15.2376 13.3245H13.3376V15.237H15.2376V13.3245Z" fill="#A3A8C4"/>
+    <path d="M38.0999 -0.000244141H1.8999V1.89976H38.0999V-0.000244141Z" fill="#A3A8C4"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_101_8542">
+      <rect width="40" height="40" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>

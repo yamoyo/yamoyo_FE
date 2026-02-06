@@ -1,0 +1,77 @@
+/* 
+  오른쪽 끝에서 시작해서 왼쪽으로 차오르는 남색 바 애니메이션
+  - 기본 width: 0
+  - 최종 width: 바 전체 길이 + 16px (시계 아이콘이 좌측 끝에 완전히 없어지도록 16px 추가)
+*/
+@keyframes fill-from-right {
+  from {
+    width: -0%; /* 0%와 동일. 시작 시에는 아무 것도 채워져 있지 않은 상태 */
+  }
+  to {
+    width: calc(100% + 16px);
+    /* 
+      바 전체 너비(100%)보다 16px 더 넓게 채움 
+      → 시계 아이콘이 좌측 끝에 완전히 없어지도록 16px 추가
+    */
+  }
+}
+
+/* 
+  타이머가 줄어들수록 막대의 배경색이 
+  흰색 → 연한 빨강 → 에러 빨강(#ee5353)으로 점점 진해지는 애니메이션
+*/
+@keyframes bar-white-to-error {
+  0%,
+  50% {
+    background-color: #ffffff;
+    /* 전체 시간의 절반 동안은 완전히 흰색 유지 */
+  }
+  55% {
+    background-color: #fca1a1;
+    /* 절반을 조금 지나면서 연한 빨간색으로 서서히 변하기 시작 */
+  }
+  75%,
+  100% {
+    background-color: #ee5353;
+    /* 마지막 구간은 에러 컬러로 유지 */
+  }
+}
+
+@keyframes bar-yellow-to-error {
+  0%,
+  83.333% {
+    background-color: #fdda08;
+  }
+  83.334%,
+  100% {
+    background-color: #ee5353;
+  }
+}
+
+/* 
+  fill-from-right 애니메이션을 적용하는 유틸리티 클래스
+  - 막대 내부(남색 레이어)의 width를 시간에 따라 변경
+*/
+.animate-fill-from-right {
+  animation-name: fill-from-right;
+  animation-timing-function: linear; /* 시간에 따라 일정한 속도로 너비가 늘어남 */
+  animation-fill-mode: forwards; /* 애니메이션 끝난 상태를 유지 (원래 상태로 돌아가지 않음) */
+}
+
+/* 
+  막대의 배경색을 흰색 → 에러 색상으로 서서히 바꿔주는 클래스
+*/
+.timer-bg-animate-white {
+  animation-name: bar-white-to-error;
+  animation-timing-function: linear; /* 배경색 변화도 일정한 속도로 진행 */
+  animation-fill-mode: forwards; /* 마지막 색상 상태를 유지 */
+}
+
+/* 
+  막대의 배경색을 노란색 → 에러 색상으로 서서히 바꿔주는 클래스
+*/
+.timer-bg-animate-yellow {
+  animation-name: bar-yellow-to-error;
+  animation-timing-function: linear; /* 배경색 변화도 일정한 속도로 진행 */
+  animation-fill-mode: forwards; /* 마지막 색상 상태를 유지 */
+}
