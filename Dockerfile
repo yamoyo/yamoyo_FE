@@ -9,6 +9,11 @@ FROM node:25-alpine AS builder
 
 WORKDIR /app
 
+# 빌드 인자 선언
+ARG VITE_BASE_URL
+RUN test -n "$VITE_BASE_URL" || (echo "Error: VITE_BASE_URL build-arg is required" >&2 && exit 1)
+ENV VITE_BASE_URL=${VITE_BASE_URL}
+
 # 의존성 설치
 COPY package*.json ./
 RUN npm ci

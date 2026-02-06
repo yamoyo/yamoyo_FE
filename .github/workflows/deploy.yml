@@ -3,8 +3,8 @@ name: Deploy Frontend to Production
 on:
   push:
     branches:
-      - main          # main 브랜치에 푸시될 때마다 실행
-  workflow_dispatch:  # 수동 실행 가능
+      - main # main 브랜치에 푸시될 때마다 실행
+  workflow_dispatch: # 수동 실행 가능
 
 jobs:
   deploy:
@@ -23,7 +23,9 @@ jobs:
       - name: Build and push Docker image
         run: |
           IMAGE="${{ secrets.DOCKER_USERNAME }}/yamoyo-nginx:prod"
-          docker build -t "$IMAGE" .
+          docker build \
+            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \
+            -t "$IMAGE" .
           docker push "$IMAGE"
 
       - name: Deploy to server
@@ -37,12 +39,12 @@ jobs:
             cd /srv/yamoyo
             docker compose -f docker-compose.prod.yml pull nginx
             docker compose -f docker-compose.prod.yml up -d nginx
-            
+
             echo "Waiting for nginx to start..."
             sleep 5
             docker compose -f docker-compose.prod.yml ps
             docker compose -f docker-compose.prod.yml logs --tail=50 nginx
-            
+
             docker image prune -f
 
       - name: Notify deployment success

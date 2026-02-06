@@ -1,5 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 
+import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
 import {
   useRuleVoteParticipation,
   useTeamRules,
@@ -12,11 +13,14 @@ import type {
   DashboardStatus,
   TeamMemberRole,
 } from '@/entities/teamroom/api/teamroom-dto';
+import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
 import FocusTimerCard from '@/widgets/teamroom/main/dashboard/FocusTimerCard';
 import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
 import ToolContents from '@/widgets/teamroom/main/dashboard/Tool/ToolContents';
+
+import MeetingList from './ui/MeetingList';
 
 interface Props {
   teamRoomId: string | number;
@@ -25,6 +29,16 @@ interface Props {
 }
 
 export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+
+  const { data: timeSelectData } = useTimeSelect(Number(teamRoomId));
+  const { data: meetingsData } = useMeetings(Number(teamRoomId), year, month);
+
+  const isTimeSelectFinalized = timeSelectData?.status === 'FINALIZED';
+  const meetings = meetingsData?.meetings ?? [];
+
   const fallback = (title: string, status: keyof DashboardStatus) =>
     setupCreatedAt ? (
       <FocusTimerCard
@@ -73,7 +87,11 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
       id: 'timeselect',
       label: '미팅일정',
       render: () =>
-        false ? <></> : fallback('빠른 미팅일정을 설정하세요', 'timeselect'),
+        isTimeSelectFinalized ? (
+          <MeetingList meetings={meetings} />
+        ) : (
+          fallback('빠른 미팅일정을 설정하세요', 'timeselect')
+        ),
     },
     {
       id: 'tool',
