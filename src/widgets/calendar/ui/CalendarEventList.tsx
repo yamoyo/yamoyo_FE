@@ -89,10 +89,10 @@ export function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
     <div className="flex items-center justify-between rounded-2xl bg-bg-card p-4">
       <div className="flex items-stretch gap-4">
         <div className="w-[22px] flex-col pt-0.5 flex-center">
-          <span className="text-2xl font-bold text-white">
+          <span className="text-title-3 text-tx-default">
             {meetingDate.getDate()}
           </span>
-          <span className="text-xs text-gray-400">{dayLabel}</span>
+          <span className="text-body-7 text-tx-default_3">{dayLabel}</span>
         </div>
 
         <div className="w-[1.5px] self-stretch bg-bg-textfiled" />
