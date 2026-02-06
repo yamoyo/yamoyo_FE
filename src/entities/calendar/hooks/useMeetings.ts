@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   createMeeting,
+  getMeeting,
   getMeetings,
 } from '@/entities/calendar/api/meeting-api';
 import type { CreateMeetingRequest } from '@/entities/calendar/api/meeting-dto';
@@ -28,5 +29,14 @@ export function useCreateMeeting(teamRoomId: number) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['meetings', teamRoomId] });
     },
+  });
+}
+
+/** 회의 상세 조회 */
+export function useMeetingDetail(meetingId: number | null) {
+  return useQuery({
+    queryKey: ['meeting', meetingId],
+    queryFn: () => getMeeting(meetingId!),
+    enabled: !!meetingId,
   });
 }

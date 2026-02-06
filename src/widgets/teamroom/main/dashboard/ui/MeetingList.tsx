@@ -3,9 +3,13 @@ import { MeetingItem } from '@/widgets/calendar/ui/CalendarEventList';
 
 interface MeetingListProps {
   meetings: MeetingSummary[];
+  teamRoomId: number;
 }
 
-export default function MeetingList({ meetings }: MeetingListProps) {
+export default function MeetingList({
+  meetings,
+  teamRoomId,
+}: MeetingListProps) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yearMonth = `${now.getFullYear()}년 ${now.getMonth() + 1}월`;
@@ -24,7 +28,11 @@ export default function MeetingList({ meetings }: MeetingListProps) {
       <div className="flex-1 overflow-y-auto pb-6">
         <div className="flex flex-col gap-3">
           {upcomingMeetings.map((meeting) => (
-            <MeetingItem key={meeting.meetingId} meeting={meeting} />
+            <MeetingItem
+              key={meeting.meetingId}
+              meeting={meeting}
+              teamRoomId={teamRoomId}
+            />
           ))}
         </div>
       </div>

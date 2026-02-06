@@ -51,3 +51,26 @@ export interface CreateMeetingResponse {
   meetingIds: number[];
   createdMeetingCount: number;
 }
+
+// ========== 회의 상세 조회 ==========
+
+export interface MeetingParticipant {
+  userId: number;
+  name: string;
+  profileImageId: number;
+}
+
+export interface MeetingDetailResponse {
+  meetingId: number;
+  meetingSeriesId: number;
+  title: string;
+  description: string | null;
+  location: string | null;
+  startTime: string; // "2025-02-15T14:00:00"
+  endTime: string; // "2025-02-15T15:30:00"
+  durationMinutes: number;
+  color: MeetingColor;
+  meetingType: MeetingType;
+  isIndividuallyModified: boolean;
+  participants: MeetingParticipant[];
+}

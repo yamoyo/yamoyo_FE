@@ -3,6 +3,7 @@ import { authClient } from '@/shared/api/auth/client';
 import type {
   CreateMeetingRequest,
   CreateMeetingResponse,
+  MeetingDetailResponse,
   MeetingListResponse,
 } from './meeting-dto';
 
@@ -26,4 +27,11 @@ export async function createMeeting(
     `/team-rooms/${teamRoomId}/meetings`,
     data,
   );
+}
+
+/** 회의 상세 조회 */
+export async function getMeeting(
+  meetingId: number,
+): Promise<MeetingDetailResponse> {
+  return authClient.get<MeetingDetailResponse>(`/meetings/${meetingId}`);
 }

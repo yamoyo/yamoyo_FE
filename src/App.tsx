@@ -29,6 +29,7 @@ import TeamRoomMainPage from './pages/teamroom/[id]';
 import TeamRoomEditPage from './pages/teamroom/[id]/edit';
 import TeamRoomEditBannerPage from './pages/teamroom/[id]/edit/banner';
 import TeamLeaderSelectPage from './pages/teamroom/[id]/leader-game';
+import MeetingDetailPage from './pages/teamroom/[id]/meeting/[meetingId]';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
 import RuleSetupPage from './pages/teamroom/[id]/rule';
@@ -155,6 +156,10 @@ export default function App() {
 
             <Route path=":id/rule" element={<RuleSetupPage />} />
             <Route path=":id/tool" element={<ToolSetupPage />} />
+            <Route
+              path=":id/meeting/:meetingId"
+              element={<MeetingDetailPage />}
+            />
             <Route path=":id/timeselect" element={<TimeSelectPage />} />
             <Route
               path=":id/timeselect/everytime"
