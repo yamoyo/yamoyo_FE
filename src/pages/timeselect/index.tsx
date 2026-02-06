@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAvailabilityStore } from '@/entities/everytime/model/availability-store';
+import { useSubmitAvailability } from '@/entities/timeselect/hooks/useSubmitAvailability';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -36,6 +37,8 @@ export default function TimeSelectPage() {
     (state) => state.clearImportedAvailability,
   );
 
+  const { mutate: submitAvailability, isPending } = useSubmitAvailability();
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [availability, setAvailability] = useState<boolean[][]>(
     createInitialAvailability,
@@ -57,12 +60,8 @@ export default function TimeSelectPage() {
     navigate(`/teamroom/${id}/timeselect/everytime`);
   };
 
-  const handleSubmit = async () => {
-    // TODO: teamRoomId를 useParams로 받아와서 API 호출
-    // const body = { availability };
-    // await authClient.post(`/api/team-rooms/${teamRoomId}/timeselect/availability`, body);
-
-    navigate(`/teamroom/${id}/timeselect/liketime`, { replace: true });
+  const handleSubmit = () => {
+    submitAvailability(availability);
   };
 
   const hasSelection = availability.some((day) => day.some((slot) => slot));
@@ -168,9 +167,9 @@ export default function TimeSelectPage() {
 
       <div className="mb-[48px] mt-[80px] select-none px-5" draggable="false">
         <BottomButton
-          text="선호 시간대 설정"
+          text={isPending ? '제출 중...' : '선호 시간대 설정'}
           onClick={handleSubmit}
-          disabled={!hasSelection}
+          disabled={!hasSelection || isPending}
         />
       </div>
     </div>
