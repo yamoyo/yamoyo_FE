@@ -21,7 +21,7 @@ export default function RuleVotingScreen({ onFinish }: Props) {
     Array(10).fill(null),
   );
 
-  const { mutate, isPending } = useSubmitRuleVote(id!);
+  const { mutateAsync, isPending } = useSubmitRuleVote(id!);
 
   useEffect(() => {
     if (voteResult.length === 0 && step > 1) {
@@ -50,7 +50,7 @@ export default function RuleVotingScreen({ onFinish }: Props) {
         // 모든 투표 결과를 비동기로 서버에 제출
         await Promise.all(
           finalVoteResult.map((v, index) =>
-            mutate({ ruleId: index + 1, agreement: v as boolean }),
+            mutateAsync({ ruleId: index + 1, agreement: v as boolean }),
           ),
         );
         onFinish();
