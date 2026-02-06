@@ -63,6 +63,7 @@ export default function CalendarWidget() {
         meetings={meetings}
         currentDate={currentDate}
         selectedDate={selectedDate}
+        teamRoomId={selectedTeamId ?? undefined}
         onAddEvent={handleAddEvent}
       />
     </div>

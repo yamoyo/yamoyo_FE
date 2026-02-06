@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useMeetingDetail } from '@/entities/calendar/hooks/useMeetings';
+import {
+  useDeleteMeeting,
+  useMeetingDetail,
+} from '@/entities/calendar/hooks/useMeetings';
 import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
 import TopBar from '@/shared/ui/header/TopBar';
 
@@ -14,6 +17,22 @@ export default function MeetingDetailPage() {
   const { data: meeting, isLoading } = useMeetingDetail(
     meetingId ? Number(meetingId) : null,
   );
+
+  const { mutate: deleteMeeting, isPending: isDeleting } = useDeleteMeeting(
+    Number(teamRoomId),
+  );
+
+  const handleDelete = () => {
+    if (!meetingId) return;
+    deleteMeeting(
+      { meetingId: Number(meetingId) },
+      {
+        onSuccess: () => {
+          navigate(`/teamroom/${teamRoomId}`, { replace: true });
+        },
+      },
+    );
+  };
 
   if (isLoading) {
     return (
@@ -56,7 +75,9 @@ export default function MeetingDetailPage() {
       <TopBar
         title="미팅일정"
         backIcon="arrow"
-        onBack={() => navigate(`/teamroom/${teamRoomId}`)}
+        rightContent={
+          <p className="p-[10px] text-body-4 text-textfiled-line_focus">수정</p>
+        }
       />
 
       <div className="mb-4 mt-5 flex items-center gap-3 px-6">
@@ -67,7 +88,7 @@ export default function MeetingDetailPage() {
         />
       </div>
 
-      <div className="flex flex-col self-stretch px-[34px]">
+      <div className="flex flex-col self-stretch px-6">
         <div className="flex items-center gap-2 py-3">
           <div className="p-[10px]">
             <img
@@ -160,6 +181,22 @@ export default function MeetingDetailPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="fixed bottom-12 left-1/2 -translate-x-1/2">
+        <button
+          type="button"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="flex items-center gap-[10px] rounded-xl bg-tx-default p-[10px] shadow-[0_2px_4px_0_rgba(24,30,57,0.5)] disabled:opacity-50"
+        >
+          <img
+            src="/assets/icons/meeting/meeting-delete.svg"
+            alt="삭제"
+            width={24}
+            height={24}
+          />
+        </button>
       </div>
     </div>
   );
