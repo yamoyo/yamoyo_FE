@@ -56,7 +56,7 @@ const VOTE_CONTENTS = [
 
 interface Props {
   step: number;
-  handleVote: (vote: 'YES' | 'NO') => void;
+  handleVote: (vote: boolean) => void;
 }
 
 export default function VotingRule({ step, handleVote }: Props) {
@@ -87,8 +87,8 @@ export default function VotingRule({ step, handleVote }: Props) {
       <BottomButtonTwoOptions
         leftText="싫어요"
         rightText="좋아요"
-        onLeftClick={() => handleVote('NO')}
-        onRightClick={() => handleVote('YES')}
+        onLeftClick={() => handleVote(false)}
+        onRightClick={() => handleVote(true)}
       />
     </div>
   );
