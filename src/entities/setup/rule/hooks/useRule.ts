@@ -21,9 +21,9 @@ export function useTeamRules(teamRoomId: string | number) {
   return useQuery<GetTeamRulesResponse>({
     queryKey: teamRuleKeys.list(teamRoomId),
     queryFn: () => getTeamRules(teamRoomId),
-    staleTime: (data) => {
-      if (!data.state.data) return 0;
-      return data.state.data.teamRules.length > 0 ? Infinity : 0;
+    staleTime: (query) => {
+      if (!query.state.data) return 0;
+      return query.state.data.teamRules.length > 0 ? Infinity : 0;
     },
   });
 }
