@@ -10,7 +10,7 @@ export default function TimeSelectLoadingPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const teamRoomId = Number(id);
-  const { data, isLoading, refetch } = useTimeSelect(teamRoomId);
+  const { data, refetch } = useTimeSelect(teamRoomId);
 
   useEffect(() => {
     if (!teamRoomId || data?.status === 'FINALIZED') return;
@@ -50,9 +50,6 @@ export default function TimeSelectLoadingPage() {
             <br />
             최적의 회의 시간을 찾고 있어요
           </p>
-          {isLoading && (
-            <p className="text-body-6 text-tx-default_3">로딩 중...</p>
-          )}
         </div>
       </div>
     </div>
