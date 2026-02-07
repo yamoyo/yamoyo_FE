@@ -13,17 +13,16 @@ export default function TimeSelectLoadingPage() {
   const { data, isLoading, refetch } = useTimeSelect(teamRoomId);
 
   useEffect(() => {
-    if (!teamRoomId) return;
+    if (!teamRoomId || data?.status === 'FINALIZED') return;
     const intervalId = setInterval(() => {
       refetch();
     }, 5000);
     return () => clearInterval(intervalId);
-  }, [teamRoomId, refetch]);
+  }, [teamRoomId, refetch, data?.status]);
 
   useEffect(() => {
     if (!data) return;
     if (data.status === 'FINALIZED') {
-      queryClient.invalidateQueries({ queryKey: ['meetings', teamRoomId] });
       navigate(`/teamroom/${id}`, { replace: true });
     }
   }, [data, id, navigate, queryClient, teamRoomId]);
