@@ -1,7 +1,5 @@
 import { BASE_URL } from '@/shared/api/base/request';
 
-console.log('BASE_URL:', BASE_URL);
-
 export default function LoginButtons() {
   return (
     <div className="flex w-full flex-col gap-2">
