@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { TeamRoomListItem } from '@/entities/teamroom/api/teamroom-dto';
 import BottomSheet from '@/shared/ui/BottomSheet';
@@ -19,6 +19,10 @@ export default function TeamRoomSelectSheet({
   onSelect,
 }: TeamRoomSelectSheetProps) {
   const [currentSelected, setCurrentSelected] = useState(selectedId);
+
+  useEffect(() => {
+    setCurrentSelected(selectedId);
+  }, [selectedId]);
 
   const handleChange = () => {
     if (currentSelected) {

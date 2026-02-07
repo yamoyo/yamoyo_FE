@@ -15,13 +15,33 @@ export default function MainHeader() {
   useEffect(() => {
     const teamIdFromUrl = searchParams.get('teamId');
     if (teamIdFromUrl) {
-      setSelectedTeamId(Number(teamIdFromUrl));
-    } else if (teamRooms.length > 0) {
-      const firstTeamId = teamRooms[0].teamRoomId;
-      setSearchParams({ teamId: String(firstTeamId) });
-      setSelectedTeamId(firstTeamId);
+      const nextId = Number(teamIdFromUrl);
+      if (selectedTeamId !== nextId) {
+        setSelectedTeamId(nextId);
+      }
+      return;
     }
-  }, [searchParams, setSearchParams, setSelectedTeamId, teamRooms]);
+
+    if (teamRooms.length > 0) {
+      const persistedId = selectedTeamId;
+      const hasPersisted =
+        persistedId &&
+        teamRooms.some((room) => room.teamRoomId === persistedId);
+      const fallbackId = hasPersisted ? persistedId : teamRooms[0].teamRoomId;
+      if (selectedTeamId !== fallbackId) {
+        setSelectedTeamId(fallbackId);
+      }
+      if (teamIdFromUrl !== String(fallbackId)) {
+        setSearchParams({ teamId: String(fallbackId) });
+      }
+    }
+  }, [
+    searchParams,
+    setSearchParams,
+    setSelectedTeamId,
+    teamRooms,
+    selectedTeamId,
+  ]);
 
   const handleSelectTeamRoom = (id: number) => {
     setSearchParams({ teamId: String(id) });
