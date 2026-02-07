@@ -1,8 +1,5 @@
 import { logout } from '@/entities/user/api/user-api';
-import {
-  notifyAuthExpired,
-  resetAuthExpired,
-} from '@/shared/api/auth/event-bus';
+import { notifyAuthBlocked } from '@/shared/api/auth/event-bus';
 import { YamoyoError } from '@/shared/api/base/http-error';
 import { baseRequest } from '@/shared/api/base/request';
 
@@ -25,8 +22,6 @@ export const requestAccessToken = async (): Promise<boolean> => {
 
     useAuthStore.getState().setAccessToken(res.accessToken);
     useAuthStore.getState().setIsAuthenticated(true);
-
-    resetAuthExpired();
     return true;
   } catch (e) {
     const isInvalidRefresh =
@@ -42,7 +37,7 @@ export const requestAccessToken = async (): Promise<boolean> => {
         console.warn('logout failed', logoutErr);
       } finally {
         useAuthStore.getState().clear();
-        notifyAuthExpired();
+        notifyAuthBlocked('AUTH_EXPIRED');
       }
       return false;
     }
