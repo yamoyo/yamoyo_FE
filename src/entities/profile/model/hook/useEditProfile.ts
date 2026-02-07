@@ -19,9 +19,7 @@ export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   }
 
   if (type === 'MBTI' && !MBTI.includes(value) && value.length > 0) {
-    {
-      return '올바른 MBTI를 입력해 주세요.';
-    }
+    return '올바른 MBTI를 입력해 주세요.';
   }
 };
 
