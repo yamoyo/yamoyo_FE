@@ -1,25 +1,24 @@
 import { FieldError, UseFormRegister } from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
-interface DateSectionProps {
+interface DateSectionProps<T extends { startDate: string }> {
   title: string;
   dateLabel: string;
-  register: UseFormRegister<CreateScheduleFormData>;
+  register: UseFormRegister<T>;
   error?: FieldError;
   selectedDate?: Date;
   onDateSelect: (selected: Date) => void;
 }
 
-export default function DateSection({
+export default function DateSection<T extends { startDate: string }>({
   title,
   dateLabel,
   register,
   error,
   selectedDate,
   onDateSelect,
-}: DateSectionProps) {
+}: DateSectionProps<T>) {
   const openCalendarModal = useModalStore((s) => s.openCalendarModal);
 
   const handleOpenCalendar = () => {

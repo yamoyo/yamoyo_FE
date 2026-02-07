@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import type { UseFormRegister } from 'react-hook-form';
 
 import type { UpdateScope } from '@/entities/calendar/api/meeting-dto';
 import { formatDateString } from '@/entities/calendar/lib/recurrence';
-import type { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import {
   MEETING_COLOR_MAP,
   SCHEDULE_COLORS,
@@ -198,9 +196,7 @@ export default function EditSchedulePage() {
         {/* 내용 설명 */}
         <DescriptionSection
           descLength={descLength}
-          register={
-            register as unknown as UseFormRegister<CreateScheduleFormData>
-          }
+          register={register}
           error={errors.description}
         />
 
@@ -208,9 +204,7 @@ export default function EditSchedulePage() {
         <DateSection
           title="미팅 날짜"
           dateLabel={dateLabel}
-          register={
-            register as unknown as UseFormRegister<CreateScheduleFormData>
-          }
+          register={register}
           error={errors.startDate}
           selectedDate={selectedDate}
           onDateSelect={handleDateSelect}
@@ -219,9 +213,7 @@ export default function EditSchedulePage() {
         {/* 시간 선택 */}
         <TimeSection
           timeOptions={timeOptions}
-          register={
-            register as unknown as UseFormRegister<CreateScheduleFormData>
-          }
+          register={register}
           startTime={startTime}
           endTime={endTime}
           startTimeError={errors.startTime}
@@ -236,12 +228,7 @@ export default function EditSchedulePage() {
         />
 
         {/* 장소 */}
-        <LocationSection
-          register={
-            register as unknown as UseFormRegister<CreateScheduleFormData>
-          }
-          placeholder="온라인"
-        />
+        <LocationSection register={register} placeholder="온라인" />
 
         {/* 참석자 */}
         <ParticipantsSection

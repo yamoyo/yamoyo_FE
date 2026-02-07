@@ -1,18 +1,16 @@
 import { FieldError, UseFormRegister } from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-
-interface DescriptionSectionProps {
+interface DescriptionSectionProps<T extends { description?: string }> {
   descLength: number;
-  register: UseFormRegister<CreateScheduleFormData>;
+  register: UseFormRegister<T>;
   error?: FieldError;
 }
 
-export default function DescriptionSection({
+export default function DescriptionSection<T extends { description?: string }>({
   descLength,
   register,
   error,
-}: DescriptionSectionProps) {
+}: DescriptionSectionProps<T>) {
   return (
     <div>
       <label className="mb-2 block text-body-4.1 text-tx-default_3">

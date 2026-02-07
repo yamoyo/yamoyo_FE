@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { FieldError, UseFormRegister } from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import ClockIcon from '@/shared/assets/icons/Clock.svg?react';
 
-interface TimeSectionProps {
+interface TimeSectionProps<T extends { startTime: string; endTime: string }> {
   timeOptions: string[];
-  register: UseFormRegister<CreateScheduleFormData>;
+  register: UseFormRegister<T>;
   startTime?: string;
   endTime?: string;
   startTimeError?: FieldError;
@@ -18,7 +17,9 @@ interface TimeSectionProps {
 
 const durationCandidates = [30, 60, 90, 120];
 
-export default function TimeSection({
+export default function TimeSection<
+  T extends { startTime: string; endTime: string },
+>({
   timeOptions,
   register,
   startTime,
@@ -28,7 +29,7 @@ export default function TimeSection({
   onStartTimeChange,
   onSelectStartTime,
   onSelectDuration,
-}: TimeSectionProps) {
+}: TimeSectionProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

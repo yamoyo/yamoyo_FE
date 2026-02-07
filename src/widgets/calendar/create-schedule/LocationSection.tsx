@@ -1,16 +1,14 @@
 import { UseFormRegister } from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-
-interface LocationSectionProps {
-  register: UseFormRegister<CreateScheduleFormData>;
+interface LocationSectionProps<T extends { location?: string }> {
+  register: UseFormRegister<T>;
   placeholder?: string;
 }
 
-export default function LocationSection({
+export default function LocationSection<T extends { location?: string }>({
   register,
   placeholder = '장소 혹은 플랫폼을 입력해주세요',
-}: LocationSectionProps) {
+}: LocationSectionProps<T>) {
   return (
     <div>
       <label className="mb-2 block text-body-4.1 text-tx-default_3">
