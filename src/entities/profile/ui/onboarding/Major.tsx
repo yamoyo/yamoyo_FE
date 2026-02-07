@@ -1,7 +1,7 @@
 import { useOutletContext } from 'react-router-dom';
 
-import { ProfileOnboardingContext } from '../../model/types/types';
-import MajorGrid from '../MajorGrid';
+import { ProfileOnboardingContext } from '@/entities/profile/model/types/types';
+import MajorGrid from '@/entities/profile/ui/MajorGrid';
 
 export default function MajorStep() {
   const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();

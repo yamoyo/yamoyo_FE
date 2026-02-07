@@ -8,6 +8,7 @@ export type TextFieldProps = {
   errorMessage?: string; // 하단에 표시
   isOk?: boolean;
   allowClear?: boolean; // X 버튼으로 값 지우기 허용 여부
+  toUppercase?: boolean;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange' | 'type'>;
 
 export default function TextField({
@@ -15,6 +16,7 @@ export default function TextField({
   onChange,
   errorMessage,
   allowClear = false,
+  toUppercase = false,
   placeholder,
   ...rest
 }: TextFieldProps) {
@@ -22,7 +24,11 @@ export default function TextField({
   const showClear = allowClear && !!value;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(e.target.value);
+    const nextValue = toUppercase
+      ? e.target.value.toUpperCase()
+      : e.target.value;
+
+    onChange(nextValue);
   };
 
   const handleClear = () => {

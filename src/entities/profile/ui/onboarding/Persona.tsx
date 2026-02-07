@@ -1,15 +1,14 @@
 import { useOutletContext } from 'react-router-dom';
 
+import { validateProfileItem } from '@/entities/profile/model/hook/useEditProfile';
+import { ProfileOnboardingContext } from '@/entities/profile/model/types/types';
 import UserProfile from '@/entities/profile/ui/UserProfile';
 import TextField from '@/shared/ui/input/TextField';
-
-import { validateProfileItem } from '../../model/hook/useEditProfile';
-import { ProfileOnboardingContext } from '../../model/types/types';
 
 export default function PersonaStep() {
   const { form, updateForm } = useOutletContext<ProfileOnboardingContext>();
   const selectedMBTI = form.persona.mbti;
-  const errorMessage = validateProfileItem('MBTI', selectedMBTI);
+  const errorMessage = validateProfileItem('MBTI', selectedMBTI || '');
 
   return (
     <div className="space-y-[22px]">

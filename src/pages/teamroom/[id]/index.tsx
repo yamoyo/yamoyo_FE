@@ -11,7 +11,7 @@ import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-st
 import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useTeamRoomWsListener } from '@/features/leader-game/ws/model/useTeamRoomWsListener';
 import { useAuthStore } from '@/shared/api/auth/store';
-import TeamRoomContents from '@/widgets/teamroom/main/dashboard/TeamRoomContents';
+import TeamRoomContents from '@/widgets/teamroom/main/dashboard/ui/TeamRoomContents';
 import AddMemberBottomSheet from '@/widgets/teamroom/main/ui/AddMemberBottomSheet';
 import MemberListSection from '@/widgets/teamroom/main/ui/MemberListSection';
 import TeamRoomBanner from '@/widgets/teamroom/main/ui/TeamRoomBanner';

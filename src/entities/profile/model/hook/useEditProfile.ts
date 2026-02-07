@@ -1,29 +1,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { MAJOR, MBTI } from '@/entities/profile/model/options/profile-items';
 import { MajorId } from '@/entities/profile/model/types/types';
 import {
   useCurrentUser,
   useUpdateUser,
 } from '@/entities/user/hooks/useCurrentUser';
 
-import { MAJOR } from '../options/profile-items';
-
 export const validateProfileItem = (type: 'name' | 'MBTI', value: string) => {
   if (type === 'name') {
-    if (!/^[0-9A-Za-z가-힣]+$/.test(value) && value.length > 0) {
-      return '특수문자는 입력불가입니다.';
+    if (!/^[A-Za-z가-힣ㄱ-ㅎㅏ-ㅣ]+$/.test(value) && value.length > 0) {
+      return '한글과 영문만 입력 가능합니다.';
+    }
+    if (value.length > 10) {
+      return '최대 10자 이내만 가능합니다.';
     }
   }
 
-  if (type === 'MBTI') {
-    // 최대 8자 이내이며, 영문자와 한글만 허용
-    if (
-      value.length > 8 ||
-      (value.length > 0 && !/^[A-Za-z가-힣]+$/.test(value))
-    ) {
-      return '올바른 MBTI를 입력해 주세요.';
-    }
+  if (type === 'MBTI' && !MBTI.includes(value) && value.length > 0) {
+    return '올바른 MBTI를 입력해 주세요.';
   }
 };
 
@@ -87,7 +83,7 @@ export const useEditMBTI = () => {
   const errorMessage = validateProfileItem('MBTI', MBTI);
 
   useEffect(() => {
-    if (user) setMBTI(user.mbti);
+    if (user) setMBTI(user.mbti || '');
   }, [user]);
 
   const handleSaveMBTI = () => {

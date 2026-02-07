@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
 import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
 import UserProfile from '@/entities/profile/ui/UserProfile';
-import { logout } from '@/entities/user/api/user-api';
+import { deleteMe, logout } from '@/entities/user/api/user-api';
 import {
   useCurrentUser,
   useUpdateUser,
@@ -32,7 +32,6 @@ export function Profile() {
   ) => {
     const baseOptions = item.modalOptions;
     const onClickRightBtn = async () => {
-      // 여기에 로그아웃 또는 회원탈퇴 로직 추가
       if (item.label === '로그아웃') {
         try {
           await logout();
@@ -40,7 +39,19 @@ export function Profile() {
           navigate('/');
         } catch (_) {
           alert(
-            '로그아웃 과정 중 일시적이 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+            '로그아웃 과정 중 일시적인 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+          );
+        }
+      }
+
+      if (item.label === '회원탈퇴') {
+        try {
+          await deleteMe();
+          clear();
+          navigate('/');
+        } catch (_) {
+          alert(
+            '회원탈퇴 과정 중 일시적인 에러가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
           );
         }
       }
@@ -88,7 +99,7 @@ export function Profile() {
               <BasicInfoItem
                 key={item.key}
                 label={item.label}
-                value={getUserValue(item.key)}
+                value={getUserValue(item.key) || ''}
                 editRoute={item.editable ? item.key : undefined}
               />
             ))}

@@ -1,3 +1,5 @@
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { GetRuleVoteParticipationResponse } from '@/entities/setup/rule/api/rule-dto';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
@@ -9,6 +11,9 @@ interface Props {
 export default function RuleVoteWaitingScreen({
   ruleVoteParticipationData,
 }: Props) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
   const votedUsers = ruleVoteParticipationData.voted.map((v) => ({
     ...v,
     name: v.userName,
@@ -18,11 +23,13 @@ export default function RuleVoteWaitingScreen({
     name: uv.userName,
   }));
 
+  const handleOnClose = () => navigate(`/teamroom/${id}`);
+
   return (
     <VoteStatus
-      isHiddenCancelButton
       votedUsers={votedUsers}
       unVotedUsers={unVotedUsers}
+      onClose={handleOnClose}
     />
   );
 }

@@ -22,6 +22,7 @@ export default function EditMBTI() {
           onChange={setMBTI}
           placeholder="MBTI를 입력하세요"
           errorMessage={errorMessage}
+          toUppercase
         />
       </EditProfileLayout>
     </>
