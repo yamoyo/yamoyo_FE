@@ -100,7 +100,8 @@ export default function TeamRoomSelectSheet({
 
       <button
         onClick={handleChange}
-        className="mt-6 w-full rounded-xl bg-bg-primary py-4 font-bold text-white"
+        disabled={!currentSelected}
+        className="mt-6 w-full rounded-xl bg-bg-primary py-4 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
         변경하기
       </button>
