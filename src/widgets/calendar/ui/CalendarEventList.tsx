@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
 import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
 import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
@@ -6,6 +8,7 @@ interface CalendarEventListProps {
   meetings: MeetingSummary[];
   currentDate: Date;
   selectedDate?: Date;
+  teamRoomId?: number;
   onAddEvent?: () => void;
 }
 
@@ -13,6 +16,7 @@ export default function CalendarEventList({
   meetings,
   currentDate,
   selectedDate,
+  teamRoomId,
   onAddEvent,
 }: CalendarEventListProps) {
   const filteredMeetings = meetings.filter((meeting) => {
@@ -61,7 +65,11 @@ export default function CalendarEventList({
         ) : (
           <div className="flex flex-col gap-3">
             {filteredMeetings.map((meeting) => (
-              <MeetingItem key={meeting.meetingId} meeting={meeting} />
+              <MeetingItem
+                key={meeting.meetingId}
+                meeting={meeting}
+                teamRoomId={teamRoomId}
+              />
             ))}
           </div>
         )}
@@ -70,7 +78,13 @@ export default function CalendarEventList({
   );
 }
 
-export function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
+interface MeetingItemProps {
+  meeting: MeetingSummary;
+  teamRoomId?: number;
+}
+
+export function MeetingItem({ meeting, teamRoomId }: MeetingItemProps) {
+  const navigate = useNavigate();
   const colorHex = MEETING_COLOR_MAP[meeting.color];
   const meetingDate = new Date(meeting.startTime);
   const dayLabel = ['일', '월', '화', '수', '목', '금', '토'][
@@ -85,8 +99,17 @@ export function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
     ? '/assets/icons/place.svg'
     : '/assets/icons/online.svg';
 
+  const handleClick = () => {
+    if (teamRoomId) {
+      navigate(`/teamroom/${teamRoomId}/meeting/${meeting.meetingId}`);
+    }
+  };
+
   return (
-    <div className="flex items-center justify-between rounded-2xl bg-bg-card p-4">
+    <div
+      className="flex cursor-pointer items-center justify-between rounded-2xl bg-bg-card p-4"
+      onClick={handleClick}
+    >
       <div className="flex items-stretch gap-4">
         <div className="w-[22px] flex-col pt-0.5 flex-center">
           <span className="text-title-3 text-tx-default">

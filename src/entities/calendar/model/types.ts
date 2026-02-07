@@ -1,4 +1,7 @@
-import type { MeetingColor } from '@/entities/calendar/api/meeting-dto';
+import type {
+  DayOfWeek,
+  MeetingColor,
+} from '@/entities/calendar/api/meeting-dto';
 
 /** API MeetingColor → hex 변환 맵 */
 export const MEETING_COLOR_MAP: Record<MeetingColor, string> = {
@@ -33,5 +36,19 @@ export type CreateScheduleFormData = {
   startTime: string; // HH:mm
   endTime: string; // HH:mm
   location?: string;
+  participantUserIds: number[];
+};
+
+export type EditScheduleFormData = {
+  teamId: number;
+  meetingId: number;
+  title: string;
+  color: MeetingColor;
+  description: string;
+  startDate: string; // YYYY-MM-DD
+  dayOfWeek?: DayOfWeek;
+  startTime: string; // HH:mm
+  endTime: string; // HH:mm
+  location: string;
   participantUserIds: number[];
 };

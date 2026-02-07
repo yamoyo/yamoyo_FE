@@ -10,6 +10,7 @@ interface TitleSectionProps {
   selectedColor: ScheduleColorId;
   titleLength: number;
   isColorPickerOpen: boolean;
+  isColorChangeHidden?: boolean;
   onToggleColorPicker: () => void;
   onSelectColor: (colorId: ScheduleColorId) => void;
   register: UseFormRegister<CreateScheduleFormData>;
@@ -20,6 +21,7 @@ export default function TitleSection({
   selectedColor,
   titleLength,
   isColorPickerOpen,
+  isColorChangeHidden = false,
   onToggleColorPicker,
   onSelectColor,
   register,
@@ -31,17 +33,19 @@ export default function TitleSection({
         미팅제목
       </label>
       <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={onToggleColorPicker}
-          className="h-5 w-5 shrink-0 rounded-full"
-          style={{
-            backgroundColor:
-              SCHEDULE_COLORS.find((c) => c.id === selectedColor)?.hex ||
-              selectedColor,
-          }}
-          aria-label="일정 색상 선택"
-        />
+        {!isColorChangeHidden && (
+          <button
+            type="button"
+            onClick={onToggleColorPicker}
+            className="h-5 w-5 shrink-0 rounded-full"
+            style={{
+              backgroundColor:
+                SCHEDULE_COLORS.find((c) => c.id === selectedColor)?.hex ||
+                selectedColor,
+            }}
+            aria-label="일정 색상 선택"
+          />
+        )}
         <div className="relative flex-1">
           <input
             {...register('title', {
@@ -60,7 +64,7 @@ export default function TitleSection({
           </span>
         </div>
       </div>
-      {isColorPickerOpen && (
+      {isColorPickerOpen && !isColorChangeHidden && (
         <div className="mt-3 flex items-center gap-[10px]">
           <button
             type="button"

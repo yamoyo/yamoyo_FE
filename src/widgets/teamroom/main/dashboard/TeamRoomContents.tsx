@@ -61,5 +61,15 @@ export default function TeamRoomContents({
     );
   }
 
+  if (workflow === 'COMPLETED') {
+    return (
+      <Dashboard
+        teamRoomId={teamRoomId}
+        myRole={myRole}
+        setupCreatedAt={setupCreatedAt}
+      />
+    );
+  }
+
   return <p>데이터를 불러오고 있습니다...</p>;
 }

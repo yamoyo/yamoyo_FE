@@ -89,11 +89,14 @@ export default function TeamRoomCreatePage() {
     }
 
     const deadlineDateTime = `${formatDateString(deadlineDate!)}T00:00:00`;
+    // 배너를 선택하지 않았으면 (id=0) 기본 배너로 저장
+    const finalBannerImageId =
+      selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID ? 1 : selectedImageId;
 
     const res = await createTeamRoom({
       title: teamName.trim(),
       description,
-      bannerImageId: selectedImageId,
+      bannerImageId: finalBannerImageId,
       deadline: deadlineDateTime,
     });
     const inviteLink = `${window.location.origin}/invite/${res.inviteToken}`;

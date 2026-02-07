@@ -161,7 +161,11 @@ export default function TeamRoomOptionsBottomSheet({
           <button
             type="button"
             onClick={handleEditTeamRoom}
-            className="flex items-center gap-4"
+            disabled={!isCurrentUserLeader}
+            className={cn(
+              'flex items-center gap-4',
+              !isCurrentUserLeader && 'cursor-not-allowed opacity-40',
+            )}
           >
             <img
               src="/assets/icons/teamroom-edit.svg"
