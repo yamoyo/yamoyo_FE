@@ -4,12 +4,14 @@ interface ParticipantsSectionProps {
   selectedMembers: TeamRoomMember[];
   onOpenSheet: () => void;
   onRemove: (userId: number) => void;
+  error?: string;
 }
 
 export default function ParticipantsSection({
   selectedMembers,
   onOpenSheet,
   onRemove,
+  error,
 }: ParticipantsSectionProps) {
   return (
     <div className="flex flex-col items-start gap-2 self-stretch">
@@ -23,6 +25,9 @@ export default function ParticipantsSection({
           추가하기
         </button>
       </label>
+      {error && (
+        <p className="text-[12px] text-textfiled-line_error">{error}</p>
+      )}
       <div className="h-36 overflow-y-auto">
         {selectedMembers.length > 0 && (
           <div className="grid grid-cols-3 gap-[10px]">

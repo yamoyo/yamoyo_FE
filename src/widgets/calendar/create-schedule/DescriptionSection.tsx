@@ -1,18 +1,23 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
-
-interface DescriptionSectionProps {
+interface DescriptionSectionProps<T extends FieldValues> {
+  name: Path<T>;
   descLength: number;
-  register: UseFormRegister<CreateScheduleFormData>;
+  register: UseFormRegister<T>;
   error?: FieldError;
 }
 
-export default function DescriptionSection({
+export default function DescriptionSection<T extends FieldValues>({
+  name,
   descLength,
   register,
   error,
-}: DescriptionSectionProps) {
+}: DescriptionSectionProps<T>) {
   return (
     <div>
       <label className="mb-2 block text-body-4.1 text-tx-default_3">
@@ -20,7 +25,7 @@ export default function DescriptionSection({
       </label>
       <div className="relative">
         <textarea
-          {...register('description', {
+          {...register(name, {
             maxLength: {
               value: 50,
               message: '최대 50자까지 입력 가능합니다',

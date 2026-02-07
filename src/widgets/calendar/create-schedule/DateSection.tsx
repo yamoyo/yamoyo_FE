@@ -1,25 +1,31 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
-interface DateSectionProps {
+interface DateSectionProps<T extends FieldValues> {
+  name: Path<T>;
   title: string;
   dateLabel: string;
-  register: UseFormRegister<CreateScheduleFormData>;
+  register: UseFormRegister<T>;
   error?: FieldError;
   selectedDate?: Date;
   onDateSelect: (selected: Date) => void;
 }
 
-export default function DateSection({
+export default function DateSection<T extends FieldValues>({
+  name,
   title,
   dateLabel,
   register,
   error,
   selectedDate,
   onDateSelect,
-}: DateSectionProps) {
+}: DateSectionProps<T>) {
   const openCalendarModal = useModalStore((s) => s.openCalendarModal);
 
   const handleOpenCalendar = () => {
@@ -53,7 +59,7 @@ export default function DateSection({
       </button>
       <input
         type="hidden"
-        {...register('startDate', {
+        {...register(name, {
           required: '날짜를 선택해주세요',
         })}
       />

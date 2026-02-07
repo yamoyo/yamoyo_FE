@@ -51,3 +51,64 @@ export interface CreateMeetingResponse {
   meetingIds: number[];
   createdMeetingCount: number;
 }
+
+// ========== 회의 상세 조회 ==========
+
+export interface MeetingParticipant {
+  userId: number;
+  name: string;
+  profileImageId: number;
+}
+
+export type DayOfWeek = 'MON' | 'TUE' | 'WED' | 'THU' | 'FRI' | 'SAT' | 'SUN';
+
+export interface MeetingDetailResponse {
+  meetingId: number;
+  meetingSeriesId: number;
+  title: string;
+  description: string | null;
+  location: string | null;
+  startTime: string; // "2025-02-15T14:00:00"
+  endTime: string; // "2025-02-15T15:30:00"
+  durationMinutes: number;
+  color: MeetingColor;
+  meetingType: MeetingType;
+  isIndividuallyModified: boolean;
+  dayOfWeek: DayOfWeek | null;
+  creatorName: string;
+  teamRoomId: number;
+  participants: MeetingParticipant[];
+  canModify: boolean;
+}
+
+// ========== 회의 수정 ==========
+
+export type UpdateScope = 'SINGLE' | 'THIS_AND_FUTURE';
+
+export interface UpdateMeetingRequest {
+  title: string;
+  description: string;
+  location: string;
+  startDate?: string; // YYYY-MM-DD (scope=SINGLE 시 필수)
+  dayOfWeek?: DayOfWeek; // (scope=THIS_AND_FUTURE 시 필수)
+  startTime: string; // HH:mm
+  endTime: string; // HH:mm
+  color: MeetingColor;
+  participantUserIds: number[];
+}
+
+export interface UpdateMeetingResponse {
+  scope: UpdateScope;
+  updatedMeetingCount: number;
+  updatedMeetingIds: number[];
+  skippedMeetingIds: number[];
+}
+
+// ========== 회의 삭제 ==========
+
+export interface DeleteMeetingResponse {
+  scope: UpdateScope;
+  deletedMeetingCount: number;
+  deletedMeetingIds: number[];
+  seriesDeleted: boolean;
+}

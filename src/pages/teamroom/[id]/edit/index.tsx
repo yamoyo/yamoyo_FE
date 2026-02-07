@@ -97,18 +97,22 @@ export default function TeamRoomEditPage() {
 
     const deadlineDateTime = `${formatDateString(deadlineDate!)}T00:00:00`;
 
+    // 배너가 선택되지 않았으면 (id=0) 1번 배너로 기본 설정
+    const finalBannerImageId =
+      selectedImageId === DEFAULT_TEAMROOM_IMAGE_ID ? 1 : selectedImageId;
+
     try {
       await updateTeamRoom(Number(id), {
         title: teamName.trim(),
         description,
-        bannerImageId: selectedImageId,
+        bannerImageId: finalBannerImageId,
         deadline: deadlineDateTime,
       });
 
       setEditData({
         title: teamName.trim(),
         description,
-        bannerImageId: selectedImageId,
+        bannerImageId: finalBannerImageId,
         deadline: deadlineDate!.toISOString(),
       });
 
