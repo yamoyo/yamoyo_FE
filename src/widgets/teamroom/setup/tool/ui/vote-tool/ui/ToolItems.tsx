@@ -2,16 +2,11 @@ import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-content
 import { ToolId } from '@/entities/teamroom/setup/tool/model/types';
 import { cn } from '@/shared/config/tailwind/cn';
 
-type Props = { tools: (typeof TOOL_CONTENTS)[number]['tools'] } & (
-  | {
-      selectedTools: ToolId[];
-      handleToolToggle: (toolId: ToolId) => void;
-    }
-  | {
-      selectedTools?: never;
-      handleToolToggle?: never;
-    }
-);
+interface Props {
+  tools: (typeof TOOL_CONTENTS)[number]['tools'];
+  selectedTools: ToolId[];
+  handleToolToggle?: (toolId: ToolId) => void;
+}
 
 export default function ToolItems({
   tools,
@@ -29,10 +24,9 @@ export default function ToolItems({
             selectedTools && selectedTools.includes(tool.id)
               ? 'bg-bg-secondary_2 text-tx-default_black'
               : 'bg-bg-card text-tx-default',
-            {
-              'hover:bg-bg-secondary_2 hover:text-tx-default_black':
-                !!handleToolToggle,
-            },
+            handleToolToggle
+              ? 'cursor-pointer hover:bg-bg-secondary_2 hover:text-tx-default_black'
+              : 'cursor-default',
           )}
           onClick={() => handleToolToggle && handleToolToggle(tool.id)}
         >

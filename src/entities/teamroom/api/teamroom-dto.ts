@@ -60,6 +60,7 @@ export interface TeamRoomDetail {
   memberCount: number;
   members: TeamMember[];
   myRole: TeamMemberRole;
+  setupCreatedAt?: string;
 }
 
 /** 팀룸 생성 요청 (POST /api/team-rooms) */

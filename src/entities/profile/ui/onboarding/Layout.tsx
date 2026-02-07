@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { MAJOR } from '@/entities/profile/model/options/profile-items';
-import { userApi } from '@/entities/user/api/user-api';
+import { onboardingProfile } from '@/entities/user/api/user-api';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
@@ -76,7 +76,7 @@ export default function ProfileOnboardingLayout() {
 
     setIsLoading(true);
     try {
-      await userApi.onboardingProfile({
+      await onboardingProfile({
         name: form.name,
         major,
         ...form.persona,

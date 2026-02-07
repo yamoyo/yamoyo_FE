@@ -1,6 +1,7 @@
 interface BaseProps {
   text: string;
   id: 'rule' | 'tool' | 'timepick';
+  hideIcon?: boolean;
 }
 
 type EditProps =
@@ -19,6 +20,7 @@ export default function ContentsHeader({
   text,
   id,
   editMode,
+  hideIcon,
   onClickIcon,
 }: Props) {
   return (
@@ -32,7 +34,7 @@ export default function ContentsHeader({
         />
         <p className="text-body-2 text-tx-default">{text}</p>
       </div>
-      {onClickIcon && editMode !== undefined && (
+      {!hideIcon && onClickIcon && editMode !== undefined && (
         <button onClick={onClickIcon} className="p-2.5">
           {editMode ? (
             <img

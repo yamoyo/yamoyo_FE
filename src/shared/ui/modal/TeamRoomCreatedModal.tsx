@@ -15,6 +15,7 @@ export default function TeamRoomCreatedModal({
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(inviteLink);
+    alert('초대 링크가 복사되었습니다!');
   };
 
   const handleGoToTeamRoom = () => {
