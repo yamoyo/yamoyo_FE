@@ -89,6 +89,9 @@ export default function MeetingDetailPage() {
           meeting.canModify ? (
             <button
               type="button"
+              onClick={() =>
+                navigate(`/calendar/edit-schedule?meetingId=${meetingId}`)
+              }
               className="p-[10px] text-body-4 text-textfiled-line_focus"
               aria-label="미팅 일정 수정"
             >

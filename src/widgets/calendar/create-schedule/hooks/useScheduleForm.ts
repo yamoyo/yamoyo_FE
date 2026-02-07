@@ -29,6 +29,8 @@ export default function useScheduleForm() {
     watch,
     setValue,
     reset,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<CreateScheduleFormData>({
     defaultValues: {
@@ -87,6 +89,14 @@ export default function useScheduleForm() {
   const timeOptions = buildTimeOptions(8, 24);
 
   const onSubmit = async (data: CreateScheduleFormData) => {
+    if (!data.participantUserIds || data.participantUserIds.length === 0) {
+      setError('participantUserIds', {
+        type: 'manual',
+        message: '참석자를 1명 이상 선택해주세요.',
+      });
+      return;
+    }
+
     const requestBase: CreateMeetingRequest = {
       title: data.title,
       startDate: data.startDate,
@@ -117,6 +127,9 @@ export default function useScheduleForm() {
 
   const setParticipants = (userIds: number[]) => {
     setValue('participantUserIds', userIds, { shouldValidate: true });
+    if (userIds.length > 0) {
+      clearErrors('participantUserIds');
+    }
   };
 
   return {

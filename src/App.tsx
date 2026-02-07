@@ -17,6 +17,7 @@ import LoginPage from './pages';
 import HomePage from './pages/home';
 import Calendar from './pages/home/calendar';
 import CreateSchedulePage from './pages/home/calendar/create-schedule';
+import EditSchedulePage from './pages/home/calendar/edit-schedule';
 import InvitePage from './pages/invite';
 import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
@@ -80,13 +81,6 @@ export default function App() {
       <Routes>
         <Route path="/debug" element={<LeaderGameStoreDebugPage />} />
 
-        {/* DEV: 개발용 라우트 (AuthGuard 우회) */}
-        <Route path="/dev/timeselect/:id" element={<TimeSelectPage />} />
-        <Route
-          path="/dev/timeselect/:id/everytime"
-          element={<EveryTimePage />}
-        />
-
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
           <Route path="/" element={<LoginPage />} />
@@ -100,6 +94,7 @@ export default function App() {
           <Route path="/calendar">
             <Route index element={<Calendar />} />
             <Route path="create-schedule" element={<CreateSchedulePage />} />
+            <Route path="edit-schedule" element={<EditSchedulePage />} />
           </Route>
 
           <Route path="/mypage">

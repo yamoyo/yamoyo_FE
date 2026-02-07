@@ -108,6 +108,7 @@ export default function CreateSchedulePage() {
           selectedMembers={selectedMembers}
           onOpenSheet={() => setIsParticipantSheetOpen(true)}
           onRemove={removeParticipant}
+          error={errors.participantUserIds?.message}
         />
 
         <SubmitButton />
