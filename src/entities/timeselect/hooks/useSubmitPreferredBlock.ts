@@ -13,8 +13,7 @@ export function useSubmitPreferredBlock() {
     mutationFn: (preferredBlock: PreferredBlock) =>
       submitPreferredBlock(teamRoomId, { preferredBlock }),
     onSuccess: () => {
-      // TODO: 제출 완료 후 이동할 페이지 (로딩/대기 화면 또는 팀룸 메인)
-      navigate(`/teamroom/${id}`, { replace: true });
+      navigate(`/teamroom/${id}/timeselect/loading`, { replace: true });
     },
   });
 }
