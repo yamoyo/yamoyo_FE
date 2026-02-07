@@ -40,6 +40,7 @@ import BannerPage from './pages/teamroom/create/banner';
 import TimeSelectPage from './pages/timeselect';
 import EveryTimePage from './pages/timeselect/everytime';
 import LikeTimePage from './pages/timeselect/liketime';
+import TimeSelectLoadingPage from './pages/timeselect/loading';
 import ModalRoot from './shared/ui/modal/ModalRoot';
 import Mypage from './widgets/mypage';
 
@@ -156,6 +157,10 @@ export default function App() {
               element={<MeetingDetailPage />}
             />
             <Route path=":id/timeselect" element={<TimeSelectPage />} />
+            <Route
+              path=":id/timeselect/loading"
+              element={<TimeSelectLoadingPage />}
+            />
             <Route
               path=":id/timeselect/everytime"
               element={<EveryTimePage />}

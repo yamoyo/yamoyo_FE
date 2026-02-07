@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { useAvailabilityStore } from '@/entities/everytime/model/availability-store';
 import { useSubmitAvailability } from '@/entities/timeselect/hooks/useSubmitAvailability';
+import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -38,6 +39,7 @@ export default function TimeSelectPage() {
   );
 
   const { mutate: submitAvailability, isPending } = useSubmitAvailability();
+  const { data: timeSelectData } = useTimeSelect(Number(id));
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [availability, setAvailability] = useState<boolean[][]>(
@@ -51,6 +53,31 @@ export default function TimeSelectPage() {
       clearImportedAvailability();
     }
   }, [importedAvailability, clearImportedAvailability]);
+
+  useEffect(() => {
+    if (!timeSelectData) return;
+    if (timeSelectData.status === 'FINALIZED') {
+      navigate(`/teamroom/${id}`, { replace: true });
+      return;
+    }
+
+    const { availabilityStatus, preferredBlockStatus } =
+      timeSelectData.myStatus;
+    if (
+      availabilityStatus === 'SUBMITTED' &&
+      preferredBlockStatus === 'SUBMITTED'
+    ) {
+      navigate(`/teamroom/${id}/timeselect/loading`, { replace: true });
+      return;
+    }
+
+    if (
+      availabilityStatus === 'SUBMITTED' &&
+      preferredBlockStatus === 'PENDING'
+    ) {
+      navigate(`/teamroom/${id}/timeselect/liketime`, { replace: true });
+    }
+  }, [timeSelectData, id, navigate]);
 
   const handleReset = () => {
     setAvailability(createInitialAvailability());
