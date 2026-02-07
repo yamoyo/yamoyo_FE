@@ -88,7 +88,7 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
       label: '미팅일정',
       render: () =>
         isTimeSelectFinalized ? (
-          <MeetingList meetings={meetings} teamRoomId={teamRoomId} />
+          <MeetingList meetings={meetings} teamRoomId={Number(teamRoomId)} />
         ) : (
           fallback('빠른 미팅일정을 설정하세요', 'timeselect')
         ),
