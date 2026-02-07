@@ -48,7 +48,7 @@ export default function TeamRoomContents({
   }
 
   if (workflow === 'SETUP') {
-    return <Dashboard />;
+    return <Dashboard teamRoomId={teamRoomId} />;
   }
 
   return <p>데이터를 불러오고 있습니다...</p>;

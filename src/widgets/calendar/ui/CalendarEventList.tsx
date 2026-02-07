@@ -70,7 +70,7 @@ export default function CalendarEventList({
   );
 }
 
-function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
+export function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
   const colorHex = MEETING_COLOR_MAP[meeting.color];
   const meetingDate = new Date(meeting.startTime);
   const dayLabel = ['일', '월', '화', '수', '목', '금', '토'][
@@ -86,40 +86,52 @@ function MeetingItem({ meeting }: { meeting: MeetingSummary }) {
     : '/assets/icons/online.svg';
 
   return (
-    <div className="flex items-stretch gap-4 rounded-2xl bg-bg-card p-4">
-      <div className="flex min-w-[48px] flex-col items-center justify-center pt-0.5">
-        <span className="text-2xl font-bold text-white">
-          {meetingDate.getDate()}
-        </span>
-        <span className="text-xs text-gray-400">{dayLabel}</span>
+    <div className="flex items-center justify-between rounded-2xl bg-bg-card p-4">
+      <div className="flex items-stretch gap-4">
+        <div className="w-[22px] flex-col pt-0.5 flex-center">
+          <span className="text-title-3 text-tx-default">
+            {meetingDate.getDate()}
+          </span>
+          <span className="text-body-7 text-tx-default_3">{dayLabel}</span>
+        </div>
+
+        <div className="w-[1.5px] self-stretch bg-bg-textfiled" />
+
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <div
+              className="h-3 w-3 shrink-0 rounded-full"
+              style={{ backgroundColor: colorHex }}
+            />
+            <span className="text-body-5 text-tx-default_3">
+              {meeting.title}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <img
+              src={locationIconSrc}
+              alt={hasLocation ? '오프라인' : '온라인'}
+              width={12}
+              height={12}
+            />
+            <div className="text-body-5 text-tx-default_3">{locationLabel}</div>
+          </div>
+
+          {startTimeStr && endTimeStr && (
+            <div className="text-body-5 text-tx-default_3">
+              {startTimeStr} - {endTimeStr}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="w-[1.5px] self-stretch bg-bg-textfiled" />
-
-      <div className="flex flex-1 flex-col gap-2">
-        <div className="flex items-center gap-2">
-          <div
-            className="h-3 w-3 shrink-0 rounded-full"
-            style={{ backgroundColor: colorHex }}
-          />
-          <span className="text-body-5 text-tx-default_3">{meeting.title}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <img
-            src={locationIconSrc}
-            alt={hasLocation ? '오프라인' : '온라인'}
-            width={12}
-            height={12}
-          />
-          <div className="text-body-5 text-tx-default_3">{locationLabel}</div>
-        </div>
-
-        {startTimeStr && endTimeStr && (
-          <div className="text-body-5 text-tx-default_3">
-            {startTimeStr} - {endTimeStr}
-          </div>
-        )}
+      <div className="h-10 w-8 shrink-0 px-[1px] flex-center">
+        <img
+          src="/assets/icons/arrow-left.svg"
+          alt="상세보기"
+          className="rotate-180"
+        />
       </div>
     </div>
   );
