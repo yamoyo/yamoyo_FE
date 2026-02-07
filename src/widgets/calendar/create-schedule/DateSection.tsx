@@ -1,8 +1,14 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 
-interface DateSectionProps<T extends { startDate: string }> {
+interface DateSectionProps<T extends FieldValues> {
+  name: Path<T>;
   title: string;
   dateLabel: string;
   register: UseFormRegister<T>;
@@ -11,7 +17,8 @@ interface DateSectionProps<T extends { startDate: string }> {
   onDateSelect: (selected: Date) => void;
 }
 
-export default function DateSection<T extends { startDate: string }>({
+export default function DateSection<T extends FieldValues>({
+  name,
   title,
   dateLabel,
   register,
@@ -52,7 +59,7 @@ export default function DateSection<T extends { startDate: string }>({
       </button>
       <input
         type="hidden"
-        {...register('startDate', {
+        {...register(name, {
           required: '날짜를 선택해주세요',
         })}
       />

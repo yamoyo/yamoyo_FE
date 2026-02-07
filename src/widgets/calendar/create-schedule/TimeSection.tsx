@@ -1,9 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 
 import ClockIcon from '@/shared/assets/icons/Clock.svg?react';
 
-interface TimeSectionProps<T extends { startTime: string; endTime: string }> {
+interface TimeSectionProps<T extends FieldValues> {
+  startTimeName: Path<T>;
+  endTimeName: Path<T>;
   timeOptions: string[];
   register: UseFormRegister<T>;
   startTime?: string;
@@ -17,9 +24,9 @@ interface TimeSectionProps<T extends { startTime: string; endTime: string }> {
 
 const durationCandidates = [30, 60, 90, 120];
 
-export default function TimeSection<
-  T extends { startTime: string; endTime: string },
->({
+export default function TimeSection<T extends FieldValues>({
+  startTimeName,
+  endTimeName,
   timeOptions,
   register,
   startTime,
@@ -82,7 +89,7 @@ export default function TimeSection<
           )
       : [];
 
-  const startTimeField = register('startTime', {
+  const startTimeField = register(startTimeName, {
     required: '시작 시간을 선택해주세요',
   });
 
@@ -140,7 +147,7 @@ export default function TimeSection<
 
       <input
         type="hidden"
-        {...register('endTime', {
+        {...register(endTimeName, {
           required: '소요 시간을 선택해주세요',
         })}
       />

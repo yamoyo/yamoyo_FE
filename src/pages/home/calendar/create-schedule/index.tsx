@@ -72,6 +72,7 @@ export default function CreateSchedulePage() {
         />
 
         <DescriptionSection
+          name="description"
           descLength={descLength}
           register={register}
           error={errors.description}
@@ -80,6 +81,7 @@ export default function CreateSchedulePage() {
         <DateSection
           title="미팅 날짜"
           dateLabel={dateLabel}
+          name="startDate"
           register={register}
           error={errors.startDate}
           selectedDate={selectedDate}
@@ -88,6 +90,8 @@ export default function CreateSchedulePage() {
 
         <TimeSection
           timeOptions={timeOptions}
+          startTimeName="startTime"
+          endTimeName="endTime"
           register={register}
           startTime={startTime}
           endTime={endTime}
@@ -102,7 +106,7 @@ export default function CreateSchedulePage() {
           }
         />
 
-        <LocationSection register={register} />
+        <LocationSection name="location" register={register} />
 
         <ParticipantsSection
           selectedMembers={selectedMembers}

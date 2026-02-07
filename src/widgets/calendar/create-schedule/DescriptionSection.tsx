@@ -1,12 +1,19 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  UseFormRegister,
+} from 'react-hook-form';
 
-interface DescriptionSectionProps<T extends { description?: string }> {
+interface DescriptionSectionProps<T extends FieldValues> {
+  name: Path<T>;
   descLength: number;
   register: UseFormRegister<T>;
   error?: FieldError;
 }
 
-export default function DescriptionSection<T extends { description?: string }>({
+export default function DescriptionSection<T extends FieldValues>({
+  name,
   descLength,
   register,
   error,
@@ -18,7 +25,7 @@ export default function DescriptionSection<T extends { description?: string }>({
       </label>
       <div className="relative">
         <textarea
-          {...register('description', {
+          {...register(name, {
             maxLength: {
               value: 50,
               message: '최대 50자까지 입력 가능합니다',

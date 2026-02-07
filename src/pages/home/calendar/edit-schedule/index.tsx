@@ -195,6 +195,7 @@ export default function EditSchedulePage() {
 
         {/* 내용 설명 */}
         <DescriptionSection
+          name="description"
           descLength={descLength}
           register={register}
           error={errors.description}
@@ -204,6 +205,7 @@ export default function EditSchedulePage() {
         <DateSection
           title="미팅 날짜"
           dateLabel={dateLabel}
+          name="startDate"
           register={register}
           error={errors.startDate}
           selectedDate={selectedDate}
@@ -213,6 +215,8 @@ export default function EditSchedulePage() {
         {/* 시간 선택 */}
         <TimeSection
           timeOptions={timeOptions}
+          startTimeName="startTime"
+          endTimeName="endTime"
           register={register}
           startTime={startTime}
           endTime={endTime}
@@ -228,7 +232,11 @@ export default function EditSchedulePage() {
         />
 
         {/* 장소 */}
-        <LocationSection register={register} placeholder="온라인" />
+        <LocationSection
+          name="location"
+          register={register}
+          placeholder="온라인"
+        />
 
         {/* 참석자 */}
         <ParticipantsSection
@@ -281,7 +289,7 @@ export default function EditSchedulePage() {
             type="button"
             onClick={() => handleScopeSubmit('SINGLE')}
             disabled={isPending}
-            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-tx-default transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-bg-primary transition-colors hover:bg-bg-card/80 disabled:opacity-50"
           >
             이 일정만
           </button>
@@ -289,7 +297,7 @@ export default function EditSchedulePage() {
             type="button"
             onClick={() => handleScopeSubmit('THIS_AND_FUTURE')}
             disabled={isPending}
-            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-tx-default transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-bg-primary transition-colors hover:bg-bg-card/80 disabled:opacity-50"
           >
             이번 및 향후 모든 일정
           </button>
