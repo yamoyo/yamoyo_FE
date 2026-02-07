@@ -99,7 +99,7 @@ export default function TeamRoomCreatePage() {
       bannerImageId: finalBannerImageId,
       deadline: deadlineDateTime,
     });
-    const inviteLink = `${window.location.origin}/invite/${res.inviteToken}`;
+    const inviteLink = `${window.location.origin}/invite?token=${res.inviteToken}`;
     openTeamRoomCreatedModal({
       teamRoomId: res.teamRoomId,
       inviteLink,

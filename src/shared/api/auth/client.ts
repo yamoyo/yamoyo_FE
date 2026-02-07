@@ -1,7 +1,7 @@
 import { YamoyoError } from '../base/http-error';
 import { baseRequest } from '../base/request';
 import { HttpRequestOptions } from '../base/types';
-import { notifyAuthExpired } from './event-bus';
+import { notifyAuthBlocked } from './event-bus';
 import { refreshAccessToken } from './refresh-token';
 import { useAuthStore } from './store';
 
@@ -35,17 +35,28 @@ async function authAwareRequest<T>(
   try {
     return await doRequest();
   } catch (e) {
-    if (
-      e instanceof YamoyoError &&
-      e.code === 401 &&
-      authMode === 'required' &&
-      !retry
-    ) {
+    if (!(e instanceof YamoyoError)) {
+      console.error('정해진 에러 양식이 아닙니다.');
+      alert('에러 반환 중 문제가 발생하였습니다. 관리자에게 문의해 주세요.');
+      throw e;
+    }
+
+    const { code, data } = e;
+
+    if (code === 403) {
+      const { onboardingStatus } = data;
+      notifyAuthBlocked(
+        onboardingStatus as 'TERMS_PENDING' | 'PROFILE_PENDING',
+      );
+      throw e;
+    }
+
+    if (e.code === 401 && authMode === 'required' && !retry) {
       retry = true;
 
       const ok = await refreshAccessToken();
       if (!ok) {
-        notifyAuthExpired();
+        notifyAuthBlocked('AUTH_EXPIRED');
         throw e;
       }
 

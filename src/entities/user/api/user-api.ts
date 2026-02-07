@@ -27,6 +27,12 @@ export function logout() {
   });
 }
 
+export function deleteMe() {
+  return authClient.delete('/auth/me', {
+    credentials: 'include',
+  });
+}
+
 export function onboardingTerm() {
   return authClient.post('/onboarding/terms', OnboardingTermBody);
 }

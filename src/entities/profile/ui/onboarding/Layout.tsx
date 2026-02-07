@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { validateProfileItem } from '@/entities/profile/model/hook/useEditProfile';
 import { MAJOR } from '@/entities/profile/model/options/profile-items';
 import { onboardingProfile } from '@/entities/user/api/user-api';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
@@ -30,10 +31,29 @@ export default function ProfileOnboardingLayout() {
     persona: { profileImageId: randomProfileImageId, mbti: '' },
   });
 
-  const disableCondition =
-    (form.name.trim().length === 0 && location.pathname === paths[0]) ||
-    (form.major === null && location.pathname === paths[1]) ||
-    (form.persona.profileImageId === null && location.pathname === paths[2]);
+  const disableCondition: boolean = (() => {
+    const { name, major, persona } = form;
+
+    switch (location.pathname) {
+      case paths[0]:
+        // 빈 값이거나(name required), 이름 형식 에러가 있으면 disable
+        return (
+          name.trim().length === 0 || Boolean(validateProfileItem('name', name))
+        );
+
+      case paths[1]:
+        return major === null;
+
+      case paths[2]:
+        return (
+          persona.profileImageId === null ||
+          Boolean(validateProfileItem('MBTI', persona.mbti || ''))
+        );
+
+      default:
+        return false;
+    }
+  })();
 
   const updateForm = (patch: Partial<ProfileOnboardingForm>) => {
     setForm((prev) => ({ ...prev, ...patch }));
@@ -73,13 +93,17 @@ export default function ProfileOnboardingLayout() {
       return;
     }
     const major = MAJOR[form.major].label;
+    const persona = {
+      profileImageId: form.persona.profileImageId,
+      mbti: !!form.persona.mbti ? form.persona.mbti : undefined,
+    };
 
     setIsLoading(true);
     try {
       await onboardingProfile({
         name: form.name,
         major,
-        ...form.persona,
+        ...persona,
       });
       const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
       if (redirectUrl) {
@@ -103,7 +127,6 @@ export default function ProfileOnboardingLayout() {
         showBackButton={currentStep > 0}
       />
 
-      {/* 진행 바가 있다면 여기 */}
       <StepProgressBar current={currentStep + 1} total={paths.length} />
 
       <img

@@ -16,11 +16,11 @@ import type {
 import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
-import FocusTimerCard from '@/widgets/teamroom/main/dashboard/FocusTimerCard';
 import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
 import ToolContents from '@/widgets/teamroom/main/dashboard/Tool/ToolContents';
+import FocusTimerCard from '@/widgets/teamroom/main/dashboard/ui/FocusTimerCard';
 
-import MeetingList from './ui/MeetingList';
+import MeetingList from './MeetingList';
 
 interface Props {
   teamRoomId: string | number;

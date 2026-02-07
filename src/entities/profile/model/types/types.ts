@@ -7,7 +7,7 @@ export type MajorLabel = (typeof MAJOR)[MajorId]['label'];
 
 interface Persona {
   profileImageId: (typeof CHARACTER_IMAGE_ID)[number];
-  mbti: string;
+  mbti?: string;
 }
 
 export interface ProfileOnboardingForm {

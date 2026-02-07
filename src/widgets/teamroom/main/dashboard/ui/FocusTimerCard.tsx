@@ -5,7 +5,7 @@ import { formatTimeString } from '@/entities/calendar/lib/recurrence';
 import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
 import { cn } from '@/shared/config/tailwind/cn';
 
-import { TimerBar } from '../../leader-game/ui/TimerBar';
+import { TimerBar } from '../../../leader-game/ui/TimerBar';
 
 interface Props {
   title: string;
