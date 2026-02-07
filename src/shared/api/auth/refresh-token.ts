@@ -1,4 +1,4 @@
-import { userApi } from '@/entities/user/api/user-api';
+import { logout } from '@/entities/user/api/user-api';
 import {
   notifyAuthExpired,
   resetAuthExpired,
@@ -37,7 +37,7 @@ export const requestAccessToken = async (): Promise<boolean> => {
 
     if (isInvalidRefresh) {
       try {
-        await userApi.logout();
+        await logout();
       } catch (logoutErr) {
         console.warn('logout failed', logoutErr);
       } finally {

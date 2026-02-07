@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { userApi } from '@/entities/user/api/user-api';
+import { onboardingTerm } from '@/entities/user/api/user-api';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import useTermsAgreement from '@/widgets/auth/term/model/useTermsAgreement';
@@ -31,7 +31,7 @@ export function TermsAgreementPage() {
 
     setIsSubmitting(true);
     try {
-      await userApi.onboardingTerm();
+      await onboardingTerm();
       navigate('/onboarding/profile/name');
     } catch (_) {
       alert(

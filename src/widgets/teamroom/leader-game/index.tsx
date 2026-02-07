@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { leaderGameApi } from '@/entities/leader-game/api/leader-game-api';
+import { getOnlineStatus } from '@/entities/leader-game/api/leader-game-api';
 import {
   GameResultPayload,
   LeaderGameMessage,
@@ -132,7 +132,7 @@ export function SelectLeader() {
   useEffect(() => {
     if (!id) return;
     (async () => {
-      const members = await leaderGameApi.getOnlineStatus(id);
+      const members = await getOnlineStatus(id);
       setMembers(members);
       setWorkflow('LEADER_SELECTION');
     })();
