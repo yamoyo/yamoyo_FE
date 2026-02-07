@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { TeamRoomListItem } from '@/entities/teamroom/api/teamroom-dto';
 import BottomSheet from '@/shared/ui/BottomSheet';
@@ -19,6 +19,10 @@ export default function TeamRoomSelectSheet({
   onSelect,
 }: TeamRoomSelectSheetProps) {
   const [currentSelected, setCurrentSelected] = useState(selectedId);
+
+  useEffect(() => {
+    setCurrentSelected(selectedId);
+  }, [selectedId]);
 
   const handleChange = () => {
     if (currentSelected) {
@@ -96,7 +100,8 @@ export default function TeamRoomSelectSheet({
 
       <button
         onClick={handleChange}
-        className="mt-6 w-full rounded-xl bg-bg-primary py-4 font-bold text-white"
+        disabled={!currentSelected}
+        className="mt-6 w-full rounded-xl bg-bg-primary py-4 font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
         변경하기
       </button>
