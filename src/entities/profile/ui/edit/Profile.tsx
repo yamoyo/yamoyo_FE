@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { SETTINGS_MODAL_OPTIONS } from '@/entities/profile/model/options/setting-modal-options';
 import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
 import UserProfile from '@/entities/profile/ui/UserProfile';
-import { userApi } from '@/entities/user/api/user-api';
+import { logout } from '@/entities/user/api/user-api';
 import {
   useCurrentUser,
   useUpdateUser,
@@ -35,7 +35,7 @@ export function Profile() {
       // 여기에 로그아웃 또는 회원탈퇴 로직 추가
       if (item.label === '로그아웃') {
         try {
-          await userApi.logout();
+          await logout();
           clear();
           navigate('/');
         } catch (_) {
