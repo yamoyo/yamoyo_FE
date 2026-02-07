@@ -27,3 +27,22 @@ export const BASIC_INFO_ITEMS = [
   { label: 'MBTI', key: 'mbti', editable: true },
   { label: '가입일자', key: 'joinDate', editable: false },
 ] as const;
+
+export const MBTI = [
+  'ISTJ',
+  'ISFJ',
+  'INFJ',
+  'INTJ',
+  'ISTP',
+  'ISFP',
+  'INFP',
+  'INTP',
+  'ESTP',
+  'ESFP',
+  'ENFP',
+  'ENTP',
+  'ESTJ',
+  'ESFJ',
+  'ENFJ',
+  'ENTJ',
+];

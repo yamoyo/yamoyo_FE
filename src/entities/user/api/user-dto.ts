@@ -17,7 +17,7 @@ export const OnboardingTermBody = {
 export interface OnboardingProfileRequest {
   name: string;
   major: MajorLabel;
-  mbti: string;
+  mbti?: string;
   profileImageId: number;
 }
 
@@ -26,7 +26,7 @@ export interface CurrentUser {
   email: string;
   name: string;
   major: string;
-  mbti: string;
+  mbti?: string;
   profileImageId: CharacterImageId;
   createdAt: string;
 }
