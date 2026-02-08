@@ -52,7 +52,13 @@ export function useTimingGame(
     submitTimingResult(absDifference);
   };
 
-  const onClickButton = isRunning ? stop : start;
+  const onClickButton = (isTimeOut?: boolean) => {
+    if (isRunning || isTimeOut) {
+      stop();
+      return;
+    }
+    start();
+  };
 
   // 차이 텍스트 계산
   const diffText =
