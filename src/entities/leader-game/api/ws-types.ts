@@ -25,17 +25,27 @@ export interface GameResultPayload {
   gameData: LadderGameData | null;
 }
 
+export interface ReloadPayload {
+  currentUser: Participants;
+  members: Participants[];
+  connectedUserIds: number[];
+  volunteers: number[];
+  votedUsers: number[];
+  currentPhase: Phase;
+  phaseStartTime: number;
+  remainingTime: number;
+  selectedGame: GameType | null;
+  winnerId: number | null;
+  winnerName: string | null;
+}
+
 export interface LadderGameData {
   ladderLines: number[][];
 }
 
 export interface UserJoinedMessage {
   type: 'USER_JOINED';
-  payload: {
-    userId: number;
-    name: string;
-    profileImageId: number;
-  };
+  payload: Participants;
 }
 
 export interface UserLeftMessage {
@@ -52,7 +62,7 @@ export interface PhaseChangeMessage {
     phase: Phase;
     phaseStartTime: number; // 1770194306432
     durationSeconds: number; // 30
-    selectedGame: null;
+    selectedGame: GameType | null;
   };
 }
 
@@ -73,6 +83,11 @@ export interface VoteUpdatedPayload {
 export interface VolunteerUpdatedMessage {
   type: 'VOTE_UPDATED';
   payload: VoteUpdatedPayload;
+}
+
+export interface ReloadMessage {
+  type: 'RELOAD_SUCCESS';
+  payload: ReloadPayload;
 }
 
 export type LeaderGameMessage =

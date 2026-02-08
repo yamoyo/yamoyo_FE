@@ -1,7 +1,10 @@
 import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import { VolunteerUpdatedMessage } from '@/entities/leader-game/api/ws-types';
+import {
+  ReloadMessage,
+  VolunteerUpdatedMessage,
+} from '@/entities/leader-game/api/ws-types';
 import { useTeamRoomWsClient } from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
 import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
 import { useAuthStore } from '@/shared/api/auth/store';
@@ -10,13 +13,16 @@ import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
 type Params = {
   roomId?: number | string;
   enabled?: boolean;
-  onJoinResponse: (data: VolunteerUpdatedMessage) => void;
+  onJoinResponse: (data: VolunteerUpdatedMessage | ReloadMessage) => void;
   onError?: (err: unknown) => void;
 };
 
 const wsDest = {
+  // Subscriber
   onJoinResponse: (roomId: number | string, userId: string | number) =>
     `/sub/room/${roomId}/user/${userId}`,
+  // Publisher
+  reload: (roomId: number | string) => `/pub/room/${roomId}/reload`,
   join: (roomId: number | string) => `/pub/room/${roomId}/join`,
   volunteer: (roomId: number | string) => `/pub/room/${roomId}/volunteer`,
   pass: (roomId: number | string) => `/pub/room/${roomId}/pass`,
@@ -53,6 +59,10 @@ export function useLeaderGameSocket({
   const actions = useMemo(
     () =>
       ({
+        reload: () => {
+          if (!roomId) return;
+          publish(wsDest.reload(roomId), {});
+        },
         join: () => {
           if (!roomId) return;
           publish(wsDest.join(roomId), {});
@@ -110,6 +120,7 @@ export function useLeaderGameSocket({
     );
 
     actions.join();
+    actions.reload();
     return () => unsubJoinResponse();
   }, [ws, enabled, roomId, actions, accessToken, canConnectOnMain]);
 
