@@ -165,10 +165,7 @@ export function SelectLeader() {
         return;
       }
       // 3. 게임 진행 단계 (타이밍 게임)
-      if (
-        type === 'RELOAD_SUCCESS' &&
-        payload.currentPhase === 'GAME_PLAYING'
-      ) {
+      if (payload.currentPhase === 'GAME_PLAYING') {
         setPhase('TIMING_GAME');
         return;
       }
