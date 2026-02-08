@@ -33,10 +33,11 @@ export default function TeamRoomOptionsBottomSheet({
 
   const leader = teamRoom?.members.find((member) => checkIsLeader(member.role));
 
-  // myRole을 사용해서 현재 유저가 팀장/방장인지 확인
   const isCurrentUserLeader = teamRoom?.myRole
     ? checkIsLeader(teamRoom.myRole)
     : false;
+
+  const isOnlyMember = (teamRoom?.members.length ?? 0) <= 1;
 
   const leaveMutation = useLeaveTeamRoom();
   const deleteMutation = useDeleteTeamRoom(() => {
@@ -179,7 +180,11 @@ export default function TeamRoomOptionsBottomSheet({
           <button
             type="button"
             onClick={handleLeaveTeamRoom}
-            className="flex items-center gap-4"
+            disabled={isOnlyMember}
+            className={cn(
+              'flex items-center gap-4',
+              isOnlyMember && 'cursor-not-allowed opacity-40',
+            )}
           >
             <img
               src="/assets/icons/teamroom-out.svg"
