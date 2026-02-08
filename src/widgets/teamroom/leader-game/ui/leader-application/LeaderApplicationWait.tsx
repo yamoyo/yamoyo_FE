@@ -16,12 +16,8 @@ export default function LeaderApplicationWait({
   members,
   voteUpdatedPayload,
 }: Props) {
-  // console.log('voteUpdatedPayload:', voteUpdatedPayload);
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
-
-  const phase = useLeaderSelectionStore((s) => s.phase);
-  const setPhase = useLeaderSelectionStore((s) => s.setPhase);
   const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   const votedUsers: TeamMember[] = members.filter((m) =>
@@ -76,14 +72,11 @@ export default function LeaderApplicationWait({
     // 5초 뒤에 모달 닫기
     const timer = setTimeout(() => {
       closeModal();
-      if (phase === 'LEADER_APPLICATION_WAIT') setPhase('SELECT_GAME');
     }, 5000);
     return () => clearTimeout(timer);
   }, [
-    phase,
     members,
     voteUpdatedPayload,
-    setPhase,
     setWorkflow,
     closeModal,
     openCharacterModal,
