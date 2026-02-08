@@ -18,9 +18,6 @@ export default function LeaderApplicationWait({
 }: Props) {
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
-
-  const phase = useLeaderSelectionStore((s) => s.phase);
-  const setPhase = useLeaderSelectionStore((s) => s.setPhase);
   const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   const votedUsers: TeamMember[] = members.filter((m) =>
@@ -31,19 +28,19 @@ export default function LeaderApplicationWait({
   );
 
   const handleVoteComplete = useCallback(() => {
-    const { votedCount } = voteUpdatedPayload;
+    const { volunteerIds } = voteUpdatedPayload;
 
-    if (votedCount === 0) {
+    if (volunteerIds.length === 0) {
       // 1. 모두 팀장 미지원
       openCharacterModal({
         title: '아무도 팀장을 선택하지 않았습니다.',
         subTitle: '모두가 신중한 것 같네요. 야모요의 힘을 빌려보세요!',
         type: 'PINK_CHARACTER',
       });
-    } else if (votedCount === 1) {
+    } else if (volunteerIds.length === 1) {
       // 2. 1명 지원
       const selectedLeader = members.find((m) =>
-        voteUpdatedPayload.votedUserIds.includes(m.userId),
+        volunteerIds.includes(m.userId),
       );
       if (!selectedLeader) {
         alert(
@@ -75,14 +72,11 @@ export default function LeaderApplicationWait({
     // 5초 뒤에 모달 닫기
     const timer = setTimeout(() => {
       closeModal();
-      if (phase === 'LEADER_APPLICATION_WAIT') setPhase('SELECT_GAME');
     }, 5000);
     return () => clearTimeout(timer);
   }, [
-    phase,
     members,
     voteUpdatedPayload,
-    setPhase,
     setWorkflow,
     closeModal,
     openCharacterModal,

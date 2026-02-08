@@ -62,7 +62,7 @@ export function TermsAgreementPage() {
 
   return (
     <>
-      <TopBar title="회원 가입" />
+      <TopBar title="회원 가입" showBackButton={false} />
       <div className="mt-10 flex flex-1 flex-col justify-between px-6 pb-[60px]">
         <div>
           <p className="text-body-2 text-tx-default_2">약관 동의하기</p>

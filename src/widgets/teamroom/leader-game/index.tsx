@@ -85,6 +85,12 @@ export function SelectLeader() {
       setPhase('TIMING_GAME');
       return;
     }
+
+    if (type === 'PHASE_CHANGE' && msg.payload.phase === 'GAME_SELECT') {
+      setPhase('SELECT_GAME');
+      return;
+    }
+
     if (type === 'GAME_RESULT') {
       switch (msg.payload.gameType) {
         case 'LADDER':
