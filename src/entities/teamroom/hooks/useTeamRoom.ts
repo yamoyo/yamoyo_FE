@@ -101,8 +101,11 @@ export function useJoinTeamRoom() {
       navigate(`/teamroom/${data.teamRoomId}`, { replace: true });
     },
     onError: (e) => {
-      // 401/403에서만 redirect 저장
-      if (e instanceof YamoyoError && (e.code === 401 || e.code === 403)) {
+      // 400/401/403에서만 redirect 저장
+      if (
+        e instanceof YamoyoError &&
+        (e.code === 400 || e.code === 401 || e.code === 403)
+      ) {
         sessionStorage.setItem(
           'redirectAfterLogin',
           window.location.pathname + window.location.search,
