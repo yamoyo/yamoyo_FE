@@ -53,7 +53,7 @@ export default function LeaderApplication({
 
   return (
     <>
-      <TopBar title="팀장 정하기" />
+      <TopBar title="팀장 정하기" showBackButton={false} />
       <TimerBar startedAt={startedAt} totalMs={durationSeconds * 1000} />
       <div className="flex flex-grow flex-col justify-between px-6 pb-12 pt-[34px]">
         <div>

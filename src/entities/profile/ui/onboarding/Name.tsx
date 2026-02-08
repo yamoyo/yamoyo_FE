@@ -16,7 +16,7 @@ export default function NameStep() {
       <TextField
         value={form.name}
         onChange={(value) => updateForm({ name: value })}
-        placeholder="아모요"
+        placeholder="야모요"
         allowClear
         errorMessage={errorMessage}
       />
