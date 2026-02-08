@@ -11,7 +11,7 @@ export default function SelectGame({
 }) {
   return (
     <>
-      <TopBar title="팀장 정하기" backIcon="cancel" />
+      <TopBar title="팀장 정하기" showBackButton={false} />
       {/* <TimerBar startedAt={startedAt} /> */}
       <div className="mt-8 px-6">
         <h1 className="mb-1 text-title-2 text-tx-default_2">
