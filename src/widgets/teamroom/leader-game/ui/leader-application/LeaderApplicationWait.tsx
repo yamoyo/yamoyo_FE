@@ -16,6 +16,7 @@ export default function LeaderApplicationWait({
   members,
   voteUpdatedPayload,
 }: Props) {
+  // console.log('voteUpdatedPayload:', voteUpdatedPayload);
   const navigate = useNavigate();
   const { openCharacterModal, closeModal } = useModalStore();
 
@@ -31,19 +32,19 @@ export default function LeaderApplicationWait({
   );
 
   const handleVoteComplete = useCallback(() => {
-    const { votedCount } = voteUpdatedPayload;
+    const { volunteerIds } = voteUpdatedPayload;
 
-    if (votedCount === 0) {
+    if (volunteerIds.length === 0) {
       // 1. 모두 팀장 미지원
       openCharacterModal({
         title: '아무도 팀장을 선택하지 않았습니다.',
         subTitle: '모두가 신중한 것 같네요. 야모요의 힘을 빌려보세요!',
         type: 'PINK_CHARACTER',
       });
-    } else if (votedCount === 1) {
+    } else if (volunteerIds.length === 1) {
       // 2. 1명 지원
       const selectedLeader = members.find((m) =>
-        voteUpdatedPayload.votedUserIds.includes(m.userId),
+        volunteerIds.includes(m.userId),
       );
       if (!selectedLeader) {
         alert(
