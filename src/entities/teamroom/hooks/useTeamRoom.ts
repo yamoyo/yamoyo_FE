@@ -16,6 +16,7 @@ import type {
   CreateTeamRoomRequest,
   TeamRoomLifecycle,
 } from '@/entities/teamroom/api/teamroom-dto';
+import { copyText } from '@/shared/lib/copyText';
 
 /** 팀룸 목록 조회 */
 export function useTeamRoomList(lifecycle: TeamRoomLifecycle = 'ACTIVE') {
@@ -79,7 +80,7 @@ export function useCreateInviteLink() {
     mutationFn: (teamRoomId: number) => createInviteLink(teamRoomId),
     onSuccess: async (data) => {
       const inviteUrl = `${window.location.origin}/invite?token=${data.token}`;
-      await navigator.clipboard.writeText(inviteUrl);
+      await copyText(inviteUrl);
       alert('초대 링크가 복사되었습니다.');
     },
     onError: () => {
