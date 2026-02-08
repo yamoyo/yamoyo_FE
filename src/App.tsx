@@ -81,7 +81,6 @@ export default function App() {
 
       <Routes>
         <Route path="/debug" element={<LeaderGameStoreDebugPage />} />
-        <Route path="/invite" element={<InvitePage />} />
 
         {/* 게스트 전용 (로그인 안 된 사람만) */}
         <Route element={<GuestGuard />}>
@@ -91,6 +90,7 @@ export default function App() {
 
         {/* 로그인된 유저 전용 */}
         <Route element={<AuthGuard />}>
+          <Route path="/invite" element={<InvitePage />} />
           <Route path="/home" element={<HomePage />} />
 
           <Route path="/calendar">
