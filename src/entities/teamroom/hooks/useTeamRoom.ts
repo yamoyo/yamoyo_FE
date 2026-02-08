@@ -16,6 +16,7 @@ import type {
   CreateTeamRoomRequest,
   TeamRoomLifecycle,
 } from '@/entities/teamroom/api/teamroom-dto';
+import { YamoyoError } from '@/shared/api/base/http-error';
 
 /** 팀룸 목록 조회 */
 export function useTeamRoomList(lifecycle: TeamRoomLifecycle = 'ACTIVE') {
@@ -98,6 +99,15 @@ export function useJoinTeamRoom() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
       navigate(`/teamroom/${data.teamRoomId}`, { replace: true });
+    },
+    onError: (e) => {
+      // 401/403에서만 redirect 저장
+      if (e instanceof YamoyoError && (e.code === 401 || e.code === 403)) {
+        sessionStorage.setItem(
+          'redirectAfterLogin',
+          window.location.pathname + window.location.search,
+        );
+      }
     },
   });
 }
