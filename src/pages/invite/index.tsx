@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useJoinTeamRoom } from '@/entities/teamroom/hooks/useTeamRoom';
 import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 
 export default function InvitePage() {
+  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
@@ -16,6 +17,10 @@ export default function InvitePage() {
     const unsubscribe = onAuthBlocked('AUTH_EXPIRED', () => {
       useAuthStore.getState().clear();
 
+      sessionStorage.setItem(
+        'redirectAfterLogin',
+        location.pathname + location.search,
+      );
       // 플래그 초기화
       resetAuthBlocked(['AUTH_EXPIRED']);
 
@@ -23,7 +28,7 @@ export default function InvitePage() {
     });
 
     return unsubscribe;
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleJoin = () => {
     if (!token) {
