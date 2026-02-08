@@ -1,28 +1,29 @@
 import { useEffect } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useJoinTeamRoom } from '@/entities/teamroom/hooks/useTeamRoom';
+import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 
 export default function InvitePage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
 
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const joinMutation = useJoinTeamRoom();
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      // 로그인 후 돌아올 URL 저장
-      sessionStorage.setItem(
-        'redirectAfterLogin',
-        location.pathname + location.search,
-      );
-      navigate('/', { replace: true });
-    }
-  }, [isAuthenticated, navigate, location]);
+    const unsubscribe = onAuthBlocked('AUTH_EXPIRED', () => {
+      useAuthStore.getState().clear();
+
+      // 플래그 초기화
+      resetAuthBlocked(['AUTH_EXPIRED']);
+
+      navigate('/');
+    });
+
+    return unsubscribe;
+  }, [navigate]);
 
   const handleJoin = () => {
     if (!token) {
@@ -33,12 +34,9 @@ export default function InvitePage() {
   };
 
   const handleDecline = () => {
+    sessionStorage.removeItem('redirectAfterLogin');
     navigate('/home', { replace: true });
   };
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">

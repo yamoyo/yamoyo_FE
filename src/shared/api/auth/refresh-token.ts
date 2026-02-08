@@ -26,9 +26,7 @@ export const requestAccessToken = async (): Promise<boolean> => {
   } catch (e) {
     const isInvalidRefresh =
       e instanceof YamoyoError &&
-      (e.code === 401 || e.code === 403) &&
-      typeof e.message === 'string' &&
-      e.message.includes('Refresh Token');
+      (e.code === 401 || e.code === 403 || e.code === 400);
 
     if (isInvalidRefresh) {
       try {
