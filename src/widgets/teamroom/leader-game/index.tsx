@@ -42,6 +42,10 @@ export function SelectLeader() {
 
   const openCharacterModal = useModalStore((s) => s.openCharacterModal);
 
+  const myUserId = accessToken
+    ? jwtDecode<{ sub: string }>(accessToken).sub
+    : null;
+
   const [members, setMembers] = useState<TeamMember[] | null>(null);
   const [voteUpdatedPayload, setVoteUpdatedPayload] =
     useState<VoteUpdatedPayload | null>(null);
@@ -73,10 +77,9 @@ export function SelectLeader() {
   const goToLeaderApplicationWaitPhase = (payload: VoteUpdatedPayload) => {
     if (phase !== 'LEADER_VOLUNTEER' || !accessToken) return;
 
-    const userId = jwtDecode<{ sub: string }>(accessToken).sub;
-    if (!userId) return;
+    if (!myUserId) return;
 
-    const isVolunteer = payload.votedUserIds.includes(Number(userId));
+    const isVolunteer = payload.votedUserIds.includes(Number(myUserId));
     if (isVolunteer) setPhase('LEADER_APPLICATION_WAIT');
   };
 
@@ -138,9 +141,8 @@ export function SelectLeader() {
 
       // 1. 팀장 자원 단계
       if (currentPhase === 'VOLUNTEER') {
-        const userId = jwtDecode<{ sub: string }>(accessToken!).sub;
-        if (!userId) return;
-        const isVolunteer = payload.volunteers.includes(Number(userId));
+        if (!myUserId) return;
+        const isVolunteer = payload.volunteers.includes(Number(myUserId));
         if (isVolunteer) {
           setPhase('LEADER_APPLICATION_WAIT');
         } else {
