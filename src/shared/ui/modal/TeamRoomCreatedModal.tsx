@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
+import { copyText } from '@/shared/lib/copyText';
 import ModalDim from '@/shared/ui/modal/ModalDim';
 
 import { useModalStore } from './model/modal-store';
@@ -14,7 +15,7 @@ export default function TeamRoomCreatedModal({
   const closeModal = useModalStore((s) => s.closeModal);
 
   const handleCopyLink = async () => {
-    await navigator.clipboard.writeText(inviteLink);
+    await copyText(inviteLink);
     alert('초대 링크가 복사되었습니다!');
   };
 
