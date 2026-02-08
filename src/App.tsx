@@ -22,7 +22,7 @@ import InvitePage from './pages/invite';
 import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
 import Profile from './pages/mypage/profile';
-import NotificationPage from './pages/notification';
+// import NotificationPage from './pages/notification';
 import TermsPage from './pages/onboarding/term';
 import SplashPage from './pages/splash';
 import MyTeamRoomPage from './pages/teamroom';
@@ -114,7 +114,8 @@ export default function App() {
             />
           </Route>
 
-          <Route path="/notification" element={<NotificationPage />} />
+          {/* TODO : 임시로 알림페이지 라우팅 주석 처리 */}
+          {/* <Route path="/notification" element={<NotificationPage />} /> */}
 
           <Route path="/onboarding/terms" element={<TermsPage />} />
           <Route

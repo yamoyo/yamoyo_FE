@@ -41,6 +41,7 @@ export default function TeamRoomBanner({
           onBack={() => navigate('/home', { replace: true })}
           rightContent={
             <div className="flex items-center">
+              {/* TODO: MVP 이후 알림 기능 연결 시 주석 해제
               <button type="button" className="h-10 w-10 flex-center">
                 <img
                   src="/assets/icons/notification.svg"
@@ -50,6 +51,7 @@ export default function TeamRoomBanner({
                   draggable="false"
                 />
               </button>
+              */}
               <button
                 type="button"
                 onClick={onSettingsClick}
