@@ -18,6 +18,7 @@ export default function InvitePage() {
   };
 
   const handleDecline = () => {
+    sessionStorage.removeItem('redirectAfterLogin');
     navigate('/home', { replace: true });
   };
 

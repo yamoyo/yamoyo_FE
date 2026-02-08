@@ -43,7 +43,7 @@ export default function TeamRoomOptionsBottomSheet({
   // 나가기 비활성화: 멤버 1명 또는 SETUP 상태
   const isLeaveDisabled = isOnlyMember || isSetupPhase;
 
-  // 삭제 비활성화: 팀장이 아니거나 (SETUP 상태에서 팀장이 아닌 경우)
+  // 삭제 비활성화: 팀장이 아닌 경우
   const isDeleteDisabled = !isCurrentUserLeader;
 
   const leaveMutation = useLeaveTeamRoom();
