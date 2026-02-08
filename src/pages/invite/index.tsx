@@ -1,34 +1,13 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useJoinTeamRoom } from '@/entities/teamroom/hooks/useTeamRoom';
-import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
-import { useAuthStore } from '@/shared/api/auth/store';
 
 export default function InvitePage() {
-  const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
 
   const joinMutation = useJoinTeamRoom();
-
-  useEffect(() => {
-    const unsubscribe = onAuthBlocked('AUTH_EXPIRED', () => {
-      useAuthStore.getState().clear();
-
-      sessionStorage.setItem(
-        'redirectAfterLogin',
-        location.pathname + location.search,
-      );
-      // 플래그 초기화
-      resetAuthBlocked(['AUTH_EXPIRED']);
-
-      navigate('/');
-    });
-
-    return unsubscribe;
-  }, [navigate, location]);
 
   const handleJoin = () => {
     if (!token) {

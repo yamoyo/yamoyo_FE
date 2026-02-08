@@ -32,7 +32,7 @@ export default function RuleVotingScreen({ onFinish }: Props) {
   const onStart = () => navigate(`?step=1`);
 
   const onBack = () => {
-    if (step === 0) navigate('..');
+    if (step === 0) navigate(`/teamroom/${id}`);
     else navigate(`?step=${step - 1}`);
   };
 

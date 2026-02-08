@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { refreshAccessToken } from './refresh-token';
 import { useAuthStore } from './store';
 
 export function useAuthBootstrap(isGuest: boolean) {
   const navigate = useNavigate();
+  const location = useLocation();
   const accessToken = useAuthStore((s) => s.accessToken);
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
   const setIsAuthenticated = useAuthStore((s) => s.setIsAuthenticated);
@@ -43,7 +44,11 @@ export function useAuthBootstrap(isGuest: boolean) {
     (async () => {
       const ok = await refreshAccessToken();
       if (!ok) {
-        // refresh 토큰 없거나 만료된 상황
+        // refresh 토큰 없거나 만료된 상황 - 로그인 후 돌아올 수 있도록 현재 URL 저장
+        sessionStorage.setItem(
+          'redirectAfterLogin',
+          location.pathname + location.search,
+        );
         navigate('/', { replace: true });
         return;
       }
@@ -56,5 +61,6 @@ export function useAuthBootstrap(isGuest: boolean) {
     setAuthReady,
     setIsAuthenticated,
     navigate,
+    location,
   ]);
 }

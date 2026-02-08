@@ -33,10 +33,18 @@ export default function TeamRoomOptionsBottomSheet({
 
   const leader = teamRoom?.members.find((member) => checkIsLeader(member.role));
 
-  // myRole을 사용해서 현재 유저가 팀장/방장인지 확인
   const isCurrentUserLeader = teamRoom?.myRole
     ? checkIsLeader(teamRoom.myRole)
     : false;
+
+  const isOnlyMember = (teamRoom?.members.length ?? 0) <= 1;
+  const isSetupPhase = teamRoom?.workflow === 'SETUP';
+
+  // 나가기 비활성화: 멤버 1명 또는 SETUP 상태
+  const isLeaveDisabled = isOnlyMember || isSetupPhase;
+
+  // 삭제 비활성화: 팀장이 아닌 경우
+  const isDeleteDisabled = !isCurrentUserLeader;
 
   const leaveMutation = useLeaveTeamRoom();
   const deleteMutation = useDeleteTeamRoom(() => {
@@ -179,7 +187,11 @@ export default function TeamRoomOptionsBottomSheet({
           <button
             type="button"
             onClick={handleLeaveTeamRoom}
-            className="flex items-center gap-4"
+            disabled={isLeaveDisabled}
+            className={cn(
+              'flex items-center gap-4',
+              isLeaveDisabled && 'cursor-not-allowed opacity-40',
+            )}
           >
             <img
               src="/assets/icons/teamroom-out.svg"
@@ -193,10 +205,10 @@ export default function TeamRoomOptionsBottomSheet({
           <button
             type="button"
             onClick={handleDeleteTeamRoom}
-            disabled={!isCurrentUserLeader}
+            disabled={isDeleteDisabled}
             className={cn(
               'flex items-center gap-4',
-              !isCurrentUserLeader && 'cursor-not-allowed opacity-40',
+              isDeleteDisabled && 'cursor-not-allowed opacity-40',
             )}
           >
             <img
