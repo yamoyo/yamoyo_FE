@@ -1,6 +1,6 @@
 import { useCreateInviteLink } from '@/entities/teamroom/hooks/useTeamRoom';
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
-import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
+// import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
 import BottomSheet from '@/shared/ui/BottomSheet';
 
 interface AddMemberBottomSheetProps {
@@ -91,12 +91,12 @@ export default function AddMemberBottomSheet({
         onClick={handleCopyLink}
       />
 
-      <ShareButton
+      {/* <ShareButton
         icon={<KaKaoLinkIcon className="h-[33.778px] w-[32px]" />}
         iconBgColor="bg-[#F7E115]"
         title="카카오톡으로 보내기"
         onClick={() => {}}
-      />
+      /> */}
     </BottomSheet>
   );
 }
