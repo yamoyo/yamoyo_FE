@@ -6,8 +6,11 @@ import { getOnlineStatus } from '@/entities/leader-game/api/leader-game-api';
 import {
   GameResultPayload,
   LeaderGameMessage,
+  ReloadMessage,
+  VolunteerUpdatedMessage,
   VoteUpdatedPayload,
 } from '@/entities/leader-game/api/ws-types';
+import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
 import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import LadderGame from '@/features/leader-game/ladder-game/ui/LadderGame';
 import { TimingGame } from '@/features/leader-game/timing-game/ui/TimingGame';
@@ -33,10 +36,15 @@ export function SelectLeader() {
   const role = useLeaderSelectionStore((s) => s.role);
   const payload = useLeaderSelectionStore((s) => s.payload);
   const setPhase = useLeaderSelectionStore((s) => s.setPhase);
+  const setRole = useLeaderSelectionStore((s) => s.setRole);
   const setPayload = useLeaderSelectionStore((s) => s.setPayload);
   const setWorkflow = useLeaderSelectionStore((s) => s.setWorkflow);
 
   const openCharacterModal = useModalStore((s) => s.openCharacterModal);
+
+  const myUserId = accessToken
+    ? jwtDecode<{ sub: string }>(accessToken).sub
+    : null;
 
   const [members, setMembers] = useState<TeamMember[] | null>(null);
   const [voteUpdatedPayload, setVoteUpdatedPayload] =
@@ -69,15 +77,13 @@ export function SelectLeader() {
   const goToLeaderApplicationWaitPhase = (payload: VoteUpdatedPayload) => {
     if (phase !== 'LEADER_VOLUNTEER' || !accessToken) return;
 
-    const userId = jwtDecode<{ sub: string }>(accessToken).sub;
-    if (!userId) return;
+    if (!myUserId) return;
 
-    const isVolunteer = payload.votedUserIds.includes(Number(userId));
+    const isVolunteer = payload.votedUserIds.includes(Number(myUserId));
     if (isVolunteer) setPhase('LEADER_APPLICATION_WAIT');
   };
 
-  const onRoomMessage = (msg: LeaderGameMessage) => {
-    // console.log('onRoomMessage', msg);
+  const onRoomMessage = async (msg: LeaderGameMessage) => {
     const { type } = msg;
     if (type === 'PHASE_CHANGE') setPayload(msg.payload);
 
@@ -111,18 +117,67 @@ export function SelectLeader() {
 
   useTeamRoomWsListener(onRoomMessage);
 
+  const onJoinResponse = async (
+    data: VolunteerUpdatedMessage | ReloadMessage,
+  ) => {
+    const { type, payload } = data;
+    if (type === 'VOTE_UPDATED') {
+      setVoteUpdatedPayload(payload);
+      // 팀장 지원 투표 결과에 따라 phase 변경
+      goToLeaderApplicationWaitPhase(payload);
+      return;
+    }
+
+    if (type === 'RELOAD_SUCCESS') {
+      const { currentPhase, phaseStartTime, remainingTime, selectedGame } =
+        payload;
+      const reloadedPayload = {
+        phase: currentPhase,
+        phaseStartTime,
+        durationSeconds: remainingTime,
+        selectedGame,
+      };
+      setPayload(reloadedPayload);
+
+      // 1. 팀장 자원 단계
+      if (currentPhase === 'VOLUNTEER') {
+        if (!myUserId) return;
+        const isVolunteer = payload.volunteers.includes(Number(myUserId));
+        if (isVolunteer) {
+          setPhase('LEADER_APPLICATION_WAIT');
+        } else {
+          setPhase('LEADER_VOLUNTEER');
+        }
+        if (!id) return;
+        const teamRoom = await getTeamRoomDetail(id);
+        setRole(teamRoom.myRole);
+        return;
+      }
+      // 2. 팀장이 게임 선택 단계
+      if (currentPhase === 'GAME_SELECT') {
+        if (!id || role) return;
+        try {
+          const teamRoom = await getTeamRoomDetail(id);
+          setRole(teamRoom.myRole);
+          setPhase('SELECT_GAME');
+        } catch (error) {
+          console.error('팀룸 상세 조회 실패', error);
+          alert('팀룸 정보를 불러오지 못했습니다. 다시 시도해주세요.');
+        }
+        return;
+      }
+      // 3. 게임 진행 단계 (타이밍 게임)
+      if (payload.currentPhase === 'GAME_PLAYING') {
+        setPhase('TIMING_GAME');
+        return;
+      }
+    }
+  };
+
   const { actions } = useLeaderGameSocket({
     roomId: id,
     enabled: Boolean(id),
-    onJoinResponse: (data) => {
-      // console.log('onJoinResponse', data);
-      const { type, payload } = data;
-      if (type !== 'VOTE_UPDATED') return;
-      setVoteUpdatedPayload(payload);
-
-      // 팀장 지원 투표 결과에 따라 phase 변경
-      goToLeaderApplicationWaitPhase(payload);
-    },
+    onJoinResponse,
   });
 
   // 팀장 자원하기
