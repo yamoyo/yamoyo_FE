@@ -26,6 +26,9 @@ export default function TeamRoomContents({
   setupCreatedAt,
 }: Props) {
   const isHost = myRole === 'HOST';
+  const setupCreatedAtToNumber = new Date(
+    setupCreatedAt ?? Date.now(),
+  ).getTime();
 
   /** 팀장 정하기 게임 시작 */
   const onStartLeaderGame = async () => {
@@ -56,7 +59,7 @@ export default function TeamRoomContents({
       <Dashboard
         teamRoomId={teamRoomId}
         myRole={myRole}
-        setupCreatedAt={setupCreatedAt}
+        setupCreatedAt={setupCreatedAtToNumber}
       />
     );
   }
@@ -66,7 +69,7 @@ export default function TeamRoomContents({
       <Dashboard
         teamRoomId={teamRoomId}
         myRole={myRole}
-        setupCreatedAt={setupCreatedAt}
+        setupCreatedAt={setupCreatedAtToNumber}
       />
     );
   }

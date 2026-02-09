@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import TopBar from '@/shared/ui/header/TopBar';
 import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
@@ -15,7 +15,7 @@ export default function SelectGame({
 }: {
   selectGame: (gameType: GameType) => void;
 }) {
-  const startedAt = useRef(new Date()).current;
+  const startedAt = Date.now();
 
   useEffect(() => {
     const timer = setTimeout(() => {
