@@ -205,7 +205,7 @@ export function useTimingGame(
         isTimeOutRef.current ||
         !modalDelay ||
         isRunningRef.current ||
-        differenceRef.current
+        differenceRef.current !== null
       )
         return;
       setIsGameStartModalOpen(true);
@@ -266,11 +266,6 @@ export function useTimingGame(
     difference,
     diffText,
     isGameStartModalOpen,
-    isRunningRef,
-    differenceRef,
-    handleTimeout,
-    setIsGameStartModalOpen,
-    onClickButton,
     handleOnClick,
   };
 }
