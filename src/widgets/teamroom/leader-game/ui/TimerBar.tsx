@@ -67,12 +67,7 @@ export function TimerBar({
   }, [startedAt, totalMs]);
 
   return (
-    <div
-      className={cn(
-        'flex h-6 items-center overflow-x-hidden',
-        containerClassName,
-      )}
-    >
+    <div className={cn('flex h-6 items-center', containerClassName)}>
       <div
         className={timerBgClass}
         style={{
@@ -109,7 +104,7 @@ export function TimerBar({
         >
           {!hideIcon && (
             <img
-              className="absolute left-0 top-1/2 h-6 -translate-x-[calc(50%-4px)] -translate-y-1/2"
+              className="absolute left-0 top-1/2 h-6 min-w-6 -translate-x-[calc(50%-4px)] -translate-y-1/2"
               style={{
                 boxShadow: `-4px 0px 8px 0px ${ICON[color].shadow}`,
               }}
