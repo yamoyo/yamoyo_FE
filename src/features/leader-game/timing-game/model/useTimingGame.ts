@@ -1,19 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const TARGET_SECONDS = 7.777; // 목표 시간 (초)
+const TIMEOUT_SECONDS = 10; // 타임아웃 시 서버에 보내는 값
 
 export function useTimingGame(
+  phaseStartTime: number,
+  duration: number,
   submitTimingResult: (timeDifference: number) => void,
 ) {
-  // 목표 시간과 정지한 시간의 차이
-  const [difference, setDifference] = useState<number | null>(null);
+  /** 타임아웃 시간 (서버에서 게임 단계가 시작된 시간 + 30초) */
+  const timeOutTime = phaseStartTime + duration * 1000;
 
-  // 지금까지 흐른 시간(초 단위)
-  // 예: 0, 1.234, 3.567 등
-  const [elapsed, setElapsed] = useState(0);
-
-  // 스톱워치가 돌아가는 중인지 여부
-  const [isRunning, setIsRunning] = useState(false);
+  /** 이미 타임아웃을 했는지 여부 */
+  const isTimeOutRef = useRef(false);
 
   // 언제부터 시간을 재기 시작했는지를 저장하는 ref
   const startTimeRef = useRef<number | null>(null);
@@ -27,19 +26,44 @@ export function useTimingGame(
    */
   const rafIdRef = useRef<number | null>(null);
 
+  // 15초 지나도 게임을 시작 안 했을 때 띄워지는 모달
+  const [isGameStartModalOpen, setIsGameStartModalOpen] = useState(false);
+
+  // 목표 시간과 정지한 시간의 차이
+  const [difference, setDifference] = useState<number | null>(null);
+
+  // 지금까지 흐른 시간(초 단위)
+  // 예: 0, 1.234, 3.567 등
+  const [elapsed, setElapsed] = useState(0);
+
+  // 스톱워치가 돌아가는 중인지 여부
+  const [isRunning, setIsRunning] = useState(false);
+
+  const isRunningRef = useRef(isRunning);
+  const differenceRef = useRef(difference);
+
+  useEffect(() => {
+    isRunningRef.current = isRunning;
+  }, [isRunning]);
+
+  useEffect(() => {
+    differenceRef.current = difference;
+  }, [difference]);
+
   /** 스톱워치(게임) 시작 */
-  const start = () => {
+  const start = useCallback(() => {
     if (isRunning) return;
-    setDifference(null);
     setIsRunning(true);
-  };
+    startTimeRef.current = null;
+    setIsGameStartModalOpen(false);
+  }, [isRunning]);
 
   /**
    * 스톱워치(게임) 정지
    *
    * - 사용자가 타이밍에 맞춰 멈추기 버튼을 눌렀을 때 호출됨
    */
-  const stop = () => {
+  const stop = useCallback(() => {
     if (!isRunning) return;
     setIsRunning(false);
 
@@ -50,23 +74,36 @@ export function useTimingGame(
     // 결과 제출
     const absDifference = Math.abs(difference);
     submitTimingResult(absDifference);
-  };
+  }, [isRunning, elapsed, submitTimingResult]);
 
-  const onClickButton = (isTimeOut?: boolean) => {
-    if (isRunning || isTimeOut) {
+  const onClickButton = useCallback(() => {
+    if (isRunning && !isTimeOutRef.current) {
       stop();
       return;
     }
     start();
-  };
+  }, [isRunning, start, stop]);
+
+  /** 타임아웃 시 10초를 서버에 넘김 */
+  const handleTimeout = useCallback(() => {
+    if (isTimeOutRef.current || difference !== null) return; // 이미 결과가 있는 경우 타임아웃 처리 안 함
+    isTimeOutRef.current = true;
+
+    setIsGameStartModalOpen(false);
+    setIsRunning(false);
+    setDifference(TIMEOUT_SECONDS);
+    submitTimingResult(TIMEOUT_SECONDS);
+  }, [submitTimingResult, difference]);
 
   // 차이 텍스트 계산
   const diffText =
     difference === null
       ? ''
       : (() => {
-          const abs = Math.abs(difference).toFixed(3); // 차이 절댓값으로 변환
-          if (abs === '0.000') return '완벽해요! 딱 맞췄어요 🎯';
+          const abs = Math.abs(difference)
+            .toFixed(3)
+            .replace(/\.?0+$/, ''); // 차이 절댓값으로 변환
+          if (abs === '0') return '완벽해요! 딱 맞췄어요 🎯';
 
           const isLate = difference > 0;
           const dir = isLate ? '늦었어요' : '빨랐어요';
@@ -145,11 +182,90 @@ export function useTimingGame(
     };
   }, [isRunning]);
 
+  useEffect(() => {
+    if (Date.now() >= timeOutTime) {
+      // 이미 타임아웃 시간이 지났다면 바로 타임아웃 처리
+      handleTimeout();
+      return;
+    }
+  }, [handleTimeout, timeOutTime]);
+
+  // 서버 기준으로 게임 시작부터
+  // 10초 동안 게임을 시작하지 않으면
+  // 게임 시작 유도 모달 띄우기
+  useEffect(() => {
+    const startModalTime = timeOutTime - 15_000 - 5_000; // 총 활성화 시간(30초) - 15초 - 5초
+
+    const now = Date.now();
+    const modalDelay = Math.max(startModalTime - now, 0); // 모달 표시까지 남은 시간
+
+    // 모달 표시 타이머 설정
+    const modalTimer = window.setTimeout(() => {
+      if (
+        isTimeOutRef.current ||
+        !modalDelay ||
+        isRunningRef.current ||
+        differenceRef.current !== null
+      )
+        return;
+      setIsGameStartModalOpen(true);
+    }, modalDelay);
+
+    return () => {
+      clearTimeout(modalTimer);
+    };
+  }, [timeOutTime]);
+
+  useEffect(() => {
+    const now = Date.now();
+    // 게임을 아예 시작하지 않았을 때 타임아웃 시간 (30초 - 15초)
+    const timeOutDelay = Math.max(timeOutTime - 15_000 - now, 0);
+
+    // 타임아웃 처리 타이머 설정
+    const timeoutTimer = window.setTimeout(() => {
+      // - 게임이 시작 전이고 (isRunning === false)
+      // - 결과가 없는 상태라면 (difference === null)
+      if (!isRunningRef.current && differenceRef.current === null) {
+        handleTimeout();
+      }
+    }, timeOutDelay);
+
+    return () => {
+      clearTimeout(timeoutTimer);
+    };
+  }, [handleTimeout, timeOutTime]);
+
+  // 게임을 시작한 시점에서 15초가 지나도 정지하지 않으면 타임아웃 처리
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const timeOutTimer = window.setTimeout(() => {
+      // 15초가 지났는데도 여전히
+      // - 게임이 돌아가는 중이고 (isRunning === true)
+      // - 결과가 없는 상태라면 (difference === null)
+      if (isRunningRef.current && differenceRef.current === null) {
+        handleTimeout();
+      }
+    }, 15000);
+
+    return () => {
+      clearTimeout(timeOutTimer);
+    };
+  }, [isRunning, handleTimeout, isRunningRef, differenceRef]);
+
+  const handleOnClick = () => {
+    if (isGameStartModalOpen) {
+      setIsGameStartModalOpen(false);
+    }
+    onClickButton();
+  };
+
   return {
     elapsed,
     isRunning,
     difference,
     diffText,
-    onClickButton,
+    isGameStartModalOpen,
+    handleOnClick,
   };
 }

@@ -1,7 +1,3 @@
-'use client';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { useTimingGame } from '@/features/leader-game/timing-game/model/useTimingGame';
 import TopBar from '@/shared/ui/header/TopBar';
 import { TimerBar } from '@/widgets/teamroom/leader-game/ui/TimerBar';
@@ -18,110 +14,16 @@ export function TimingGame({
   durationSeconds,
   submitTimingResult,
 }: Props) {
-  const duration = durationSeconds || 10;
-  const { elapsed, isRunning, difference, diffText, onClickButton } =
-    useTimingGame(submitTimingResult);
+  const duration = durationSeconds || 30; // 기본값 30초
 
-  // 10초 지나도 시작 안 했을 때 보여줄 모달 상태
-  const [showTimeoutModal, setShowTimeoutModal] = useState(false);
-
-  const isRunningRef = useRef(isRunning);
-  const differenceRef = useRef(difference);
-
-  // 이미 10초 모달을 한 번 보여줬는지 여부
-  const hasShownTimeoutModalRef = useRef(false);
-
-  // 다음 두 경우가 일어나는 예외처리가 겹치지 않게 막는 플래그
-  // 1. (phaseStartTime + durationSeconds - 10초)가 지나도 게임 시작 안 함
-  // 2. 게임 시작 후 10초 동안 정지 버튼을 누르지 않음
-  const hasHandledTimeoutRef = useRef(false);
-
-  useEffect(() => {
-    isRunningRef.current = isRunning;
-  }, [isRunning]);
-
-  useEffect(() => {
-    differenceRef.current = difference;
-  }, [difference]);
-
-  const handleTimeout = useCallback(() => {
-    if (hasHandledTimeoutRef.current) return;
-    hasHandledTimeoutRef.current = true;
-
-    // TODO: phaseStartTime + durationSeconds 동안 게임을 하지 않거나,
-    //       게임 시작 후 10초 동안 정지 버튼을 누르지 않으면
-    //       서버에 max 시간(10초)을 넘겨주고 다음 단계로 넘어가도록 구현
-    onClickButton(true);
-  }, [onClickButton]);
-
-  useEffect(() => {
-    if (!phaseStartTime || !duration) return;
-
-    const startMs = phaseStartTime;
-    const endMs = startMs + duration * 1000;
-
-    if (Date.now() >= endMs) {
-      // 이미 종료 시간이 지났다면 바로 타임아웃 처리
-      handleTimeout();
-      return;
-    }
-
-    const modalAtMs = endMs - 10_000 - 5_000; // 마감 15초 전에 5초 남았다는 모달 표시
-    const timeoutAtMs = endMs - 10_000; // 마감 10초 전: 타임아웃 처리
-
-    const now = Date.now();
-    const modalDelay = Math.max(modalAtMs - now, 0);
-    const timeoutDelay = Math.max(timeoutAtMs - now, 0);
-
-    // 타임아웃 처리 가능 여부
-    const canTrigger = () =>
-      !isRunningRef.current && differenceRef.current === null;
-
-    // 모달 표시 및 타임아웃 타이머 설정
-    const modalTimer = window.setTimeout(() => {
-      if (hasShownTimeoutModalRef.current) return;
-      if (!canTrigger()) return;
-
-      hasShownTimeoutModalRef.current = true;
-      setShowTimeoutModal(true);
-    }, modalDelay);
-
-    // 타임아웃 처리 타이머 설정
-    const timeoutTimer = window.setTimeout(() => {
-      if (!canTrigger()) return;
-      handleTimeout();
-    }, timeoutDelay);
-
-    return () => {
-      clearTimeout(modalTimer);
-      clearTimeout(timeoutTimer);
-    };
-  }, [phaseStartTime, duration, handleTimeout]);
-
-  // 게임을 시작한 시점에서 10초가 지나도 정지하지 않으면 타임아웃 처리
-  useEffect(() => {
-    if (!isRunning) return;
-
-    const timerId = window.setTimeout(() => {
-      // 10초가 지났는데도 여전히
-      // - 게임이 돌아가는 중이고 (isRunning === true)
-      // - 결과가 없는 상태라면 (difference === null)
-      if (isRunningRef.current && differenceRef.current === null) {
-        handleTimeout();
-      }
-    }, 10000);
-
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [isRunning, handleTimeout]);
-
-  const handleOnClick = () => {
-    if (showTimeoutModal) {
-      setShowTimeoutModal(false);
-    }
-    onClickButton();
-  };
+  const {
+    elapsed,
+    isRunning,
+    difference,
+    diffText,
+    isGameStartModalOpen,
+    handleOnClick,
+  } = useTimingGame(phaseStartTime, duration, submitTimingResult);
 
   return (
     <div
@@ -135,10 +37,10 @@ export function TimingGame({
     >
       <TopBar title="타이밍 맞추기" showBackButton={false} gameFont />
       <TimerBar
-        totalMs={duration * 1000}
-        startedAt={new Date(phaseStartTime)}
+        totalMs={15000}
+        startedAt={phaseStartTime}
         containerClassName="mt-0.5"
-        hideIcon={isRunning}
+        hideIcon={Boolean(isRunning || difference)}
       />
 
       <div className="mt-7 flex flex-grow flex-col items-center justify-between pb-[60px]">
@@ -192,8 +94,7 @@ export function TimingGame({
             disabled={difference !== null}
           />
 
-          {/** 타임아웃 경고 모달 */}
-          {showTimeoutModal && (
+          {isGameStartModalOpen && (
             <div className="absolute left-1/2 top-[-60px] flex h-12 w-[342px] -translate-x-1/2 select-none items-center gap-2.5 rounded-xl bg-[#191C2D] pl-[13px] text-body-6 text-white">
               <img
                 src="/assets/icons/clock.svg"
