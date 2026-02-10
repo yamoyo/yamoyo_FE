@@ -6,7 +6,7 @@ import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
   color?: 'white' | 'yellow';
-  startedAt: Date;
+  startedAt: number;
   totalMs?: number; // 타이머 전체 진행 시간 (기본값: 10000ms = 10초)
   hideIcon?: boolean;
   containerClassName?: string;
@@ -32,7 +32,7 @@ export function TimerBar({
   containerClassName,
   color = 'white',
 }: Props) {
-  const bgBaseClass = 'relative h-[9px] w-full rounded-r-full bg-white';
+  const bgBaseClass = 'relative h-[9px] w-full rounded-r-full';
 
   const bgClass =
     color === 'white'
@@ -46,7 +46,7 @@ export function TimerBar({
   /* 타이머 전체 바(흰색 or 노란색 → 에러 컬러로 변하는 부분)
    * - timer-bg-animate: 배경색을 시간에 따라 변경하는 CSS 애니메이션
    */
-  const timerBgClass = `${bgClass} ${bgBaseClass}`;
+  const timerBgClass = cn(bgBaseClass, bgClass);
 
   /**
    * elapsedSec
@@ -55,11 +55,10 @@ export function TimerBar({
    * - 이후에 모달이 뜨거나 다른 state가 바뀌어도 다시 계산되지 않도록 startedAt와 totalMs가 바뀔 때만 갱신
    */
   const elapsedSec = useMemo(() => {
-    const startedAtMs = startedAt.getTime();
     const now = Date.now();
 
     // 아직 시작 전이면 0초로 간주
-    const elapsedMs = Math.max(0, now - startedAtMs);
+    const elapsedMs = Math.max(0, now - startedAt);
 
     // 이미 끝난 타이머라면 totalMs까지만 보여주기
     const clampedElapsedMs = Math.min(elapsedMs, totalMs);
@@ -68,12 +67,7 @@ export function TimerBar({
   }, [startedAt, totalMs]);
 
   return (
-    <div
-      className={cn(
-        'flex h-6 items-center overflow-x-hidden',
-        containerClassName,
-      )}
-    >
+    <div className={cn('flex h-6 items-center', containerClassName)}>
       <div
         className={timerBgClass}
         style={{
@@ -110,7 +104,7 @@ export function TimerBar({
         >
           {!hideIcon && (
             <img
-              className="absolute left-0 top-1/2 h-6 -translate-x-[calc(50%-4px)] -translate-y-1/2"
+              className="absolute left-0 top-1/2 h-6 min-w-6 -translate-x-[calc(50%-4px)] -translate-y-1/2"
               style={{
                 boxShadow: `-4px 0px 8px 0px ${ICON[color].shadow}`,
               }}

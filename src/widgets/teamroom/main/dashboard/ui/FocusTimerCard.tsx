@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { formatTimeString } from '@/entities/calendar/lib/recurrence';
 import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
 import { cn } from '@/shared/config/tailwind/cn';
-
-import { TimerBar } from '../../../leader-game/ui/TimerBar';
+import { TimerBar } from '@/widgets/teamroom/leader-game/ui/TimerBar';
 
 interface Props {
   title: string;
-  startedAt: Date;
+  startedAt: number;
   status: keyof DashboardStatus;
 }
 
@@ -26,7 +25,7 @@ export default function FocusTimerCard({ title, startedAt, status }: Props) {
 
   useEffect(() => {
     // 남은 시간 = (시작 시각 + 최대 지속 시간) − 현재 시각
-    const endAt = startedAt.getTime() + MAX_DURATION_MS;
+    const endAt = startedAt + MAX_DURATION_MS;
     const tick = () => {
       const restMs = Math.max(endAt - Date.now(), 0);
       setLeftTime(formatTimeString(restMs)); // ms -> "HH:MM:SS"

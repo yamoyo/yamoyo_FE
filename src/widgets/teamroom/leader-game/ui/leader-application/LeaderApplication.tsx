@@ -37,7 +37,7 @@ export default function LeaderApplication({
   const payload = useLeaderSelectionStore((s) => s.payload);
   const clearPayload = useLeaderSelectionStore((s) => s.clearPayload);
 
-  const startedAt = new Date(payload?.phaseStartTime ?? Date.now());
+  const startedAt = payload?.phaseStartTime ?? Date.now();
   const durationSeconds = payload?.durationSeconds ?? 0;
 
   const onNext = () => {

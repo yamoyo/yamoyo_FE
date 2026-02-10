@@ -25,7 +25,7 @@ import MeetingList from './MeetingList';
 interface Props {
   teamRoomId: string | number;
   myRole: TeamMemberRole;
-  setupCreatedAt?: string;
+  setupCreatedAt?: number;
 }
 
 export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
@@ -43,7 +43,7 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
     setupCreatedAt ? (
       <FocusTimerCard
         title={title}
-        startedAt={new Date(setupCreatedAt)}
+        startedAt={setupCreatedAt}
         status={status}
       />
     ) : null;
