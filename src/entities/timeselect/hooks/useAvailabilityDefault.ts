@@ -6,7 +6,8 @@ import type { AvailabilityDefaultResponse } from '@/entities/timeselect/api/time
 async function fetchAvailabilityDefault(): Promise<AvailabilityDefaultResponse | null> {
   try {
     return await getAvailabilityDefault();
-  } catch {
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
