@@ -6,7 +6,23 @@ interface Window {
     init: (key: string) => void;
     isInitialized: () => boolean;
     Share: {
-      sendScrap: (options: { requestUrl: string; templateId?: number }) => void;
+      sendDefault: (options: {
+        objectType: string;
+
+        content: {
+          title: string;
+          description: string;
+          imageUrl: string;
+          link: {
+            webUrl: string;
+          };
+        };
+        itemContent?: {
+          profileText: string;
+          profileImageUrl: string;
+        };
+        buttonTitle: string;
+      }) => void;
     };
   };
 }

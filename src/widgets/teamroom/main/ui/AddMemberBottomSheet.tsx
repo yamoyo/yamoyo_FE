@@ -1,11 +1,10 @@
 import { useCreateInviteLink } from '@/entities/teamroom/hooks/useTeamRoom';
+import { BASE_URL } from '@/shared/api/base/request';
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
 import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
 import { copyText } from '@/shared/lib/copy/copyText';
 import { KakaoSdkLoader } from '@/shared/lib/kakao/KakaoSdkLoader';
 import BottomSheet from '@/shared/ui/BottomSheet';
-
-const KAKAO_TEMPLATE_ID: string = import.meta.env?.VITE_KAKAO_TEMPLATE_ID;
 
 interface AddMemberBottomSheetProps {
   isOpen: boolean;
@@ -73,9 +72,21 @@ export default function AddMemberBottomSheet({
       const token = await mutateAsync(teamRoomId);
       const inviteUrl = `${window.location.origin}/invite?token=${token}`;
 
-      window.Kakao?.Share.sendScrap({
-        requestUrl: inviteUrl,
-        templateId: Number(KAKAO_TEMPLATE_ID),
+      window.Kakao?.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: '팀룸에 초대되었습니다!',
+          description: '얼른 접속하여 팀 빌딩을 함께 하세요!',
+          imageUrl: BASE_URL + '/kakao-share-bg.png',
+          link: {
+            webUrl: inviteUrl,
+          },
+        },
+        itemContent: {
+          profileText: 'YAMOYO',
+          profileImageUrl: BASE_URL + '/web-app-manifest-192x192.png',
+        },
+        buttonTitle: '팀룸 입장하기',
       });
     } catch (error) {
       alert(
