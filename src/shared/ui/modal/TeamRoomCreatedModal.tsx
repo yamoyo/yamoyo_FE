@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
-import { copyText } from '@/shared/lib/copyText';
+import { copyText } from '@/shared/lib/copy/copyText';
 import ModalDim from '@/shared/ui/modal/ModalDim';
 
 import { useModalStore } from './model/modal-store';

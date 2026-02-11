@@ -24,7 +24,9 @@ jobs:
         run: |
           IMAGE="${{ secrets.DOCKER_USERNAME }}/yamoyo-nginx:prod"
           docker build \
-            --build-arg VITE_BASE_URL=${{ secrets.VITE_BASE_URL }} \
+            --build-arg VITE_BASE_URL="${{ secrets.VITE_BASE_URL }}" \
+            --build-arg VITE_KAKAO_JAVASCRIPT_KEY="${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}" \
+            --build-arg VITE_KAKAO_TEMPLATE_ID="${{ secrets.VITE_KAKAO_TEMPLATE_ID }}" \
             -t "$IMAGE" .
           docker push "$IMAGE"
 
