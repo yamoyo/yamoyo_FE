@@ -16,8 +16,6 @@ export function KakaoSdkLoader() {
       if (!window.Kakao.isInitialized()) {
         window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
       }
-
-      window.Kakao.isInitialized();
     };
 
     // 이미 script가 있으면 로드 완료 여부에 따라 init

@@ -69,13 +69,20 @@ export default function AddMemberBottomSheet({
   };
 
   const handleKakaoShare = async () => {
-    const token = await mutateAsync(teamRoomId);
-    const inviteUrl = `${window.location.origin}/invite?token=${token}`;
+    try {
+      const token = await mutateAsync(teamRoomId);
+      const inviteUrl = `${window.location.origin}/invite?token=${token}`;
 
-    window.Kakao?.Share.sendScrap({
-      requestUrl: inviteUrl,
-      templateId: Number(KAKAO_TEMPLATE_ID),
-    });
+      window.Kakao?.Share.sendScrap({
+        requestUrl: inviteUrl,
+        templateId: Number(KAKAO_TEMPLATE_ID),
+      });
+    } catch (error) {
+      alert(
+        '카카오 공유하기 중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+      );
+      console.error(error);
+    }
   };
 
   return (
