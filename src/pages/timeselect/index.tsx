@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useAvailabilityStore } from '@/entities/everytime/model/availability-store';
+import {
+  availabilityDataToGrid,
+  useAvailabilityStore,
+} from '@/entities/everytime/model/availability-store';
+import { useAvailabilityDefault } from '@/entities/timeselect/hooks/useAvailabilityDefault';
 import { useSubmitAvailability } from '@/entities/timeselect/hooks/useSubmitAvailability';
 import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import BottomButton from '@/shared/ui/button/BottomButton';
@@ -40,19 +44,35 @@ export default function TimeSelectPage() {
 
   const { mutate: submitAvailability, isPending } = useSubmitAvailability();
   const { data: timeSelectData } = useTimeSelect(Number(id));
+  const { data: defaultAvailability } = useAvailabilityDefault();
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [availability, setAvailability] = useState<boolean[][]>(
     createInitialAvailability,
   );
+  const [defaultApplied, setDefaultApplied] = useState(false);
 
-  // 에브리타임에서 불러온 데이터가 있으면 적용
+  // 에브리타임에서 불러온 데이터가 있으면 적용 (우선순위 높음)
   useEffect(() => {
     if (importedAvailability) {
       setAvailability(importedAvailability);
       clearImportedAvailability();
+      setDefaultApplied(true);
     }
   }, [importedAvailability, clearImportedAvailability]);
+
+  // 에브리타임 데이터가 없고, 서버에 저장된 기본값이 있으면 적용
+  useEffect(() => {
+    if (defaultApplied) return;
+    if (!defaultAvailability?.availability) return;
+
+    const grid = availabilityDataToGrid(defaultAvailability.availability);
+    const hasAnySlot = grid.some((day) => day.some((slot) => slot));
+    if (hasAnySlot) {
+      setAvailability(grid);
+      setDefaultApplied(true);
+    }
+  }, [defaultAvailability, defaultApplied]);
 
   useEffect(() => {
     if (!timeSelectData) return;

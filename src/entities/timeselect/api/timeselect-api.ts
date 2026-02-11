@@ -1,6 +1,7 @@
 import { authClient } from '@/shared/api/auth/client';
 
 import type {
+  AvailabilityDefaultResponse,
   SubmitAvailabilityRequest,
   SubmitPreferredBlockRequest,
   TimeSelectResponse,
@@ -34,5 +35,12 @@ export async function submitPreferredBlock(
   return authClient.post(
     `/team-rooms/${teamRoomId}/timepick/preferred-block`,
     data,
+  );
+}
+
+/** 가용시간 기본값 조회 */
+export async function getAvailabilityDefault(): Promise<AvailabilityDefaultResponse> {
+  return authClient.get<AvailabilityDefaultResponse>(
+    '/users/me/timepick-default/availability',
   );
 }
