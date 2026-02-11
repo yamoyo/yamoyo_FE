@@ -1,7 +1,11 @@
 import { useCreateInviteLink } from '@/entities/teamroom/hooks/useTeamRoom';
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
-// import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
+import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
+import { copyText } from '@/shared/lib/copy/copyText';
+import { KakaoSdkLoader } from '@/shared/lib/kakao/KakaoSdkLoader';
 import BottomSheet from '@/shared/ui/BottomSheet';
+
+const KAKAO_TEMPLATE_ID: string = import.meta.env?.VITE_KAKAO_TEMPLATE_ID;
 
 interface AddMemberBottomSheetProps {
   isOpen: boolean;
@@ -50,53 +54,81 @@ export default function AddMemberBottomSheet({
   onClose,
   teamRoomId,
 }: AddMemberBottomSheetProps) {
-  const createInviteLinkMutation = useCreateInviteLink();
+  const { mutateAsync } = useCreateInviteLink();
 
-  const handleCopyLink = () => {
-    createInviteLinkMutation.mutate(teamRoomId);
+  const handleCopyLink = async () => {
+    try {
+      const token = await mutateAsync(teamRoomId);
+      const inviteUrl = `${window.location.origin}/invite?token=${token}`;
+
+      await copyText(inviteUrl);
+      alert('초대 링크가 복사되었습니다.');
+    } catch {
+      alert('초대 링크 생성에 실패했습니다.');
+    }
+  };
+
+  const handleKakaoShare = async () => {
+    try {
+      const token = await mutateAsync(teamRoomId);
+      const inviteUrl = `${window.location.origin}/invite?token=${token}`;
+
+      window.Kakao?.Share.sendScrap({
+        requestUrl: inviteUrl,
+        templateId: Number(KAKAO_TEMPLATE_ID),
+      });
+    } catch (error) {
+      alert(
+        '카카오 공유하기 중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+      );
+      console.error(error);
+    }
   };
 
   return (
-    <BottomSheet
-      isOpen={isOpen}
-      onClose={onClose}
-      contentClassName="flex flex-col gap-[20px] px-6 pb-[30px]"
-    >
-      <div className="flex flex-col">
-        <button
-          onClick={onClose}
-          className="h-10 w-10 self-end flex-center"
-          aria-label="모달 닫기"
-        >
-          <img
-            src="/assets/icons/cancel.svg"
-            width={16}
-            height={16}
-            alt=""
-            draggable="false"
-          />
-        </button>
-        <h2 className="-mt-[10px] text-title-3 text-tx-default">
-          함께하고 있는 팀 멤버를 초대하세요
-        </h2>
-      </div>
+    <>
+      <KakaoSdkLoader />
+      <BottomSheet
+        isOpen={isOpen}
+        onClose={onClose}
+        contentClassName="flex flex-col gap-[20px] px-6 pb-[30px]"
+      >
+        <div className="flex flex-col">
+          <button
+            onClick={onClose}
+            className="h-10 w-10 self-end flex-center"
+            aria-label="모달 닫기"
+          >
+            <img
+              src="/assets/icons/cancel.svg"
+              width={16}
+              height={16}
+              alt=""
+              draggable="false"
+            />
+          </button>
+          <h2 className="-mt-[10px] text-title-3 text-tx-default">
+            함께하고 있는 팀 멤버를 초대하세요
+          </h2>
+        </div>
 
-      <ShareButton
-        icon={
-          <LinkCopyIcon className="h-[26.67px] w-[26.67px] text-tx-default" />
-        }
-        iconBgColor="bg-bg-bt-disabled"
-        title="링크복사"
-        description="링크로 팀원과 공유하세요."
-        onClick={handleCopyLink}
-      />
+        <ShareButton
+          icon={
+            <LinkCopyIcon className="h-[26.67px] w-[26.67px] text-tx-default" />
+          }
+          iconBgColor="bg-bg-bt-disabled"
+          title="링크복사"
+          description="링크로 팀원과 공유하세요."
+          onClick={handleCopyLink}
+        />
 
-      {/* <ShareButton
-        icon={<KaKaoLinkIcon className="h-[33.778px] w-[32px]" />}
-        iconBgColor="bg-[#F7E115]"
-        title="카카오톡으로 보내기"
-        onClick={() => {}}
-      /> */}
-    </BottomSheet>
+        <ShareButton
+          icon={<KaKaoLinkIcon className="h-[33.778px] w-[32px]" />}
+          iconBgColor="bg-[#F7E115]"
+          title="카카오톡으로 보내기"
+          onClick={handleKakaoShare}
+        />
+      </BottomSheet>
+    </>
   );
 }

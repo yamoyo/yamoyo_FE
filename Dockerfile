@@ -11,8 +11,14 @@ WORKDIR /app
 
 # 빌드 인자 선언
 ARG VITE_BASE_URL
+ARG VITE_KAKAO_JAVASCRIPT_KEY
+ARG VITE_KAKAO_TEMPLATE_ID
 RUN test -n "$VITE_BASE_URL" || (echo "Error: VITE_BASE_URL build-arg is required" >&2 && exit 1)
+RUN test -n "$VITE_KAKAO_JAVASCRIPT_KEY" || (echo "Error: VITE_KAKAO_JAVASCRIPT_KEY build-arg is required" >&2 && exit 1)
+RUN test -n "$VITE_KAKAO_TEMPLATE_ID" || (echo "Error: VITE_KAKAO_TEMPLATE_ID build-arg is required" >&2 && exit 1)
 ENV VITE_BASE_URL=${VITE_BASE_URL}
+ENV VITE_KAKAO_JAVASCRIPT_KEY=${VITE_KAKAO_JAVASCRIPT_KEY}
+ENV VITE_KAKAO_TEMPLATE_ID=${VITE_KAKAO_TEMPLATE_ID}
 
 # 의존성 설치
 COPY package*.json ./
