@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
+const KAKAO_JAVASCRIPT_KEY: string = import.meta.env?.VITE_KAKAO_JAVASCRIPT_KEY;
+
 export function KakaoSdkLoader() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const KAKAO_JAVASCRIPT_KEY: string = import.meta.env
-      ?.VITE_KAKAO_JAVASCRIPT_KEY;
     const src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.9/kakao.min.js';
     const id = 'kakao-js-sdk';
 
