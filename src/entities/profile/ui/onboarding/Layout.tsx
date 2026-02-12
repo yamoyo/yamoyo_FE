@@ -135,14 +135,22 @@ export default function ProfileOnboardingLayout() {
         className="pointer-events-none absolute bottom-[-114px] left-1/2 h-[536px] max-w-none -translate-x-1/2 select-none"
       />
 
-      <div className="z-10 flex flex-grow flex-col justify-between px-6 pb-[60px] pt-[46px]">
-        <Outlet
-          context={{
-            form,
-            updateForm,
-            currentStep,
-          }}
-        />
+      <div className="z-10 flex flex-grow flex-col justify-between px-6 pb-[60px] pt-[35px]">
+        <div>
+          <img
+            src="/assets/onboarding/onboarding-icon.svg"
+            alt=""
+            className="mb-4"
+            draggable={false}
+          />
+          <Outlet
+            context={{
+              form,
+              updateForm,
+              currentStep,
+            }}
+          />
+        </div>
         <BottomButton
           text={isLastStep ? '설정완료' : '다음'}
           onClick={handleNext}
