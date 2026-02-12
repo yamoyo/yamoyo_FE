@@ -55,13 +55,28 @@ export default function AddMemberBottomSheet({
 }: AddMemberBottomSheetProps) {
   const { mutateAsync } = useCreateInviteLink();
 
-  const handleCopyLink = async () => {
+  const handleCopyLink = () => {
     try {
-      const token = await mutateAsync(teamRoomId);
-      const inviteUrl = `${window.location.origin}/invite?token=${token}`;
-
-      await copyText(inviteUrl);
-      alert('초대 링크가 복사되었습니다.');
+      const textPromise = mutateAsync(teamRoomId).then(
+        (token) => `${window.location.origin}/invite?token=${token}`,
+      );
+      if (navigator.clipboard?.write && window.ClipboardItem) {
+        const item = new ClipboardItem({
+          'text/plain': textPromise.then(
+            (text) => new Blob([text], { type: 'text/plain' }),
+          ),
+        });
+        navigator.clipboard.write([item]).then(
+          () => alert('초대 링크가 복사되었습니다.'),
+          () => alert('초대 링크 복사에 실패했습니다.'),
+        );
+      } else {
+        textPromise.then(
+          (text) =>
+            copyText(text).then(() => alert('초대 링크가 복사되었습니다.')),
+          () => alert('초대 링크 생성에 실패했습니다.'),
+        );
+      }
     } catch {
       alert('초대 링크 생성에 실패했습니다.');
     }
