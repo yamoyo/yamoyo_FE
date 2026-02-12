@@ -60,7 +60,7 @@ export default function UserProfile({
 
           <button
             onClick={() => setIsModalOpen(true)}
-            className="absolute bottom-0 right-0 flex h-[32px] w-[32px] items-center justify-center rounded-full bg-[#383842]"
+            className="absolute bottom-0 right-0 size-[32px] rounded-full bg-[#383842] flex-center"
           >
             <img
               src="/assets/icons/edit.svg"
@@ -85,12 +85,12 @@ export default function UserProfile({
         onClose={() => setIsModalOpen(false)}
         title="프로필 이미지"
       >
-        <div className="grid grid-cols-3 place-items-center gap-[16px] pb-4">
+        <div className="grid grid-cols-4 place-items-center gap-[16px] pb-4">
           {CHARACTER_IMAGE_ID.map((imageId, index) => (
             <button
               key={imageId}
               onClick={() => handleSelectImage(imageId)}
-              className="relative flex h-[85px] w-[85px] select-none items-center justify-center transition hover:scale-105"
+              className="relative size-[72px] select-none transition flex-center hover:scale-105"
             >
               <img
                 src="/assets/character/char-bg.png"
@@ -102,8 +102,8 @@ export default function UserProfile({
               />
               <img
                 src={`/assets/character/char-${imageId}.png`}
-                width={49}
-                height={43}
+                width={46}
+                height={37}
                 alt={`캐릭터 ${index + 1}`}
                 className="relative"
                 draggable="false"

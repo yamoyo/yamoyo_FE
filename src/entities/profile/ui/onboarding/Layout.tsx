@@ -140,7 +140,7 @@ export default function ProfileOnboardingLayout() {
           <img
             src="/assets/onboarding/onboarding-icon.svg"
             alt=""
-            className="mb-4"
+            className="mb-4 select-none"
             draggable={false}
           />
           <Outlet
