@@ -105,13 +105,10 @@ export default function ProfileOnboardingLayout() {
         major,
         ...persona,
       });
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-      if (redirectUrl) {
-        sessionStorage.removeItem('redirectAfterLogin');
-        navigate(redirectUrl, { replace: true });
-      } else {
-        navigate('/home', { replace: true });
-      }
+      navigate('/onboarding/welcome', {
+        replace: true,
+        state: { name: form.name },
+      });
     } catch (_) {
       alert('프로필 설정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
