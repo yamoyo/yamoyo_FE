@@ -7,7 +7,7 @@ const GUIDE_ITEMS: { text: string; highlight?: string; suffix?: string }[] = [
   },
   { text: '선택한 시간은 다시 선택하면 취소돼요' },
   { text: '본인의', highlight: '선호 시간대를 선택', suffix: '하세요' },
-  { text: '야모요가', highlight: '최적의 시간대를', suffix: '를 찾아드려요' },
+  { text: '야모요가', highlight: '최적의 시간대를', suffix: ' 찾아드려요' },
 ];
 
 interface TimeSelectGuideContentProps {
