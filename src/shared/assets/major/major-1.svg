@@ -1,20 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-  <style>
-    path[fill]:not([fill='none']) { fill: currentColor !important; }
-    path[stroke]:not([stroke='none']) { stroke: currentColor !important; }
-  </style>
-  <g clip-path="url(#clip0_101_8542)">
-    <path d="M38.1 26.6622H1.9V1.89966H0V32.3746H1.9V34.2746H13.3375V36.1871H15.2375V34.2746H24.7625V36.1871H26.6625V34.2746H38.1V32.3746H40V1.89966H38.1V26.6622Z" fill="#A3A8C4"/>
-    <path d="M28.5749 11.4251H30.4749V9.51265H32.3749V7.61265H30.4749V5.71265H28.5749V7.61265H26.6624V9.51265H28.5749V11.4251Z" fill="#A3A8C4"/>
-    <path d="M13.3373 38.0868V36.1868H11.4248V39.9993H28.5748V36.1868H26.6623V38.0868H13.3373Z" fill="#A3A8C4"/>
-    <path d="M26.6625 13.3245H24.7625V15.237H26.6625V13.3245Z" fill="#A3A8C4"/>
-    <path d="M26.6626 19.0369H13.3376V20.9494H26.6626V19.0369Z" fill="#A3A8C4"/>
-    <path d="M15.2376 13.3245H13.3376V15.237H15.2376V13.3245Z" fill="#A3A8C4"/>
-    <path d="M38.0999 -0.000244141H1.8999V1.89976H38.0999V-0.000244141Z" fill="#A3A8C4"/>
-  </g>
-  <defs>
-    <clipPath id="clip0_101_8542">
-      <rect width="40" height="40" fill="white"/>
-    </clipPath>
-  </defs>
+<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1804_132825)">
+<rect x="0.699219" y="1.3999" width="26.6" height="18.9" fill="#1591CA"/>
+<path d="M26.67 18.6643H1.33V1.33057H0V22.6631H1.33V23.9931H9.33625V25.3318H10.6662V23.9931H17.3337V25.3318H18.6637V23.9931H26.67V22.6631H28V1.33057H26.67V18.6643Z" fill="#202540"/>
+<path d="M20.0028 7.99777H21.3328V6.65902H22.6628V5.32902H21.3328V3.99902H20.0028V5.32902H18.6641V6.65902H20.0028V7.99777Z" fill="#202540"/>
+<path d="M9.3368 26.6615V25.3315H7.99805V28.0003H20.003V25.3315H18.6643V26.6615H9.3368Z" fill="#202540"/>
+<path d="M18.664 9.32666H17.334V10.6654H18.664V9.32666Z" fill="#202540"/>
+<path d="M18.6634 13.3257H9.33594V14.6644H18.6634V13.3257Z" fill="#202540"/>
+<path d="M10.6659 9.32666H9.33594V10.6654H10.6659V9.32666Z" fill="#202540"/>
+<path d="M26.6701 0H1.33008V1.33H26.6701V0Z" fill="#202540"/>
+</g>
+<defs>
+<clipPath id="clip0_1804_132825">
+<rect width="28" height="28" fill="white"/>
+</clipPath>
+</defs>
 </svg>
