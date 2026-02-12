@@ -39,7 +39,7 @@ export default function MajorGrid({ major, setMajor }: Props) {
                 'h-[100px] flex-col gap-[15px] rounded-lg bg-bg-card transition flex-center',
                 isSelected
                   ? 'bg-bg-secondary_3 text-tx-default_black'
-                  : 'text-tx-default_4 hover:border-textfiled-line_focus',
+                  : 'text-tx-default_4',
               )}
             >
               <Icon className="h-7 w-7" />
