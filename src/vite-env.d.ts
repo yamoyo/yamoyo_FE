@@ -15,6 +15,7 @@ interface Window {
           imageUrl: string;
           link: {
             webUrl: string;
+            mobileWebUrl: string;
           };
         };
         itemContent?: {
