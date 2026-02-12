@@ -60,8 +60,8 @@ export default function ParticipantSelectSheet({
           return (
             <li
               key={member.userId}
-              className={`flex items-center gap-3 rounded-xl py-3 pl-2 pr-3 transition-colors ${
-                isSelected ? 'bg-bg-textfiled text-white' : 'text-gray-300'
+              className={`flex items-center gap-3 rounded-xl py-3 pl-2 pr-3 transition-all ${
+                isSelected ? 'text-white' : 'text-gray-300 opacity-50'
               }`}
             >
               <div className="flex size-[55px] items-center justify-center rounded-full bg-[#2D314A]">
