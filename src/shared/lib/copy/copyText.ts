@@ -1,4 +1,21 @@
-export async function copyText(text: string) {
+export async function copyText(text: string | Promise<string>) {
+  if (typeof text !== 'string') {
+    if (navigator.clipboard?.write && window.ClipboardItem) {
+      try {
+        const item = new ClipboardItem({
+          'text/plain': text.then(
+            (resolved) => new Blob([resolved], { type: 'text/plain' }),
+          ),
+        });
+        await navigator.clipboard.write([item]);
+        return true;
+      } catch {
+        // 실패시 다음 대체 방법 시도
+      }
+    }
+    text = await text;
+  }
+
   try {
     if (navigator.clipboard?.writeText && window.isSecureContext) {
       await navigator.clipboard.writeText(text);

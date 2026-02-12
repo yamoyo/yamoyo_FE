@@ -26,7 +26,7 @@ export default function EveryTimePage() {
           <TextField
             value={url}
             onChange={setUrl}
-            placeholder="링크 붙혀넣기"
+            placeholder="링크 붙여넣기"
           />
           {isError && (
             <p className="text-sm text-red-400">
