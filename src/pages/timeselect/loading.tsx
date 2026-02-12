@@ -1,31 +1,18 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import TopBar from '@/shared/ui/header/TopBar';
 
 export default function TimeSelectLoadingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const teamRoomId = Number(id);
-  const { data, refetch } = useTimeSelect(teamRoomId);
 
   useEffect(() => {
-    if (!teamRoomId || data?.status === 'FINALIZED') return;
-    const intervalId = setInterval(() => {
-      refetch();
-    }, 5000);
-    return () => clearInterval(intervalId);
-  }, [teamRoomId, refetch, data?.status]);
-
-  useEffect(() => {
-    if (!data) return;
-    if (data.status === 'FINALIZED') {
+    const timer = setTimeout(() => {
       navigate(`/teamroom/${id}`, { replace: true });
-    }
-  }, [data, id, navigate, queryClient, teamRoomId]);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [id, navigate]);
 
   return (
     <div
@@ -37,7 +24,7 @@ export default function TimeSelectLoadingPage() {
         backgroundPosition: 'center',
       }}
     >
-      <TopBar onBack={() => navigate(-1)} />
+      <TopBar showBackButton={false} />
       <div className="flex-1 px-6 text-center flex-center">
         <div className="flex w-[221px] flex-col items-center gap-4">
           <img
