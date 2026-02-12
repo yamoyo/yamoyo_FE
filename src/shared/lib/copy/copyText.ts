@@ -10,10 +10,9 @@ export async function copyText(text: string | Promise<string>) {
         await navigator.clipboard.write([item]);
         return true;
       } catch {
-        return false;
+        // 실패시 다음 대체 방법 시도
       }
     }
-
     text = await text;
   }
 
