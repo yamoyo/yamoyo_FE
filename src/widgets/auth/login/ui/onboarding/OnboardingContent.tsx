@@ -2,19 +2,23 @@ export function OnboardingContent({
   imgSrc,
   mainText,
   subText,
+  imgHeight = 'h-[246px]',
 }: {
   imgSrc: string;
   mainText: string;
   subText: string;
+  imgHeight?: string;
 }) {
   return (
     <div className="flex cursor-move select-none flex-col items-center">
-      <img
-        src={imgSrc}
-        alt="onboarding"
-        className="mb-[46px] h-[246px] w-auto object-contain"
-        draggable={false}
-      />
+      <div className="mb-[46px] flex h-[304px] items-end justify-center">
+        <img
+          src={imgSrc}
+          alt="onboarding"
+          className={`${imgHeight} w-auto object-contain`}
+          draggable={false}
+        />
+      </div>
       <h1 className="text-h1 mb-2 text-[22px] font-bold leading-[36px] text-tx-default">
         {mainText}
       </h1>
