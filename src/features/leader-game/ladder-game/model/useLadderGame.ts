@@ -187,7 +187,6 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
       });
     }
   }, [
-    orderedParticipants.length,
     clearAllTimeouts,
     navigate,
     openCharacterModal,
