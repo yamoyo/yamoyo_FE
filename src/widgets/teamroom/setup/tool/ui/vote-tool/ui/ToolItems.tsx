@@ -25,7 +25,7 @@ export default function ToolItems({
               ? 'bg-bg-secondary_2 text-tx-default_black'
               : 'bg-bg-card text-tx-default',
             handleToolToggle
-              ? 'cursor-pointer hover:bg-bg-secondary_2 hover:text-tx-default_black'
+              ? 'cursor-pointer blockMobileHover:hover:bg-bg-secondary_2 blockMobileHover:hover:text-tx-default_black'
               : 'cursor-default',
           )}
           onClick={() => handleToolToggle && handleToolToggle(tool.id)}

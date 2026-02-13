@@ -82,6 +82,7 @@ export default function AddMemberBottomSheet({
           imageUrl: BASE_URL + '/kakao-share-bg.png',
           link: {
             webUrl: inviteUrl,
+            mobileWebUrl: inviteUrl,
           },
         },
         itemContent: {

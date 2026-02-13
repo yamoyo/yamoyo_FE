@@ -83,7 +83,3 @@ export const TOOL_CONTENTS = [
     ],
   },
 ] as const;
-
-export type ToolCategory = (typeof TOOL_CONTENTS)[number];
-export type ToolItem = ToolCategory['tools'][number];
-export type ToolId = ToolItem['id'];

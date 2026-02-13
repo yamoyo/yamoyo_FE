@@ -16,7 +16,7 @@ export default function ResultButton({ type }: Props) {
   const label = isLeader ? '팀장\n당첨' : '통과';
 
   return (
-    <div className="flex min-w-[64px] justify-center overflow-x-visible">
+    <div className="flex min-h-[72px] min-w-[72px] justify-center overflow-x-visible">
       <div
         style={{
           backgroundImage: `url(${backgroundImage})`,
