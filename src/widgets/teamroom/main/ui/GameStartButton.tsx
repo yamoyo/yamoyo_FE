@@ -17,7 +17,7 @@ export default function GameStartButton({
     <button
       type="button"
       onClick={onClick}
-      className="h-[70px] w-[170px]"
+      className="min-h-[70px] min-w-[170px]"
       disabled={disabled}
       style={{
         backgroundImage: `url(${buttonBackgroundImage})`,
