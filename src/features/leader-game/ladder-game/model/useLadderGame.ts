@@ -49,6 +49,21 @@ const TIMING = {
   FINAL_MOVE_MS: 600,
 } as const;
 
+// 사다리 가로줄 위치 계산용 맵 생성
+const createColumnToRowsMap = (ladderLines: number[][]) => {
+  const map: ColumnToRowsMap = new Map();
+
+  ladderLines.forEach((rows, i) => {
+    for (const row of rows) {
+      const current = map.get(row);
+      if (current) current.push(i);
+      else map.set(row, [i]);
+    }
+  });
+
+  return map;
+};
+
 export function useLadderGame(gameResultPayload: GameResultPayload) {
   const navigate = useNavigate();
   const { openCharacterModal } = useModalStore();
@@ -115,21 +130,6 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
       : 0;
 
   const DOWN_PX = ROW_GAP;
-
-  // 사다리 가로줄 위치 계산용 맵 생성
-  const createColumnToRowsMap = (ladderLines: number[][]) => {
-    const map: ColumnToRowsMap = new Map();
-
-    ladderLines.forEach((rows, i) => {
-      for (const row of rows) {
-        const current = map.get(row);
-        if (current) current.push(i);
-        else map.set(row, [i]);
-      }
-    });
-
-    return map;
-  };
 
   useLayoutEffect(() => {
     const el = verticalLineWrapperRef.current;

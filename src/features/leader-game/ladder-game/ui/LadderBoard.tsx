@@ -122,7 +122,7 @@ export default function LadderBoard({
               </div>
 
               <div
-                ref={verticalLineWrapperRef}
+                ref={i === 0 ? verticalLineWrapperRef : undefined}
                 className="mt-[-10px] flex justify-center overflow-hidden"
               >
                 <img
