@@ -13,7 +13,7 @@ export default function MajorGrid({ major, setMajor }: Props) {
   return (
     <>
       {/* 상단 타이틀 영역 */}
-      <div className="mb-4 space-y-[5px]">
+      <div className="mb-12 space-y-[5px]">
         <h1 className="text-title-2 text-tx-default_2">
           당신의 전공분야는 무엇인가요?
         </h1>
@@ -38,11 +38,11 @@ export default function MajorGrid({ major, setMajor }: Props) {
               className={cn(
                 'h-[100px] flex-col gap-[15px] rounded-lg bg-bg-card transition flex-center',
                 isSelected
-                  ? 'bg-bg-secondary_2 text-tx-default_black'
-                  : 'border border-bd-card_line text-tx-default_4 hover:border-textfiled-line_focus',
+                  ? 'bg-bg-secondary_3 text-tx-default_black'
+                  : 'text-tx-default_4',
               )}
             >
-              <Icon className="h-10 w-10" />
+              <Icon className="h-7 w-7" />
               <span className="text-body-8">{label}</span>
             </button>
           );

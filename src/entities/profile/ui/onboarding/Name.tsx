@@ -12,11 +12,13 @@ export default function NameStep() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-title-2 text-tx-default_2">이름을 알려주세요</h1>
+      <h1 className="text-title-2 text-tx-default_2">
+        팀에서 쓸 이름을 정해주세요
+      </h1>
       <TextField
         value={form.name}
         onChange={(value) => updateForm({ name: value })}
-        placeholder="야모요"
+        placeholder="한글/영어 포함 10자 내외"
         allowClear
         errorMessage={errorMessage}
       />

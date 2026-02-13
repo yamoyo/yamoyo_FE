@@ -105,13 +105,10 @@ export default function ProfileOnboardingLayout() {
         major,
         ...persona,
       });
-      const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
-      if (redirectUrl) {
-        sessionStorage.removeItem('redirectAfterLogin');
-        navigate(redirectUrl, { replace: true });
-      } else {
-        navigate('/home', { replace: true });
-      }
+      navigate('/onboarding/welcome', {
+        replace: true,
+        state: { name: form.name },
+      });
     } catch (_) {
       alert('프로필 설정 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
@@ -135,14 +132,22 @@ export default function ProfileOnboardingLayout() {
         className="pointer-events-none absolute bottom-[-114px] left-1/2 h-[536px] max-w-none -translate-x-1/2 select-none"
       />
 
-      <div className="z-10 flex flex-grow flex-col justify-between px-6 pb-[60px] pt-[46px]">
-        <Outlet
-          context={{
-            form,
-            updateForm,
-            currentStep,
-          }}
-        />
+      <div className="z-10 flex flex-grow flex-col justify-between px-6 pb-[60px] pt-[35px]">
+        <div>
+          <img
+            src="/assets/onboarding/onboarding-icon.svg"
+            alt=""
+            className="mb-4 select-none"
+            draggable={false}
+          />
+          <Outlet
+            context={{
+              form,
+              updateForm,
+              currentStep,
+            }}
+          />
+        </div>
         <BottomButton
           text={isLastStep ? '설정완료' : '다음'}
           onClick={handleNext}

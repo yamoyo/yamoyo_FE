@@ -45,6 +45,7 @@ const config: Config = {
         'bg-primary': '#804FFF',
         'bg-secondary': '#DDDC08',
         'bg-secondary_2': '#FDDA08',
+        'bg-secondary_3': '#E4C717',
         'bg-bt-disabled': '#7D7C81',
         'bg-card': '#3D4366',
 

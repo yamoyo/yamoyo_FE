@@ -11,7 +11,10 @@ export default function PersonaStep() {
   const errorMessage = validateProfileItem('MBTI', selectedMBTI || '');
 
   return (
-    <div className="space-y-[22px]">
+    <div className="select-none space-y-[22px]" draggable="false">
+      <h2 className="pb-[26px] text-title-2 text-tx-default_3">
+        팀 합류 전, 나를 설정해볼까요?
+      </h2>
       <UserProfile
         name={form.name}
         characterId={form.persona.profileImageId}
