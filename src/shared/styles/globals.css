@@ -126,6 +126,10 @@ body {
   font-family: 'Spoqa Han Sans Neo', sans-serif;
 }
 
+#root {
+  background-color: #131415;
+}
+
 header {
   /* 상단 안전 영역 고려 (iOS 노치 등) */
   padding-top: calc(16px + env(safe-area-inset-top));

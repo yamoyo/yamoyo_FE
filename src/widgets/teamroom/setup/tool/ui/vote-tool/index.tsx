@@ -8,8 +8,7 @@ import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import StepTitle from '@/shared/ui/tab/StepTitle';
-
-import ToolItems from './ui/ToolItems';
+import ToolItems from '@/widgets/teamroom/setup/tool/ui/vote-tool/ui/ToolItems';
 
 interface Props {
   onFinish: () => void;
@@ -39,7 +38,7 @@ export default function VotingTool({ onFinish }: Props) {
     setSelectedByCategory((prev) => {
       const prevSelected = prev[current.key] ?? [];
       const nextSelected = prevSelected.includes(toolId)
-        ? prevSelected.filter((x) => x !== toolId)
+        ? prevSelected.filter((t) => t !== toolId)
         : [...prevSelected, toolId];
 
       return { ...prev, [current.key]: nextSelected };

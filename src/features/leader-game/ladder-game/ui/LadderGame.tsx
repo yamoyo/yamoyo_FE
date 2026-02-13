@@ -1,7 +1,6 @@
 import { GameResultPayload } from '@/entities/leader-game/api/ws-types';
+import LadderBoard from '@/features/leader-game/ladder-game/ui/LadderBoard';
 import TopBar from '@/shared/ui/header/TopBar';
-
-import LadderBoard from './LadderBoard';
 
 export default function LadderGame({
   gameResultPayload,
@@ -18,7 +17,7 @@ export default function LadderGame({
         backgroundSize: 'cover',
         backgroundPosition: 'right',
       }}
-      className="flex flex-1 flex-col overflow-x-hidden"
+      className="flex h-screen flex-col overflow-hidden"
     >
       <TopBar title="사다리게임" showBackButton={false} gameFont />
 
