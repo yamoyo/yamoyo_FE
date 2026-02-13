@@ -38,6 +38,7 @@ export function OnboardingCarousel() {
               imgSrc={`/assets/onboarding/onboarding-${index + 1}.png`}
               mainText={content.mainText}
               subText={content.subText}
+              imgHeight={content.imgHeight}
             />
           </div>
         ))}

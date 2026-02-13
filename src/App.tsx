@@ -24,6 +24,7 @@ import NotificationSettings from './pages/mypage/notification-settings';
 import Profile from './pages/mypage/profile';
 // import NotificationPage from './pages/notification';
 import TermsPage from './pages/onboarding/term';
+import WelcomePage from './pages/onboarding/Welcome';
 import SplashPage from './pages/splash';
 import MyTeamRoomPage from './pages/teamroom';
 import TeamRoomMainPage from './pages/teamroom/[id]';
@@ -126,6 +127,7 @@ export default function App() {
             <Route path="major" element={<MajorStep />} />
             <Route path="persona" element={<PersonaStep />} />
           </Route>
+          <Route path="/onboarding/welcome" element={<WelcomePage />} />
 
           <Route path="/teamroom">
             <Route index element={<MyTeamRoomPage />} />

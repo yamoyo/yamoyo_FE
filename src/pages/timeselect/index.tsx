@@ -1,97 +1,26 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-
-import { useAvailabilityStore } from '@/entities/everytime/model/availability-store';
-import { useSubmitAvailability } from '@/entities/timeselect/hooks/useSubmitAvailability';
-import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
+import { useAvailability } from '@/entities/timeselect/hooks/useAvailability';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import TimeSelectControls from '@/widgets/teamroom/timeselect/TimeSelectControls';
 import TimeSelectGrid from '@/widgets/teamroom/timeselect/TimeSelectGrid';
-
-const createInitialAvailability = () =>
-  Array.from({ length: 7 }, () => Array.from({ length: 32 }, () => false));
-
-const GUIDE_ITEMS: { text: string; highlight?: string; suffix?: string }[] = [
-  { text: '장소는', highlight: '온라인으로 고정', suffix: '한다' },
-  {
-    text: '',
-    highlight: '클릭 또는 드래그',
-    suffix: '로 시간대를\n선택하세요',
-  },
-  { text: '선택한 시간은 다시 선택하면 취소돼요' },
-  { text: '본인의', highlight: '선호 시간대를 선택', suffix: '하세요' },
-  { text: '야모요가', highlight: '최적의 시간대를', suffix: '를 찾아드려요' },
-];
+import TimeSelectGuideContent from '@/widgets/teamroom/timeselect/TimeSelectGuideContent';
 
 export default function TimeSelectPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
   const openGuideModal = useModalStore((state) => state.openGuideModal);
   const closeModal = useModalStore((state) => state.closeModal);
 
-  const importedAvailability = useAvailabilityStore(
-    (state) => state.importedAvailability,
-  );
-  const clearImportedAvailability = useAvailabilityStore(
-    (state) => state.clearImportedAvailability,
-  );
-
-  const { mutate: submitAvailability, isPending } = useSubmitAvailability();
-  const { data: timeSelectData } = useTimeSelect(Number(id));
-
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [availability, setAvailability] = useState<boolean[][]>(
-    createInitialAvailability,
-  );
-
-  // 에브리타임에서 불러온 데이터가 있으면 적용
-  useEffect(() => {
-    if (importedAvailability) {
-      setAvailability(importedAvailability);
-      clearImportedAvailability();
-    }
-  }, [importedAvailability, clearImportedAvailability]);
-
-  useEffect(() => {
-    if (!timeSelectData) return;
-    if (timeSelectData.status === 'FINALIZED') {
-      navigate(`/teamroom/${id}`, { replace: true });
-      return;
-    }
-
-    const { availabilityStatus, preferredBlockStatus } =
-      timeSelectData.myStatus;
-    if (
-      availabilityStatus === 'SUBMITTED' &&
-      preferredBlockStatus === 'SUBMITTED'
-    ) {
-      navigate(`/teamroom/${id}/timeselect/loading`, { replace: true });
-      return;
-    }
-
-    if (
-      availabilityStatus === 'SUBMITTED' &&
-      preferredBlockStatus === 'PENDING'
-    ) {
-      navigate(`/teamroom/${id}/timeselect/liketime`, { replace: true });
-    }
-  }, [timeSelectData, id, navigate]);
-
-  const handleReset = () => {
-    setAvailability(createInitialAvailability());
-  };
-
-  const handleNavigateEverytime = () => {
-    navigate(`/teamroom/${id}/timeselect/everytime`);
-  };
-
-  const handleSubmit = () => {
-    submitAvailability(availability);
-  };
-
-  const hasSelection = availability.some((day) => day.some((slot) => slot));
+  const {
+    isEditMode,
+    availability,
+    setAvailability,
+    isPending,
+    hasSelection,
+    handleReset,
+    handleNavigateEverytime,
+    handleSubmit,
+    handleToggleEditMode,
+  } = useAvailability();
 
   return (
     <div
@@ -111,48 +40,7 @@ export default function TimeSelectPage() {
             onClick={() =>
               openGuideModal({
                 title: '정기미팅 설정 가이드',
-                children: (
-                  <div className="flex flex-col items-center gap-[30px]">
-                    <div className="flex flex-col items-center gap-5">
-                      <p className="text-body-1 text-tx-default_black">
-                        시간 설정 방법
-                      </p>
-                      <div className="flex flex-col items-start gap-5">
-                        {GUIDE_ITEMS.map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-[10px]"
-                          >
-                            <div className="h-4 w-4">
-                              <img
-                                src="/assets/timeselect/guide-icon.svg"
-                                width={15}
-                                height={15}
-                              />
-                            </div>
-                            <p className="whitespace-pre-line text-body-4.1 text-bg-default">
-                              {item.text}
-                              {item.highlight && (
-                                <span className="text-body-4 text-bg-primary">
-                                  {' '}
-                                  {item.highlight}
-                                </span>
-                              )}
-                              {item.suffix}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="text-body-1 text-bg-primary"
-                      onClick={closeModal}
-                    >
-                      확인
-                    </button>
-                  </div>
-                ),
+                children: <TimeSelectGuideContent onClose={closeModal} />,
               })
             }
           >
@@ -179,7 +67,7 @@ export default function TimeSelectPage() {
         <div className="flex w-full flex-col items-start gap-4">
           <TimeSelectControls
             isEditMode={isEditMode}
-            onToggleEditMode={() => setIsEditMode((prev) => !prev)}
+            onToggleEditMode={handleToggleEditMode}
             onReset={handleReset}
             onImport={handleNavigateEverytime}
           />
