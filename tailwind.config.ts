@@ -80,6 +80,11 @@ const config: Config = {
         /* etc */
         'bt-disabled': '#4C4A52',
       },
+      screens: {
+        blockMobileHover: {
+          raw: '(hover: hover) and (pointer: fine)',
+        },
+      },
     },
   },
   plugins: [flexCenter, flexColCenter],
