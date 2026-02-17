@@ -156,6 +156,12 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
       />
 
       <div className="space-y-2">
+        {rules.length === 0 && (
+          <p className="whitespace-pre-line text-body-6 text-tx-default">
+            {'설정된 규칙이 없습니다.\n팀장만 규칙을 추가할 수 있습니다.'}
+          </p>
+        )}
+
         {rules.map((rule, idx) => {
           const isEditing = editMode && editingRuleId === rule.teamRuleId;
 

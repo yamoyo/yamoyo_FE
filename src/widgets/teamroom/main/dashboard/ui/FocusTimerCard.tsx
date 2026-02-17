@@ -10,18 +10,26 @@ interface Props {
   title: string;
   startedAt: number;
   status: keyof DashboardStatus;
+  isFinished?: boolean;
 }
 
 const MAX_DURATION_MS = 6 * 60 * 60 * 1000; // 6시간
 
 /** 타이머 바가 있는 카드  */
-export default function FocusTimerCard({ title, startedAt, status }: Props) {
+export default function FocusTimerCard({
+  title,
+  startedAt,
+  status,
+  isFinished,
+}: Props) {
   const navigate = useNavigate();
   const [leftTime, setLeftTime] = useState('');
 
   const isLeftHour = leftTime.split(':')[0] === '00'; // 남은 시간이 1시간 미만인지 여부
 
-  const onClick = () => navigate(status);
+  const navigateToStatus = () => {
+    navigate(status);
+  };
 
   useEffect(() => {
     // 남은 시간 = (시작 시각 + 최대 지속 시간) − 현재 시각
@@ -37,9 +45,12 @@ export default function FocusTimerCard({ title, startedAt, status }: Props) {
   }, [startedAt]);
 
   return (
-    <button
-      className="w-full rounded-xl bg-bg-card px-5 py-[18px]"
-      onClick={onClick}
+    <div
+      className={cn(
+        'w-full rounded-xl bg-bg-card px-5 py-[18px]',
+        isFinished ? 'cursor-default pb-2.5' : 'cursor-pointer',
+      )}
+      onClick={isFinished ? undefined : navigateToStatus}
     >
       <div className="mb-[30px] flex items-center gap-2">
         <img
@@ -68,6 +79,16 @@ export default function FocusTimerCard({ title, startedAt, status }: Props) {
         color="yellow"
         containerClassName="rounded-full"
       />
-    </button>
+      {isFinished && (
+        <div className="flex w-full justify-end">
+          <button
+            className="p-2 text-caption-1 text-white"
+            onClick={navigateToStatus}
+          >
+            {'미참여자 보러가기 >'}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

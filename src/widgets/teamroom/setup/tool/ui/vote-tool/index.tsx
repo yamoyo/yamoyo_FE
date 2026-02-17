@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import { useSubmitAllToolVotes } from '@/entities/setup/tool/hooks/useTool';
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import { ToolId } from '@/entities/teamroom/setup/tool/model/types';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
@@ -14,7 +13,7 @@ interface Props {
   onFinish: () => void;
 }
 
-type SelectedByCategoryKey = Record<string, ToolId[]>;
+type SelectedByCategoryKey = Record<string, number[]>;
 
 export default function VotingTool({ onFinish }: Props) {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +33,7 @@ export default function VotingTool({ onFinish }: Props) {
   // 현재 step의 선택 목록
   const selectedTools = selectedByCategory[current.key] ?? [];
 
-  const handleToolToggle = (toolId: ToolId) => {
+  const handleToolToggle = (toolId: number) => {
     setSelectedByCategory((prev) => {
       const prevSelected = prev[current.key] ?? [];
       const nextSelected = prevSelected.includes(toolId)
@@ -75,7 +74,7 @@ export default function VotingTool({ onFinish }: Props) {
             categoryId: category.categoryId,
             toolIds: category.tools
               .filter((t) => selected.includes(t.id))
-              .map((t) => t.toolId),
+              .map((t) => t.id),
           };
         });
 

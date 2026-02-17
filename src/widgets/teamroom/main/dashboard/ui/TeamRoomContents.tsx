@@ -54,22 +54,13 @@ export default function TeamRoomContents({
     );
   }
 
-  if (workflow === 'SETUP') {
+  if (workflow === 'SETUP' || workflow === 'COMPLETED') {
     return (
       <Dashboard
         teamRoomId={teamRoomId}
         myRole={myRole}
         setupCreatedAt={setupCreatedAtToNumber}
-      />
-    );
-  }
-
-  if (workflow === 'COMPLETED') {
-    return (
-      <Dashboard
-        teamRoomId={teamRoomId}
-        myRole={myRole}
-        setupCreatedAt={setupCreatedAtToNumber}
+        workflow={workflow}
       />
     );
   }
