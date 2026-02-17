@@ -1,10 +1,9 @@
-import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import { ToolId } from '@/entities/teamroom/setup/tool/model/types';
+import { ToolId, Tools } from '@/entities/teamroom/setup/tool/model/types';
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
-  tools: (typeof TOOL_CONTENTS)[number]['tools'];
-  selectedTools: ToolId[];
+  tools: readonly Tools[];
+  selectedTools?: ToolId[];
   handleToolToggle?: (toolId: ToolId) => void;
 }
 

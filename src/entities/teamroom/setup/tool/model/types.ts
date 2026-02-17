@@ -3,6 +3,13 @@ import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-content
 export type ToolId = (typeof TOOL_CONTENTS)[number]['tools'][number]['id'];
 export type ToolName = (typeof TOOL_CONTENTS)[number]['tools'][number]['name'];
 
+export interface Tools {
+  id: ToolId;
+  toolId: number;
+  name: ToolName;
+  description: string;
+}
+
 export interface ToolVoteDetailCount {
   title: string;
   description: string;
