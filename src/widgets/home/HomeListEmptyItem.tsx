@@ -7,7 +7,7 @@
 // TODO(준열) : 추후에 서버 로직 적용하면 상태관리로 표시 여부 결정
 export function HomeListEmptyItem() {
   return (
-    <div className="flex select-none items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]">
+    <div className="flex select-none items-center gap-3 rounded-xl bg-bg-card px-[15px] py-[13px]">
       <div className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-[#2F3453]">
         <img
           src="/assets/home/home-empty.png"
