@@ -15,7 +15,7 @@ export default function HomeListItem({ teamRoom }: Props) {
   return (
     <Link
       to={`/teamroom/${teamRoomId}`}
-      className="flex select-none items-center gap-3 rounded-[12px] border border-[#4C5377] bg-[#3D4366] px-[15px] py-[13px]"
+      className="flex select-none items-center gap-3 rounded-xl bg-bg-card px-[15px] py-[13px]"
       draggable="false"
     >
       {/* 팀 배너 이미지 */}
