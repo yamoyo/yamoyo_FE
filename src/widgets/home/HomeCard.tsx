@@ -20,7 +20,7 @@ export function HomeCard() {
             <p>여기서 한 번에!</p>
           </div>
 
-          <div className="text-[14px] text-tx-default_4">
+          <div className="text-body-5 text-tx-default_4">
             <p>야모요와 시작해볼까요?</p>
           </div>
         </div>

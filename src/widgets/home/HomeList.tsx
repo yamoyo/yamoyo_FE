@@ -12,7 +12,7 @@ export default function HomeList() {
     <div className="relative z-10 flex flex-1 flex-col gap-[13px] rounded-t-[20px] bg-bg-default px-[24px] pb-[30px] pt-[30px]">
       {/** 헤더 + 팀 단일 아이템 스타일 래퍼 */}
       <div className="flex select-none items-end justify-between">
-        <span className="text-[16px] font-bold text-[#EEEFF8]">내 팀룸</span>
+        <span className="text-title-3 text-tx-default_2">내 팀룸</span>
         <Link
           to="/teamroom"
           className="text-[12px] font-bold text-[#AA89FF]"
