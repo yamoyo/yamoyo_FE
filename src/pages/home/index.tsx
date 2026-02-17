@@ -17,11 +17,17 @@ export function HomePage() {
   }, [navigate]);
 
   return (
-    <>
+    <div className="relative flex flex-1 flex-col">
+      <img
+        src="/assets/home/home-bg.png"
+        alt=""
+        className="pointer-events-none absolute right-0 top-[200px] z-0 h-[321px] w-[230px] select-none"
+        draggable="false"
+      />
       <HomeHeader />
       <HomeCard />
       <HomeList />
-    </>
+    </div>
   );
 }
 
