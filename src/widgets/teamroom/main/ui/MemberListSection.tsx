@@ -7,12 +7,16 @@ import MemberItem from './MemberItem';
 
 interface MemberListSectionProps {
   members: TeamMember[];
+  currentUserId?: number | null;
   onAddMember: () => void;
+  onMemberClick?: (member: TeamMember) => void;
 }
 
 export default function MemberListSection({
   members,
+  currentUserId,
   onAddMember,
+  onMemberClick,
 }: MemberListSectionProps) {
   const { bind } = useHorizontalDragScroll<HTMLUListElement>();
   const [isOpen, setIsOpen] = useState(true);
@@ -48,9 +52,20 @@ export default function MemberListSection({
           {...bind}
           className="no-scrollbar -mx-6 flex gap-2 overflow-x-auto px-6"
         >
-          {members.map((member) => (
-            <MemberItem key={member.userId} member={member} />
-          ))}
+          {members.map((member) => {
+            const isMe = currentUserId === member.userId;
+            return (
+              <MemberItem
+                key={member.userId}
+                member={member}
+                onClick={
+                  onMemberClick && !isMe
+                    ? () => onMemberClick(member)
+                    : undefined
+                }
+              />
+            );
+          })}
           <li className="flex shrink-0 flex-col items-center gap-2">
             <button
               type="button"
