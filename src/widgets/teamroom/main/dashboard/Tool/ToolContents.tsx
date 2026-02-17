@@ -49,10 +49,14 @@ export default function ToolContents({ confirmedToolsData }: Props) {
       {sections.map((section) => (
         <div key={section.key} className="space-y-4">
           <ContentsHeader id="tool" text={section.text} />
-          <ToolItems
-            tools={section.tools}
-            selectedTools={getSelectedToolIds(section.categoryId)}
-          />
+          {
+            // 확정된 툴이 없는 경우 안내 메시지 표시
+            section.tools.length === 0 && (
+              <p className="text-body-6 text-tx-default">
+                확정된 협업툴이 없습니다.
+              </p>
+            )
+          }
           <ToolItems tools={section.tools} />
         </div>
       ))}
