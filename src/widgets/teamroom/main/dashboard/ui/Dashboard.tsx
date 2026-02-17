@@ -12,6 +12,7 @@ import {
 import type {
   DashboardStatus,
   TeamMemberRole,
+  TeamRoomWorkflow,
 } from '@/entities/teamroom/api/teamroom-dto';
 import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import { useAuthStore } from '@/shared/api/auth/store';
@@ -26,9 +27,15 @@ interface Props {
   teamRoomId: string | number;
   myRole: TeamMemberRole;
   setupCreatedAt?: number;
+  workflow: TeamRoomWorkflow;
 }
 
-export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
+export function Dashboard({
+  teamRoomId,
+  myRole,
+  setupCreatedAt,
+  workflow,
+}: Props) {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1;
@@ -39,12 +46,17 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
   const isTimeSelectFinalized = timeSelectData?.status === 'FINALIZED';
   const meetings = meetingsData?.meetings ?? [];
 
-  const fallback = (title: string, status: keyof DashboardStatus) =>
+  const fallback = (
+    title: string,
+    status: keyof DashboardStatus,
+    isFinished?: boolean,
+  ) =>
     setupCreatedAt ? (
       <FocusTimerCard
         title={title}
         startedAt={setupCreatedAt}
         status={status}
+        isFinished={isFinished}
       />
     ) : null;
 
@@ -117,13 +129,27 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
           return <div>협업툴을 불러오지 못했어요.</div>;
         }
 
-        // 내가 투표에 참여한 기록이 없으면 fallback
+        // 내가 투표에 참여했는지 확인
         const hasVotedTools = toolParticipation.voted.some(
           (v) => v.userId === Number(myUserId),
         );
 
-        if (!hasVotedTools) {
-          return fallback('협업툴을 설정하세요', 'tool');
+        // 모두가 투표에 참여했는지
+        const allVotedTools =
+          toolParticipation.votedMembers >= toolParticipation.totalMembers;
+
+        if (!hasVotedTools && workflow === 'SETUP') {
+          // 내가 투표를 참여 X, workflow가 SETUP인 경우 -> 투표 참여 가능
+          return fallback('협업툴을 설정하세요', 'tool', hasVotedTools);
+        }
+
+        if (!allVotedTools && workflow === 'SETUP') {
+          // 내가 투표 참여 O, 모두 참여 X, workflow가 SETUP인 경우 -> 투표 현황 조회 가능
+          return fallback(
+            '아직 투표가 완료되지 않았어요.',
+            'tool',
+            hasVotedTools,
+          );
         }
 
         return <ToolContents confirmedToolsData={confirmedToolsData} />;
@@ -143,11 +169,28 @@ export function Dashboard({ teamRoomId, myRole, setupCreatedAt }: Props) {
         )
           return <div>규칙을 불러오지 못했어요.</div>;
 
+        // 내가 투표에 참여했는지 확인
         const hasVotedRules = ruleParticipation?.voted.some(
           (v) => v.userId === Number(myUserId),
         );
 
-        if (!hasVotedRules) return fallback('팀 규칙을 설정하세요', 'rule');
+        // 모두가 투표에 참여했는지
+        const allVotedRules =
+          ruleParticipation.votedMembers >= ruleParticipation.totalMembers;
+
+        if (!hasVotedRules && workflow === 'SETUP') {
+          // 내가 투표를 참여 X, workflow가 SETUP인 경우 -> 투표 참여 가능
+          return fallback('팀 규칙을 설정하세요', 'rule', hasVotedRules);
+        }
+
+        if (!allVotedRules && workflow === 'SETUP') {
+          // 내가 투표 참여 O, 모두 참여 X, workflow가 SETUP인 경우 -> 투표 현황 조회 가능
+          return fallback(
+            '아직 투표가 완료되지 않았어요.',
+            'rule',
+            hasVotedRules,
+          );
+        }
 
         return (
           <Rules

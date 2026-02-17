@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useToolVoteParticipation } from '@/entities/setup/tool/hooks/useTool';
 import { useAuthStore } from '@/shared/api/auth/store';
@@ -10,7 +10,6 @@ import ToolVoteWaiting from '@/widgets/teamroom/setup/tool/ui/vote-waiting';
 type ToolPhase = 'VOTING_TOOL' | 'TOOL_VOTE_WAITING';
 
 export function ToolSetupPage() {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const accessToken = useAuthStore((s) => s.accessToken);
   const myUserId = accessToken
@@ -28,18 +27,12 @@ export function ToolSetupPage() {
   useEffect(() => {
     if (!participation || !myUserId) return;
 
-    const allVoted = participation.votedMembers >= participation.totalMembers;
-    if (allVoted) {
-      navigate(`/teamroom/${id}`);
-      return;
-    }
-
     const isVoted = participation.voted.some(
       (v) => v.userId === Number(myUserId),
     );
 
     setPhase(isVoted ? 'TOOL_VOTE_WAITING' : 'VOTING_TOOL');
-  }, [accessToken, participation, myUserId, navigate, id]);
+  }, [participation, myUserId]);
 
   if (phase === 'VOTING_TOOL') {
     return <VotingTool onFinish={() => setPhase('TOOL_VOTE_WAITING')} />;

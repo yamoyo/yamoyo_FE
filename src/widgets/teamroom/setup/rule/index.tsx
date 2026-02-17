@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useRuleVoteParticipation } from '@/entities/setup/rule/hooks/useRule';
 import { useAuthStore } from '@/shared/api/auth/store';
@@ -11,7 +11,6 @@ import RuleVotingScreen from './ui/voting-rule';
 type RulePhase = 'VOTING_RULE' | 'RULE_VOTE_WAITING';
 
 export function RuleSetupPage() {
-  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const accessToken = useAuthStore((s) => s.accessToken);
   const myUserId = accessToken
@@ -29,17 +28,12 @@ export function RuleSetupPage() {
   useEffect(() => {
     if (!participation || !myUserId) return;
 
-    const allVoted = participation.votedMembers >= participation.totalMembers;
-    if (allVoted) {
-      navigate('/teamroom/' + id);
-      return;
-    }
-
     const isVoted = participation.voted.some(
       (v) => v.userId === Number(myUserId),
     );
+
     setPhase(isVoted ? 'RULE_VOTE_WAITING' : 'VOTING_RULE');
-  }, [accessToken, participation, myUserId, navigate, id]);
+  }, [participation, myUserId]);
 
   if (!id) {
     return <p>팀룸 ID가 없습니다.</p>;
