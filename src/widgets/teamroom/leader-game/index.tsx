@@ -22,10 +22,9 @@ import { useAuthStore } from '@/shared/api/auth/store';
 import PixelStatusMessage from '@/shared/ui/display/PixelStatusMessage';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import { GameType } from '@/widgets/teamroom/leader-game/ui/game/model/types';
-
-import SelectGame from './ui/game/SelectGame';
-import LeaderApplication from './ui/leader-application/LeaderApplication';
-import LeaderApplicationWait from './ui/leader-application/LeaderApplicationWait';
+import SelectGame from '@/widgets/teamroom/leader-game/ui/game/SelectGame';
+import LeaderApplication from '@/widgets/teamroom/leader-game/ui/leader-application/LeaderApplication';
+import LeaderApplicationWait from '@/widgets/teamroom/leader-game/ui/leader-application/LeaderApplicationWait';
 
 export function SelectLeader() {
   const navigate = useNavigate();
@@ -241,8 +240,20 @@ export function SelectLeader() {
     return <RouletteGame gameResultPayload={gameResultPayload} />;
   }
 
-  if (phase === 'TIMING_GAME' && payload) {
-    return <TimingGame {...payload} submitTimingResult={submitTimingResult} />;
+  if (phase === 'TIMING_GAME' && payload && voteUpdatedPayload) {
+    if (voteUpdatedPayload.volunteerIds.includes(Number(myUserId))) {
+      return (
+        <TimingGame {...payload} submitTimingResult={submitTimingResult} />
+      );
+    }
+    return (
+      <PixelStatusMessage
+        message={
+          '팀장을 지원한 팀원들이 게임을 진행 중입니다.\n잠시만 기다려 주세요.'
+        }
+        fullScreen
+      />
+    );
   }
 
   return <p>이전 처리를 진행 중입니다. 잠시만 기다려 주세요.</p>;

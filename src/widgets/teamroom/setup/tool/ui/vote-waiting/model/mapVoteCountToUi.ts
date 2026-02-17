@@ -18,6 +18,7 @@ export function mapVoteCountToUi(
   return category.tools.map((t) => ({
     id: t.id,
     name: t.name,
-    voteCount: countMap.get(t.toolId) ?? 0,
+    slug: t.slug,
+    voteCount: countMap.get(t.id) ?? 0,
   }));
 }

@@ -1,11 +1,10 @@
-import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import { ToolId } from '@/entities/teamroom/setup/tool/model/types';
+import { Tools } from '@/entities/teamroom/setup/tool/model/types';
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
-  tools: (typeof TOOL_CONTENTS)[number]['tools'];
-  selectedTools: ToolId[];
-  handleToolToggle?: (toolId: ToolId) => void;
+  tools: readonly Tools[];
+  selectedTools?: number[];
+  handleToolToggle?: (toolId: number) => void;
 }
 
 export default function ToolItems({
@@ -31,7 +30,7 @@ export default function ToolItems({
           onClick={() => handleToolToggle && handleToolToggle(tool.id)}
         >
           <img
-            src={`/assets/tool/${tool.id}.png`}
+            src={`/assets/tool/${tool.slug}.png`}
             alt={tool.name}
             className="h-[52px] w-[52px]"
           />
