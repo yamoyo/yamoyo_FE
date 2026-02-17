@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,9 +26,11 @@ export default function TeamRoomMainPage() {
 
   const accessToken = useAuthStore((s) => s.accessToken);
 
-  const myUserId = accessToken
-    ? Number(jwtDecode<{ sub: string }>(accessToken).sub)
-    : null;
+  const myUserId = useMemo(() => {
+    return accessToken
+      ? Number(jwtDecode<{ sub: string }>(accessToken).sub)
+      : null;
+  }, [accessToken]);
 
   const [teamRoom, setTeamRoom] = useState<TeamRoomDetail | null>(null);
 
