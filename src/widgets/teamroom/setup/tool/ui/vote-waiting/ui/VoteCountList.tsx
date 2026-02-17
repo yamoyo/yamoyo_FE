@@ -34,7 +34,7 @@ export default function VoteCountList({
               <div className="flex h-10 w-full items-center justify-between">
                 <div className="flex items-start gap-4">
                   <img
-                    src={`/assets/tool/${item.id}.png`}
+                    src={`/assets/tool/${item.slug}.png`}
                     alt={item.name}
                     className="h-[26px] w-[26px]"
                   />

@@ -31,7 +31,7 @@ export default function ToolContents({ confirmedToolsData }: Props) {
           confirmedMap.get(content.categoryId) ?? new Set<number>();
 
         const confirmedOnlyTools = content.tools.filter((t) =>
-          confirmedSet.has(t.toolId),
+          confirmedSet.has(t.id),
         );
 
         return {
