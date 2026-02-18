@@ -177,7 +177,7 @@ export default function TeamRoomMainPage() {
     } catch (error) {
       console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
     }
-  }, [id, setTeamRoom, navigate, accessToken, setWorkflow, myUserId]);
+  }, [id, setTeamRoom, navigate, setWorkflow, myUserId]);
 
   useEffect(() => {
     if (editData) {
