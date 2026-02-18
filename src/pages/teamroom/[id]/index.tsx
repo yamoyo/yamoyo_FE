@@ -1,11 +1,14 @@
 import { jwtDecode } from 'jwt-decode';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { getOnlineStatus } from '@/entities/leader-game/api/leader-game-api';
 import { LeaderGameMessage } from '@/entities/leader-game/api/ws-types';
-import { getTeamRoomDetail } from '@/entities/teamroom/api/teamroom-api';
+import {
+  getTeamRoomDetail,
+  getTeamRoomMembers,
+} from '@/entities/teamroom/api/teamroom-api';
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { useTeamRoomEditStore } from '@/entities/teamroom/model/teamroom-edit-store';
 import { useLeaderSelectionStore } from '@/features/leader-game/ws/model/leader-game-store';
@@ -20,12 +23,22 @@ import TeamRoomOptionsBottomSheet from '@/widgets/teamroom/main/ui/TeamRoomOptio
 export default function TeamRoomMainPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+
   const accessToken = useAuthStore((s) => s.accessToken);
+
+  const myUserId = useMemo(() => {
+    return accessToken
+      ? Number(jwtDecode<{ sub: string }>(accessToken).sub)
+      : null;
+  }, [accessToken]);
 
   const [teamRoom, setTeamRoom] = useState<TeamRoomDetail | null>(null);
 
   const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [memberIdMap, setMemberIdMap] = useState<Map<number, number>>(
+    new Map(),
+  );
 
   const editData = useTeamRoomEditStore((state) => state.editData);
   const clearEditData = useTeamRoomEditStore((state) => state.clearEditData);
@@ -134,10 +147,16 @@ export default function TeamRoomMainPage() {
     if (!id) return;
     try {
       (async () => {
-        const [teamRoomDetail, onlineStatus] = await Promise.all([
+        const [teamRoomDetail, onlineStatus, membersList] = await Promise.all([
           getTeamRoomDetail(id),
           getOnlineStatus(id),
+          getTeamRoomMembers(Number(id)),
         ]);
+
+        // userId → memberId 매핑
+        const map = new Map<number, number>();
+        membersList.forEach((m) => map.set(m.userId, m.memberId));
+        setMemberIdMap(map);
 
         setWorkflow(teamRoomDetail.workflow);
 
@@ -146,13 +165,9 @@ export default function TeamRoomMainPage() {
           return;
         }
 
-        const myUserId = accessToken
-          ? jwtDecode<{ sub: string }>(accessToken).sub
-          : null;
-
         // 내 상태를 ONLINE으로 강제 설정
         onlineStatus.forEach((status) => {
-          if (status.userId.toString() === myUserId) {
+          if (status.userId === myUserId) {
             status.status = 'ONLINE';
           }
         });
@@ -162,7 +177,7 @@ export default function TeamRoomMainPage() {
     } catch (error) {
       console.error('팀룸 정보를 불러오는 중 오류가 발생했습니다.', error);
     }
-  }, [id, setTeamRoom, navigate, accessToken, setWorkflow]);
+  }, [id, setTeamRoom, navigate, setWorkflow, myUserId]);
 
   useEffect(() => {
     if (editData) {
@@ -183,7 +198,12 @@ export default function TeamRoomMainPage() {
       />
       <MemberListSection
         members={teamRoom.members}
+        currentUserId={myUserId}
         onAddMember={() => setIsAddMemberOpen(true)}
+        onMemberClick={(member) => {
+          const memberId = memberIdMap.get(member.userId);
+          if (memberId) navigate(`/teamroom/${id}/members/${memberId}`);
+        }}
       />
       <TeamRoomContents {...teamRoom} isAllOnline={isAllOnline} />
       <AddMemberBottomSheet

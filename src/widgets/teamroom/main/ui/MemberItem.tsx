@@ -3,13 +3,18 @@ import { isLeader } from '@/entities/teamroom/lib/is-leader';
 
 interface MemberItemProps {
   member: TeamMember;
+  onClick?: () => void;
 }
 
-export default function MemberItem({ member }: MemberItemProps) {
+export default function MemberItem({ member, onClick }: MemberItemProps) {
   const isMemberLeader = isLeader(member.role);
 
   return (
-    <li className="flex shrink-0 select-none flex-col items-center gap-2">
+    <li
+      className={`flex shrink-0 select-none flex-col items-center gap-2 ${onClick ? 'cursor-pointer' : ''}`}
+      onClick={onClick}
+      role={onClick ? 'button' : undefined}
+    >
       <div className="relative h-16 w-16 flex-center">
         <img
           src="/assets/character/char-bg.png"
