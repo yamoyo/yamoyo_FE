@@ -244,7 +244,7 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
       if (isVolunteerOnly) {
         timeoutsRef.current.push(
           window.setTimeout(() => {
-            currentY += ladderHeight;
+            currentY += ladderHeight + MOVE.FINAL_DOWN_PX;
             setPosById((prev) => ({
               ...prev,
               [userId]: { x: currentX, y: currentY },
