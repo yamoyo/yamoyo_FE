@@ -1,6 +1,6 @@
 export default function SplashPage() {
   return (
-    <div className="min-h-dvh bg-neutral-100">
+    <div className="min-h-dvh">
       <div className="mx-auto flex min-h-dvh max-w-[390px] bg-bg-default flex-col-center">
         <h1 className="gap-4 flex-col-center">
           <img
