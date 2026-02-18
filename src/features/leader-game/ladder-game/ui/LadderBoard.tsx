@@ -39,6 +39,7 @@ export default function LadderBoard({
     ROW_GAP,
     LAYOUT,
     verticalLineWrapperRef,
+    isVolunteerOnly,
     handleGameStart,
   } = useLadderGame(gameResultPayload);
 
@@ -95,7 +96,7 @@ export default function LadderBoard({
                       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
                       style={{
                         transform: `translateY(${posById[user.userId]?.y ?? 0}px) translate(-50%, -50%)`,
-                        transition: `transform ${TIMING.DOWN_MS}ms linear`,
+                        transition: `transform ${isVolunteerOnly ? TIMING.VOLUNTEER_ONLY_DOWN_MS : TIMING.DOWN_MS}ms linear`,
                         pointerEvents: 'none',
                         zIndex: 20,
                       }}

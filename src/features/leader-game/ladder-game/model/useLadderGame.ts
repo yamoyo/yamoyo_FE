@@ -47,6 +47,8 @@ const TIMING = {
   START_STAGGER_MS: 40,
   /** 마지막 추가 이동 애니메이션 시간 */
   FINAL_MOVE_MS: 600,
+  /** 팀장 지원자가 1명일 때 내려가는 데 걸리는 애니메이션 시간 */
+  VOLUNTEER_ONLY_DOWN_MS: 1450,
 } as const;
 
 // 사다리 가로줄 위치 계산용 맵 생성
@@ -238,34 +240,26 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
       let currentX = 0;
       let currentY = 10;
 
-      // gameData가 null -> 이미 방장이 정해졌을 때: 아래로만 내려가는 연출
-      if (!ladderLines.length) {
-        for (let i = 0; i < ROWS; i++) {
-          timeoutsRef.current.push(
-            window.setTimeout(() => {
-              currentY += DOWN_PX;
-              setPosById((prev) => ({
-                ...prev,
-                [userId]: { x: currentX, y: currentY },
-              }));
-            }, t),
-          );
-          t += TIMING.DOWN_MS;
-        }
-
-        // 마지막 박스까지 살짝 더 내려가는 연출
+      // isVolunteerOnly -> 이미 방장이 정해졌을 때: 아래로만 내려가는 연출
+      if (isVolunteerOnly) {
         timeoutsRef.current.push(
           window.setTimeout(() => {
-            currentY += MOVE.FINAL_DOWN_PX;
+            currentY += ladderHeight;
             setPosById((prev) => ({
               ...prev,
               [userId]: { x: currentX, y: currentY },
             }));
-            markFinished(userId);
           }, t),
         );
+        t += TIMING.VOLUNTEER_ONLY_DOWN_MS;
 
-        return t + TIMING.DOWN_MS;
+        timeoutsRef.current.push(
+          window.setTimeout(() => {
+            markFinished(userId);
+          }, t + TIMING.FINAL_MOVE_MS),
+        );
+
+        return;
       }
 
       const path = getPath(startIndex, ladderLines);
@@ -320,10 +314,8 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
           markFinished(userId);
         }, t + TIMING.FINAL_MOVE_MS),
       );
-
-      return t + TIMING.DOWN_MS + TIMING.FINAL_MOVE_MS;
     },
-    [DOWN_PX, ladderLines, ROWS, markFinished],
+    [DOWN_PX, ladderLines, markFinished, isVolunteerOnly, ladderHeight],
   );
 
   // 게임 시작 처리
@@ -348,5 +340,6 @@ export function useLadderGame(gameResultPayload: GameResultPayload) {
     LAYOUT,
     handleGameStart,
     verticalLineWrapperRef,
+    isVolunteerOnly,
   };
 }
