@@ -7,6 +7,7 @@ import {
   createTeamRoom,
   deleteTeamRoom,
   getTeamRoomDetail,
+  getTeamRoomInfoByInviteToken,
   getTeamRoomList,
   joinTeamRoom,
   kickMember,
@@ -94,6 +95,15 @@ export function useJoinTeamRoom() {
       queryClient.invalidateQueries({ queryKey: ['teamrooms'] });
       navigate(`/teamroom/${data.teamRoomId}`, { replace: true });
     },
+  });
+}
+
+/** 팀룸 정보 조회 (초대 링크로) */
+export function useInviteTeamRoomInfo(token: string) {
+  return useQuery({
+    queryKey: ['teamroom', 'invite', token],
+    queryFn: () => getTeamRoomInfoByInviteToken(token),
+    enabled: !!token,
   });
 }
 

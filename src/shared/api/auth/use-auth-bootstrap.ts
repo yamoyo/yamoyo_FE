@@ -41,6 +41,11 @@ export function useAuthBootstrap(isGuest: boolean) {
       return;
     }
 
+    // 3. '/invite' 페이지 같이 로그인 여부와 상관없이 접근 가능한 페이지에서 인증이 되었다고 강제 처리
+    if (location.pathname === '/invite') {
+      setAuthReady(true);
+    }
+
     (async () => {
       const ok = await refreshAccessToken();
       if (!ok) {
@@ -49,7 +54,10 @@ export function useAuthBootstrap(isGuest: boolean) {
           'redirectAfterLogin',
           location.pathname + location.search,
         );
-        navigate('/', { replace: true });
+
+        if (location.pathname !== '/invite') {
+          navigate('/', { replace: true });
+        }
         return;
       }
       setAuthReady(true);
