@@ -50,6 +50,7 @@ export function SelectLeader() {
     useState<VoteUpdatedPayload | null>(null);
   const [gameResultPayload, setGameResultPayload] =
     useState<GameResultPayload | null>(null);
+  const [isVolunteered, setIsVolunteered] = useState(true);
 
   // 타이밍 게임 진행 후 팀장이 선정되었을 때 모달 표시
   const handleTimingGameResult = (
@@ -180,9 +181,15 @@ export function SelectLeader() {
   });
 
   // 팀장 자원하기
-  const volunteerAsLeader = () => actions.volunteer();
+  const volunteerAsLeader = () => {
+    actions.volunteer();
+    setIsVolunteered(true);
+  };
   // 팀장 포기하기
-  const passAsLeader = () => actions.pass();
+  const passAsLeader = () => {
+    actions.pass();
+    setIsVolunteered(false);
+  };
   // 게임 선택하기 (방장 전용)
   const selectGame = (gameType: GameType) => actions.selectGame(gameType);
   // 타이밍 게임 결과 전송
@@ -240,8 +247,8 @@ export function SelectLeader() {
     return <RouletteGame gameResultPayload={gameResultPayload} />;
   }
 
-  if (phase === 'TIMING_GAME' && payload && voteUpdatedPayload) {
-    if (voteUpdatedPayload.volunteerIds.includes(Number(myUserId))) {
+  if (phase === 'TIMING_GAME' && payload) {
+    if (isVolunteered) {
       return (
         <TimingGame {...payload} submitTimingResult={submitTimingResult} />
       );
