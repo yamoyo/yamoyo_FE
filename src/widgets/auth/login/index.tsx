@@ -1,13 +1,15 @@
 import LoginButtons from './ui/LoginButtons';
 import OnboardingCarousel from './ui/onboarding/OnboardingCarousel';
 
-export function LoginWidget() {
+export default function LoginWidget() {
   return (
-    <div className="flex flex-1 flex-col justify-between px-6 pb-[42px] pt-[55px]">
-      <OnboardingCarousel />
-      <LoginButtons />
+    <div className="flex h-dvh flex-col px-6 pb-[clamp(20px,5vh,56px)]">
+      <div className="flex flex-1 items-center">
+        <OnboardingCarousel />
+      </div>
+      <div className="mt-[clamp(16px,4vh,92px)]">
+        <LoginButtons />
+      </div>
     </div>
   );
 }
-
-export default LoginWidget;

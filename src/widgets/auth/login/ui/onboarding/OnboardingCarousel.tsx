@@ -2,7 +2,7 @@ import { onBoardingContents } from '../../lib/onBoardingContents';
 import { useOnboardingCarousel } from '../../model/useOnboardingCarousel';
 import OnboardingContent from './OnboardingContent';
 
-export function OnboardingCarousel() {
+export default function OnboardingCarousel() {
   const {
     activeIndex,
     goTo,
@@ -48,7 +48,7 @@ export function OnboardingCarousel() {
           - 인디케이터란: 현재 위치를 시각적으로 알려주는 UI 요소
           - 클릭 시 해당 인덱스로 이동
        */}
-      <div className="mt-[55px] flex justify-center gap-[7px]">
+      <div className="mt-[clamp(20px,5vh,48px)] flex justify-center gap-[7px]">
         {onBoardingContents.map((_, index) => (
           <button
             key={index}
@@ -66,5 +66,3 @@ export function OnboardingCarousel() {
     </div>
   );
 }
-
-export default OnboardingCarousel;
