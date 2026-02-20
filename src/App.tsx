@@ -81,6 +81,7 @@ export default function App() {
 
       <ModalRoot />
       <Toast />
+      {/* 노이즈 */}
       <div className="noise-overlay mx-auto min-h-dvh max-w-[390px]" />
 
       <Routes>
