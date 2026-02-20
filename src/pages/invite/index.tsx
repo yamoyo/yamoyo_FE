@@ -72,11 +72,12 @@ export default function InvitePage() {
         </div>
       )}
 
-      <div className="mt-9 text-center text-title-1 text-tx-default">
+      <h1 className="mt-9 text-center text-title-1 text-tx-default">
         <span className="text-bg-secondary_2">{teamRoomInfo?.title}</span>
         <span>팀에</span>
-        <p>합류할 준비가 되셨나요?</p>
-      </div>
+        <br />
+        합류할 준비가 되셨나요?
+      </h1>
 
       <button
         type="button"
