@@ -16,19 +16,18 @@ export default function AuthGuard() {
     if (!authReady) return;
 
     const unsubscribe = onAuthBlocked('AUTH_EXPIRED', () => {
-      // Todo: 만료 UI 처리는 좀 상의해야할 듯
-      alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
-
       useAuthStore.getState().clear();
 
       // 플래그 초기화
       resetAuthBlocked(['AUTH_EXPIRED']);
 
+      if (location.pathname !== '/invite') {
       navigate('/', { replace: true });
+      }
     });
 
     return unsubscribe;
-  }, [authReady, navigate]);
+  }, [authReady, navigate, location]);
 
   // TERMS_PENDING / PROFILE_PENDING 이벤트를 한 곳에서 구독, 발생 시 각 온보딩 화면으로 이동
   useEffect(() => {
@@ -59,7 +58,10 @@ export default function AuthGuard() {
     };
   }, [navigate, location]);
 
-  if (!authReady) return <div>로딩중...</div>;
+
+  if (!authReady && location.pathname !== '/invite') {
+    return <div>로딩중...</div>;
+  }
 
   return <Outlet />; // 하위 Route 렌더
 }

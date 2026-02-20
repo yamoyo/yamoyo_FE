@@ -1,10 +1,11 @@
-import { authClient } from '@/shared/api/auth/client';
+import { authClient, publicClient } from '@/shared/api/auth/client';
 
 import type {
   ChangeLeaderRequest,
   CreateTeamRoomRequest,
   CreateTeamRoomResponse,
   InviteLinkResponse,
+  InviteTeamRoomInfo,
   JoinTeamRoomRequest,
   JoinTeamRoomResponse,
   TeamMemberDetail,
@@ -74,11 +75,20 @@ export async function createInviteLink(
   );
 }
 
-/** 팀룸 입장 (초대링크로) */
+/** 팀룸 입장 (초대 링크로) */
 export async function joinTeamRoom(
   data: JoinTeamRoomRequest,
 ): Promise<JoinTeamRoomResponse> {
   return authClient.post<JoinTeamRoomResponse>('/team-rooms/join', data);
+}
+
+/** 팀룸 정보 조회 (초대 링크로) */
+export async function getTeamRoomInfoByInviteToken(
+  token: string,
+): Promise<InviteTeamRoomInfo> {
+  return publicClient.get<InviteTeamRoomInfo>(
+    `/team-rooms/invite-info?token=${token}`,
+  );
 }
 
 // ========== 팀원 관리 ==========

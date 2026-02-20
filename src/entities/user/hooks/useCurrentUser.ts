@@ -3,10 +3,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getMe, updateMe } from '@/entities/user/api/user-api';
 import { UpdateUserParams } from '@/entities/user/api/user-dto';
 
-export function useCurrentUser() {
+export function useCurrentUser(enable = true) {
   return useQuery({
     queryKey: ['user', 'me'],
     queryFn: () => getMe(),
+    enabled: enable,
   });
 }
 
