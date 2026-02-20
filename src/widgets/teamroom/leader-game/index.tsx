@@ -138,6 +138,20 @@ export function SelectLeader() {
         selectedGame,
       };
       setPayload(reloadedPayload);
+      setPhase(
+        (() => {
+          switch (currentPhase) {
+            case 'VOLUNTEER':
+              return 'LEADER_APPLICATION_WAIT';
+            case 'GAME_SELECT':
+              return 'SELECT_GAME';
+            case 'GAME_PLAYING':
+              return 'TIMING_GAME';
+            default:
+              return null;
+          }
+        })(),
+      );
 
       // 1. 팀장 자원 단계
       if (currentPhase === 'VOLUNTEER') {
@@ -199,11 +213,17 @@ export function SelectLeader() {
   useEffect(() => {
     if (!id) return;
     (async () => {
+      const teamRoom = await getTeamRoomDetail(id);
+      setWorkflow(teamRoom.workflow);
+      setRole(teamRoom.myRole);
+      if (teamRoom.workflow !== 'LEADER_SELECTION') {
+        navigate('/teamroom/' + id);
+        return;
+      }
       const members = await getOnlineStatus(id);
       setMembers(members);
-      setWorkflow('LEADER_SELECTION');
     })();
-  }, [id, setWorkflow]);
+  }, [id, navigate, setRole, setWorkflow]);
 
   if (!phase) {
     // TODO: 로딩 스피너로 교체

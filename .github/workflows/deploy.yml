@@ -26,7 +26,12 @@ jobs:
           docker build \
             --build-arg VITE_BASE_URL="${{ secrets.VITE_BASE_URL }}" \
             --build-arg VITE_KAKAO_JAVASCRIPT_KEY="${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}" \
-            --build-arg VITE_KAKAO_TEMPLATE_ID="${{ secrets.VITE_KAKAO_TEMPLATE_ID }}" \
+            --build-arg VITE_FIREBASE_API_KEY="${{ secrets.VITE_FIREBASE_API_KEY }}" \
+            --build-arg VITE_FIREBASE_AUTH_DOMAIN="${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" \
+            --build-arg VITE_FIREBASE_PROJECT_ID="${{ secrets.VITE_FIREBASE_PROJECT_ID }}" \
+            --build-arg VITE_FIREBASE_STORAGE_BUCKET="${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}" \
+            --build-arg VITE_FIREBASE_MESSAGING_SENDER_ID="${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}" \
+            --build-arg VITE_FIREBASE_APP_ID="${{ secrets.VITE_FIREBASE_APP_ID }}" \
             -t "$IMAGE" .
           docker push "$IMAGE"
 

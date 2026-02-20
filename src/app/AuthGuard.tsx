@@ -1,15 +1,21 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { FcmPayload } from '@/entities/notification/model/fcm-payload';
 import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { useAuthBootstrap } from '@/shared/api/auth/use-auth-bootstrap';
+import { listenForegroundMessages } from '@/shared/lib/firebase/on-message';
+import { requestNotificationPermission } from '@/shared/lib/firebase/push-permission';
+import { useToastStore } from '@/shared/ui/toast/toast-store';
 
 export default function AuthGuard() {
   useAuthBootstrap(false);
   const navigate = useNavigate();
   const location = useLocation();
   const authReady = useAuthStore((s) => s.authReady);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const pushToast = useToastStore((s) => s.push);
 
   useEffect(() => {
     // 페이지 접속 시 토큰 발급 과정이 완료되지 않으면 return
@@ -22,7 +28,7 @@ export default function AuthGuard() {
       resetAuthBlocked(['AUTH_EXPIRED']);
 
       if (location.pathname !== '/invite') {
-      navigate('/', { replace: true });
+        navigate('/', { replace: true });
       }
     });
 
@@ -58,6 +64,24 @@ export default function AuthGuard() {
     };
   }, [navigate, location]);
 
+  useEffect(() => {
+    // 알림 권한 요청 (로그인 시 한 번만)
+    if (!accessToken) return;
+    requestNotificationPermission();
+  }, [accessToken]);
+
+  useEffect(() => {
+    const unsubscribe = listenForegroundMessages((payload: FcmPayload) => {
+      const { body } = payload.notification;
+
+      pushToast({
+        id: payload.messageId,
+        message: body.replace(/\. /g, '.\n'),
+      });
+    });
+
+    return () => unsubscribe();
+  }, [pushToast]);
 
   if (!authReady && location.pathname !== '/invite') {
     return <div>로딩중...</div>;
