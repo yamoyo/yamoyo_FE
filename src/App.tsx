@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import TeamRoomWsLayout from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
 import LeaderGameStoreDebugPage from '@/pages/Debug';
+import { Toast } from '@/shared/ui/toast/Toast';
 
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
@@ -79,6 +80,7 @@ export default function App() {
         */}
 
       <ModalRoot />
+      <Toast />
       <div className="noise-overlay mx-auto min-h-dvh max-w-[390px]" />
 
       <Routes>
