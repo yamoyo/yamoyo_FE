@@ -5,6 +5,8 @@ import { useModalStore } from './model/modal-store';
 interface Props {
   children: ReactNode;
   isActiveCloseModal?: boolean;
+  onClickDim?: () => void;
+  zIndex?: number;
 }
 
 /** 모달 배경 딤 컴포넌트
@@ -14,9 +16,18 @@ interface Props {
  */
 export default function ModalDim({
   children,
+  onClickDim,
   isActiveCloseModal = true,
+  zIndex,
 }: Props) {
   const onCloseModal = useModalStore((s) => s.closeModal);
+
+  const handleDimClick = () => {
+    if (isActiveCloseModal) {
+      onCloseModal();
+    }
+    onClickDim?.();
+  };
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -33,7 +44,8 @@ export default function ModalDim({
   return (
     <div
       className="fixed inset-0 z-[1000] bg-black/80 flex-center"
-      onClick={isActiveCloseModal ? onCloseModal : undefined}
+      style={{ zIndex: zIndex }}
+      onClick={handleDimClick}
     >
       {/* 모달 클릭 시 onClickOutside 작동 방지 */}
       <div onClick={(e) => e.stopPropagation()}>{children}</div>

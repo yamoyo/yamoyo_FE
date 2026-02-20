@@ -15,10 +15,13 @@ const queryClient = new QueryClient({
   },
 });
 
-// PWA Service Worker 등록
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
+    navigator.serviceWorker
+      .register('/firebase-messaging-sw.js')
+      .catch((err) => {
+        console.error('❌ FCM Service Worker registration failed:', err);
+      });
   });
 }
 
