@@ -166,3 +166,13 @@ header {
 >
   TEXT
 </span> */
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: url('/assets/background/noise.png');
+  background-repeat: repeat;
+  opacity: 0.04;
+}
