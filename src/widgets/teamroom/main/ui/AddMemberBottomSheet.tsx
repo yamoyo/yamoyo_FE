@@ -1,3 +1,8 @@
+import QRCode from 'qrcode';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 import { useCreateInviteLink } from '@/entities/teamroom/hooks/useTeamRoom';
 import { BASE_URL } from '@/shared/api/base/request';
 import LinkCopyIcon from '@/shared/assets/icons/link-copy.svg?react';
@@ -5,11 +10,14 @@ import KaKaoLinkIcon from '@/shared/assets/login/kakao.svg?react';
 import { copyText } from '@/shared/lib/copy/copyText';
 import { KakaoSdkLoader } from '@/shared/lib/kakao/KakaoSdkLoader';
 import BottomSheet from '@/shared/ui/BottomSheet';
+import ModalDim from '@/shared/ui/modal/ModalDim';
 
 interface AddMemberBottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   teamRoomId: number;
+  inviteLink?: string;
+  zIndex?: number;
 }
 
 interface ShareButtonProps {
@@ -48,18 +56,35 @@ function ShareButton({
   );
 }
 
+const QR_CODE_SIZE = 350;
+const QR_BG_COLOR = '#D9D9D9';
+
 export default function AddMemberBottomSheet({
   isOpen,
   onClose,
   teamRoomId,
+  inviteLink,
+  zIndex,
 }: AddMemberBottomSheetProps) {
+  const navigate = useNavigate();
+
+  const [newInviteLink, setNewInviteLink] = useState<string | null>(
+    inviteLink ?? null,
+  );
+  const [qr, setQr] = useState<string | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { mutateAsync } = useCreateInviteLink();
 
   const handleCopyLink = async () => {
     try {
-      const textPromise = mutateAsync(teamRoomId).then(
-        (token) => `${window.location.origin}/invite?token=${token}`,
-      );
+      const textPromise =
+        newInviteLink ??
+        mutateAsync(teamRoomId).then((token) => {
+          const url = `${window.location.origin}/invite?token=${token}`;
+          setNewInviteLink(url);
+          return url;
+        });
       const ok = await copyText(textPromise);
       alert(
         ok ? '초대 링크가 복사되었습니다.' : '초대 링크 복사에 실패했습니다.',
@@ -71,8 +96,13 @@ export default function AddMemberBottomSheet({
 
   const handleKakaoShare = async () => {
     try {
-      const token = await mutateAsync(teamRoomId);
-      const inviteUrl = `${window.location.origin}/invite?token=${token}`;
+      const inviteUrl = async () => {
+        if (newInviteLink) {
+          return newInviteLink;
+        }
+        const token = await mutateAsync(teamRoomId);
+        return `${window.location.origin}/invite?token=${token}`;
+      };
 
       window.Kakao?.Share.sendDefault({
         objectType: 'feed',
@@ -81,8 +111,8 @@ export default function AddMemberBottomSheet({
           description: '얼른 접속하여 팀 빌딩을 함께 하세요!',
           imageUrl: BASE_URL + '/kakao-share-bg.png',
           link: {
-            webUrl: inviteUrl,
-            mobileWebUrl: inviteUrl,
+            webUrl: await inviteUrl(),
+            mobileWebUrl: await inviteUrl(),
           },
         },
         itemContent: {
@@ -99,6 +129,46 @@ export default function AddMemberBottomSheet({
     }
   };
 
+  const handleQRShare = async () => {
+    try {
+      if (!newInviteLink) {
+        const token = await mutateAsync(teamRoomId);
+        const url = `${window.location.origin}/invite?token=${token}`;
+        setNewInviteLink(url);
+        setQr(
+          await QRCode.toDataURL(url, {
+            width: QR_CODE_SIZE,
+            color: { light: QR_BG_COLOR },
+          }),
+        );
+      } else {
+        setQr(
+          await QRCode.toDataURL(newInviteLink, {
+            width: QR_CODE_SIZE,
+            color: { light: QR_BG_COLOR },
+          }),
+        );
+      }
+      setSearchParams({ qr: 'true' });
+    } catch (error) {
+      alert(
+        'QR 코드 생성 중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.',
+      );
+      console.error(error);
+    }
+  };
+
+  const closeQr = () => {
+    setQr(null);
+    navigate('.', { replace: true });
+  };
+
+  useEffect(() => {
+    if (searchParams.get('qr') !== 'true') {
+      setQr(null);
+    }
+  }, [searchParams]);
+
   return (
     <>
       <KakaoSdkLoader />
@@ -106,6 +176,7 @@ export default function AddMemberBottomSheet({
         isOpen={isOpen}
         onClose={onClose}
         contentClassName="flex flex-col gap-[20px] px-6 pb-[30px]"
+        zIndex={zIndex}
       >
         <div className="flex flex-col">
           <button
@@ -127,6 +198,14 @@ export default function AddMemberBottomSheet({
         </div>
 
         <ShareButton
+          icon={<img src="/assets/icons/qr-code.svg" />}
+          iconBgColor="bg-bg-primary"
+          title="QR코드"
+          description="QR코드로 팀원을 초대하세요."
+          onClick={handleQRShare}
+        />
+
+        <ShareButton
           icon={
             <LinkCopyIcon className="h-[26.67px] w-[26.67px] text-tx-default" />
           }
@@ -143,6 +222,23 @@ export default function AddMemberBottomSheet({
           onClick={handleKakaoShare}
         />
       </BottomSheet>
+
+      {qr && (
+        <ModalDim
+          isActiveCloseModal={false}
+          onClickDim={closeQr}
+          zIndex={zIndex ? zIndex + 1 : undefined}
+        >
+          <div className="max-w-[390px] gap-9 px-10 flex-col-center">
+            <p className="text-title-1 text-tx-default">
+              QR코드로 팀원을 초대하세요
+            </p>
+            <div className="w-full rounded-[20px] border-[7px] border-bg-primary bg-[#D9D9D9] p-4">
+              <img src={qr} alt="QR Code" className="w-full" />
+            </div>
+          </div>
+        </ModalDim>
+      )}
     </>
   );
 }

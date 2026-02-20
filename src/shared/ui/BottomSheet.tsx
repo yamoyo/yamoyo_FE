@@ -9,6 +9,7 @@ interface BottomSheetProps {
   title?: React.ReactNode;
   titleClassName?: string;
   contentClassName?: string;
+  zIndex?: number;
 }
 
 export default function BottomSheet({
@@ -18,6 +19,7 @@ export default function BottomSheet({
   title,
   titleClassName,
   contentClassName,
+  zIndex,
 }: BottomSheetProps) {
   useEffect(() => {
     if (!isOpen) return;
@@ -33,7 +35,10 @@ export default function BottomSheet({
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center">
+        <div
+          className="fixed inset-0 z-50 flex items-end justify-center"
+          style={{ zIndex: zIndex }}
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
