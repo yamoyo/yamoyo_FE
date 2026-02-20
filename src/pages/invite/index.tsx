@@ -23,11 +23,7 @@ export default function InvitePage() {
       alert('유효하지 않은 초대 링크입니다.');
       return;
     }
-    try {
-      joinMutation.mutate(token);
-    } catch (_) {
-      navigate('/');
-    }
+    joinMutation.mutate(token);
   };
 
   const handleDecline = () => {
