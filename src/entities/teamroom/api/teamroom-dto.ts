@@ -92,6 +92,16 @@ export interface InviteLinkResponse {
   expiresInSeconds: number;
 }
 
+/** 팀룸 정보 조회 (초대 링크로) */
+export interface InviteTeamRoomInfo {
+  teamRoomId: number;
+  title: string;
+  description: string;
+  bannerImageId: number;
+  currentMemberCount: number;
+  maxCapacity: number;
+}
+
 /** 팀룸 입장 요청 (POST /api/team-rooms/join) */
 export interface JoinTeamRoomRequest {
   inviteToken: string;
