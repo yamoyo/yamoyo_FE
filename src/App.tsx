@@ -5,6 +5,7 @@ import { EventQRCode } from '@/app/EventQRCode';
 import TeamRoomWsLayout from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
 import LeaderGameStoreDebugPage from '@/pages/Debug';
 import { Toast } from '@/shared/ui/toast/Toast';
+import ToolProposalPage from '@/widgets/teamroom/tool/proposal';
 
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
@@ -24,7 +25,7 @@ import InvitePage from './pages/invite';
 import CompletedTasks from './pages/mypage/completed-tasks';
 import NotificationSettings from './pages/mypage/notification-settings';
 import Profile from './pages/mypage/profile';
-// import NotificationPage from './pages/notification';
+import NotificationPage from './pages/notification';
 import TermsPage from './pages/onboarding/term';
 import WelcomePage from './pages/onboarding/Welcome';
 import SplashPage from './pages/splash';
@@ -125,8 +126,7 @@ export default function App() {
             />
           </Route>
 
-          {/* TODO : 임시로 알림페이지 라우팅 주석 처리 */}
-          {/* <Route path="/notification" element={<NotificationPage />} /> */}
+          <Route path="/notification" element={<NotificationPage />} />
 
           <Route path="/onboarding/terms" element={<TermsPage />} />
           <Route
@@ -164,6 +164,7 @@ export default function App() {
 
             <Route path=":id/rule" element={<RuleSetupPage />} />
             <Route path=":id/tool" element={<ToolSetupPage />} />
+            <Route path=":id/proposal-tool" element={<ToolProposalPage />} />
             <Route
               path=":id/meeting/:meetingId"
               element={<MeetingDetailPage />}

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { FcmPayload } from '@/entities/notification/model/fcm-payload';
+import { useNotificationStore } from '@/entities/notification/model/notification-store';
 import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { useAuthBootstrap } from '@/shared/api/auth/use-auth-bootstrap';
@@ -16,6 +17,9 @@ export default function AuthGuard() {
   const authReady = useAuthStore((s) => s.authReady);
   const accessToken = useAuthStore((s) => s.accessToken);
   const pushToast = useToastStore((s) => s.push);
+  const setAllNotificationsReadState = useNotificationStore(
+    (s) => s.setAllNotificationsReadState,
+  );
 
   useEffect(() => {
     // 페이지 접속 시 토큰 발급 과정이 완료되지 않으면 return
@@ -65,14 +69,34 @@ export default function AuthGuard() {
   }, [navigate, location]);
 
   useEffect(() => {
-    // 알림 권한 요청 (로그인 시 한 번만)
     if (!accessToken) return;
+    // 알림 권한 요청 (로그인 시 한 번만)
     requestNotificationPermission();
-  }, [accessToken]);
+
+    // 백그라운드 메시지 수신 처리
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data?.kind !== 'FCM_BACKGROUND_MESSAGE') return;
+
+        const payload = event.data.payload;
+        console.log('백그라운드 메시지 수신:', payload);
+
+        setAllNotificationsReadState(false);
+        pushToast({
+          id: payload.messageId,
+          message:
+            payload.notification?.body.replace(/\. /g, '.\n') ||
+            '새 알림이 도착했습니다.',
+        });
+      });
+    }
+  }, [setAllNotificationsReadState, accessToken, pushToast]);
 
   useEffect(() => {
     const unsubscribe = listenForegroundMessages((payload: FcmPayload) => {
       const { body } = payload.notification;
+
+      console.log('포그라운드 메시지 수신:', payload);
 
       pushToast({
         id: payload.messageId,

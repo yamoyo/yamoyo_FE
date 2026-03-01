@@ -20,13 +20,27 @@ const messaging = firebase.messaging();
  * - payload.notification 이 없을 수도 있어서 안전 처리
  * - data 메시지 기반으로 title/body를 내려주는 경우도 대응
  */
-messaging.onBackgroundMessage((payload) => {
+messaging.onBackgroundMessage(async (payload) => {
   const title = payload?.notification?.title || payload?.data?.title || '알림';
   const body = payload?.notification?.body || payload?.data?.body || '';
   const type = payload?.data?.type;
   const teamRoomId = payload?.data?.teamRoomId;
   const targetId = payload?.data?.targetId;
 
+  // 열린 탭들에게 알림이 왔다는 걸 알림
+  const clientsList = await self.clients.matchAll({
+    type: 'window',
+    includeUncontrolled: true,
+  });
+
+  for (const client of clientsList) {
+    client.postMessage({
+      kind: 'FCM_BACKGROUND_MESSAGE',
+      payload,
+    });
+  }
+
+  // OS 알림 표시
   self.registration.showNotification(title, {
     body,
     icon: '/icon-192x192.png',

@@ -28,12 +28,13 @@ const MENU_ITEMS = [
     label: '완료 팀플 목록',
     path: '/mypage/completed-tasks',
   },
-  {
-    id: 'notification',
-    icon: '/assets/icons/notification.svg',
-    label: '알림 설정',
-    path: '/mypage/notification-settings',
-  },
+  // TODO : API 구현 이후 알림 설정 메뉴 활성화
+  // {
+  //   id: 'notification',
+  //   icon: '/assets/icons/notification.svg',
+  //   label: '알림 설정',
+  //   path: '/mypage/notification-settings',
+  // },
 ] as const;
 
 export default function Mypage() {

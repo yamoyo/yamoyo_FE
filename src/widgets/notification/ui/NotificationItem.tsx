@@ -4,22 +4,22 @@ import { cn } from '@/shared/config/tailwind/cn';
 import { CHARACTER_COLORS } from '../model/constants';
 
 interface Props {
-  index: number;
+  notificationId: number;
   title: string;
-  description: string;
+  message: string;
   isRead: boolean;
   onClick: () => void;
 }
 
 export default function NotificationItem({
-  index,
+  notificationId,
   title,
-  description,
+  message,
   isRead,
   onClick,
 }: Props) {
-  // 캐릭터 컬러가 돌아가면서 쓰임
-  const characterColor = CHARACTER_COLORS[index % CHARACTER_COLORS.length];
+  const characterColor =
+    CHARACTER_COLORS[notificationId % CHARACTER_COLORS.length];
 
   return (
     <button
@@ -33,7 +33,7 @@ export default function NotificationItem({
       <Character style={{ color: characterColor }} className="h-10 min-w-10" />
       <div className="space-y-1 text-start">
         <p className="text-body-1 text-tx-default">{title}</p>
-        <p className="text-body-6 text-tx-default_4">{description}</p>
+        <p className="text-body-6 text-tx-default_4">{message}</p>
       </div>
     </button>
   );

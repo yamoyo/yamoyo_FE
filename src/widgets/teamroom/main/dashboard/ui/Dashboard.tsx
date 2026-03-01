@@ -4,17 +4,17 @@ import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
 import {
   useRuleVoteParticipation,
   useTeamRules,
-} from '@/entities/setup/rule/hooks/useRule';
-import {
-  useConfirmedTools,
-  useToolVoteParticipation,
-} from '@/entities/setup/tool/hooks/useTool';
+} from '@/entities/rule/hooks/useRule';
 import type {
   DashboardStatus,
   TeamMemberRole,
   TeamRoomWorkflow,
 } from '@/entities/teamroom/api/teamroom-dto';
 import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
+import {
+  useConfirmedTools,
+  useToolVoteParticipation,
+} from '@/entities/tool/hooks/useTool';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
 import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
@@ -152,7 +152,13 @@ export function Dashboard({
           );
         }
 
-        return <ToolContents confirmedToolsData={confirmedToolsData} />;
+        return (
+          <ToolContents
+            confirmedToolsData={confirmedToolsData}
+            teamRoomId={teamRoomId}
+            isReader={myRole === 'LEADER'}
+          />
+        );
       },
     },
     {
