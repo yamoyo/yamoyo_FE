@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { jwtDecode } from 'jwt-decode';
 import { useCallback, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
@@ -82,12 +83,34 @@ export default function AuthGuard() {
     return unsubscribe;
   }, [authReady, navigate, location]);
 
+  useEffect(() => {
+    if (!accessToken) return;
+
+    const onboardingStatus = jwtDecode<{
+      onboardingStatus: 'TERMS_PENDING' | 'PROFILE_PENDING' | undefined;
+    }>(accessToken).onboardingStatus;
+
+    const isOnboardingPage = location.pathname.startsWith('/onboarding');
+
+    if (
+      onboardingStatus !== 'TERMS_PENDING' &&
+      onboardingStatus !== 'PROFILE_PENDING' &&
+      isOnboardingPage
+    ) {
+      navigate('/home', { replace: true });
+    }
+  }, [accessToken, navigate, location.pathname]);
+
   // TERMS_PENDING / PROFILE_PENDING 이벤트를 한 곳에서 구독, 발생 시 각 온보딩 화면으로 이동
   useEffect(() => {
     const saveRedirectUrl = () => {
       // 온보딩 완료 후 현재 페이지로 돌아올 수 있도록 URL 저장
       // 이미 저장된 값이 있으면 덮어쓰지 않음 (초대 링크 등 보존)
-      if (!sessionStorage.getItem('redirectAfterLogin')) {
+      // 단, 온보딩 관련 페이지는 저장하지 않음
+      if (
+        !sessionStorage.getItem('redirectAfterLogin') &&
+        !location.pathname.startsWith('/onboarding')
+      ) {
         sessionStorage.setItem(
           'redirectAfterLogin',
           location.pathname + location.search,

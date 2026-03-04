@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 import { logout } from '@/entities/user/api/user-api';
 import { notifyAuthBlocked } from '@/shared/api/auth/event-bus';
 import { YamoyoError } from '@/shared/api/base/http-error';
@@ -18,10 +20,24 @@ export const requestAccessToken = async (): Promise<boolean> => {
       credentials: 'include',
     });
 
-    if (!res.accessToken) throw new Error('No access token in response');
+    const accessToken = res.accessToken;
 
-    useAuthStore.getState().setAccessToken(res.accessToken);
+    if (!accessToken) throw new Error('No access token in response');
+
+    useAuthStore.getState().setAccessToken(accessToken);
     useAuthStore.getState().setIsAuthenticated(true);
+
+    const onboardingStatus = jwtDecode<{
+      onboardingStatus: 'TERMS_PENDING' | 'PROFILE_PENDING' | undefined;
+    }>(accessToken).onboardingStatus;
+
+    if (
+      onboardingStatus === 'PROFILE_PENDING' ||
+      onboardingStatus === 'TERMS_PENDING'
+    ) {
+      notifyAuthBlocked(onboardingStatus);
+    }
+
     return true;
   } catch (e) {
     const isInvalidRefresh =
