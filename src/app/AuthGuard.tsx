@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { FcmPayload } from '@/entities/notification/model/fcm-payload';
+import { useNotificationStore } from '@/entities/notification/model/notification-store';
 import { onAuthBlocked, resetAuthBlocked } from '@/shared/api/auth/event-bus';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { useAuthBootstrap } from '@/shared/api/auth/use-auth-bootstrap';
@@ -16,6 +17,27 @@ export default function AuthGuard() {
   const authReady = useAuthStore((s) => s.authReady);
   const accessToken = useAuthStore((s) => s.accessToken);
   const pushToast = useToastStore((s) => s.push);
+  const addRestNotificationCount = useNotificationStore(
+    (s) => s.addRestNotificationCount,
+  );
+  const handlePayload = useCallback(
+    async (payload: FcmPayload) => {
+      addRestNotificationCount();
+      pushToast({
+        id: payload.messageId,
+        message:
+          payload.notification?.body.replace(/\. /g, '.\n') ||
+          '새 알림이 도착했습니다.',
+        onClick: () =>
+          navigateToolProposal(
+            payload.data.type,
+            payload.data.teamRoomId,
+            payload.data.targetId,
+          ),
+      });
+    },
+    [pushToast, addRestNotificationCount],
+  );
 
   useEffect(() => {
     // 페이지 접속 시 토큰 발급 과정이 완료되지 않으면 return
@@ -65,23 +87,16 @@ export default function AuthGuard() {
   }, [navigate, location]);
 
   useEffect(() => {
-    // 알림 권한 요청 (로그인 시 한 번만)
     if (!accessToken) return;
+    // 알림 권한 요청 (로그인 시 한 번만)
     requestNotificationPermission();
-  }, [accessToken]);
-
-  useEffect(() => {
-    const unsubscribe = listenForegroundMessages((payload: FcmPayload) => {
-      const { body } = payload.notification;
-
-      pushToast({
-        id: payload.messageId,
-        message: body.replace(/\. /g, '.\n'),
-      });
-    });
+    // 포그라운드 메시지 수신 처리
+    const unsubscribe = listenForegroundMessages((payload: FcmPayload) =>
+      handlePayload(payload),
+    );
 
     return () => unsubscribe();
-  }, [pushToast]);
+  }, [handlePayload, accessToken]);
 
   if (!authReady && location.pathname !== '/invite') {
     return <div>로딩중...</div>;

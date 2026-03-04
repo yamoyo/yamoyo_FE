@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import type { TeamRoomDetail } from '@/entities/teamroom/api/teamroom-dto';
 import { TEAMROOM_IMAGES } from '@/shared/constants/teamroom-images';
+import NotificationIcon from '@/shared/ui/header/NotificationIcon';
 import TopBar from '@/shared/ui/header/TopBar';
 
 interface TeamRoomBannerProps {
@@ -41,17 +42,8 @@ export default function TeamRoomBanner({
           onBack={() => navigate('/home', { replace: true })}
           rightContent={
             <div className="flex items-center">
-              {/* TODO: MVP 이후 알림 기능 연결 시 주석 해제
-              <button type="button" className="h-10 w-10 flex-center">
-                <img
-                  src="/assets/icons/notification.svg"
-                  width={20}
-                  height={20}
-                  className="select-none"
-                  draggable="false"
-                />
-              </button>
-              */}
+              <NotificationIcon />
+
               <button
                 type="button"
                 onClick={onSettingsClick}
@@ -61,6 +53,7 @@ export default function TeamRoomBanner({
                   src="/assets/icons/setting.svg"
                   width={24}
                   height={24}
+                  alt="설정"
                   className="select-none"
                   draggable="false"
                 />
