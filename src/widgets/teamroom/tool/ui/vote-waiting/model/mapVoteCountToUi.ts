@@ -1,6 +1,6 @@
-import type { GetVoteCountByCategory } from '@/entities/setup/tool/api/tool-dto';
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
 import type { ToolVoteDetailCount } from '@/entities/teamroom/setup/tool/model/types';
+import type { GetVoteCountByCategory } from '@/entities/tool/api/tool-dto';
 
 type VoteList = ToolVoteDetailCount['voteList'];
 

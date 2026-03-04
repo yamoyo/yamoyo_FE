@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 
-import { useSubmitRuleVote } from '@/entities/setup/rule/hooks/useRule';
+import { useSubmitRuleVote } from '@/entities/rule/hooks/useRule';
 import TopBar from '@/shared/ui/header/TopBar';
-import RuleVotingNotice from '@/widgets/teamroom/setup/rule/ui/voting-rule/RuleVotingNotice';
-import VotingRule from '@/widgets/teamroom/setup/rule/ui/voting-rule/VotingRule';
+import RuleVotingNotice from '@/widgets/teamroom/rule/ui/voting-rule/RuleVotingNotice';
+import VotingRule from '@/widgets/teamroom/rule/ui/voting-rule/VotingRule';
 
 interface Props {
   onFinish: () => void;

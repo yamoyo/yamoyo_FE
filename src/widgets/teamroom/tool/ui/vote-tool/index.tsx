@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useSubmitAllToolVotes } from '@/entities/setup/tool/hooks/useTool';
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
+import { useSubmitAllToolVotes } from '@/entities/tool/hooks/useTool';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
 import StepTitle from '@/shared/ui/tab/StepTitle';
-import ToolItems from '@/widgets/teamroom/setup/tool/ui/vote-tool/ui/ToolItems';
+import ToolItems from '@/widgets/teamroom/tool/ui/vote-tool/ui/ToolItems';
 
 interface Props {
   onFinish: () => void;
@@ -19,7 +19,7 @@ export default function VotingTool({ onFinish }: Props) {
   const { id } = useParams<{ id: string }>();
   const openChoiceModal = useModalStore((s) => s.openChoiceModal);
 
-  const submitMutation = useSubmitAllToolVotes(id ?? '');
+  const submitMutation = useSubmitAllToolVotes(Number(id) ?? 0);
 
   const [step, setStep] = useState(0);
   const current = TOOL_CONTENTS[step];

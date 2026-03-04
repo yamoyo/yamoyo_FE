@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { GetTeamRulesResponse } from '@/entities/setup/rule/api/rule-dto';
+import { GetTeamRulesResponse } from '@/entities/rule/api/rule-dto';
 import {
   useAddTeamRule,
   useDeleteTeamRule,
   useUpdateTeamRule,
-} from '@/entities/setup/rule/hooks/useRule';
+} from '@/entities/rule/hooks/useRule';
 import type { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
 import RuleItem from '@/widgets/teamroom/main/dashboard/rule/RuleItem';
 import ContentsHeader from '@/widgets/teamroom/main/ui/ContentsHeader';

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { GetRuleVoteParticipationResponse } from '@/entities/setup/rule/api/rule-dto';
+import { GetRuleVoteParticipationResponse } from '@/entities/rule/api/rule-dto';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
 interface Props {
@@ -16,11 +16,11 @@ export default function RuleVoteWaitingScreen({
 
   const votedUsers = ruleVoteParticipationData.voted.map((v) => ({
     ...v,
-    name: v.userName,
+    name: v.name,
   }));
   const unVotedUsers = ruleVoteParticipationData.notVoted.map((uv) => ({
     ...uv,
-    name: uv.userName,
+    name: uv.name,
   }));
 
   const handleOnClose = () => navigate(`/teamroom/${id}`);

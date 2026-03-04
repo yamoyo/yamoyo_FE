@@ -1,1 +1,1 @@
-export { RuleSetupPage as default } from '@/widgets/teamroom/setup/rule';
+export { RuleSetupPage as default } from '@/widgets/teamroom/rule';

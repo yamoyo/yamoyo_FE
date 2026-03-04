@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { GetToolVoteParticipation } from '@/entities/setup/tool/api/tool-dto';
-import { useVoteCountByCategory } from '@/entities/setup/tool/hooks/useTool';
 import { ToolVoteDetailCount } from '@/entities/teamroom/setup/tool/model/types';
+import { GetToolVoteParticipation } from '@/entities/tool/api/tool-dto';
+import { useVoteCountByCategory } from '@/entities/tool/hooks/useTool';
 import TopBar from '@/shared/ui/header/TopBar';
 import { SwipeTabs, type TabsConfig } from '@/shared/ui/tab';
 import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnderlineTabHeader';
-import { mapVoteCountToUi } from '@/widgets/teamroom/setup/tool/ui/vote-waiting/model/mapVoteCountToUi';
+import { mapVoteCountToUi } from '@/widgets/teamroom/tool/ui/vote-waiting/model/mapVoteCountToUi';
 import VoteStatus from '@/widgets/vote/ui/VoteStatus';
 
 import VoteCountList from './ui/VoteCountList';
@@ -20,8 +20,8 @@ export default function ToolVoteWaiting({
   const { id } = useParams<{ id: string }>();
   const [isVoteStatusModalOpen, setIsVoteStatusModalOpen] = useState(false);
 
-  const communicationQuery = useVoteCountByCategory(id, 1);
-  const documentQuery = useVoteCountByCategory(id, 2);
+  const communicationQuery = useVoteCountByCategory(Number(id), 1);
+  const documentQuery = useVoteCountByCategory(Number(id), 2);
 
   const totalVotes = participation?.totalMembers ?? 0;
 

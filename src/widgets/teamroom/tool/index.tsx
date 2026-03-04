@@ -2,10 +2,10 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useToolVoteParticipation } from '@/entities/setup/tool/hooks/useTool';
+import { useToolVoteParticipation } from '@/entities/tool/hooks/useTool';
 import { useAuthStore } from '@/shared/api/auth/store';
-import VotingTool from '@/widgets/teamroom/setup/tool/ui/vote-tool';
-import ToolVoteWaiting from '@/widgets/teamroom/setup/tool/ui/vote-waiting';
+import VotingTool from '@/widgets/teamroom/tool/ui/vote-tool';
+import ToolVoteWaiting from '@/widgets/teamroom/tool/ui/vote-waiting';
 
 type ToolPhase = 'VOTING_TOOL' | 'TOOL_VOTE_WAITING';
 
@@ -22,7 +22,7 @@ export function ToolSetupPage() {
     data: participation,
     isLoading,
     isError,
-  } = useToolVoteParticipation(id, true);
+  } = useToolVoteParticipation(Number(id), true);
 
   useEffect(() => {
     if (!participation || !myUserId) return;

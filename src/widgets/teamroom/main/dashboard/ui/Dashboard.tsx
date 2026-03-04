@@ -4,11 +4,7 @@ import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
 import {
   useRuleVoteParticipation,
   useTeamRules,
-} from '@/entities/setup/rule/hooks/useRule';
-import {
-  useConfirmedTools,
-  useToolVoteParticipation,
-} from '@/entities/setup/tool/hooks/useTool';
+} from '@/entities/rule/hooks/useRule';
 import type {
   DashboardStatus,
   TeamMemberRole,

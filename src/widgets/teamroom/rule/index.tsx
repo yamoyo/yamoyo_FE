@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRuleVoteParticipation } from '@/entities/setup/rule/hooks/useRule';
+import { useRuleVoteParticipation } from '@/entities/rule/hooks/useRule';
 import { useAuthStore } from '@/shared/api/auth/store';
 
 import RuleVoteWaitingScreen from './ui/vote-waitng';

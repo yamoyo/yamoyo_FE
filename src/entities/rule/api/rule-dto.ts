@@ -18,7 +18,7 @@ export type SubmitRuleVoteRequest = {
 
 export type RuleVoteMember = {
   userId: number;
-  userName: string;
+  name: string;
   profileImageId: number; // null 가능하면 number | null 로 바꾸기
 };
 

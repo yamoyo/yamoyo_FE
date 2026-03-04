@@ -12,7 +12,9 @@ export function HomePage() {
     const redirectUrl = sessionStorage.getItem('redirectAfterLogin');
     if (redirectUrl) {
       sessionStorage.removeItem('redirectAfterLogin');
-      navigate(redirectUrl, { replace: true });
+      if (redirectUrl !== '/home') {
+        navigate(redirectUrl, { replace: true });
+      }
     }
   }, [navigate]);
 
