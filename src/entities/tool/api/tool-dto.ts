@@ -42,3 +42,16 @@ export type SubmitAllToolVotesRequest = {
 export type SubmitAllToolVotes = Record<string, never>;
 
 export type DeleteTeamTool = Record<string, never>;
+
+export type ProposalToolsRequest = {
+  categoryId: number;
+  toolIds: number[];
+};
+
+export type GetProposalToolDetail = {
+  proposalId: number;
+  categoryId: number;
+  toolId: number;
+  requestedBy: number;
+  proposerName: string;
+};

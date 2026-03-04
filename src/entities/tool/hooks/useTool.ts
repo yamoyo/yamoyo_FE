@@ -3,22 +3,24 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   deleteTeamTool,
   getConfirmedTools,
+  getToolProposalDetail,
   getToolVoteParticipation,
   getVoteCountByCategory,
   submitAllToolVotes,
-} from '@/entities/setup/tool/api/tool-api';
+} from '@/entities/tool/api/tool-api';
 import type {
   DeleteTeamTool,
   GetConfirmedTools,
+  GetProposalToolDetail,
   GetToolVoteParticipation,
   GetVoteCountByCategory,
   SubmitAllToolVotes,
   SubmitAllToolVotesRequest,
-} from '@/entities/setup/tool/api/tool-dto';
-import { teamToolKeys } from '@/entities/setup/tool/api/tool-keys';
+} from '@/entities/tool/api/tool-dto';
+import { teamToolKeys } from '@/entities/tool/api/tool-keys';
 
 /** 확정된 협업툴 조회 query */
-export function useConfirmedTools(teamRoomId: string | number) {
+export function useConfirmedTools(teamRoomId: number) {
   return useQuery<GetConfirmedTools>({
     queryKey: teamToolKeys.confirmed(teamRoomId),
     queryFn: () => getConfirmedTools(teamRoomId),
@@ -26,12 +28,13 @@ export function useConfirmedTools(teamRoomId: string | number) {
       if (!query.state.data) return 0;
       return query.state.data.confirmedTools.length > 0 ? Infinity : 0;
     },
+    enabled: !!teamRoomId,
   });
 }
 
 /** 협업툴 투표 참여 현황 조회 query */
 export function useToolVoteParticipation(
-  teamRoomId?: string | number,
+  teamRoomId?: number,
   isRefresh10Sec?: boolean,
 ) {
   return useQuery<GetToolVoteParticipation>({
@@ -71,8 +74,8 @@ export function useToolVoteParticipation(
 
 /** 카테고리별 득표 현황 query */
 export function useVoteCountByCategory(
-  teamRoomId?: string | number,
-  categoryId?: string | number,
+  teamRoomId?: number,
+  categoryId?: number,
 ) {
   return useQuery<GetVoteCountByCategory>({
     queryKey: teamToolKeys.voteCountByCategory(teamRoomId!, categoryId!),
@@ -88,7 +91,7 @@ export function useVoteCountByCategory(
 }
 
 /** 협업툴 투표 일괄 제출 mutation */
-export function useSubmitAllToolVotes(teamRoomId: string | number) {
+export function useSubmitAllToolVotes(teamRoomId: number) {
   const qc = useQueryClient();
 
   return useMutation<SubmitAllToolVotes, unknown, SubmitAllToolVotesRequest>({
@@ -107,7 +110,7 @@ export function useSubmitAllToolVotes(teamRoomId: string | number) {
 }
 
 /** 협업툴 삭제 mutation */
-export function useDeleteTeamTool(teamRoomId: string | number) {
+export function useDeleteTeamTool(teamRoomId: number) {
   const qc = useQueryClient();
 
   return useMutation<DeleteTeamTool, unknown, string | number>({
@@ -115,5 +118,15 @@ export function useDeleteTeamTool(teamRoomId: string | number) {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: teamToolKeys.byTeamRoom(teamRoomId) });
     },
+  });
+}
+
+/** 협업툴 제안 상세 조회 query */
+export function useToolProposalDetail(teamRoomId: number, proposalId: number) {
+  return useQuery<GetProposalToolDetail>({
+    queryKey: teamToolKeys.proposalDetail(teamRoomId, proposalId),
+    queryFn: () => getToolProposalDetail(teamRoomId, proposalId),
+    enabled: !!teamRoomId && !!proposalId,
+    staleTime: Infinity,
   });
 }

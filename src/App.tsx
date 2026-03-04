@@ -4,7 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import { EventQRCode } from '@/app/EventQRCode';
 import TeamRoomWsLayout from '@/features/leader-game/ws/layout/TeamRoomWsLayout';
 import LeaderGameStoreDebugPage from '@/pages/Debug';
+import ToolProposalDecisionPage from '@/pages/teamroom/[id]/tool/proposal/[proposal-id]';
 import { Toast } from '@/shared/ui/toast/Toast';
+import { ToolProposalPage } from '@/widgets/teamroom/tool/proposal';
 
 import AuthGuard from './app/AuthGuard';
 import GuestGuard from './app/GuestGuard';
@@ -163,6 +165,11 @@ export default function App() {
 
             <Route path=":id/rule" element={<RuleSetupPage />} />
             <Route path=":id/tool" element={<ToolSetupPage />} />
+            <Route path=":id/tool/proposal" element={<ToolProposalPage />} />
+            <Route
+              path=":id/tool/proposal/:proposalId"
+              element={<ToolProposalDecisionPage />}
+            />
             <Route
               path=":id/meeting/:meetingId"
               element={<MeetingDetailPage />}

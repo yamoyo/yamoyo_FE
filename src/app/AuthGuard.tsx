@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { FcmPayload } from '@/entities/notification/model/fcm-payload';
@@ -12,6 +13,7 @@ import { useToastStore } from '@/shared/ui/toast/toast-store';
 
 export default function AuthGuard() {
   useAuthBootstrap(false);
+  const qc = useQueryClient();
   const navigate = useNavigate();
   const location = useLocation();
   const authReady = useAuthStore((s) => s.authReady);
@@ -20,9 +22,32 @@ export default function AuthGuard() {
   const addRestNotificationCount = useNotificationStore(
     (s) => s.addRestNotificationCount,
   );
+
+  const navigateToolProposal = useCallback(
+    (
+      type: string,
+      teamRoomId: string | number,
+      proposalId?: string | number,
+    ) => {
+      if (type !== 'TOOL_SUGGESTION' || !proposalId) return;
+
+      navigate(`/teamroom/${teamRoomId}/tool/proposal/${proposalId}`);
+    },
+    [navigate],
+  );
+
   const handlePayload = useCallback(
     async (payload: FcmPayload) => {
       addRestNotificationCount();
+
+      // 협업툴 제안이 승인되면 협업툴 조회 refetch
+      if (payload.data.type === 'TOOL_APPROVED') {
+        await qc.refetchQueries({
+          queryKey: ['teamTool', Number(payload.data.teamRoomId), 'confirmed'],
+          type: 'all',
+        });
+      }
+
       pushToast({
         id: payload.messageId,
         message:
@@ -36,7 +61,7 @@ export default function AuthGuard() {
           ),
       });
     },
-    [pushToast, addRestNotificationCount],
+    [pushToast, navigateToolProposal, qc, addRestNotificationCount],
   );
 
   useEffect(() => {

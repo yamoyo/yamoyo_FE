@@ -1,11 +1,13 @@
 import type {
   DeleteTeamTool,
   GetConfirmedTools,
+  GetProposalToolDetail,
   GetToolVoteParticipation,
   GetVoteCountByCategory,
+  ProposalToolsRequest,
   SubmitAllToolVotes,
   SubmitAllToolVotesRequest,
-} from '@/entities/setup/tool/api/tool-dto';
+} from '@/entities/tool/api/tool-dto';
 import { authClient } from '@/shared/api/auth/client';
 
 /** 확정된 협업툴 조회 */
@@ -48,5 +50,38 @@ export async function deleteTeamTool(
 ) {
   return authClient.delete<DeleteTeamTool>(
     `/team-rooms/${teamRoomId}/tools/${teamToolId}`,
+  );
+}
+
+/** 협업툴 요청 */
+export async function proposalTools(
+  teamRoomId: string | number,
+  body: ProposalToolsRequest,
+) {
+  return authClient.post<ProposalToolsRequest>(
+    `/team-rooms/${teamRoomId}/tools/proposals`,
+    body,
+  );
+}
+
+/** 협업툴 제안 상세 조회 */
+export async function getToolProposalDetail(
+  teamRoomId: string | number,
+  proposalId: string | number,
+) {
+  return authClient.get<GetProposalToolDetail>(
+    `/team-rooms/${teamRoomId}/tools/proposals/${proposalId}`,
+  );
+}
+
+/** 협업툴 승인/반려 */
+export async function proposalToolDecision(
+  teamRoomId: string | number,
+  proposalId: string | number,
+  isApproved: boolean,
+) {
+  return authClient.put(
+    `/team-rooms/${teamRoomId}/tools/proposals/${proposalId}`,
+    { isApproved },
   );
 }

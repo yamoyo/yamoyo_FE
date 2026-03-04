@@ -151,8 +151,8 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
         id="rule"
         text="팀 규칙"
         editMode={editMode}
-        hideIcon={!isLeader}
-        onClickIcon={() => setEditMode((prev) => !prev)}
+        hideRightButton={!isLeader}
+        onClickRightButton={() => setEditMode((prev) => !prev)}
       />
 
       <div className="space-y-2">

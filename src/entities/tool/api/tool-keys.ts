@@ -7,25 +7,30 @@ export const teamToolKeys = {
   all: ['teamTool'] as const,
 
   /** 특정 팀룸의 tool 하위 키 */
-  byTeamRoom: (teamRoomId: string | number) =>
+  byTeamRoom: (teamRoomId: number) =>
     [...teamToolKeys.all, teamRoomId] as const,
 
   /** 확정된 협업툴 목록 조회 */
-  confirmed: (teamRoomId: string | number) =>
+  confirmed: (teamRoomId: number) =>
     [...teamToolKeys.byTeamRoom(teamRoomId), 'confirmed'] as const,
 
   /** 투표 참여 현황 조회 */
-  voteParticipation: (teamRoomId: string | number) =>
+  voteParticipation: (teamRoomId: number) =>
     [...teamToolKeys.byTeamRoom(teamRoomId), 'voteParticipation'] as const,
 
   /** 카테고리별 득표 현황 */
-  voteCountByCategory: (
-    teamRoomId: string | number,
-    categoryId: string | number,
-  ) =>
+  voteCountByCategory: (teamRoomId: number, categoryId: number) =>
     [
       ...teamToolKeys.byTeamRoom(teamRoomId),
       'voteCountByCategory',
       categoryId,
+    ] as const,
+
+  /** 협업툴 제안 상세 조회 */
+  proposalDetail: (teamRoomId: number, proposalId: number) =>
+    [
+      ...teamToolKeys.byTeamRoom(teamRoomId),
+      'proposalDetail',
+      proposalId,
     ] as const,
 } as const;
