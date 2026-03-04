@@ -115,6 +115,15 @@ export default function AuthGuard() {
     if (!accessToken) return;
     // 알림 권한 요청 (로그인 시 한 번만)
     requestNotificationPermission();
+
+    // 백그라운드 메시지 수신 처리
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data?.kind !== 'FCM_BACKGROUND_MESSAGE') return;
+        handlePayload(event.data.payload);
+      });
+    }
+
     // 포그라운드 메시지 수신 처리
     const unsubscribe = listenForegroundMessages((payload: FcmPayload) =>
       handlePayload(payload),
