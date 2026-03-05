@@ -27,7 +27,6 @@ jobs:
             --build-arg VITE_BASE_URL="${{ secrets.VITE_BASE_URL }}" \
             --build-arg VITE_KAKAO_JAVASCRIPT_KEY="${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}" \
             --build-arg VITE_GTM_ID="${{ secrets.VITE_GTM_ID }}" \
-            
             --build-arg VITE_FIREBASE_API_KEY="${{ secrets.VITE_FIREBASE_API_KEY }}" \
             --build-arg VITE_FIREBASE_AUTH_DOMAIN="${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}" \
             --build-arg VITE_FIREBASE_PROJECT_ID="${{ secrets.VITE_FIREBASE_PROJECT_ID }}" \
