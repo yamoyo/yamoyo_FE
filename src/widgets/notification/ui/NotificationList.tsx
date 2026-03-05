@@ -1,44 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
+import { NotificationType } from '@/entities/notification/api/notification-dto';
+import { useNotifications } from '@/entities/notification/hooks/useNotification';
+import { useReadNotification } from '@/entities/notification/hooks/useNotification';
+import { useAllReadNotifications } from '@/entities/notification/hooks/useNotification';
 import { cn } from '@/shared/config/tailwind/cn';
-
-import { NOTIFICATION_DUMMY_DATA } from '../model/constants';
-import { Notification } from '../model/types';
-import NotificationItem from './NotificationItem';
+import NotificationItem from '@/widgets/notification/ui/NotificationItem';
 
 export default function NotificationList() {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const navigate = useNavigate();
 
-  const allRead = notifications.every((notification) => notification.isRead);
+  const { data: notifications, isLoading, isError } = useNotifications();
+  const { mutate: readNotification } = useReadNotification();
+  const { mutate: readAllNotifications } = useAllReadNotifications();
+
+  const allRead = notifications?.every((notification) => notification.isRead);
   // 모두읽음 버튼 비활성화 조건
-  const allReadBtnDisabled = allRead || notifications.length === 0;
+  const allReadBtnDisabled =
+    !notifications || allRead || notifications.length === 0;
 
-  useEffect(() => {
-    // TODO: 알림 목록 불러오기
-    setNotifications(NOTIFICATION_DUMMY_DATA);
-  }, []);
+  if (isLoading) {
+    return <div>알림을 불러오는 중...</div>;
+  }
+  if (isError) {
+    return <div>알림을 불러오는 중 오류가 발생했습니다.</div>;
+  }
+  if (!notifications) {
+    return <div>알림이 없습니다.</div>;
+  }
 
-  /** 알림을 읽음 처리하는 함수 */
-  const readNotification = (id: number) => {
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((notification) =>
-        notification.id === id
-          ? { ...notification, isRead: true }
-          : notification,
-      ),
-    );
-  };
+  // TOOL_SUGGESTION 알림은 협업툴 제안 페이지로 이동해야 하므로 disabled 상태를 isRead가 아닌 type으로 결정
+  const disable = (isRead: boolean, type: NotificationType) =>
+    type === 'TOOL_SUGGESTION' ? false : isRead;
 
-  /** 모든 알림을 읽음 처리하는 함수 */
-  const allReadNotifications = () => {
-    if (allReadBtnDisabled) return;
-
-    setNotifications((prevNotifications) =>
-      prevNotifications.map((notification) => ({
-        ...notification,
-        isRead: true,
-      })),
-    );
+  const handleReadNotification = (
+    notificationId: number,
+    teamRoomId: number,
+    type: NotificationType,
+    targetId: number,
+  ) => {
+    readNotification(notificationId);
+    if (type === 'TOOL_SUGGESTION') {
+      navigate(`/teamroom/${teamRoomId}/tool/proposal/${targetId}`);
+    }
   };
 
   return (
@@ -50,7 +54,7 @@ export default function NotificationList() {
               'opacity-50': allReadBtnDisabled,
             })}
             disabled={allReadBtnDisabled}
-            onClick={allReadNotifications}
+            onClick={() => readAllNotifications()}
           >
             모두읽음
           </button>
@@ -62,12 +66,19 @@ export default function NotificationList() {
             새 알림이 없습니다.
           </p>
         ) : (
-          notifications.map((item, index) => (
+          notifications.map((item) => (
             <NotificationItem
-              key={item.id}
+              key={item.notificationId}
               {...item}
-              index={index}
-              onClick={() => readNotification(item.id)}
+              disabled={disable(item.isRead, item.type)}
+              onClick={() =>
+                handleReadNotification(
+                  item.notificationId,
+                  item.teamRoomId,
+                  item.type,
+                  item.targetId,
+                )
+              }
             />
           ))
         )}

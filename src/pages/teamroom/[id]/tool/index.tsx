@@ -1,1 +1,1 @@
-export { ToolSetupPage as default } from '@/widgets/teamroom/setup/tool';
+export { ToolSetupPage as default } from '@/widgets/teamroom/tool';

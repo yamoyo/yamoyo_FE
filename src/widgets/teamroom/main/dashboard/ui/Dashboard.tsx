@@ -4,17 +4,17 @@ import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
 import {
   useRuleVoteParticipation,
   useTeamRules,
-} from '@/entities/setup/rule/hooks/useRule';
-import {
-  useConfirmedTools,
-  useToolVoteParticipation,
-} from '@/entities/setup/tool/hooks/useTool';
+} from '@/entities/rule/hooks/useRule';
 import type {
   DashboardStatus,
   TeamMemberRole,
   TeamRoomWorkflow,
 } from '@/entities/teamroom/api/teamroom-dto';
 import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
+import {
+  useConfirmedTools,
+  useToolVoteParticipation,
+} from '@/entities/tool/hooks/useTool';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
 import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
@@ -71,28 +71,28 @@ export function Dashboard({
     data: rulesData,
     isLoading: isRulesLoading,
     isError: isRulesError,
-  } = useTeamRules(teamRoomId);
+  } = useTeamRules(Number(teamRoomId));
 
   // 규칙 투표 참여 현황 조회 (내 투표 여부 확인용)
   const {
     data: ruleParticipation,
     isLoading: isRuleParticipationLoading,
     isError: isRuleParticipationError,
-  } = useRuleVoteParticipation(myUserId ? teamRoomId : undefined);
+  } = useRuleVoteParticipation(myUserId ? Number(teamRoomId) : undefined);
 
   // 협업툴 조회
   const {
     data: confirmedToolsData,
     isLoading: isToolsLoading,
     isError: isToolsError,
-  } = useConfirmedTools(teamRoomId);
+  } = useConfirmedTools(Number(teamRoomId));
 
   // 협업툴 투표 참여 현황 조회 (내 투표 여부 확인용)
   const {
     data: toolParticipation,
     isLoading: isToolParticipationLoading,
     isError: isToolParticipationError,
-  } = useToolVoteParticipation(myUserId ? teamRoomId : undefined);
+  } = useToolVoteParticipation(myUserId ? Number(teamRoomId) : undefined);
 
   const tabs: TabsConfig[] = [
     {
@@ -152,7 +152,13 @@ export function Dashboard({
           );
         }
 
-        return <ToolContents confirmedToolsData={confirmedToolsData} />;
+        return (
+          <ToolContents
+            confirmedToolsData={confirmedToolsData}
+            teamRoomId={teamRoomId}
+            isReader={myRole === 'LEADER'}
+          />
+        );
       },
     },
     {

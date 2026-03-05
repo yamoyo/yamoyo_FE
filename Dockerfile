@@ -12,6 +12,8 @@ WORKDIR /app
 # 빌드 인자 선언
 ARG VITE_BASE_URL
 ARG VITE_KAKAO_JAVASCRIPT_KEY
+ARG VITE_GTM_ID
+
 ARG VITE_FIREBASE_API_KEY
 ARG VITE_FIREBASE_AUTH_DOMAIN
 ARG VITE_FIREBASE_PROJECT_ID
@@ -22,6 +24,7 @@ ARG VITE_FIREBASE_APP_ID
 # 누락 방지용 검증
 RUN test -n "$VITE_BASE_URL" || (echo "Error: VITE_BASE_URL build-arg is required" >&2 && exit 1)
 RUN test -n "$VITE_KAKAO_JAVASCRIPT_KEY" || (echo "Error: VITE_KAKAO_JAVASCRIPT_KEY build-arg is required" >&2 && exit 1)
+RUN test -n "$VITE_GTM_ID" || (echo "Error: VITE_GTM_ID build-arg is required" >&2 && exit 1)
 
 RUN test -n "$VITE_FIREBASE_API_KEY" || (echo "Error: VITE_FIREBASE_API_KEY build-arg is required" >&2 && exit 1)
 RUN test -n "$VITE_FIREBASE_AUTH_DOMAIN" || (echo "Error: VITE_FIREBASE_AUTH_DOMAIN build-arg is required" >&2 && exit 1)
@@ -30,11 +33,12 @@ RUN test -n "$VITE_FIREBASE_STORAGE_BUCKET" || (echo "Error: VITE_FIREBASE_STORA
 RUN test -n "$VITE_FIREBASE_MESSAGING_SENDER_ID" || (echo "Error: VITE_FIREBASE_MESSAGING_SENDER_ID build-arg is required" >&2 && exit 1)
 RUN test -n "$VITE_FIREBASE_APP_ID" || (echo "Error: VITE_FIREBASE_APP_ID build-arg is required" >&2 && exit 1)
 
+
 # 빌드 시점에 환경변수로 전달
 ENV VITE_BASE_URL=${VITE_BASE_URL}
 ENV VITE_KAKAO_JAVASCRIPT_KEY=${VITE_KAKAO_JAVASCRIPT_KEY}
+ENV VITE_GTM_ID=${VITE_GTM_ID}
 
-# 의존성 설치
 ENV VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY}
 ENV VITE_FIREBASE_AUTH_DOMAIN=${VITE_FIREBASE_AUTH_DOMAIN}
 ENV VITE_FIREBASE_PROJECT_ID=${VITE_FIREBASE_PROJECT_ID}
