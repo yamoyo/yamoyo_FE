@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import { GetTeamRulesResponse } from '@/entities/setup/rule/api/rule-dto';
+import { GetTeamRulesResponse } from '@/entities/rule/api/rule-dto';
 import {
   useAddTeamRule,
   useDeleteTeamRule,
   useUpdateTeamRule,
-} from '@/entities/setup/rule/hooks/useRule';
+} from '@/entities/rule/hooks/useRule';
 import type { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
 import RuleItem from '@/widgets/teamroom/main/dashboard/rule/RuleItem';
 import ContentsHeader from '@/widgets/teamroom/main/ui/ContentsHeader';
@@ -151,8 +151,8 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
         id="rule"
         text="팀 규칙"
         editMode={editMode}
-        hideIcon={!isLeader}
-        onClickIcon={() => setEditMode((prev) => !prev)}
+        hideRightButton={!isLeader}
+        onClickRightButton={() => setEditMode((prev) => !prev)}
       />
 
       <div className="space-y-2">

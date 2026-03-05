@@ -1,27 +1,34 @@
 interface BaseProps {
   text: string;
-  id: 'rule' | 'tool' | 'timepick';
-  hideIcon?: boolean;
+  hideRightButton?: boolean;
 }
 
-type EditProps =
-  | {
-      editMode: boolean;
-      onClickIcon: () => void;
-    }
-  | {
-      editMode?: never;
-      onClickIcon?: never;
-    };
+type RuleProps = {
+  id: 'rule';
+  editMode: boolean;
+  onClickRightButton: () => void;
+};
 
-type Props = BaseProps & EditProps;
+type ToolProps = {
+  id: 'tool';
+  editMode?: never;
+  onClickRightButton: () => void;
+};
+
+type TimeSelectProps = {
+  id: 'timepick';
+  editMode?: never;
+  onClickRightButton?: never;
+};
+
+type Props = BaseProps & (RuleProps | ToolProps | TimeSelectProps);
 
 export default function ContentsHeader({
   text,
   id,
   editMode,
-  hideIcon,
-  onClickIcon,
+  hideRightButton,
+  onClickRightButton,
 }: Props) {
   return (
     <div className="flex items-center justify-between">
@@ -34,23 +41,34 @@ export default function ContentsHeader({
         />
         <p className="text-body-2 text-tx-default">{text}</p>
       </div>
-      {!hideIcon && onClickIcon && editMode !== undefined && (
-        <button onClick={onClickIcon} className="p-2.5">
-          {editMode ? (
-            <img
-              className="h-5 w-5"
-              src="/assets/icons/check-active.svg"
-              alt="Check Active Icon"
-              draggable={false}
-            />
-          ) : (
-            <img
-              className="h-5 w-5"
-              src="/assets/icons/dashboard/edit.svg"
-              alt="Edit Icon"
-              draggable={false}
-            />
-          )}
+      {id === 'rule' &&
+        !hideRightButton &&
+        onClickRightButton &&
+        editMode !== undefined && (
+          <button onClick={onClickRightButton} className="p-2.5">
+            {editMode ? (
+              <img
+                className="h-5 w-5"
+                src="/assets/icons/check-active.svg"
+                alt="Check Active Icon"
+                draggable={false}
+              />
+            ) : (
+              <img
+                className="h-5 w-5"
+                src="/assets/icons/dashboard/edit.svg"
+                alt="Edit Icon"
+                draggable={false}
+              />
+            )}
+          </button>
+        )}
+      {id === 'tool' && !hideRightButton && onClickRightButton && (
+        <button
+          onClick={onClickRightButton}
+          className="p-1 text-body-7 text-[#9BA0B9]"
+        >
+          요청하기
         </button>
       )}
     </div>

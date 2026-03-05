@@ -28,7 +28,7 @@ export default function BottomButton({
       disabled={isDisabled}
       onClick={onClick}
       className={cn(
-        'h-[55px] w-full rounded-xl text-body-1 transition',
+        'min-h-[55px] w-full rounded-xl text-body-1 transition',
         isDisabled
           ? 'bg-bt-disabled text-bg-bt-disabled'
           : 'bg-bg-primary text-tx-default',

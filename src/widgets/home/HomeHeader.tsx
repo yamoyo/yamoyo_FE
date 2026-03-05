@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { useCurrentUser } from '@/entities/user/hooks/useCurrentUser';
+import NotificationIcon from '@/shared/ui/header/NotificationIcon';
 
 /**
  * 홈뷰 페이지 헤더 컴포넌트
@@ -38,17 +39,7 @@ export default function HomeHeader() {
           />
         </Link>
 
-        {/* TODO: MVP 이후 알림 기능 연결 시 hidden 제거 */}
-        <Link to="/notification" draggable="false" className="hidden">
-          <img
-            src="/assets/icons/notification.svg"
-            width={24}
-            height={24}
-            alt="알림"
-            className="select-none"
-            draggable="false"
-          />
-        </Link>
+        <NotificationIcon />
 
         <Link
           to="/mypage"

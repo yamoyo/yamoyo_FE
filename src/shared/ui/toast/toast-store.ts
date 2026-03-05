@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export type ToastItem = {
   id: string;
   message: string;
+  onClick?: () => void;
   isLeaving?: boolean;
 };
 

@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
 
+type DataLayerEvent = Record<string, unknown>;
+
 interface Window {
   Kakao?: {
     init: (key: string) => void;
@@ -26,4 +28,5 @@ interface Window {
       }) => void;
     };
   };
+  dataLayer: DataLayerEvent[];
 }
