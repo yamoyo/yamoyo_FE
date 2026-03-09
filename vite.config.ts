@@ -16,7 +16,7 @@ export default defineConfig({
     svgr(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['font/*.woff2', 'assets/**/*'],
+      includeAssets: ['font/*.woff2'],
       manifest: {
         name: 'Yamoyo', // 설치 배너에 표시되는 이름
         short_name: 'Yamoyo', // 앱 아이콘 아래에 표시되는 이름
