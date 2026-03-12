@@ -74,10 +74,7 @@ export default function App() {
 
   return (
     // 스플래시 종료 후 메인 앱 렌더링
-    <main
-      className="mx-auto flex min-h-dvh max-w-[390px] flex-col bg-bg-default"
-      style={{ boxShadow: '0 0 20px 0 rgba(17, 21, 38, 0.50)' }}
-    >
+    <>
       {/*
           모바일 전용 컨테이너
           - max-w-[430px]: 모바일 최대 폭 제한 ( 아이폰 Pro Max )
@@ -187,6 +184,6 @@ export default function App() {
           </Route>
         </Route>
       </Routes>
-    </main>
+    </>
   );
 }
