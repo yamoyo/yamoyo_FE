@@ -46,18 +46,15 @@ export function useAuthBootstrap(isGuest: boolean) {
       setAuthReady(true);
     }
 
+    if (location.pathname.startsWith('/onboarding')) {
+      setAuthReady(true);
+      return;
+    }
+
     (async () => {
       const ok = await refreshAccessToken();
       if (!ok) {
         // refresh 토큰 없거나 만료된 상황 - 로그인 후 돌아올 수 있도록 현재 URL 저장
-        // 단, 온보딩 관련 페이지는 저장하지 않음
-        if (!location.pathname.startsWith('/onboarding')) {
-          sessionStorage.setItem(
-            'redirectAfterLogin',
-            location.pathname + location.search,
-          );
-        }
-
         if (location.pathname !== '/invite') {
           navigate('/', { replace: true });
         }
