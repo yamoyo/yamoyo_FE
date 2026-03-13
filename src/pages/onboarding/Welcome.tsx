@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { requestAccessToken } from '@/shared/api/auth/refresh-token';
 import BottomButton from '@/shared/ui/button/BottomButton';
 
 export default function WelcomePage() {
@@ -16,6 +18,10 @@ export default function WelcomePage() {
       navigate('/home', { replace: true });
     }
   };
+
+  useEffect(() => {
+    requestAccessToken();
+  }, []);
 
   return (
     <div className="relative flex h-dvh flex-col px-6 pb-[60px]">
