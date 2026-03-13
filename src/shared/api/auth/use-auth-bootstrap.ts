@@ -55,6 +55,10 @@ export function useAuthBootstrap(isGuest: boolean) {
       const ok = await refreshAccessToken();
       if (!ok) {
         // refresh 토큰 없거나 만료된 상황 - 로그인 후 돌아올 수 있도록 현재 URL 저장
+        sessionStorage.setItem(
+          'redirectAfterLogin',
+          location.pathname + location.search,
+        );
         if (location.pathname !== '/invite') {
           navigate('/', { replace: true });
         }
