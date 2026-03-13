@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { validateProfileItem } from '@/entities/profile/model/hook/useEditProfile';
 import { MAJOR } from '@/entities/profile/model/options/profile-items';
 import { onboardingProfile } from '@/entities/user/api/user-api';
+import { requestAccessToken } from '@/shared/api/auth/refresh-token';
+import { useAuthStore } from '@/shared/api/auth/store';
 import { CHARACTER_IMAGE_ID } from '@/shared/constants/char-images';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
@@ -30,6 +32,11 @@ export default function ProfileOnboardingLayout() {
     major: null,
     persona: { profileImageId: randomProfileImageId, mbti: '' },
   });
+  const accessToken = useAuthStore((s) => s.accessToken);
+
+  useEffect(() => {
+    requestAccessToken();
+  }, []);
 
   const disableCondition: boolean = (() => {
     const { name, major, persona } = form;
@@ -115,6 +122,10 @@ export default function ProfileOnboardingLayout() {
       setIsLoading(false);
     }
   };
+
+  if (!accessToken) {
+    return <p>데이터를 불러오는 중입니다.</p>;
+  }
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">

@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { onboardingTerm } from '@/entities/user/api/user-api';
+import { requestAccessToken } from '@/shared/api/auth/refresh-token';
+import { useAuthStore } from '@/shared/api/auth/store';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import useTermsAgreement from '@/widgets/auth/term/model/useTermsAgreement';
@@ -12,6 +14,7 @@ import TermsList from '@/widgets/auth/term/ui/TermsList';
 export function TermsAgreementPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const accessToken = useAuthStore((s) => s.accessToken);
 
   const {
     terms,
@@ -41,6 +44,14 @@ export function TermsAgreementPage() {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    requestAccessToken();
+  }, []);
+
+  if (!accessToken) {
+    return <p>데이터를 불러오는 중입니다.</p>;
+  }
 
   if (openedDetailTerm === 'service') {
     return (
