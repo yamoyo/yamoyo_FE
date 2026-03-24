@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react';
 import { VoteUpdatedPayload } from '@/entities/leader-game/api/ws-types';
 import { TeamMember } from '@/entities/teamroom/api/teamroom-dto';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
-import VoteStatus from '@/widgets/vote/ui/VoteStatus';
+import VoteStatus from '@/widgets/vote/ui/Status';
 
 interface Props {
   members: TeamMember[];

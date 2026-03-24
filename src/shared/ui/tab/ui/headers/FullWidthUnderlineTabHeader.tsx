@@ -25,14 +25,14 @@ export default function FullWidthUnderlineTabHeader({
           >
             <span
               className={
-                isActive ? 'text-textfiled-line_focus' : 'text-tx-default'
+                isActive ? 'text-bd-textfiled-line_focus' : 'text-tx-default'
               }
             >
               {tab.label}
             </span>
 
             {isActive && (
-              <span className="absolute bottom-[-5px] left-0 h-[5px] w-full rounded-full bg-textfiled-line_focus" />
+              <span className="absolute bottom-[-5px] left-0 h-[5px] w-full rounded-full bg-bd-textfiled-line_focus" />
             )}
           </button>
         );

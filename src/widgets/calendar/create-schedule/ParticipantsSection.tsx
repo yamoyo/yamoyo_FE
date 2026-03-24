@@ -20,13 +20,13 @@ export default function ParticipantsSection({
         <button
           type="button"
           onClick={onOpenSheet}
-          className="text-body-6 text-textfiled-line_focus"
+          className="text-body-6 text-bd-textfiled-line_focus"
         >
           추가하기
         </button>
       </label>
       {error && (
-        <p className="text-[12px] text-textfiled-line_error">{error}</p>
+        <p className="text-[12px] text-bd-textfiled-line_error">{error}</p>
       )}
       <div className="h-36 overflow-y-auto">
         {selectedMembers.length > 0 && (
