@@ -2,23 +2,25 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 
-import { useSubmitRuleVote } from '@/entities/rule/hooks/useRule';
+import { useSubmitRuleVote } from '@/entities/teamroom/rule/hooks/useRule';
 import TopBar from '@/shared/ui/header/TopBar';
-import RuleVotingNotice from '@/widgets/teamroom/rule/ui/voting-rule/RuleVotingNotice';
-import VotingRule from '@/widgets/teamroom/rule/ui/voting-rule/VotingRule';
+import RuleVotingNotice from '@/widgets/teamroom/rule/ui/voting/Notice';
+import VotingRule from '@/widgets/teamroom/rule/ui/voting/VotingRule';
+
+const TOTAL_RULES = 10; // 총 투표할 규칙 수
 
 interface Props {
   onFinish: () => void;
 }
 
-export default function RuleVotingScreen({ onFinish }: Props) {
+export function RuleVotingScreen({ onFinish }: Props) {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [searchParams] = useSearchParams();
 
   const step = Number(searchParams.get('step')) || 0;
   const [voteResult, setVoteResult] = useState<(boolean | null)[]>(
-    Array(10).fill(null),
+    Array(TOTAL_RULES).fill(null),
   );
 
   const { mutateAsync, isPending } = useSubmitRuleVote(id!);
@@ -37,7 +39,7 @@ export default function RuleVotingScreen({ onFinish }: Props) {
   };
 
   const handleVote = async (vote: boolean) => {
-    if (step === 10) {
+    if (step === TOTAL_RULES) {
       const finalVoteResult = [...voteResult];
       finalVoteResult[step - 1] = vote;
       if (finalVoteResult.includes(null)) {
@@ -75,15 +77,19 @@ export default function RuleVotingScreen({ onFinish }: Props) {
 
   return (
     <>
-      <TopBar title="팀 규칙 설정" onBack={onBack} />
+      <TopBar
+        onBack={onBack}
+        hidden={step === 0}
+        step={{ total: TOTAL_RULES, current: step }}
+      />
 
-      <div className="flex flex-1 flex-col pb-12">
+      <main className="flex flex-1 flex-col pb-12">
         {step === 0 ? (
           <RuleVotingNotice onStart={onStart} />
         ) : (
           <VotingRule step={step} handleVote={handleVote} />
         )}
-      </div>
+      </main>
     </>
   );
 }

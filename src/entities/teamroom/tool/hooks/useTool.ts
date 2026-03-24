@@ -7,7 +7,7 @@ import {
   getToolVoteParticipation,
   getVoteCountByCategory,
   submitAllToolVotes,
-} from '@/entities/tool/api/tool-api';
+} from '@/entities/teamroom/tool/api/tool-api';
 import type {
   DeleteTeamTool,
   GetConfirmedTools,
@@ -16,8 +16,8 @@ import type {
   GetVoteCountByCategory,
   SubmitAllToolVotes,
   SubmitAllToolVotesRequest,
-} from '@/entities/tool/api/tool-dto';
-import { teamToolKeys } from '@/entities/tool/api/tool-keys';
+} from '@/entities/teamroom/tool/api/tool-dto';
+import { teamToolKeys } from '@/entities/teamroom/tool/api/tool-keys';
 
 /** 확정된 협업툴 조회 query */
 export function useConfirmedTools(teamRoomId: number) {

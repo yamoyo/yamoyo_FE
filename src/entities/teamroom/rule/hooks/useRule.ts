@@ -7,14 +7,14 @@ import {
   getTeamRules,
   submitRuleVote,
   updateTeamRule,
-} from '@/entities/rule/api/rule-api';
+} from '@/entities/teamroom/rule/api/rule-api';
 import type {
   AddOrUpdateTeamRuleRequest,
   GetRuleVoteParticipationResponse,
   GetTeamRulesResponse,
   SubmitRuleVoteRequest,
-} from '@/entities/rule/api/rule-dto';
-import { teamRuleKeys } from '@/entities/rule/api/rule-keys';
+} from '@/entities/teamroom/rule/api/rule-dto';
+import { teamRuleKeys } from '@/entities/teamroom/rule/api/rule-keys';
 
 /** 확정된 규칙 조회 query */
 export function useTeamRules(teamRoomId: string | number) {

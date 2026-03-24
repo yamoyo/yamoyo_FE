@@ -1,24 +1,26 @@
 import { useEffect, useState } from 'react';
 
-import { GetTeamRulesResponse } from '@/entities/rule/api/rule-dto';
+import { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
+import { GetTeamRulesResponse } from '@/entities/teamroom/rule/api/rule-dto';
 import {
   useAddTeamRule,
   useDeleteTeamRule,
   useUpdateTeamRule,
-} from '@/entities/rule/hooks/useRule';
-import type { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
-import RuleItem from '@/widgets/teamroom/main/dashboard/rule/RuleItem';
-import ContentsHeader from '@/widgets/teamroom/main/ui/ContentsHeader';
+} from '@/entities/teamroom/rule/hooks/useRule';
 
 type RuleUi = { teamRuleId: number; content: string; isTemp?: boolean };
 
-interface Props {
+interface Params {
   rulesData: GetTeamRulesResponse;
   teamRoomId: string | number;
   myRole: TeamMemberRole;
 }
 
-export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
+export function useDashboardRuleSection({
+  rulesData,
+  teamRoomId,
+  myRole,
+}: Params) {
   const isLeader = myRole === 'LEADER';
 
   const { mutateAsync: addRuleMutateAsync } = useAddTeamRule(teamRoomId);
@@ -39,6 +41,13 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
     );
   }, [rulesData]);
 
+  /** 편집 모드 토글 */
+  const toggleEditMode = () => {
+    if (!isLeader) return;
+    setEditMode((prev) => !prev);
+    setEditingRuleId(null);
+  };
+
   /** 규칙 추가 */
   const addRule = () => {
     if (!isLeader) {
@@ -58,18 +67,20 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
   };
 
   /** 아이콘 클릭 (편집/삭제) */
-  const onClickIcon = async (teamRuleId: number) => {
-    if (!isLeader) {
+  const clickRuleAction = async (teamRuleId: number) => {
+    if (!isLeader || !editMode) {
       alert('팀장만 규칙을 수정/삭제할 수 있습니다.');
       return;
     }
 
-    if (!editMode) return;
-
     // 편집 중인 규칙의 삭제 버튼 클릭 → 삭제 처리
     if (editingRuleId === teamRuleId) {
       const target = rules.find((r) => r.teamRuleId === teamRuleId);
-      if (!target) return;
+      if (!target) {
+        setEditingRuleId(null);
+        alert('규칙을 찾을 수 없습니다.');
+        return;
+      }
 
       // 임시 규칙이면 서버 호출 없이 로컬에서만 제거
       if (target.isTemp) {
@@ -81,6 +92,7 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
       // 서버에 있는 규칙이면 delete 요청 호출
       try {
         await deleteRuleMutateAsync(teamRuleId);
+        setRules((prev) => prev.filter((r) => r.teamRuleId !== teamRuleId));
       } finally {
         setEditingRuleId(null);
       }
@@ -96,12 +108,18 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
    * - 임시 규칙: add 요청
    * - 기존 규칙: update 요청
    */
-  const onChangeText = async (teamRuleId: number, changedText: string) => {
+  const changeRuleText = async (teamRuleId: number, changedText: string) => {
     setEditingRuleId(null);
-    if (!isLeader) return;
+    if (!isLeader) {
+      alert('팀장만 규칙을 수정할 수 있습니다.');
+      return;
+    }
 
     const target = rules.find((r) => r.teamRuleId === teamRuleId);
-    if (!target) return;
+    if (!target) {
+      alert('규칙을 찾을 수 없습니다.');
+      return;
+    }
 
     const trimmedText = changedText.trim();
 
@@ -133,6 +151,11 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
         return;
       }
 
+      if (target.content === trimmedText) {
+        // 내용이 변경되지 않았으면 서버 요청 없이 종료
+        return;
+      }
+
       // 기존 규칙 → 서버 수정
       await updateRuleMutateAsync({
         teamRuleId,
@@ -145,73 +168,14 @@ export default function Rules({ rulesData, teamRoomId, myRole }: Props) {
     }
   };
 
-  return (
-    <div className="space-y-4">
-      <ContentsHeader
-        id="rule"
-        text="팀 규칙"
-        editMode={editMode}
-        hideRightButton={!isLeader}
-        onClickRightButton={() => setEditMode((prev) => !prev)}
-      />
-
-      <div className="space-y-2">
-        {rules.length === 0 && (
-          <p className="whitespace-pre-line text-body-6 text-tx-default">
-            {'설정된 규칙이 없습니다.\n팀장만 규칙을 추가할 수 있습니다.'}
-          </p>
-        )}
-
-        {rules.map((rule, idx) => {
-          const isEditing = editMode && editingRuleId === rule.teamRuleId;
-
-          return (
-            <RuleItem
-              key={rule.teamRuleId}
-              text={`${isEditing ? '' : `${idx + 1}. `}${rule.content}`}
-              editMode={isEditing}
-              isHiddenIcon={!editMode}
-              onClickIcon={() => onClickIcon(rule.teamRuleId)}
-              onChangeText={(changedText) =>
-                onChangeText(rule.teamRuleId, changedText)
-              }
-              icon={
-                editMode && editingRuleId === rule.teamRuleId ? (
-                  <img
-                    className="m-3 h-4 w-4"
-                    src="/assets/icons/cancel.svg"
-                    alt="delete Icon"
-                    draggable={false}
-                  />
-                ) : (
-                  <img
-                    className="m-2.5 h-5 w-5"
-                    src="/assets/icons/dashboard/edit.svg"
-                    alt="Edit Icon"
-                    draggable={false}
-                  />
-                )
-              }
-            />
-          );
-        })}
-
-        {isLeader && (
-          <RuleItem
-            text="규칙 추가하기"
-            className="text-tx-default_4"
-            onClickIcon={addRule}
-            icon={
-              <img
-                className="m-2 h-6 w-6"
-                src="/assets/icons/dashboard/plus.svg"
-                alt="Plus Icon"
-                draggable={false}
-              />
-            }
-          />
-        )}
-      </div>
-    </div>
-  );
+  return {
+    isLeader,
+    editMode,
+    rules,
+    editingRuleId,
+    toggleEditMode,
+    addRule,
+    clickRuleAction,
+    changeRuleText,
+  };
 }

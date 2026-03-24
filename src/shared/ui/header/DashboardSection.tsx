@@ -23,7 +23,7 @@ type TimeSelectProps = {
 
 type Props = BaseProps & (RuleProps | ToolProps | TimeSelectProps);
 
-export default function ContentsHeader({
+export default function DashboardSectionHeader({
   text,
   id,
   editMode,
