@@ -100,7 +100,7 @@ export default function TopBar({
       )}
 
       {step && (
-        <div className="flex w-[calc(100%-60px)] flex-1 justify-between gap-0.5">
+        <div className="flex flex-1 justify-between gap-0.5">
           {Array.from({ length: step.total }, (_, index) => (
             <span
               key={index}
