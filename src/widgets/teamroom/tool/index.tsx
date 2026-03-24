@@ -2,7 +2,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useToolVoteParticipation } from '@/entities/tool/hooks/useTool';
+import { useToolVoteParticipation } from '@/entities/teamroom/tool/hooks/useTool';
 import { useAuthStore } from '@/shared/api/auth/store';
 import VotingTool from '@/widgets/teamroom/tool/ui/vote-tool';
 import ToolVoteWaiting from '@/widgets/teamroom/tool/ui/vote-waiting';
