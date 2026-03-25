@@ -7,7 +7,7 @@ import type {
   ProposalToolsRequest,
   SubmitAllToolVotes,
   SubmitAllToolVotesRequest,
-} from '@/entities/tool/api/tool-dto';
+} from '@/entities/teamroom/tool/api/tool-dto';
 import { authClient } from '@/shared/api/auth/client';
 
 /** 확정된 협업툴 조회 */

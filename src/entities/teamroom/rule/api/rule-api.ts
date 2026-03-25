@@ -3,7 +3,7 @@ import type {
   GetRuleVoteParticipationResponse,
   GetTeamRulesResponse,
   SubmitRuleVoteRequest,
-} from '@/entities/rule/api/rule-dto';
+} from '@/entities/teamroom/rule/api/rule-dto';
 import { authClient } from '@/shared/api/auth/client';
 
 /** 확정된 규칙 조회 */

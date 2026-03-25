@@ -34,7 +34,7 @@ export default function WelcomePage() {
         />
         <div className="flex flex-col items-center gap-2">
           <h1 className="text-title-3 text-tx-default">{name}님, 환영해요!</h1>
-          <p className="text-title-1 text-textfiled-line_focus">
+          <p className="text-title-1 text-bd-textfiled-line_focus">
             성공적으로 가입되었어요!
           </p>
         </div>

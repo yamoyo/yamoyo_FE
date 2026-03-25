@@ -28,13 +28,13 @@ export default function LabelUnderlineTabHeader({
             className={cn(
               'relative max-w-[60px] flex-1 pb-2 text-body-2 transition',
               isActive
-                ? 'text-body-1 text-textfiled-line_focus'
+                ? 'text-body-1 text-bd-textfiled-line_focus'
                 : 'text-body-2 text-tx-default_4',
             )}
           >
             {tab.label}
             {isActive && (
-              <div className="absolute bottom-[-3px] z-10 h-[3px] w-full rounded-full bg-textfiled-line_focus" />
+              <div className="absolute bottom-[-3px] z-10 h-[3px] w-full rounded-full bg-bd-textfiled-line_focus" />
             )}
           </button>
         );

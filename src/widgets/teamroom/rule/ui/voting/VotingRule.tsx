@@ -1,5 +1,5 @@
 import BottomButtonTwoOptions from '@/shared/ui/button/BottomButtonTwoOptions';
-import StepTitle from '@/shared/ui/tab/StepTitle';
+import StepTitle from '@/widgets/vote/ui/StepHeader';
 
 const VOTE_CONTENTS = [
   {

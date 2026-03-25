@@ -67,7 +67,7 @@ export default function FocusTimerCard({
         <span
           className={cn(
             'text-body-7',
-            isLeftHour ? 'text-textfiled-line_error' : 'text-bg-secondary_2',
+            isLeftHour ? 'text-bd-textfiled-line_error' : 'text-bg-secondary_2',
           )}
         >
           {leftTime}

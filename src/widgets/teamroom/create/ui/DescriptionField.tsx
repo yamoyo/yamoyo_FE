@@ -1,3 +1,5 @@
+import { cn } from '@/shared/config/tailwind/cn';
+
 interface DescriptionFieldProps {
   value: string;
   onChange: (value: string) => void;
@@ -22,7 +24,14 @@ export default function DescriptionField({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           maxLength={maxLength}
-          className="h-[90px] w-full resize-none rounded-xl border border-bd-default bg-bg-textfiled px-[15px] py-3 pr-16 text-body-4.1 text-tx-default outline-none transition placeholder:text-tx-textfiled_disabled focus:border-textfiled-line_focus"
+          className={cn(
+            'h-[90px] w-full resize-none rounded-xl border border-bd-default bg-bg-textfiled',
+            'px-[15px] py-3 pr-16',
+            'text-body-4.1 text-tx-default',
+            'outline-none transition',
+            'placeholder:text-tx-textfiled_disabled',
+            'focus:border-bd-textfiled-line_focus',
+          )}
         />
         <span className="absolute bottom-[16px] right-[16px] text-caption-1 text-tx-default_4">
           {value.length}/{maxLength}

@@ -3,8 +3,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import { proposalTools } from '@/entities/tool/api/tool-api';
-import { useConfirmedTools } from '@/entities/tool/hooks/useTool';
+import { proposalTools } from '@/entities/teamroom/tool/api/tool-api';
+import { useConfirmedTools } from '@/entities/teamroom/tool/hooks/useTool';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import ToolItems from '@/widgets/teamroom/tool/ui/vote-tool/ui/ToolItems';

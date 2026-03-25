@@ -62,7 +62,7 @@ export default function ChoiceModal({
             type="button"
             onClick={handleOnClickRightBtn}
             className={cn(
-              'h-[55px] flex-1 rounded-lg bg-textfiled-line_error text-body-2 text-tx-default',
+              'h-[55px] flex-1 rounded-lg bg-bd-textfiled-line_error text-body-2 text-tx-default',
               rightBtnClassName,
             )}
           >

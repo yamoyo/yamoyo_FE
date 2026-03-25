@@ -5,7 +5,7 @@ interface Props {
   description: string;
 }
 
-export default function StepTitle({
+export default function StepHeader({
   step,
   totalSteps,
   title,
@@ -13,9 +13,9 @@ export default function StepTitle({
 }: Props) {
   return (
     <div className="w-full space-y-1 text-tx-default">
-      <div>
-        <span className="text-body4">{step}</span>
-        <span className="text-body-5 text-tx-default_3">/{totalSteps}</span>
+      <div className="body-g4">
+        <span className="text-body4">STEP {step}</span>
+        <span className="text-body-5 text-tx-default_5">/{totalSteps}</span>
       </div>
       <p className="whitespace-pre-line text-title-2">{title}</p>
       <p className="text-body-5">{description}</p>

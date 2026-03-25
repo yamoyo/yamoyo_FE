@@ -92,7 +92,7 @@ export default function MeetingDetailPage() {
               onClick={() =>
                 navigate(`/calendar/edit-schedule?meetingId=${meetingId}`)
               }
-              className="p-[10px] text-body-4 text-textfiled-line_focus"
+              className="p-[10px] text-body-4 text-bd-textfiled-line_focus"
               aria-label="미팅 일정 수정"
             >
               수정
@@ -252,7 +252,7 @@ export default function MeetingDetailPage() {
             type="button"
             onClick={() => handleDelete('SINGLE')}
             disabled={isDeleting}
-            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-bd-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
           >
             이 일정
           </button>
@@ -260,7 +260,7 @@ export default function MeetingDetailPage() {
             type="button"
             onClick={() => handleDelete('THIS_AND_FUTURE')}
             disabled={isDeleting}
-            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
+            className="w-full rounded-xl bg-bg-card py-4 text-body-1 text-bd-textfiled-line_error transition-colors hover:bg-bg-card/80 disabled:opacity-50"
           >
             이번 및 향후 모든 일정 삭제
           </button>

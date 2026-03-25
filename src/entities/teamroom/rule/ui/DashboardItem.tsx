@@ -3,27 +3,32 @@ import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/shared/config/tailwind/cn';
 
 interface Props {
-  text: string;
-  icon: React.ReactNode;
-  onClickIcon: () => void;
+  text?: string;
+  order?: number;
   editMode?: boolean;
-  isHiddenIcon?: boolean;
+  showActionButton?: boolean;
+  isAddButton?: boolean;
   className?: string;
-
+  onClickAction?: () => void;
   onChangeText?: (next: string) => void;
 }
 
-export default function RuleItem({
-  text,
-  icon,
-  onClickIcon,
+export default function DashboardRuleItem({
+  text = '',
+  order,
   editMode = false,
-  isHiddenIcon = false,
+  showActionButton = false,
+  isAddButton = false,
   className,
+  onClickAction,
   onChangeText,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(text);
+
+  useEffect(() => {
+    setValue(text);
+  }, [text]);
 
   // editMode가 켜질 때 input에 포커스 + 커서 끝으로
   useEffect(() => {
@@ -42,8 +47,26 @@ export default function RuleItem({
     });
   }, [editMode, text]);
 
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setValue(e.target.value);
+  if (isAddButton) {
+    return (
+      <button
+        type="button"
+        onClick={onClickAction}
+        className={cn(
+          'flex min-h-[60px] w-full items-center rounded-xl bg-bg-card pl-4 pr-2 text-left text-body-4.1 text-tx-default_4',
+          className,
+        )}
+      >
+        규칙 추가하기
+        <img
+          className="m-2 ml-auto h-6 w-6"
+          src="/assets/icons/dashboard/plus.svg"
+          alt="Plus Icon"
+          draggable={false}
+        />
+      </button>
+    );
+  }
 
   return (
     <div
@@ -56,21 +79,38 @@ export default function RuleItem({
         <input
           ref={inputRef}
           value={value}
-          onChange={handleChange}
+          onChange={(e) => setValue(e.target.value)}
           className="w-full bg-transparent outline-none"
           onBlur={() => onChangeText?.(value)}
         />
       ) : (
-        <span className="w-full">{text}</span>
+        <span className="w-full">
+          {typeof order === 'number' ? `${order}. ` : ''}
+          {text}
+        </span>
       )}
 
-      {!isHiddenIcon && (
+      {showActionButton && (
         <button
           type="button"
-          onClick={onClickIcon}
+          onClick={onClickAction}
           onMouseDown={(e) => e.preventDefault()}
         >
-          {icon}
+          {editMode ? (
+            <img
+              className="m-3 h-4 w-4"
+              src="/assets/icons/cancel.svg"
+              alt="Delete Icon"
+              draggable={false}
+            />
+          ) : (
+            <img
+              className="m-2.5 h-5 w-5"
+              src="/assets/icons/dashboard/edit.svg"
+              alt="Edit Icon"
+              draggable={false}
+            />
+          )}
         </button>
       )}
     </div>

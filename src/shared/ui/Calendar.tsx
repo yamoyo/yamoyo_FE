@@ -85,7 +85,7 @@ export default function Calendar({
                         'text-white': isCurrentMonth,
                         'bg-bg-primary text-white hover:bg-bg-primary/80':
                           isToday && !isDisabled,
-                        'border-[1.5px] border-textfiled-line_focus text-white':
+                        'border-[1.5px] border-bd-textfiled-line_focus text-white':
                           isSelected && !isToday && !isDisabled,
                         'hover:bg-white/10':
                           !isToday && !isSelected && !isDisabled,

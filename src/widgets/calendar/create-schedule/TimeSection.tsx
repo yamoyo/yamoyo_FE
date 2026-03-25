@@ -165,7 +165,7 @@ export default function TimeSection<T extends FieldValues>({
                 onClick={() => onSelectDuration(option.endTime)}
                 className={`gap-2 rounded-lg px-3 py-3 text-body-4 transition-colors flex-center ${
                   endTime === option.endTime
-                    ? 'border-textfiled-line_focus bg-bg-secondary_2 text-tx-default_black'
+                    ? 'border-bd-textfiled-line_focus bg-bg-secondary_2 text-tx-default_black'
                     : 'border-bd-textfiled_line bg-bg-textfiled text-tx-default_4'
                 }`}
               >

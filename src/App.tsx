@@ -38,7 +38,7 @@ import TeamLeaderSelectPage from './pages/teamroom/[id]/leader-game';
 import MeetingDetailPage from './pages/teamroom/[id]/meeting/[meetingId]';
 import TeamRoomMembersPage from './pages/teamroom/[id]/members';
 import TeamRoomMemberPage from './pages/teamroom/[id]/members/[memberId]';
-import RuleSetupPage from './pages/teamroom/[id]/rule';
+import RuleSetupPage from './pages/teamroom/[id]/rule/page';
 import ToolSetupPage from './pages/teamroom/[id]/tool';
 import TeamRoomCreatePage from './pages/teamroom/create';
 import BannerPage from './pages/teamroom/create/banner';
