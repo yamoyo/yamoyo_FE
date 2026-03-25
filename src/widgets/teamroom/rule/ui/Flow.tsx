@@ -2,15 +2,15 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useRuleVoteParticipation } from '@/entities/rule/hooks/useRule';
+import { useRuleVoteParticipation } from '@/entities/teamroom/rule/hooks/useRule';
 import { useAuthStore } from '@/shared/api/auth/store';
 
-import RuleVoteWaitingScreen from './ui/vote-waitng';
-import RuleVotingScreen from './ui/voting-rule';
+import { RuleVotingScreen } from './voting/Screen';
+import { RuleVoteWaitingScreen } from './waiting/Screen';
 
 type RulePhase = 'VOTING_RULE' | 'RULE_VOTE_WAITING';
 
-export function RuleSetupPage() {
+export function RuleFlow() {
   const { id } = useParams<{ id: string }>();
   const accessToken = useAuthStore((s) => s.accessToken);
   const myUserId = accessToken

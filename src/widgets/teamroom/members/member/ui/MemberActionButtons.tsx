@@ -23,7 +23,7 @@ export default function MemberActionButtons({
       <BottomButton
         text="팀원 방출"
         onClick={onExpelMember}
-        className="shrink bg-textfiled-line_error"
+        className="shrink bg-bd-textfiled-line_error"
       />
     </section>
   );

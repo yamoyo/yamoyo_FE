@@ -1,25 +1,25 @@
 import { jwtDecode } from 'jwt-decode';
 
 import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
-import {
-  useRuleVoteParticipation,
-  useTeamRules,
-} from '@/entities/rule/hooks/useRule';
 import type {
   DashboardStatus,
   TeamMemberRole,
   TeamRoomWorkflow,
 } from '@/entities/teamroom/api/teamroom-dto';
-import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
+import {
+  useRuleVoteParticipation,
+  useTeamRules,
+} from '@/entities/teamroom/rule/hooks/useRule';
 import {
   useConfirmedTools,
   useToolVoteParticipation,
-} from '@/entities/tool/hooks/useTool';
+} from '@/entities/teamroom/tool/hooks/useTool';
+import { useTimeSelect } from '@/entities/timeselect/hooks/useTimeSelect';
 import { useAuthStore } from '@/shared/api/auth/store';
 import { PillTabHeader, SwipeTabs, TabsConfig } from '@/shared/ui/tab';
-import Rules from '@/widgets/teamroom/main/dashboard/rule/RuleContents';
 import ToolContents from '@/widgets/teamroom/main/dashboard/Tool/ToolContents';
 import FocusTimerCard from '@/widgets/teamroom/main/dashboard/ui/FocusTimerCard';
+import DashboardRuleSection from '@/widgets/teamroom/rule/ui/dashboard/Section';
 
 import MeetingList from './MeetingList';
 
@@ -199,7 +199,7 @@ export function Dashboard({
         }
 
         return (
-          <Rules
+          <DashboardRuleSection
             rulesData={rulesData}
             teamRoomId={teamRoomId}
             myRole={myRole}

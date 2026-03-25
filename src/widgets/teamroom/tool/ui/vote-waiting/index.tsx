@@ -2,13 +2,13 @@ import { useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { ToolVoteDetailCount } from '@/entities/teamroom/setup/tool/model/types';
-import { GetToolVoteParticipation } from '@/entities/tool/api/tool-dto';
-import { useVoteCountByCategory } from '@/entities/tool/hooks/useTool';
+import { GetToolVoteParticipation } from '@/entities/teamroom/tool/api/tool-dto';
+import { useVoteCountByCategory } from '@/entities/teamroom/tool/hooks/useTool';
 import TopBar from '@/shared/ui/header/TopBar';
 import { SwipeTabs, type TabsConfig } from '@/shared/ui/tab';
 import FullWidthUnderlineTabHeader from '@/shared/ui/tab/ui/headers/FullWidthUnderlineTabHeader';
 import { mapVoteCountToUi } from '@/widgets/teamroom/tool/ui/vote-waiting/model/mapVoteCountToUi';
-import VoteStatus from '@/widgets/vote/ui/VoteStatus';
+import VoteStatus from '@/widgets/vote/ui/Status';
 
 import VoteCountList from './ui/VoteCountList';
 

@@ -51,8 +51,8 @@ export default function TextField({
             'placeholder:text-tx-textfiled_disabled',
             'outline-none transition',
             showError
-              ? 'border-textfiled-line_error text-textfiled-line_error'
-              : 'focus:border-textfiled-line_focus',
+              ? 'border-bd-textfiled-line_error text-bd-textfiled-line_error'
+              : 'focus:border-bd-textfiled-line_focus',
           )}
         />
 
@@ -73,7 +73,7 @@ export default function TextField({
       </div>
 
       {showError && (
-        <p className="text-caption-1 text-textfiled-line_error">
+        <p className="text-caption-1 text-bd-textfiled-line_error">
           {errorMessage}
         </p>
       )}

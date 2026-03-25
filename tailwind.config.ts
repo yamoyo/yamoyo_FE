@@ -62,8 +62,8 @@ const config: Config = {
         'bd-default': '#3E4463',
         'bd-textfiled_line': '#4C5377',
         'bd-card_line': '#6A7194',
-        'textfiled-line_focus': '#AA89FF',
-        'textfiled-line_error': '#EE5353',
+        'bd-textfiled-line_focus': '#AA89FF',
+        'bd-textfiled-line_error': '#EE5353',
 
         /* === Accent / chart tokens === */
         'ct-pink': '#EF4B8A',

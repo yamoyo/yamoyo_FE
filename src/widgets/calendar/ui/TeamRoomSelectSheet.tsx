@@ -38,7 +38,7 @@ export default function TeamRoomSelectSheet({
       titleClassName="pt-6 pb-6"
       title={
         <p className="mt-4 text-center text-[18px] font-bold leading-7">
-          <span className="text-textfiled-line_focus">원하는 팀룸</span>
+          <span className="text-bd-textfiled-line_focus">원하는 팀룸</span>
           <span className="text-tx-default">의</span>
           <br />
           <span className="text-tx-default">일정확인이 가능합니다.</span>

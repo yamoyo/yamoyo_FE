@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { TOOL_CONTENTS } from '@/entities/teamroom/setup/tool/model/tool-contents';
-import type { GetConfirmedTools } from '@/entities/tool/api/tool-dto';
-import ContentsHeader from '@/widgets/teamroom/main/ui/ContentsHeader';
+import type { GetConfirmedTools } from '@/entities/teamroom/tool/api/tool-dto';
+import ContentsHeader from '@/shared/ui/header/DashboardSection';
 import ToolItems from '@/widgets/teamroom/tool/ui/vote-tool/ui/ToolItems';
 
 interface Props {
