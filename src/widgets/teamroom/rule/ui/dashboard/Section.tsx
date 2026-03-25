@@ -1,17 +1,10 @@
-import type { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
-import { GetTeamRulesResponse } from '@/entities/teamroom/rule/api/rule-dto';
 import DashboardRuleItem from '@/entities/teamroom/rule/ui/DashboardItem';
 import DashboardSectionHeader from '@/shared/ui/header/DashboardSection';
 
+import { DashboardRuleSectionProps } from '../../model/DashboardRuleSectionProps';
 import { useDashboardRuleSection } from '../../model/useDashboardRuleSection';
 
-interface Props {
-  rulesData: GetTeamRulesResponse;
-  teamRoomId: string | number;
-  myRole: TeamMemberRole;
-}
-
-export default function DashboardRuleSection(props: Props) {
+export default function DashboardRuleSection(props: DashboardRuleSectionProps) {
   const {
     isLeader,
     editMode,

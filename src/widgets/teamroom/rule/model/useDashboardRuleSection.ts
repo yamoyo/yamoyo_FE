@@ -1,26 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import { TeamMemberRole } from '@/entities/teamroom/api/teamroom-dto';
-import { GetTeamRulesResponse } from '@/entities/teamroom/rule/api/rule-dto';
 import {
   useAddTeamRule,
   useDeleteTeamRule,
   useUpdateTeamRule,
 } from '@/entities/teamroom/rule/hooks/useRule';
 
-type RuleUi = { teamRuleId: number; content: string; isTemp?: boolean };
+import { DashboardRuleSectionProps } from './DashboardRuleSectionProps';
 
-interface Params {
-  rulesData: GetTeamRulesResponse;
-  teamRoomId: string | number;
-  myRole: TeamMemberRole;
-}
+type RuleUi = { teamRuleId: number; content: string; isTemp?: boolean };
 
 export function useDashboardRuleSection({
   rulesData,
   teamRoomId,
   myRole,
-}: Params) {
+}: DashboardRuleSectionProps) {
   const isLeader = myRole === 'LEADER';
 
   const { mutateAsync: addRuleMutateAsync } = useAddTeamRule(teamRoomId);
