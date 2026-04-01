@@ -1,14 +1,11 @@
 import { useState } from 'react';
 
 import type { UpdateScope } from '@/entities/calendar/api/meeting-dto';
-import { formatDateString } from '@/entities/calendar/lib/recurrence';
 import {
   MEETING_COLOR_MAP,
   SCHEDULE_COLORS,
 } from '@/entities/calendar/model/types';
 import { useEditScheduleForm } from '@/features/schedule/edit/hooks';
-import BottomSheet from '@/shared/ui/BottomSheet';
-import TopBar from '@/shared/ui/header/TopBar';
 import {
   DateSection,
   DescriptionSection,
@@ -17,7 +14,10 @@ import {
   ParticipantsSection,
   SubmitButton,
   TimeSection,
-} from '@/widgets/calendar/create-schedule';
+} from '@/features/schedule/ui';
+import { formatDateString } from '@/shared/lib/date/recurrence';
+import BottomSheet from '@/shared/ui/BottomSheet';
+import TopBar from '@/shared/ui/header/TopBar';
 
 export default function EditSchedulePage() {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);

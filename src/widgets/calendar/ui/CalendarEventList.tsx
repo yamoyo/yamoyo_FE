@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
 import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
-import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
 import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
+import { formatYearMonth } from '@/shared/lib/date/format-date';
 
 interface CalendarEventListProps {
   meetings: MeetingSummary[];

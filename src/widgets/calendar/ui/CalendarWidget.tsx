@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useMeetings } from '@/entities/calendar/hooks/useMeetings';
+import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
 import { useTeamStore } from '@/entities/team/model/team-store';
 import Calendar from '@/shared/ui/Calendar';
+import CalendarHeader from '@/shared/ui/CalendarHeader';
 import CalendarEventList from '@/widgets/calendar/ui/CalendarEventList';
-import CalendarHeader from '@/widgets/calendar/ui/CalendarHeader';
 
 export default function CalendarWidget() {
   const navigate = useNavigate();
@@ -54,7 +55,11 @@ export default function CalendarWidget() {
         <Calendar
           currentDate={currentDate}
           selectedDate={selectedDate}
-          meetings={meetings}
+          events={meetings.map((m) => ({
+            id: m.meetingId,
+            date: m.startTime.split('T')[0],
+            colorHex: MEETING_COLOR_MAP[m.color],
+          }))}
           onDateSelect={setSelectedDate}
         />
       </div>

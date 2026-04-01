@@ -1,5 +1,5 @@
-import { formatDateDot } from '@/entities/calendar/lib/utils/format-date';
 import BasicInfoItem from '@/entities/profile/ui/edit/BasicInfoItem';
+import { formatDateDot } from '@/shared/lib/date/format-date';
 
 interface MemberInfoSectionProps {
   name: string;

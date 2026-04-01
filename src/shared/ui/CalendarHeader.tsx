@@ -1,5 +1,5 @@
-import { formatYearMonth } from '@/entities/calendar/lib/utils/format-date';
 import { cn } from '@/shared/config/tailwind/cn';
+import { formatYearMonth } from '@/shared/lib/date/format-date';
 
 interface CalendarHeaderProps {
   currentDate: Date;

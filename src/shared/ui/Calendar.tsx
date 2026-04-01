@@ -1,14 +1,18 @@
-import type { MeetingSummary } from '@/entities/calendar/api/meeting-dto';
-import { generateCalendarDates } from '@/entities/calendar/lib/generate-calendar-dates';
-import { isSameDay } from '@/entities/calendar/lib/is-same-day';
-import { MEETING_COLOR_MAP } from '@/entities/calendar/model/types';
+import { generateCalendarDates } from '@/shared/lib/date/generate-calendar-dates';
+import { isSameDay } from '@/shared/lib/date/is-same-day';
 
 import { cn } from '../config/tailwind/cn';
+
+export interface CalendarEvent {
+  id: string | number;
+  date: string; // YYYY-MM-DD
+  colorHex: string;
+}
 
 interface CalendarProps {
   currentDate: Date;
   selectedDate?: Date;
-  meetings?: MeetingSummary[];
+  events?: CalendarEvent[];
   onDateSelect?: (date: Date) => void;
   containerClassName?: string;
   disableBeforeToday?: boolean;
@@ -19,7 +23,7 @@ const weekDays = ['일', '월', '화', '수', '목', '금', '토'] as const;
 export default function Calendar({
   currentDate,
   selectedDate,
-  meetings = [],
+  events = [],
   onDateSelect,
   containerClassName,
   disableBeforeToday = false,
@@ -28,14 +32,13 @@ export default function Calendar({
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const meetingsByDate = meetings.reduce(
-    (acc, meeting) => {
-      const date = meeting.startTime.split('T')[0]; // "2025-02-15T14:00:00" → "2025-02-15"
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(meeting);
+  const eventsByDate = events.reduce(
+    (acc, event) => {
+      if (!acc[event.date]) acc[event.date] = [];
+      acc[event.date].push(event);
       return acc;
     },
-    {} as Record<string, MeetingSummary[]>,
+    {} as Record<string, CalendarEvent[]>,
   );
 
   return (
@@ -67,7 +70,7 @@ export default function Calendar({
               dateStart.setHours(0, 0, 0, 0);
               const isDisabled = disableBeforeToday && dateStart <= today;
               const dateString = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-              const dayMeetings = meetingsByDate[dateString] || [];
+              const dayEvents = eventsByDate[dateString] || [];
 
               return (
                 <div key={dateString} className="flex flex-1 flex-col">
@@ -98,12 +101,12 @@ export default function Calendar({
                   </button>
 
                   <div className="h-3 w-9 gap-0.5 self-center flex-center">
-                    {dayMeetings.slice(0, 2).map((meeting) => (
+                    {dayEvents.slice(0, 2).map((event) => (
                       <div
-                        key={meeting.meetingId}
+                        key={event.id}
                         className="h-2 w-2 rounded-full"
                         style={{
-                          backgroundColor: MEETING_COLOR_MAP[meeting.color],
+                          backgroundColor: event.colorHex,
                         }}
                       />
                     ))}

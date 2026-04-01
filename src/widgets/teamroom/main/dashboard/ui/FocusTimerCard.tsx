@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { formatTimeString } from '@/entities/calendar/lib/recurrence';
 import { DashboardStatus } from '@/entities/teamroom/api/teamroom-dto';
 import { cn } from '@/shared/config/tailwind/cn';
+import { formatTimeString } from '@/shared/lib/date/recurrence';
 import { TimerBar } from '@/widgets/teamroom/leader-game/ui/TimerBar';
 
 interface Props {

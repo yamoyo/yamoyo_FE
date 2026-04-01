@@ -12,13 +12,13 @@ import {
   useMeetingDetail,
   useUpdateMeeting,
 } from '@/entities/calendar/hooks/useMeetings';
+import type { EditScheduleFormData } from '@/entities/calendar/model/types';
+import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
 import {
   buildTimeOptions,
   formatDateLabel,
   parseDateString,
-} from '@/entities/calendar/lib/recurrence';
-import type { EditScheduleFormData } from '@/entities/calendar/model/types';
-import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
+} from '@/shared/lib/date/recurrence';
 
 /** startTime ISO 문자열에서 날짜(YYYY-MM-DD) 추출 */
 function extractDate(isoString: string): string {
