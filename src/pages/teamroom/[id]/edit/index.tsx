@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { formatMonthDayLabel } from '@/entities/calendar/lib/recurrence';
-import { formatDateString } from '@/entities/calendar/lib/recurrence';
 import {
   getTeamRoomDetail,
   updateTeamRoom,
@@ -12,6 +10,10 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
+import {
+  formatDateString,
+  formatMonthDayLabel,
+} from '@/shared/lib/date/recurrence';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
+import { CreateScheduleFormData } from '@/entities/calendar/model/types';
 import {
   formatDateString,
   parseDateString,
-} from '@/entities/calendar/lib/recurrence';
-import { CreateScheduleFormData } from '@/entities/calendar/model/types';
+} from '@/shared/lib/date/recurrence';
 
 // 달력 UI 상태(열림/현재월)와 이동/선택 핸들러를 묶은 훅
 export default function useCalendarState(
