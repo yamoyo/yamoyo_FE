@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { formatDateString } from '@/entities/calendar/lib/recurrence';
+import { useScheduleForm } from '@/features/schedule/create/hooks';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
   DateSection,
@@ -13,7 +14,6 @@ import {
   TimeSection,
   TitleSection,
 } from '@/widgets/calendar/create-schedule';
-import { useScheduleForm } from '@/widgets/calendar/create-schedule/hooks';
 
 export default function CreateSchedulePage() {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);

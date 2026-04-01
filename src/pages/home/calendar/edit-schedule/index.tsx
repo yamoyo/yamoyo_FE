@@ -6,6 +6,7 @@ import {
   MEETING_COLOR_MAP,
   SCHEDULE_COLORS,
 } from '@/entities/calendar/model/types';
+import { useEditScheduleForm } from '@/features/schedule/edit/hooks';
 import BottomSheet from '@/shared/ui/BottomSheet';
 import TopBar from '@/shared/ui/header/TopBar';
 import {
@@ -17,7 +18,6 @@ import {
   SubmitButton,
   TimeSection,
 } from '@/widgets/calendar/create-schedule';
-import { useEditScheduleForm } from '@/widgets/calendar/edit-schedule';
 
 export default function EditSchedulePage() {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
