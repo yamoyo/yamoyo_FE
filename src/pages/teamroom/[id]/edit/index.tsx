@@ -10,8 +10,10 @@ import {
   DEFAULT_TEAMROOM_IMAGE_ID,
   TEAMROOM_IMAGES,
 } from '@/shared/constants/teamroom-images';
-import { formatMonthDayLabel } from '@/shared/lib/date/recurrence';
-import { formatDateString } from '@/shared/lib/date/recurrence';
+import {
+  formatDateString,
+  formatMonthDayLabel,
+} from '@/shared/lib/date/recurrence';
 import BottomButton from '@/shared/ui/button/BottomButton';
 import TopBar from '@/shared/ui/header/TopBar';
 import { useModalStore } from '@/shared/ui/modal/model/modal-store';
