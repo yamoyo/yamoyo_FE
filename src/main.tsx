@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import { installGTM } from '@/shared/lib/gtm-install';
+import { unregisterPwaServiceWorker } from '@/shared/lib/unregisterServiceWorker';
 
 import App from './App';
 
@@ -19,6 +20,8 @@ const queryClient = new QueryClient({
 
 const id = import.meta.env.VITE_GTM_ID;
 if (id) installGTM(id);
+
+unregisterPwaServiceWorker();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

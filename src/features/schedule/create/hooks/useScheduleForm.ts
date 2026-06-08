@@ -4,13 +4,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import type { CreateMeetingRequest } from '@/entities/calendar/api/meeting-dto';
 import { useCreateMeeting } from '@/entities/calendar/hooks/useMeetings';
+import type { CreateScheduleFormData } from '@/entities/calendar/model/types';
+import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
 import {
   buildTimeOptions,
   formatDateLabel,
   parseDateString,
-} from '@/entities/calendar/lib/recurrence';
-import type { CreateScheduleFormData } from '@/entities/calendar/model/types';
-import { useTeamRoomMembers } from '@/entities/teamroom/hooks/useTeamMember';
+} from '@/shared/lib/date/recurrence';
 
 // 일정 생성/수정 폼 상태/파생값/제출 로직을 묶은 훅
 export default function useScheduleForm() {
